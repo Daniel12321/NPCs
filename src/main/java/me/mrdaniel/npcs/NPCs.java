@@ -27,6 +27,7 @@ import org.spongepowered.api.text.format.TextColors;
 
 import com.google.inject.Inject;
 
+import me.mrdaniel.npcs.bstats.MetricsLite;
 import me.mrdaniel.npcs.commands.ChoiceMaps;
 import me.mrdaniel.npcs.commands.CommandCopy;
 import me.mrdaniel.npcs.commands.CommandCreate;
@@ -70,7 +71,7 @@ public class NPCs {
 	private NPCManager npcmanager;
 
 	@Inject
-	public NPCs(final Game game, final PluginContainer container, @ConfigDir(sharedRoot = false) final Path path) {
+	public NPCs(final Game game, final PluginContainer container, @ConfigDir(sharedRoot = false) final Path path, final MetricsLite metrics) {
 		this.game = game;
 		this.container = container;
 		this.logger = LoggerFactory.getLogger("NPCs");
