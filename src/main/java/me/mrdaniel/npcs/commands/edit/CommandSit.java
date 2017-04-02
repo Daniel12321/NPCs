@@ -30,6 +30,6 @@ public class CommandSit extends NPCCommand {
 		boolean value = args.<Boolean>getOne("value").orElse(!npc.get(Keys.IS_SITTING).orElse(false));
 		npc.offer(Keys.IS_SITTING, value);
 
-		player.sendMessage(TextUtils.getMessage(value ? "The selected NPC is now sitting." : "The selected NPC is no longer sitting."));
+		TextUtils.sendMessage(player, value ? "The selected NPC is now sitting." : "The selected NPC is no longer sitting.");
 	}
 }

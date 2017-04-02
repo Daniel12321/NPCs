@@ -31,6 +31,6 @@ public class CommandCareer extends NPCCommand {
 		}
 		npc.offer(Keys.CAREER, args.<Career>getOne("type").get());
 
-		player.sendMessage(TextUtils.getMessage("You successfully changed the selected NPC's career."));
+		TextUtils.sendMessage(player, "You successfully changed the selected NPC's career.");
 	}
 }

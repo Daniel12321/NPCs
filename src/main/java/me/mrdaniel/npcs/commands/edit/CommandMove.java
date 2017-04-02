@@ -29,6 +29,6 @@ public class CommandMove extends NPCCommand {
 		npc.setRotation(player.getRotation());
 		npc.setHeadRotation(player.getHeadRotation());
 
-		player.sendMessage(TextUtils.getMessage("You successfully moved the selected NPC to your location."));
+		TextUtils.sendMessage(player, "You successfully moved the selected NPC to your location.");
 	}
 }

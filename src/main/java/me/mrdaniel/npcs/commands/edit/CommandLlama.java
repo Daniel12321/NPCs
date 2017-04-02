@@ -31,6 +31,6 @@ public class CommandLlama extends NPCCommand {
 		}
 		npc.offer(Keys.LLAMA_VARIANT, args.<LlamaVariant>getOne("type").get());
 
-		player.sendMessage(TextUtils.getMessage("You successfully changed the selected NPC's llama type."));
+		TextUtils.sendMessage(player, "You successfully changed the selected NPC's llama type.");
 	}
 }

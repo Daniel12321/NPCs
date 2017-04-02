@@ -29,6 +29,6 @@ public class CommandCreate extends PlayerCommand {
 		}
 		super.getNPCs().getNPCManager().spawn(p, type);
 
-		p.sendMessage(TextUtils.getMessage("You succesfully created an NPC."));
+		TextUtils.sendMessage(p, "You succesfully created an NPC.");
 	}
 }

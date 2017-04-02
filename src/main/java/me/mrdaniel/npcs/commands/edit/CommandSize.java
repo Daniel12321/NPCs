@@ -31,6 +31,6 @@ public class CommandSize extends NPCCommand {
 		if (size < 1) { throw new CommandException(Text.of(TextColors.RED, "Slime size cant be less than 1.")); }
 		npc.offer(Keys.SLIME_SIZE, size);
 
-		player.sendMessage(TextUtils.getMessage("The selected NPC is now size ", size, "."));
+		TextUtils.sendMessage(player, "The selected NPC is now size " + size + ".");
 	}
 }

@@ -19,6 +19,6 @@ public class CommandDeselect extends PlayerCommand {
 	public void execute(final Player player, final CommandContext args) throws CommandException {
 		super.getNPCs().getNPCManager().deselect(player.getUniqueId());
 
-		player.sendMessage(TextUtils.getMessage("No more NPC is selected."));
+		TextUtils.sendMessage(player, "No more NPC is selected.");
 	}
 }

@@ -31,6 +31,6 @@ public class CommandCat extends NPCCommand {
 		}
 		npc.offer(Keys.OCELOT_TYPE, args.<OcelotType>getOne("type").get());
 
-		player.sendMessage(TextUtils.getMessage("You successfully changed the selected NPC's ocelot type."));
+		TextUtils.sendMessage(player, "You successfully changed the selected NPC's ocelot type.");
 	}
 }

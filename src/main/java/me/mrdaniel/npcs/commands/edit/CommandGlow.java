@@ -30,6 +30,6 @@ public class CommandGlow extends NPCCommand {
 		boolean value = args.<Boolean>getOne("value").orElse(!npc.get(Keys.GLOWING).orElse(false));
 		npc.offer(Keys.GLOWING, value);
 
-		player.sendMessage(TextUtils.getMessage(value ? "The selected NPC is now glowing." : "The selected NPC is no longer glowing."));
+		TextUtils.sendMessage(player, value ? "The selected NPC is now glowing." : "The selected NPC is no longer glowing.");
 	}
 }

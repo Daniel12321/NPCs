@@ -18,6 +18,7 @@ import org.spongepowered.api.util.Tristate;
 import me.mrdaniel.npcs.NPCObject;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.data.npc.NPCData;
+import me.mrdaniel.npcs.event.NPCEvent;
 import me.mrdaniel.npcs.utils.TextUtils;
 
 public class WorldListener extends NPCObject {
@@ -46,9 +47,11 @@ public class WorldListener extends NPCObject {
 			if (e instanceof InteractEntityEvent.Secondary.MainHand) {
 				if (p.get(Keys.IS_SNEAKING).orElse(false) && p.hasPermission("npc.edit.select")) {
 					super.getNPCs().getNPCManager().select(p.getUniqueId(), (Living) e.getTargetEntity());
-					p.sendMessage(TextUtils.getMessage("You selected an NPC."));
+					TextUtils.sendMessage(p, "You selected an NPC.");
 				}
-				else if (data.canInteract()) { e.setCancelled(false); }
+				else if (data.canInteract()) {
+					e.setCancelled(super.getGame().getEventManager().post(new NPCEvent.Interact(super.getContainer(), p, (Living) e.getTargetEntity())));
+				}
 			}
 		});
 	}

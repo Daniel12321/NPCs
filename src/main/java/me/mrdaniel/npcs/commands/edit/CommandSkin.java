@@ -32,7 +32,7 @@ public class CommandSkin extends NPCCommand {
 		}
 		super.getServer().getGameProfileManager().get(name).thenAccept(gp -> {
 			npc.offer(Keys.SKIN_UNIQUE_ID, gp.getUniqueId());
-			player.sendMessage(TextUtils.getMessage("You successfully gave the selected NPC a skin."));
+			TextUtils.sendMessage(player, "You successfully gave the selected NPC a skin.");
 		});
 	}
 }

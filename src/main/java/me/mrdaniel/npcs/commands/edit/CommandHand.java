@@ -47,6 +47,6 @@ public class CommandHand extends NPCCommand {
 		ae.setItemInHand(this.type, phand.orElse(null));
 		player.setItemInHand(HandTypes.MAIN_HAND, hand.orElse(null));
 
-		player.sendMessage(TextUtils.getMessage("You successfully changed the selected NPC's ", ArmorUtils.name(this.type), "."));
+		TextUtils.sendMessage(player, "You successfully changed the selected NPC's " + ArmorUtils.name(this.type) + ".");
 	}
 }

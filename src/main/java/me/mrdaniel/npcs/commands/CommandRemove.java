@@ -27,6 +27,6 @@ public class CommandRemove extends NPCCommand {
 		super.getNPCs().getNPCManager().deselect(npc);
 		npc.remove();
 
-		player.sendMessage(TextUtils.getMessage("You successfully removed an NPC."));
+		TextUtils.sendMessage(player, "You successfully removed an NPC.");
 	}
 }

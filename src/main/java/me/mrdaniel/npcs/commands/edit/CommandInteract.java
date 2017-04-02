@@ -30,6 +30,6 @@ public class CommandInteract extends NPCCommand {
 		data.setInteract(args.<Boolean>getOne("value").orElse(!data.canInteract()));
 		npc.offer(data);
 
-		player.sendMessage(TextUtils.getMessage(data.canInteract() ? "The selected NPC can now be interacted with." : "The selected NPC will no longer be interacted with."));
+		TextUtils.sendMessage(player, data.canInteract() ? "The selected NPC can now be interacted with." : "The selected NPC will no longer be interacted with.");
 	}
 }

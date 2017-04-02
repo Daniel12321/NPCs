@@ -20,7 +20,7 @@ public class CommandInfo implements CommandExecutor {
 	public CommandInfo(@Nonnull final PaginationService service) {
 		this.list = service.builder().title(Text.of("[ ", TextColors.RED, "NPCs", TextColors.RESET, " ]"))
 				.padding(Text.of("-"))
-				.linesPerPage(19)
+				.linesPerPage(20)
 				.contents(Text.of(TextColors.GOLD, "    [ General Commands ]"),
 						Text.builder().append(Text.of(TextColors.AQUA, " /npc create [entitytype]")).onClick(TextActions.suggestCommand("/npc create [type]")).build(),
 						Text.builder().append(Text.of(TextColors.AQUA, " /npc remove")).onClick(TextActions.suggestCommand("/npc remove")).build(),
@@ -32,7 +32,7 @@ public class CommandInfo implements CommandExecutor {
 						Text.builder().append(Text.of(TextColors.AQUA, " /npc look [true|false]")).onClick(TextActions.suggestCommand("/npc look true")).build(),
 						Text.builder().append(Text.of(TextColors.AQUA, " /npc interact [true|false]")).onClick(TextActions.suggestCommand("/npc interact true")).build(),
 						Text.builder().append(Text.of(TextColors.AQUA, " /npc glow [true|false]")).onClick(TextActions.suggestCommand("/npc glow true")).build(),
-						Text.EMPTY,
+						Text.of(" "),
 						Text.of(TextColors.GOLD, "    [ Entity Specific Commands ]"),
 						Text.builder().append(Text.of(TextColors.AQUA, " /npc helmet - Armor Equipables")).onClick(TextActions.suggestCommand("/npc helmet")).build(),
 						Text.builder().append(Text.of(TextColors.AQUA, " /npc chestplate - Armor Equipables")).onClick(TextActions.suggestCommand("/npc chestplate")).build(),
@@ -45,8 +45,8 @@ public class CommandInfo implements CommandExecutor {
 						Text.builder().append(Text.of(TextColors.AQUA, " /npc cat <cattype> - Ocelots")).onClick(TextActions.suggestCommand("/npc cat <type>")).build(),
 						Text.builder().append(Text.of(TextColors.AQUA, " /npc llama <llamatype> - Llamas")).onClick(TextActions.suggestCommand("/npc llama <type>")).build(),
 						Text.builder().append(Text.of(TextColors.AQUA, " /npc size <size> - Slimes")).onClick(TextActions.suggestCommand("/npc size 1")).build(),
-						Text.builder().append(Text.of(TextColors.AQUA, " /npc sit [true|false] - Sittable Mobs")).onClick(TextActions.suggestCommand("/npc sit true")).build(),
-						Text.builder().append(Text.of(TextColors.AQUA, " /npc charged [true|false] - Creepers")).onClick(TextActions.suggestCommand("/npc charged true")).build())
+						Text.builder().append(Text.of(TextColors.AQUA, " /npc sit [true|false] - Wolfs/Cats")).onClick(TextActions.suggestCommand("/npc sit true")).build(),
+						Text.builder().append(Text.of(TextColors.AQUA, " /npc charge [true|false] - Creepers")).onClick(TextActions.suggestCommand("/npc charge true")).build())
 				.build();
 	}
 

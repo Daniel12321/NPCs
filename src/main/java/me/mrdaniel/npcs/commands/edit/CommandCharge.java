@@ -16,9 +16,9 @@ import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.event.NPCEvent;
 import me.mrdaniel.npcs.utils.TextUtils;
 
-public class CommandCharged extends NPCCommand {
+public class CommandCharge extends NPCCommand {
 
-	public CommandCharged(@Nonnull final NPCs npcs) {
+	public CommandCharge(@Nonnull final NPCs npcs) {
 		super(npcs);
 	}
 
@@ -31,6 +31,6 @@ public class CommandCharged extends NPCCommand {
 		boolean value = args.<Boolean>getOne("value").orElse(!npc.get(Keys.CREEPER_CHARGED).orElse(false));
 		npc.offer(Keys.CREEPER_CHARGED, value);
 
-		player.sendMessage(TextUtils.getMessage(value ? "The selected NPC is now charged." : "The selected NPC is no longer charged."));
+		TextUtils.sendMessage(player, value ? "The selected NPC is now charged." : "The selected NPC is no longer charged.");
 	}
 }

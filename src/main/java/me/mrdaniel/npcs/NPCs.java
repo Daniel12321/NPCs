@@ -35,10 +35,14 @@ import me.mrdaniel.npcs.commands.CommandDeselect;
 import me.mrdaniel.npcs.commands.CommandInfo;
 import me.mrdaniel.npcs.commands.CommandMount;
 import me.mrdaniel.npcs.commands.CommandRemove;
+import me.mrdaniel.npcs.commands.action.CommandAction;
+import me.mrdaniel.npcs.commands.action.CommandActionRemove;
+import me.mrdaniel.npcs.commands.action.CommandActionSetCommand;
+import me.mrdaniel.npcs.commands.action.CommandActionSetTalk;
 import me.mrdaniel.npcs.commands.edit.CommandArmor;
 import me.mrdaniel.npcs.commands.edit.CommandCareer;
 import me.mrdaniel.npcs.commands.edit.CommandCat;
-import me.mrdaniel.npcs.commands.edit.CommandCharged;
+import me.mrdaniel.npcs.commands.edit.CommandCharge;
 import me.mrdaniel.npcs.commands.edit.CommandGlow;
 import me.mrdaniel.npcs.commands.edit.CommandHand;
 import me.mrdaniel.npcs.commands.edit.CommandInteract;
@@ -49,16 +53,19 @@ import me.mrdaniel.npcs.commands.edit.CommandName;
 import me.mrdaniel.npcs.commands.edit.CommandSit;
 import me.mrdaniel.npcs.commands.edit.CommandSize;
 import me.mrdaniel.npcs.commands.edit.CommandSkin;
+import me.mrdaniel.npcs.data.action.NPCAction;
+import me.mrdaniel.npcs.data.action.NPCActionBuilder;
 import me.mrdaniel.npcs.data.npc.ImmutableNPCData;
 import me.mrdaniel.npcs.data.npc.NPCData;
 import me.mrdaniel.npcs.data.npc.NPCDataBuilder;
 import me.mrdaniel.npcs.io.Config;
 import me.mrdaniel.npcs.listeners.WorldListener;
 import me.mrdaniel.npcs.manager.NPCManager;
+import me.mrdaniel.npcs.utils.TextUtils;
 
 @Plugin(id = "npcs",
 		name = "NPCs",
-		version = "1.0.0",
+		version = "1.0.2",
 		description = "A plugin that adds simple NPC's to your worlds.",
 		authors = {"Daniel12321"})
 public class NPCs {
@@ -86,6 +93,8 @@ public class NPCs {
 	@Listener
 	public void onPreInit(@Nullable final GamePreInitializationEvent e) {
 		this.game.getDataManager().register(NPCData.class, ImmutableNPCData.class, new NPCDataBuilder());
+		this.game.getDataManager().registerBuilder(NPCAction.class, new NPCActionBuilder());
+
 //		this.game.getDataManager().register(WalkingData.class, ImmutableWalkingData.class, new WalkingDataBuilder());
 	}
 
@@ -95,11 +104,14 @@ public class NPCs {
 
 		Config config = new Config(this, this.configDir.resolve("config.conf"));
 		ChoiceMaps choices = new ChoiceMaps(this);
+		PaginationService service = this.game.getServiceManager().provide(PaginationService.class).get();
+
+		TextUtils.setValues(config.getNode("messages"));
 
 		this.npcmanager = new NPCManager(this, config);
 
 		CommandSpec main = CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Main Command"))
-				.executor(new CommandInfo(this.game.getServiceManager().provide(PaginationService.class).get()))
+				.executor(new CommandInfo(service))
 				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Create Command")).permission("npc.create").arguments(GenericArguments.optional(GenericArguments.choices(Text.of("type"), choices.getEntities()))).executor(new CommandCreate(this)).build(), "create")
 				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Remove Command")).permission("npc.remove").executor(new CommandRemove(this)).build(), "remove")
 				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Copy Command")).permission("npc.copy").executor(new CommandCopy(this)).build(), "copy")
@@ -122,7 +134,16 @@ public class NPCs {
 				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Llama Command")).permission("npc.edit.llama").arguments(GenericArguments.choices(Text.of("type"), choices.getLlamas())).executor(new CommandLlama(this)).build(), "llama")
 				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Size Command")).permission("npc.edit.size").arguments(GenericArguments.integer(Text.of("size"))).executor(new CommandSize(this)).build(), "size")
 				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Sit Command")).permission("npc.edit.sit").arguments(GenericArguments.optional(GenericArguments.bool(Text.of("value")))).executor(new CommandSit(this)).build(), "sit")
-				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Charged Command")).permission("npc.edit.charged").arguments(GenericArguments.optional(GenericArguments.bool(Text.of("value")))).executor(new CommandCharged(this)).build(), "charged")
+				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Charge Command")).permission("npc.edit.charge").arguments(GenericArguments.optional(GenericArguments.bool(Text.of("value")))).executor(new CommandCharge(this)).build(), "charge")
+
+				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Action Command")).executor(new CommandAction(this, service))
+						.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Set Action Command")).permission("npc.action.set").arguments()
+								.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Set Command Action Command")).permission("npc.edit.action.command").arguments(GenericArguments.string(Text.of("command"))).executor(new CommandActionSetCommand(this)).build(), "command")
+								.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Set Talk Action Command")).permission("npc.edit.action.talk").arguments(GenericArguments.string(Text.of("message"))).executor(new CommandActionSetTalk(this)).build(), "talk")
+								.build(), "set")
+						.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Remove Action Command")).permission("npc.action.remove").executor(new CommandActionRemove(this)).build(), "remove")
+						.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Add Command Action Command")).permission("npc.action.addcommand").arguments(GenericArguments.string(Text.of(""))).executor(new CommandActionRemove(this)).build(), "remove")
+						.build(), "action")
 				.build();
 
 		this.game.getCommandManager().register(this, main, "npc", "npcs");

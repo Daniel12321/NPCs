@@ -60,6 +60,22 @@ public class NPCEvent extends AbstractEvent implements Cancellable {
 		}
 	}
 
+	public static class Interact extends NPCEvent {
+
+		private final Living npc;
+
+		public Interact(@Nonnull final PluginContainer container, @Nonnull final Player player, @Nonnull final Living npc) {
+			super(Cause.source(container).named("player", player).named("npc", npc).build(), player);
+
+			this.npc = npc;
+		}
+	
+		@Nonnull
+		public Living getNPC() {
+			return this.npc;
+		}
+	}
+
 	public static class Edit extends NPCEvent {
 
 		private final Living npc;

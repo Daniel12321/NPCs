@@ -2,20 +2,27 @@ package me.mrdaniel.npcs.utils;
 
 import javax.annotation.Nonnull;
 
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
+import org.spongepowered.api.text.chat.ChatTypes;
 import org.spongepowered.api.text.serializer.TextSerializers;
+
+import ninja.leaping.configurate.ConfigurationNode;
 
 public class TextUtils {
 
-	private static Object[] PREFIX = {TextColors.DARK_GRAY, "[", TextColors.GOLD, "NPCs", TextColors.DARK_GRAY, "] ", TextColors.YELLOW};
+	private static String PREFIX = "&8[&6NPCs&8]&e";
+	private static boolean ACTION_BAR = true;
+
+	public static void setValues(@Nonnull final ConfigurationNode node) {
+		PREFIX = node.getNode("prefix").getString(PREFIX);
+		if (!PREFIX.equals("")) { PREFIX += " "; }
+		ACTION_BAR = node.getNode("actionbar").getBoolean(ACTION_BAR);
+	}
 
 	@Nonnull
-	public static Text getMessage(@Nonnull final Object... objects) {
-		Object[] txt = new Object[objects.length+7];
-		for (int i = 0; i < 7; i++) { txt[i] = PREFIX[i]; }
-		for (int i = 0; i < objects.length; i++) { txt[i+7] = objects[i]; }
-		return Text.of(txt);
+	public static void sendMessage(@Nonnull final Player p, @Nonnull final String message) {
+		p.sendMessage(ACTION_BAR ? ChatTypes.ACTION_BAR : ChatTypes.CHAT, toText(PREFIX + message));
 	}
 
 	@Nonnull

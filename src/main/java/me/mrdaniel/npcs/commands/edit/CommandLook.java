@@ -30,6 +30,6 @@ public class CommandLook extends NPCCommand {
 		data.setLooking(args.<Boolean>getOne("value").orElse(!data.isLooking()));
 		npc.offer(data);
 
-		player.sendMessage(TextUtils.getMessage(data.isLooking() ? "The selected NPC will now look at nearby players." : "The selected NPC will no longer look at nearby players."));
+		TextUtils.sendMessage(player, data.isLooking() ? "The selected NPC will now look at nearby players." : "The selected NPC will no longer look at nearby players.");
 	}
 }

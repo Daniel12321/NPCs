@@ -58,6 +58,6 @@ public class CommandCopy extends NPCCommand {
 		}
 		player.getWorld().spawnEntity(copy, ServerUtils.getSpawnCause(copy));
 
-		player.sendMessage(TextUtils.getMessage("You successfully copied the selected NPC."));
+		TextUtils.sendMessage(player, "You successfully copied the selected NPC.");
 	}
 }

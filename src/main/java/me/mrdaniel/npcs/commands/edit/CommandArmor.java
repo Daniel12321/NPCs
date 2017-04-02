@@ -47,6 +47,6 @@ public class CommandArmor extends NPCCommand {
 		ArmorUtils.set(ae, this.type, hand.orElse(null));
 		player.setItemInHand(HandTypes.MAIN_HAND, armor.orElse(null));
 
-		player.sendMessage(TextUtils.getMessage("You successfully changed the selected NPC's ", ArmorUtils.name(this.type), "."));
+		TextUtils.sendMessage(player, "You successfully changed the selected NPC's " + ArmorUtils.name(this.type) + ".");
 	}
 }

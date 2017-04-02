@@ -34,10 +34,8 @@ import java.util.zip.GZIPOutputStream;
 
 public class MetricsLite {
 
-	
 	public static final int B_STATS_VERSION = 1;
 	private static final String URL = "https://bStats.org/submitData/sponge";
-	private static boolean created = false;
 	private boolean enabled;
 	private boolean logFailedRequests = false;
 
@@ -50,9 +48,6 @@ public class MetricsLite {
 
 	@Inject
 	private MetricsLite(PluginContainer plugin, Logger logger, @ConfigDir(sharedRoot = true) Path configDir) {
-		if (created) throw new IllegalStateException("There's already an instance of this Metrics class!");
-		else { created = true; }
-
 		this.plugin = plugin;
 		this.logger = logger;
 		this.configDir = configDir;
