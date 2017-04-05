@@ -13,7 +13,6 @@ import org.spongepowered.api.text.format.TextColors;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.event.NPCEvent;
-import me.mrdaniel.npcs.utils.TextUtils;
 
 public class CommandSit extends NPCCommand {
 
@@ -29,7 +28,5 @@ public class CommandSit extends NPCCommand {
 		}
 		boolean value = args.<Boolean>getOne("value").orElse(!npc.get(Keys.IS_SITTING).orElse(false));
 		npc.offer(Keys.IS_SITTING, value);
-
-		TextUtils.sendMessage(player, value ? "The selected NPC is now sitting." : "The selected NPC is no longer sitting.");
 	}
 }

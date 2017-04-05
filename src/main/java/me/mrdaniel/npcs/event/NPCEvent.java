@@ -24,24 +24,48 @@ public class NPCEvent extends AbstractEvent implements Cancellable {
 		this.cancelled = false;
 	}
 
-	@Nonnull
-	public Player getPlayer() {
-		return this.player;
+	@Nonnull public Player getPlayer() { return this.player; }
+	@Override public Cause getCause() { return this.cause; }
+	@Override public boolean isCancelled() { return this.cancelled; }
+	@Override public void setCancelled(final boolean cancelled) { this.cancelled = cancelled; }
+
+	public static class Interact extends NPCEvent {
+
+		private final Living npc;
+
+		public Interact(@Nonnull final PluginContainer container, @Nonnull final Player player, @Nonnull final Living npc) {
+			super(Cause.source(container).named("player", player).named("npc", npc).build(), player);
+
+			this.npc = npc;
+		}
+
+		@Nonnull public Living getNPC() { return this.npc; }
 	}
 
-	@Override
-	public Cause getCause() {
-		return this.cause;
+	public static class Edit extends NPCEvent {
+
+		private final Living npc;
+
+		public Edit(@Nonnull final PluginContainer container, @Nonnull final Player player, @Nonnull final Living npc) {
+			super(Cause.source(container).named("player", player).named("npc", npc).build(), player);
+
+			this.npc = npc;
+		}
+
+		@Nonnull public Living getNPC() { return this.npc; }
 	}
 
-	@Override
-	public boolean isCancelled() {
-		return this.cancelled;
-	}
+	public static class Select extends NPCEvent {
 
-	@Override
-	public void setCancelled(final boolean cancelled) {
-		this.cancelled = cancelled;
+		private final Living npc;
+
+		public Select(@Nonnull final PluginContainer container, @Nonnull final Player player, @Nonnull final Living npc) {
+			super(Cause.source(container).named("player", player).named("npc", npc).build(), player);
+
+			this.npc = npc;
+		}
+
+		@Nonnull public Living getNPC() { return this.npc; }
 	}
 
 	public static class Create extends NPCEvent {
@@ -54,42 +78,7 @@ public class NPCEvent extends AbstractEvent implements Cancellable {
 			this.type = type;
 		}
 
-		@Nonnull
-		public EntityType getType() {
-			return this.type;
-		}
-	}
-
-	public static class Interact extends NPCEvent {
-
-		private final Living npc;
-
-		public Interact(@Nonnull final PluginContainer container, @Nonnull final Player player, @Nonnull final Living npc) {
-			super(Cause.source(container).named("player", player).named("npc", npc).build(), player);
-
-			this.npc = npc;
-		}
-	
-		@Nonnull
-		public Living getNPC() {
-			return this.npc;
-		}
-	}
-
-	public static class Edit extends NPCEvent {
-
-		private final Living npc;
-
-		public Edit(@Nonnull final PluginContainer container, @Nonnull final Player player, @Nonnull final Living npc) {
-			super(Cause.source(container).named("player", player).named("npc", npc).build(), player);
-
-			this.npc = npc;
-		}
-	
-		@Nonnull
-		public Living getNPC() {
-			return this.npc;
-		}
+		@Nonnull public EntityType getType() { return this.type; }
 	}
 
 	public static class Remove extends NPCEvent {
@@ -102,9 +91,6 @@ public class NPCEvent extends AbstractEvent implements Cancellable {
 			this.npc = npc;
 		}
 
-		@Nonnull
-		public Living getNPC() {
-			return this.npc;
-		}
+		@Nonnull public Living getNPC() { return this.npc; }
 	}
 }

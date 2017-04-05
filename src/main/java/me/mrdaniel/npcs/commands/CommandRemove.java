@@ -11,7 +11,6 @@ import org.spongepowered.api.text.format.TextColors;
 
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.event.NPCEvent;
-import me.mrdaniel.npcs.utils.TextUtils;
 
 public class CommandRemove extends NPCCommand {
 
@@ -26,7 +25,5 @@ public class CommandRemove extends NPCCommand {
 		}
 		super.getNPCs().getNPCManager().deselect(npc);
 		npc.remove();
-
-		TextUtils.sendMessage(player, "You successfully removed an NPC.");
 	}
 }

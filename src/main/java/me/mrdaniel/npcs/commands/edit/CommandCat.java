@@ -15,7 +15,6 @@ import org.spongepowered.api.text.format.TextColors;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.event.NPCEvent;
-import me.mrdaniel.npcs.utils.TextUtils;
 
 public class CommandCat extends NPCCommand {
 
@@ -30,7 +29,5 @@ public class CommandCat extends NPCCommand {
 			throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
 		}
 		npc.offer(Keys.OCELOT_TYPE, args.<OcelotType>getOne("type").get());
-
-		TextUtils.sendMessage(player, "You successfully changed the selected NPC's ocelot type.");
 	}
 }

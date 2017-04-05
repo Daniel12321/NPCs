@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.commands.edit;
+package me.mrdaniel.npcs.commands.armor;
 
 import java.util.Optional;
 
@@ -19,7 +19,6 @@ import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.event.NPCEvent;
 import me.mrdaniel.npcs.utils.ArmorUtils;
-import me.mrdaniel.npcs.utils.TextUtils;
 
 public class CommandArmor extends NPCCommand {
 
@@ -46,7 +45,5 @@ public class CommandArmor extends NPCCommand {
 		}
 		ArmorUtils.set(ae, this.type, hand.orElse(null));
 		player.setItemInHand(HandTypes.MAIN_HAND, armor.orElse(null));
-
-		TextUtils.sendMessage(player, "You successfully changed the selected NPC's " + ArmorUtils.name(this.type) + ".");
 	}
 }

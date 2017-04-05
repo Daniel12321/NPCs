@@ -15,12 +15,16 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.mrdaniel</groupId>
   <artifactId>npcs</artifactId>
-  <version>1.0.2</version>
+  <version>1.1.0</version>
   <name>NPCs</name>
   <repositories>
     <repository>
       <id>sponge</id>
       <url>http://repo.spongepowered.org/maven</url>
+    </repository>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
     </repository>
   </repositories>
 
@@ -30,6 +34,11 @@
       <artifactId>spongeapi</artifactId>
       <version>6.0.0-20170326.083613-61</version>
       <scope>provided</scope>
+    </dependency>
+      <dependency>
+        <groupId>com.github.rojo8399</groupId>
+        <artifactId>PlaceholderAPI</artifactId>
+        <version>master-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>

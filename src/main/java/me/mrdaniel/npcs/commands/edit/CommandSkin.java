@@ -8,13 +8,14 @@ import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.Human;
 import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.commands.NPCCommand;
+import me.mrdaniel.npcs.data.npc.NPCData;
 import me.mrdaniel.npcs.event.NPCEvent;
-import me.mrdaniel.npcs.utils.TextUtils;
 
 public class CommandSkin extends NPCCommand {
 
@@ -30,9 +31,11 @@ public class CommandSkin extends NPCCommand {
 		if (super.getGame().getEventManager().post(new NPCEvent.Edit(super.getContainer(), player, npc))) {
 			throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
 		}
-		super.getServer().getGameProfileManager().get(name).thenAccept(gp -> {
-			npc.offer(Keys.SKIN_UNIQUE_ID, gp.getUniqueId());
-			TextUtils.sendMessage(player, "You successfully gave the selected NPC a skin.");
-		});
+
+		NPCData data = npc.get(NPCData.class).get();
+		data.setSkin(name);
+		npc.offer(data);
+
+		super.getServer().getGameProfileManager().get(name).thenAccept(gp -> Task.builder().delayTicks(0).execute(() -> npc.offer(Keys.SKIN_UNIQUE_ID, gp.getUniqueId())).submit(super.getNPCs()));
 	}
 }

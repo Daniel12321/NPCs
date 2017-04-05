@@ -14,7 +14,6 @@ import org.spongepowered.api.text.format.TextColors;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.event.NPCEvent;
-import me.mrdaniel.npcs.utils.TextUtils;
 
 public class CommandCharge extends NPCCommand {
 
@@ -30,7 +29,5 @@ public class CommandCharge extends NPCCommand {
 		}
 		boolean value = args.<Boolean>getOne("value").orElse(!npc.get(Keys.CREEPER_CHARGED).orElse(false));
 		npc.offer(Keys.CREEPER_CHARGED, value);
-
-		TextUtils.sendMessage(player, value ? "The selected NPC is now charged." : "The selected NPC is no longer charged.");
 	}
 }

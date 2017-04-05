@@ -7,7 +7,6 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.entity.living.player.Player;
 
 import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.utils.TextUtils;
 
 public class CommandDeselect extends PlayerCommand {
 
@@ -18,7 +17,5 @@ public class CommandDeselect extends PlayerCommand {
 	@Override
 	public void execute(final Player player, final CommandContext args) throws CommandException {
 		super.getNPCs().getNPCManager().deselect(player.getUniqueId());
-
-		TextUtils.sendMessage(player, "No more NPC is selected.");
 	}
 }

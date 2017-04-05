@@ -21,6 +21,8 @@ public abstract class NPCCommand extends PlayerCommand {
 	public void execute(final Player player, final CommandContext args) throws CommandException {
 		Living npc = super.getNPCs().getNPCManager().getSelected(player.getUniqueId()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "No NPC was selected.")));
 		this.execute(player, npc, args);
+
+		super.getNPCs().getNPCManager().sendMenu(player, npc);
 	}
 
 	public abstract void execute(Player player, Living npc, CommandContext args) throws CommandException;

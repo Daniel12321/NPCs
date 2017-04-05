@@ -13,7 +13,6 @@ import org.spongepowered.api.text.format.TextColors;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.event.NPCEvent;
-import me.mrdaniel.npcs.utils.TextUtils;
 
 public class CommandSize extends NPCCommand {
 
@@ -30,7 +29,5 @@ public class CommandSize extends NPCCommand {
 		int size = args.<Integer>getOne("size").get();
 		if (size < 1) { throw new CommandException(Text.of(TextColors.RED, "Slime size cant be less than 1.")); }
 		npc.offer(Keys.SLIME_SIZE, size);
-
-		TextUtils.sendMessage(player, "The selected NPC is now size " + size + ".");
 	}
 }

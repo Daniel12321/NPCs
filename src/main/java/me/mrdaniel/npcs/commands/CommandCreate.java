@@ -12,7 +12,6 @@ import org.spongepowered.api.text.format.TextColors;
 
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.event.NPCEvent;
-import me.mrdaniel.npcs.utils.TextUtils;
 
 public class CommandCreate extends PlayerCommand {
 
@@ -28,7 +27,5 @@ public class CommandCreate extends PlayerCommand {
 			throw new CommandException(Text.of(TextColors.RED, "Could not create NPC: Event was cancelled"));
 		}
 		super.getNPCs().getNPCManager().spawn(p, type);
-
-		TextUtils.sendMessage(p, "You succesfully created an NPC.");
 	}
 }

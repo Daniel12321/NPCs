@@ -5,6 +5,10 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 
 import org.spongepowered.api.data.type.Career;
+import org.spongepowered.api.data.type.HorseColor;
+import org.spongepowered.api.data.type.HorseColors;
+import org.spongepowered.api.data.type.HorseStyle;
+import org.spongepowered.api.data.type.HorseStyles;
 import org.spongepowered.api.data.type.LlamaVariant;
 import org.spongepowered.api.data.type.LlamaVariants;
 import org.spongepowered.api.data.type.OcelotType;
@@ -21,12 +25,16 @@ public class ChoiceMaps {
 	private final Map<String, OcelotType> cats;
 	private final Map<String, Career> careers;
 	private final Map<String, LlamaVariant> llamas;
+	private final Map<String, HorseColor> colors;
+	private final Map<String, HorseStyle> styles;
 
 	public ChoiceMaps(@Nonnull final NPCs npcs) {
 		this.npcs = Maps.newHashMap();
 		this.cats = Maps.newHashMap();
 		this.careers = Maps.newHashMap();
 		this.llamas = Maps.newHashMap();
+		this.colors = Maps.newHashMap();
+		this.styles = Maps.newHashMap();
 
 		this.npcs.put("bat", EntityTypes.BAT);
 		this.npcs.put("blaze", EntityTypes.BLAZE);
@@ -84,6 +92,20 @@ public class ChoiceMaps {
 		this.llamas.put("creamy", LlamaVariants.CREAMY);
 		this.llamas.put("gray", LlamaVariants.GRAY);
 		this.llamas.put("white", LlamaVariants.WHITE);
+
+		this.styles.put("none", HorseStyles.NONE);
+		this.styles.put("white", HorseStyles.WHITE);
+		this.styles.put("whitefiend", HorseStyles.WHITEFIELD);
+		this.styles.put("whitedots", HorseStyles.WHITE_DOTS);
+		this.styles.put("blackdots", HorseStyles.BLACK_DOTS);
+
+		this.colors.put("black", HorseColors.BLACK);
+		this.colors.put("brown", HorseColors.BROWN);
+		this.colors.put("chestnut", HorseColors.CHESTNUT);
+		this.colors.put("creamy", HorseColors.CREAMY);
+		this.colors.put("darkbrown", HorseColors.DARK_BROWN);
+		this.colors.put("gray", HorseColors.GRAY);
+		this.colors.put("white", HorseColors.WHITE);
 	}
 
 	@Nonnull
@@ -104,5 +126,15 @@ public class ChoiceMaps {
 	@Nonnull
 	public Map<String, LlamaVariant> getLlamas() {
 		return this.llamas;
+	}
+
+	@Nonnull
+	public Map<String, HorseStyle> getStyles() {
+		return this.styles;
+	}
+
+	@Nonnull
+	public Map<String, HorseColor> getColors() {
+		return this.colors;
 	}
 }

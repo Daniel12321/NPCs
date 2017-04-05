@@ -30,7 +30,5 @@ public class CommandName extends NPCCommand {
 
 		npc.offer(Keys.CUSTOM_NAME_VISIBLE, true);
 		npc.offer(Keys.DISPLAY_NAME, TextUtils.toText(name));
-
-		TextUtils.sendMessage(player, "You successfully named the selected NPC.");
 	}
 }

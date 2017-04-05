@@ -13,7 +13,6 @@ import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.data.npc.NPCData;
 import me.mrdaniel.npcs.event.NPCEvent;
-import me.mrdaniel.npcs.utils.TextUtils;
 
 public class CommandLook extends NPCCommand {
 
@@ -29,7 +28,5 @@ public class CommandLook extends NPCCommand {
 		NPCData data = npc.get(NPCData.class).get();
 		data.setLooking(args.<Boolean>getOne("value").orElse(!data.isLooking()));
 		npc.offer(data);
-
-		TextUtils.sendMessage(player, data.isLooking() ? "The selected NPC will now look at nearby players." : "The selected NPC will no longer look at nearby players.");
 	}
 }
