@@ -18,9 +18,9 @@ import me.mrdaniel.npcs.data.action.NPCIterateActions;
 import me.mrdaniel.npcs.data.action.NPCRandomActions;
 import me.mrdaniel.npcs.data.npc.NPCData;
 
-public class CommandMode extends NPCCommand {
+public class CommandActionMode extends NPCCommand {
 
-	public CommandMode(@Nonnull final NPCs npcs) {
+	public CommandActionMode(@Nonnull final NPCs npcs) {
 		super(npcs);
 	}
 

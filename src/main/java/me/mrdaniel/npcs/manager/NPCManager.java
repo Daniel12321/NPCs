@@ -36,11 +36,15 @@ import me.mrdaniel.npcs.utils.ServerUtils;
 
 public class NPCManager extends NPCObject {
 
+	private final boolean open_menu;
+
 	private final PaginationService service;
 	private final Map<UUID, Living> selected;
 
 	public NPCManager(@Nonnull final NPCs npcs, @Nonnull final Config config) {
 		super(npcs);
+
+		this.open_menu = config.getNode("open_menu_on_select").getBoolean(true);
 
 		this.service = npcs.getGame().getServiceManager().provide(PaginationService.class).get();
 		this.selected = Maps.newHashMap();
@@ -70,6 +74,8 @@ public class NPCManager extends NPCObject {
 	public void select(@Nonnull final Player p, @Nonnull final Living npc) throws NPCException {
 		if (super.getGame().getEventManager().post(new NPCEvent.Select(super.getContainer(), p, npc))) { throw new NPCException("Could not select NPC: Event was cancelled!"); }
 		this.selected.put(p.getUniqueId(), npc);
+
+		if (this.open_menu) { this.sendMenu(p, npc); }
 	}
 
 	public void deselect(@Nonnull final UUID uuid) {

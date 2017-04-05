@@ -35,12 +35,13 @@ import me.mrdaniel.npcs.commands.CommandDeselect;
 import me.mrdaniel.npcs.commands.CommandInfo;
 import me.mrdaniel.npcs.commands.CommandMount;
 import me.mrdaniel.npcs.commands.CommandRemove;
+import me.mrdaniel.npcs.commands.action.CommandActionMode;
 import me.mrdaniel.npcs.commands.action.CommandActionRemove;
+import me.mrdaniel.npcs.commands.action.CommandActionRepeating;
+import me.mrdaniel.npcs.commands.action.CommandActionSwap;
 import me.mrdaniel.npcs.commands.action.CommandAddConsoleCommandAction;
 import me.mrdaniel.npcs.commands.action.CommandAddMessageAction;
 import me.mrdaniel.npcs.commands.action.CommandAddPlayerCommandAction;
-import me.mrdaniel.npcs.commands.action.CommandMode;
-import me.mrdaniel.npcs.commands.action.CommandRepeating;
 import me.mrdaniel.npcs.commands.armor.CommandArmor;
 import me.mrdaniel.npcs.commands.armor.CommandHand;
 import me.mrdaniel.npcs.commands.armor.CommandTakeArmor;
@@ -75,7 +76,7 @@ import me.mrdaniel.npcs.manager.placeholder.SimplePlaceHolderManager;
 
 @Plugin(id = "npcs",
 		name = "NPCs",
-		version = "1.1.0",
+		version = "1.1.1-API6",
 		description = "A plugin that adds simple custom NPC's to your worlds.",
 		authors = {"Daniel12321"},
 		dependencies = { @Dependency(id = "placeholderapi", optional = true) })
@@ -120,13 +121,13 @@ public class NPCs {
 		this.npcmanager = new NPCManager(this, config);
 
 		try {
-			this.placeholders = new PlaceHolderAPIManager(this);
+			this.placeholders = new PlaceHolderAPIManager(this, config);
 			this.logger.info("Found PlaceholderAPI: Loaded successfully.");
 		}
 		catch (final Throwable exc) {
 			this.logger.info("Could not find PlaceholderAPI: Loading a simple version instead.");
 			this.logger.debug(exc.getClass().getSimpleName(), ": ", exc.getMessage());
-			this.placeholders = new SimplePlaceHolderManager();
+			this.placeholders = new SimplePlaceHolderManager(config);
 		}
 
 		CommandSpec main = CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Main Command"))
@@ -169,8 +170,9 @@ public class NPCs {
 				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Add Console Command Action Command")).permission("npc.action.command.console").arguments(GenericArguments.remainingRawJoinedStrings(Text.of("command"))).executor(new CommandAddConsoleCommandAction(this)).build(), "addconsolecmd")
 				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Add Message Action Command")).permission("npc.action.message").arguments(GenericArguments.remainingRawJoinedStrings(Text.of("message"))).executor(new CommandAddMessageAction(this)).build(), "addmessage")
 				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Remove Action Command")).permission("npc.action.remove").arguments(GenericArguments.integer(Text.of("number"))).executor(new CommandActionRemove(this)).build(), "removeaction")
-				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Action Mode Command")).permission("npc.action.mode").arguments(GenericArguments.string(Text.of("mode"))).executor(new CommandMode(this)).build(), "mode")
-				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Repeating Action Option Command")).permission("npc.action.mode").arguments(GenericArguments.bool(Text.of("repeating"))).executor(new CommandRepeating(this)).build(), "repeating")
+				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Swap Actions Command")).permission("npc.action.swap").arguments(GenericArguments.integer(Text.of("first")), GenericArguments.integer(Text.of("second"))).executor(new CommandActionSwap(this)).build(), "swap")
+				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Action Mode Command")).permission("npc.action.mode").arguments(GenericArguments.string(Text.of("mode"))).executor(new CommandActionMode(this)).build(), "mode")
+				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Repeating Action Option Command")).permission("npc.action.mode").arguments(GenericArguments.bool(Text.of("repeating"))).executor(new CommandActionRepeating(this)).build(), "repeating")
 				.build();
 
 		this.game.getCommandManager().register(this, main, "npc", "npcs");

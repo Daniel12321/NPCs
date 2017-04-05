@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 
 import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.DataQuery;
+import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
@@ -29,7 +30,7 @@ public class NPCIterateActions extends NPCActions {
 	public NPCIterateActions(@Nonnull final List<Action> actions, @Nonnull final Map<UUID, Integer> current, final boolean repeating) {
 		super(actions);
 
-		this.current = current;
+		this.current = Maps.newHashMap(current);
 		this.repeating = repeating;
 	}
 
@@ -43,13 +44,14 @@ public class NPCIterateActions extends NPCActions {
 	}
 
 	@Override
-	public void execute(@Nonnull final NPCs npcs, @Nonnull final Player p) {
+	public void execute(@Nonnull final NPCs npcs, @Nonnull final Player p, @Nonnull final Living npc) {
 		int current = Optional.ofNullable(this.current.get(p.getUniqueId())).orElse(0);
 
 		if (this.actions.size() > current) {
-			this.actions.get(current).execute(npcs, p);
-			this.current.put(p.getUniqueId(), (current+1 >= this.actions.size() && this.repeating) ? 0 : current+1);
+			this.actions.get(current).execute(npcs, p, npc);
+			this.current.put(p.getUniqueId(), current+1);
 		}
+		else if (this.repeating) { this.current.put(p.getUniqueId(), 0); this.execute(npcs, p, npc); }
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 
@@ -18,8 +19,8 @@ public class NPCRandomActions extends NPCActions {
 	}
 
 	@Override
-	public void execute(@Nonnull final NPCs npcs, @Nonnull final Player p) {
-		if (!this.actions.isEmpty()) { this.actions.get((int) (Math.random()*this.actions.size())).execute(npcs, p); }
+	public void execute(@Nonnull final NPCs npcs, @Nonnull final Player p, @Nonnull final Living npc) {
+		if (!this.actions.isEmpty()) { this.actions.get((int) (Math.random()*this.actions.size())).execute(npcs, p, npc); }
 	}
 
 	@Override

@@ -11,23 +11,24 @@ import org.spongepowered.api.text.format.TextColors;
 
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.commands.NPCCommand;
+import me.mrdaniel.npcs.data.action.NPCIterateActions;
 import me.mrdaniel.npcs.data.npc.NPCData;
-import me.mrdaniel.npcs.event.NPCEvent;
 
-public class CommandActionRemove extends NPCCommand {
+public class CommandActionRepeating extends NPCCommand {
 
-	public CommandActionRemove(@Nonnull final NPCs npcs) {
+	public CommandActionRepeating(@Nonnull final NPCs npcs) {
 		super(npcs);
 	}
 
 	@Override
 	public void execute(final Player player, final Living npc, final CommandContext args) throws CommandException {
-		if (super.getGame().getEventManager().post(new NPCEvent.Edit(super.getContainer(), player, npc))) {
-			throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
-		}
+		boolean value = args.<Boolean>getOne("repeating").get();
 
 		NPCData data = npc.get(NPCData.class).get();
-		data.getActions().remove(args.<Integer>getOne("number").get());
+		if (!(data.getActions() instanceof NPCIterateActions)) { throw new CommandException(Text.of(TextColors.RED, "This selected NPC's Action Mode doesnt support this option!")); }
+
+		((NPCIterateActions)data.getActions()).setRepeating(value);
+
 		npc.offer(data);
 	}
 }
