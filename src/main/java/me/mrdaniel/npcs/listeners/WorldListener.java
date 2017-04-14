@@ -21,8 +21,8 @@ import org.spongepowered.api.util.Tristate;
 import me.mrdaniel.npcs.NPCObject;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.data.npc.NPCData;
-import me.mrdaniel.npcs.event.NPCEvent;
-import me.mrdaniel.npcs.exception.NPCException;
+import me.mrdaniel.npcs.events.NPCEvent;
+import me.mrdaniel.npcs.exceptions.NPCException;
 
 public class WorldListener extends NPCObject {
 

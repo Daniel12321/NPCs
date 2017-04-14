@@ -11,10 +11,10 @@ import org.spongepowered.api.text.format.TextColors;
 
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.commands.NPCCommand;
-import me.mrdaniel.npcs.data.action.Action;
-import me.mrdaniel.npcs.data.action.ActionType;
 import me.mrdaniel.npcs.data.npc.NPCData;
-import me.mrdaniel.npcs.event.NPCEvent;
+import me.mrdaniel.npcs.data.npc.actions.actions.Action;
+import me.mrdaniel.npcs.data.npc.actions.actions.ActionType;
+import me.mrdaniel.npcs.events.NPCEvent;
 
 public class CommandAddPlayerCommandAction extends NPCCommand {
 
@@ -27,9 +27,9 @@ public class CommandAddPlayerCommandAction extends NPCCommand {
 		if (super.getGame().getEventManager().post(new NPCEvent.Edit(super.getContainer(), player, npc))) {
 			throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
 		}
-
 		NPCData data = npc.get(NPCData.class).get();
-		data.getActions().add(new Action(ActionType.PLAYERCMD, args.<String>getOne("command").get()));
+
+		data.getActions().getActions().add(new Action(ActionType.PLAYERCMD, args.<String>getOne("command").get()));
 		npc.offer(data);
 	}
 }

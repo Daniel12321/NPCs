@@ -14,7 +14,7 @@ import org.spongepowered.api.text.format.TextColors;
 
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.data.npc.NPCData;
-import me.mrdaniel.npcs.event.NPCEvent;
+import me.mrdaniel.npcs.events.NPCEvent;
 import me.mrdaniel.npcs.utils.ServerUtils;
 
 public class CommandCopy extends NPCCommand {

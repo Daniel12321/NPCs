@@ -19,8 +19,13 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
 import me.mrdaniel.npcs.data.MMOKeys;
-import me.mrdaniel.npcs.data.action.NPCActions;
-import me.mrdaniel.npcs.data.action.NPCRandomActions;
+import me.mrdaniel.npcs.data.npc.actions.ConditionRepeatAllActions;
+import me.mrdaniel.npcs.data.npc.actions.ConditionRepeatLastActions;
+import me.mrdaniel.npcs.data.npc.actions.IterateActions;
+import me.mrdaniel.npcs.data.npc.actions.NPCActions;
+import me.mrdaniel.npcs.data.npc.actions.OnlyOnceActions;
+import me.mrdaniel.npcs.data.npc.actions.OnlyOnceRepeatLastActions;
+import me.mrdaniel.npcs.data.npc.actions.RandomActions;
 
 public class NPCData extends AbstractData<NPCData, ImmutableNPCData> {
 
@@ -30,7 +35,7 @@ public class NPCData extends AbstractData<NPCData, ImmutableNPCData> {
 
 	private NPCActions actions;
 
-	public NPCData() { this("Steve", false, true, new NPCRandomActions(Lists.newArrayList())); }
+	public NPCData() { this("Steve", false, true, new RandomActions(Lists.newArrayList())); }
 	public NPCData(@Nonnull final String skin, final boolean looking, final boolean interact, @Nonnull final NPCActions actions) {
 		this.skin = skin;
 		this.looking = looking;
@@ -76,12 +81,16 @@ public class NPCData extends AbstractData<NPCData, ImmutableNPCData> {
 	public NPCActions getActions() { return this.actions; }
 	public void setActions(final NPCActions actions) { this.actions = actions; }
 
-	public Optional<NPCData> from(@Nonnull final DataView view) {
-		return Optional.of(new NPCData(
-				view.getString(MMOKeys.SKIN.getQuery()).orElse("Steve"),
-				view.getBoolean(MMOKeys.LOOKING.getQuery()).orElse(false),
-				view.getBoolean(MMOKeys.INTERACT.getQuery()).orElse(true),
-				view.getSerializable(MMOKeys.ACTIONS.getQuery(), NPCActions.class).orElse(new NPCRandomActions(Lists.newArrayList()))));
+	public boolean setMode(@Nonnull final String type) {
+		if (type.equalsIgnoreCase("random")) { this.actions = new RandomActions(this.actions.getActions()); }
+		else if (type.equalsIgnoreCase("iterate")) { this.actions = new IterateActions(this.actions.getActions(), this.actions.getCurrent()); }
+		else if (type.equalsIgnoreCase("only_once")) { this.actions = new OnlyOnceActions(this.actions.getActions(), this.actions.getCurrent()); }
+		else if (type.equalsIgnoreCase("only_once_repeat_last")) { this.actions = new OnlyOnceRepeatLastActions(this.actions.getActions(), this.actions.getCurrent()); }
+		else if (type.equalsIgnoreCase("condition_repeat_last")) { this.actions = new ConditionRepeatLastActions(this.actions.getActions(), Lists.newArrayList(), this.actions.getCurrent(), Lists.newArrayList(), Lists.newArrayList()); }
+		else if (type.equalsIgnoreCase("condition_repeat_all")) { this.actions = new ConditionRepeatAllActions(this.actions.getActions(), Lists.newArrayList(), this.actions.getCurrent(), this.actions.getConditions(), Lists.newArrayList()); }
+		else return false;
+
+		return true;
 	}
 
 	@Override
@@ -91,6 +100,15 @@ public class NPCData extends AbstractData<NPCData, ImmutableNPCData> {
 				.set(MMOKeys.LOOKING.getQuery(), this.looking)
 				.set(MMOKeys.INTERACT.getQuery(), this.interact)
 				.set(MMOKeys.ACTIONS.getQuery(), this.actions);
+	}
+
+	@Nonnull
+	public Optional<NPCData> from(@Nonnull final DataView view) {
+		return Optional.of(new NPCData(
+				view.getString(MMOKeys.SKIN.getQuery()).orElse("Steve"),
+				view.getBoolean(MMOKeys.LOOKING.getQuery()).orElse(false),
+				view.getBoolean(MMOKeys.INTERACT.getQuery()).orElse(true),
+				view.getSerializable(MMOKeys.ACTIONS.getQuery(), NPCActions.class).orElse(new RandomActions(Lists.newArrayList()))));
 	}
 
 	@Override public Optional<NPCData> fill(DataHolder holder, MergeFunction overlap) { return Optional.of(Preconditions.checkNotNull(overlap).merge(copy(), from(holder.toContainer()).orElse(null))); }

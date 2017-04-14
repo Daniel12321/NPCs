@@ -9,7 +9,7 @@ import org.spongepowered.api.data.value.mutable.Value;
 
 import com.google.common.reflect.TypeToken;
 
-import me.mrdaniel.npcs.data.action.NPCActions;
+import me.mrdaniel.npcs.data.npc.actions.NPCActions;
 
 @SuppressWarnings("serial")
 public class MMOKeys {

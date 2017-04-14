@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.manager;
+package me.mrdaniel.npcs.managers;
 
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;

@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.manager.placeholder;
+package me.mrdaniel.npcs.managers.placeholders;
 
 import java.util.NoSuchElementException;
 
@@ -9,7 +9,7 @@ import org.spongepowered.api.text.Text;
 
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.io.Config;
-import me.mrdaniel.npcs.manager.PlaceHolderManager;
+import me.mrdaniel.npcs.managers.PlaceHolderManager;
 import me.mrdaniel.npcs.utils.TextUtils;
 import me.rojo8399.placeholderapi.PlaceholderService;
 

@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.exception;
+package me.mrdaniel.npcs.exceptions;
 
 import javax.annotation.Nonnull;
 

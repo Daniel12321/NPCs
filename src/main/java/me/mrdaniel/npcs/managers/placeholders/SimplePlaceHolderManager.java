@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.manager.placeholder;
+package me.mrdaniel.npcs.managers.placeholders;
 
 import javax.annotation.Nonnull;
 
@@ -6,7 +6,7 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 
 import me.mrdaniel.npcs.io.Config;
-import me.mrdaniel.npcs.manager.PlaceHolderManager;
+import me.mrdaniel.npcs.managers.PlaceHolderManager;
 import me.mrdaniel.npcs.utils.TextUtils;
 
 public class SimplePlaceHolderManager implements PlaceHolderManager {

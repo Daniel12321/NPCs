@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.data.action;
+package me.mrdaniel.npcs.data.npc.actions.actions;
 
 import javax.annotation.Nonnull;
 
@@ -17,6 +17,11 @@ public enum ActionType {
 	}
 
 	@Nonnull
+	public String getName() {
+		return this.name;
+	}
+
+	@Nonnull
 	public String getId() {
 		return this.id;
 	}
@@ -24,10 +29,5 @@ public enum ActionType {
 	@Nonnull
 	protected static ActionType of(@Nonnull final String id) {
 		return id.equalsIgnoreCase("message") ? MESSAGE : id.equalsIgnoreCase("consolecmd") ? CONSOLECMD : PLAYERCMD;
-	}
-
-	@Nonnull
-	public String getName() {
-		return this.name;
 	}
 }

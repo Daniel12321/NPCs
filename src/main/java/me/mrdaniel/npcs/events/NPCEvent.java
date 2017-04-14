@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.event;
+package me.mrdaniel.npcs.events;
 
 import javax.annotation.Nonnull;
 

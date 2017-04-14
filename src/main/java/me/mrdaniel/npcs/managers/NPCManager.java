@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.manager;
+package me.mrdaniel.npcs.managers;
 
 import java.util.List;
 import java.util.Map;
@@ -26,11 +26,11 @@ import com.google.common.collect.Maps;
 
 import me.mrdaniel.npcs.NPCObject;
 import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.data.action.NPCIterateActions;
-import me.mrdaniel.npcs.data.action.NPCRandomActions;
 import me.mrdaniel.npcs.data.npc.NPCData;
-import me.mrdaniel.npcs.event.NPCEvent;
-import me.mrdaniel.npcs.exception.NPCException;
+import me.mrdaniel.npcs.data.npc.actions.IterateActions;
+import me.mrdaniel.npcs.data.npc.actions.RandomActions;
+import me.mrdaniel.npcs.events.NPCEvent;
+import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.io.Config;
 import me.mrdaniel.npcs.utils.ServerUtils;
 
@@ -151,8 +151,7 @@ public class NPCManager extends NPCObject {
 			lines.add(Text.of("     "));
 		}
 
-		// Actions
-		lines.add(Text.of(TextColors.GOLD, "Actions: "));
+		// TODO Actions
 		lines.addAll(data.getActions().getLines());
 
 		lines.add(Text.builder()
@@ -166,9 +165,9 @@ public class NPCManager extends NPCObject {
 
 		lines.add(Text.builder()
 				.append(Text.of(TextColors.GOLD, "Mode:  "))
-				.append(getModeText("Random", "/npc mode random", data.getActions() instanceof NPCRandomActions))
+				.append(getModeText("Random", "/npc mode random", data.getActions() instanceof RandomActions))
 				.append(Text.of("  "))
-				.append(getModeText("In Order", "/npc mode inorder", data.getActions() instanceof NPCIterateActions))
+				.append(getModeText("In Order", "/npc mode inorder", data.getActions() instanceof IterateActions))
 				.build());
 
 		return lines;

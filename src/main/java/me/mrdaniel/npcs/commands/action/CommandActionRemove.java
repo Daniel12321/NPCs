@@ -12,7 +12,7 @@ import org.spongepowered.api.text.format.TextColors;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.data.npc.NPCData;
-import me.mrdaniel.npcs.event.NPCEvent;
+import me.mrdaniel.npcs.events.NPCEvent;
 
 public class CommandActionRemove extends NPCCommand {
 
@@ -25,9 +25,12 @@ public class CommandActionRemove extends NPCCommand {
 		if (super.getGame().getEventManager().post(new NPCEvent.Edit(super.getContainer(), player, npc))) {
 			throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
 		}
-
 		NPCData data = npc.get(NPCData.class).get();
-		data.getActions().remove(args.<Integer>getOne("number").get());
+
+		int i = args.<Integer>getOne("number").get() - 1;
+		if (i < 0 || i >= data.getActions().getActions().size()) { throw new CommandException(Text.of(TextColors.RED, "No Action with this number exists.")); }
+
+		data.getActions().getActions().remove(i);
 		npc.offer(data);
 	}
 }

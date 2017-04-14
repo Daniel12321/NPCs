@@ -1,5 +1,7 @@
 package me.mrdaniel.npcs.commands.action;
 
+import java.util.List;
+
 import javax.annotation.Nonnull;
 
 import org.spongepowered.api.command.CommandException;
@@ -12,7 +14,8 @@ import org.spongepowered.api.text.format.TextColors;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.data.npc.NPCData;
-import me.mrdaniel.npcs.event.NPCEvent;
+import me.mrdaniel.npcs.data.npc.actions.actions.Action;
+import me.mrdaniel.npcs.events.NPCEvent;
 
 public class CommandActionSwap extends NPCCommand {
 
@@ -25,9 +28,20 @@ public class CommandActionSwap extends NPCCommand {
 		if (super.getGame().getEventManager().post(new NPCEvent.Edit(super.getContainer(), player, npc))) {
 			throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
 		}
-
 		NPCData data = npc.get(NPCData.class).get();
-		data.getActions().swap(args.<Integer>getOne("first").get(), args.<Integer>getOne("second").get());
+
+		int first = args.<Integer>getOne("first").get()-1;
+		int second = args.<Integer>getOne("second").get()-1;
+
+		List<Action> actions = data.getActions().getActions();
+		int size = actions.size();
+
+		if (first < 0 || second < 0 || first >= size || second >= size) { throw new CommandException(Text.of(TextColors.RED, "No Action was found for one of the two numbers.")); }
+
+		Action temp = actions.get(first);
+		actions.set(first, actions.get(second));
+		actions.set(second, temp);
+
 		npc.offer(data);
 	}
 }

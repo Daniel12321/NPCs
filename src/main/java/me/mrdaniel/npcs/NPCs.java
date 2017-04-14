@@ -60,23 +60,26 @@ import me.mrdaniel.npcs.commands.edit.CommandSit;
 import me.mrdaniel.npcs.commands.edit.CommandSize;
 import me.mrdaniel.npcs.commands.edit.CommandSkin;
 import me.mrdaniel.npcs.commands.edit.CommandStyle;
-import me.mrdaniel.npcs.data.action.Action;
-import me.mrdaniel.npcs.data.action.ActionBuilder;
-import me.mrdaniel.npcs.data.action.NPCActions;
-import me.mrdaniel.npcs.data.action.NPCActionsBuilder;
 import me.mrdaniel.npcs.data.npc.ImmutableNPCData;
 import me.mrdaniel.npcs.data.npc.NPCData;
 import me.mrdaniel.npcs.data.npc.NPCDataBuilder;
+import me.mrdaniel.npcs.data.npc.actions.NPCActions;
+import me.mrdaniel.npcs.data.npc.actions.NPCActionsBuilder;
+import me.mrdaniel.npcs.data.npc.actions.NPCActionsUpdater;
+import me.mrdaniel.npcs.data.npc.actions.actions.Action;
+import me.mrdaniel.npcs.data.npc.actions.actions.ActionBuilder;
+import me.mrdaniel.npcs.data.npc.actions.conditions.Condition;
+import me.mrdaniel.npcs.data.npc.actions.conditions.ConditionBuilder;
 import me.mrdaniel.npcs.io.Config;
 import me.mrdaniel.npcs.listeners.WorldListener;
-import me.mrdaniel.npcs.manager.NPCManager;
-import me.mrdaniel.npcs.manager.PlaceHolderManager;
-import me.mrdaniel.npcs.manager.placeholder.PlaceHolderAPIManager;
-import me.mrdaniel.npcs.manager.placeholder.SimplePlaceHolderManager;
+import me.mrdaniel.npcs.managers.NPCManager;
+import me.mrdaniel.npcs.managers.PlaceHolderManager;
+import me.mrdaniel.npcs.managers.placeholders.PlaceHolderAPIManager;
+import me.mrdaniel.npcs.managers.placeholders.SimplePlaceHolderManager;
 
 @Plugin(id = "npcs",
 		name = "NPCs",
-		version = "1.1.1-API6",
+		version = "1.1.2-API6",
 		description = "A plugin that adds simple custom NPC's to your worlds.",
 		authors = {"Daniel12321"},
 		dependencies = { @Dependency(id = "placeholderapi", optional = true) })
@@ -107,7 +110,10 @@ public class NPCs {
 	public void onPreInit(@Nullable final GamePreInitializationEvent e) {
 		this.game.getDataManager().register(NPCData.class, ImmutableNPCData.class, new NPCDataBuilder());
 		this.game.getDataManager().registerBuilder(Action.class, new ActionBuilder());
+		this.game.getDataManager().registerBuilder(Condition.class, new ConditionBuilder());
 		this.game.getDataManager().registerBuilder(NPCActions.class, new NPCActionsBuilder());
+
+		this.game.getDataManager().registerContentUpdater(NPCActions.class, new NPCActionsUpdater());
 	}
 
 	@Listener
@@ -115,7 +121,6 @@ public class NPCs {
 		this.logger.info("Loading plugin...");
 
 		Config config = new Config(this, this.configDir.resolve("config.conf"));
-
 		ChoiceMaps choices = new ChoiceMaps(this);
 
 		this.npcmanager = new NPCManager(this, config);
@@ -125,9 +130,8 @@ public class NPCs {
 			this.logger.info("Found PlaceholderAPI: Loaded successfully.");
 		}
 		catch (final Throwable exc) {
-			this.logger.info("Could not find PlaceholderAPI: Loading a simple version instead.");
-			this.logger.debug(exc.getClass().getSimpleName(), ": ", exc.getMessage());
 			this.placeholders = new SimplePlaceHolderManager(config);
+			this.logger.info("Could not find PlaceholderAPI: Loading a simple version instead.");
 		}
 
 		CommandSpec main = CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Main Command"))

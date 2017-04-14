@@ -29,7 +29,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.mrdaniel</groupId>
   <artifactId>NPCs</artifactId>
-  <version>1.1.1-API6</version>
+  <version>1.1.2-API6</version>
   <name>NPCs</name>
   <repositories>
     <repository>
@@ -49,10 +49,10 @@
       <version>6.0.0-20170326.083613-61</version>
       <scope>provided</scope>
     </dependency>
-      <dependency>
-        <groupId>com.github.rojo8399</groupId>
-        <artifactId>PlaceholderAPI</artifactId>
-        <version>master-SNAPSHOT</version>
+    <dependency>
+      <groupId>com.github.rojo8399</groupId>
+      <artifactId>PlaceholderAPI</artifactId>
+      <version>master-SNAPSHOT</version>
     </dependency>
   </dependencies>
 </project>

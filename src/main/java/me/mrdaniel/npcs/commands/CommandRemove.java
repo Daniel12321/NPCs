@@ -10,7 +10,7 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.event.NPCEvent;
+import me.mrdaniel.npcs.events.NPCEvent;
 
 public class CommandRemove extends NPCCommand {
 

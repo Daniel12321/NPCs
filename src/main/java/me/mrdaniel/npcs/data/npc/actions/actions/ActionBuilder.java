@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.data.action;
+package me.mrdaniel.npcs.data.npc.actions.actions;
 
 import java.util.Optional;
 

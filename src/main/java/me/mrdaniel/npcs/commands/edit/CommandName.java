@@ -12,7 +12,7 @@ import org.spongepowered.api.text.format.TextColors;
 
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.commands.NPCCommand;
-import me.mrdaniel.npcs.event.NPCEvent;
+import me.mrdaniel.npcs.events.NPCEvent;
 import me.mrdaniel.npcs.utils.TextUtils;
 
 public class CommandName extends NPCCommand {

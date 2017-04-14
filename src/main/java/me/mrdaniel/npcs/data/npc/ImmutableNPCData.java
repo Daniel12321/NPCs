@@ -6,7 +6,7 @@ import org.spongepowered.api.data.DataContainer;
 import org.spongepowered.api.data.manipulator.immutable.common.AbstractImmutableData;
 
 import me.mrdaniel.npcs.data.MMOKeys;
-import me.mrdaniel.npcs.data.action.NPCActions;
+import me.mrdaniel.npcs.data.npc.actions.NPCActions;
 
 public class ImmutableNPCData extends AbstractImmutableData<ImmutableNPCData, NPCData> {
 
