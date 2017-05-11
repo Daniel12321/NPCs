@@ -4,26 +4,30 @@ import javax.annotation.Nonnull;
 
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.catalogtypes.menupages.PageType;
+import me.mrdaniel.npcs.managers.menu.NPCMenu;
 
 public abstract class NPCCommand extends PlayerCommand {
 
-	public NPCCommand(@Nonnull final NPCs npcs) {
+	protected final PageType page;
+
+	public NPCCommand(@Nonnull final NPCs npcs, @Nonnull final PageType page) {
 		super(npcs);
+
+		this.page = page;
 	}
 
 	@Override
-	public void execute(final Player player, final CommandContext args) throws CommandException {
-		Living npc = super.getNPCs().getNPCManager().getSelected(player.getUniqueId()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "No NPC was selected.")));
-		this.execute(player, npc, args);
-
-		super.getNPCs().getNPCManager().sendMenu(player, npc);
+	public void execute(final Player p, final CommandContext args) throws CommandException {
+		NPCMenu menu = super.getNPCs().getMenuManager().get(p.getUniqueId()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "You don't have an NPC selected!")));
+		this.execute(p, menu, args);
+		menu.updateAndSend(p, this.page);
 	}
 
-	public abstract void execute(Player player, Living npc, CommandContext args) throws CommandException;
+	public abstract void execute(@Nonnull final Player p, @Nonnull final NPCMenu menu, @Nonnull final CommandContext args) throws CommandException;
 }

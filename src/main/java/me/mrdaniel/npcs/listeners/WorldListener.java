@@ -10,13 +10,16 @@ import org.spongepowered.api.event.Order;
 import org.spongepowered.api.event.entity.CollideEntityEvent;
 import org.spongepowered.api.event.entity.DamageEntityEvent;
 import org.spongepowered.api.event.entity.InteractEntityEvent;
+import org.spongepowered.api.event.entity.SpawnEntityEvent;
 import org.spongepowered.api.event.filter.IsCancelled;
 import org.spongepowered.api.event.filter.cause.Root;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
+import org.spongepowered.api.event.world.LoadWorldEvent;
+import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.chat.ChatTypes;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.util.Tristate;
+import org.spongepowered.api.world.World;
 
 import me.mrdaniel.npcs.NPCObject;
 import me.mrdaniel.npcs.NPCs;
@@ -28,6 +31,19 @@ public class WorldListener extends NPCObject {
 
 	public WorldListener(@Nonnull final NPCs npcs) {
 		super(npcs);
+	}
+
+	@IsCancelled(value = Tristate.FALSE)
+	@Listener(order = Order.LATE)
+	public void onLoadWorld(final LoadWorldEvent e) {
+		World w = e.getTargetWorld();
+		Task.builder().delayTicks(100).execute(() -> super.getNPCs().getNPCManager().load(w)).submit(super.getNPCs());
+	}
+
+	@IsCancelled(value = Tristate.FALSE)
+	@Listener(order = Order.EARLY)
+	public void onEntitySpawn(final SpawnEntityEvent e) {
+		e.getEntities().forEach(ent -> ent.get(NPCData.class).ifPresent(data -> data.ifOld(super.getNPCs().getStartup(), () -> ent.remove())));
 	}
 
 	@IsCancelled(value = Tristate.FALSE)
@@ -47,24 +63,32 @@ public class WorldListener extends NPCObject {
 	public void onClick(final InteractEntityEvent e, @Root final Player p) {
 		e.getTargetEntity().get(NPCData.class).ifPresent(data -> {
 			Living npc = (Living) e.getTargetEntity();
-			e.setCancelled(true);
+			e.setCancelled(!data.canInteract());
+
 			if (e instanceof InteractEntityEvent.Secondary.MainHand) {
-				if (p.get(Keys.IS_SNEAKING).orElse(false) && p.hasPermission("npc.edit.select")) {
-					try {  super.getNPCs().getNPCManager().select(p, npc); p.sendMessage(ChatTypes.ACTION_BAR, Text.of(TextColors.DARK_GRAY, "[", TextColors.GOLD, "NPCs", TextColors.DARK_GRAY, "] ", TextColors.YELLOW, "You selected an NPC.")); }
-					catch (final NPCException exc) { p.sendMessage(Text.of(TextColors.RED, exc.getMessage())); }
-				}
-				else if (data.canInteract()) {
-					if (!super.getGame().getEventManager().post(new NPCEvent.Interact(super.getContainer(), p, npc))) {
-						e.setCancelled(false);
-						data.getActions().execute(super.getNPCs(), p, npc);
+				super.getNPCs().getNPCManager().getFile(data.getId()).ifPresent(file -> {
+					if (p.get(Keys.IS_SNEAKING).orElse(false) && p.hasPermission("npc.edit.select")) {
+						super.getNPCs().getMenuManager().select(p, npc, file);
 					}
-				}
+					else {
+						if (!super.getGame().getEventManager().post(new NPCEvent.Interact(super.getContainer(), p, npc, file))) {
+							try { super.getNPCs().getActionManager().execute(p.getUniqueId(), file); }
+							catch (final NPCException exc) { p.sendMessage(Text.of(TextColors.RED, "Failed to perform NPC actions: " + exc.getMessage())); }
+						}
+					}
+				});
 			}
 		});
 	}
 
-	@Listener
+	@Listener(order = Order.EARLY)
+	public void onJoin(final ClientConnectionEvent.Join e) {
+		e.getTargetEntity().setScoreboard(super.getServer().getServerScoreboard().get());
+	}
+
+	@Listener(order = Order.EARLY)
 	public void onQuit(final ClientConnectionEvent.Disconnect e) {
-		super.getNPCs().getNPCManager().deselect(e.getTargetEntity().getUniqueId());
+		super.getNPCs().getMenuManager().deselect(e.getTargetEntity().getUniqueId());
+		super.getNPCs().getActionManager().removeChoosing(e.getTargetEntity().getUniqueId());
 	}
 }

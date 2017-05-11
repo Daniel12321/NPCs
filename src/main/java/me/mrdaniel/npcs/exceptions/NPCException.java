@@ -9,4 +9,8 @@ public class NPCException extends Exception {
 	public NPCException(@Nonnull final String message) {
 		super(message);
 	}
+
+	public NPCException(@Nonnull final String message, @Nonnull final Throwable cause) {
+		super(message, cause);
+	}
 }

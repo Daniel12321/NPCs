@@ -22,12 +22,10 @@ public abstract class PlayerCommand extends NPCObject implements CommandExecutor
 
 	@Override
 	public CommandResult execute(final CommandSource src, final CommandContext args) throws CommandException {
-		if (!(src instanceof Player)) { throw new CommandException(Text.of(TextColors.RED, "This command is for players only.")); }
-		Player player = (Player) src;
-
-		this.execute(player, args);
+		if (!(src instanceof Player)) { throw new CommandException(Text.of(TextColors.RED, "This command is for players only!")); }
+		this.execute((Player)src, args);
 		return CommandResult.success();
 	}
 
-	public abstract void execute(Player player, CommandContext args) throws CommandException;
+	public abstract void execute(@Nonnull final Player p, @Nonnull final CommandContext args) throws CommandException;
 }

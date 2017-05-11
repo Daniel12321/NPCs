@@ -16,105 +16,74 @@ import org.spongepowered.api.entity.living.player.Player;
 
 import com.flowpowered.math.vector.Vector3d;
 import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
 
-import me.mrdaniel.npcs.data.MMOKeys;
-import me.mrdaniel.npcs.data.npc.actions.ConditionRepeatAllActions;
-import me.mrdaniel.npcs.data.npc.actions.ConditionRepeatLastActions;
-import me.mrdaniel.npcs.data.npc.actions.IterateActions;
-import me.mrdaniel.npcs.data.npc.actions.NPCActions;
-import me.mrdaniel.npcs.data.npc.actions.OnlyOnceActions;
-import me.mrdaniel.npcs.data.npc.actions.OnlyOnceRepeatLastActions;
-import me.mrdaniel.npcs.data.npc.actions.RandomActions;
+import me.mrdaniel.npcs.data.NPCKeys;
 
 public class NPCData extends AbstractData<NPCData, ImmutableNPCData> {
 
-	private String skin;
+	private int startup;
+	private int id;
 	private boolean looking;
 	private boolean interact;
 
-	private NPCActions actions;
-
-	public NPCData() { this("Steve", false, true, new RandomActions(Lists.newArrayList())); }
-	public NPCData(@Nonnull final String skin, final boolean looking, final boolean interact, @Nonnull final NPCActions actions) {
-		this.skin = skin;
+	public NPCData(final int startup, final int id, final boolean looking, final boolean interact) {
+		this.startup = startup;
+		this.id = id;
 		this.looking = looking;
 		this.interact = interact;
-
-		this.actions = actions;
 
 		registerGettersAndSetters();
 	}
 
 	@Override
 	protected void registerGettersAndSetters() {
-		registerKeyValue(MMOKeys.SKIN, this::getSkinValue);
-		registerFieldGetter(MMOKeys.SKIN, this::getSkin);
-		registerFieldSetter(MMOKeys.SKIN, this::setSkin);
+		registerKeyValue(NPCKeys.STARTUP, this::getStartupValue);
+		registerFieldGetter(NPCKeys.STARTUP, this::getStartup);
+		registerFieldSetter(NPCKeys.STARTUP, this::setStartup);
 
-		registerKeyValue(MMOKeys.LOOKING, this::getLookingValue);
-		registerFieldGetter(MMOKeys.LOOKING, this::isLooking);
-		registerFieldSetter(MMOKeys.LOOKING, this::setLooking);
+		registerKeyValue(NPCKeys.ID, this::getIdValue);
+		registerFieldGetter(NPCKeys.ID, this::getId);
+		registerFieldSetter(NPCKeys.ID, this::setId);
 
-		registerKeyValue(MMOKeys.INTERACT, this::getInteractValue);
-		registerFieldGetter(MMOKeys.INTERACT, this::canInteract);
-		registerFieldSetter(MMOKeys.INTERACT, this::setInteract);
+		registerKeyValue(NPCKeys.LOOKING, this::getLookingValue);
+		registerFieldGetter(NPCKeys.LOOKING, this::isLooking);
+		registerFieldSetter(NPCKeys.LOOKING, this::setLooking);
 
-		registerKeyValue(MMOKeys.ACTIONS, this::getActionsValue);
-		registerFieldGetter(MMOKeys.ACTIONS, this::getActions);
-		registerFieldSetter(MMOKeys.ACTIONS, this::setActions);
+		registerKeyValue(NPCKeys.INTERACT, this::getInteractValue);
+		registerFieldGetter(NPCKeys.INTERACT, this::canInteract);
+		registerFieldSetter(NPCKeys.INTERACT, this::setInteract);
 	}
 
-	public Value<String> getSkinValue() { return MMOKeys.FACTORY.createValue(MMOKeys.SKIN, this.skin); }
-	public String getSkin() { return this.skin; }
-	public void setSkin(final String skin) { this.skin = skin; }
+	public Value<Integer> getStartupValue() { return NPCKeys.FACTORY.createValue(NPCKeys.STARTUP, this.startup); }
+	public int getStartup() { return this.startup; }
+	public void setStartup(final int startup) { this.startup = startup; }
 
-	public Value<Boolean> getLookingValue() { return MMOKeys.FACTORY.createValue(MMOKeys.LOOKING, this.looking); }
+	public Value<Integer> getIdValue() { return NPCKeys.FACTORY.createValue(NPCKeys.ID, this.id); }
+	public int getId() { return this.id; }
+	public void setId(final int id) { this.id = id; }
+
+	public Value<Boolean> getLookingValue() { return NPCKeys.FACTORY.createValue(NPCKeys.LOOKING, this.looking); }
 	public boolean isLooking() { return this.looking; }
 	public void setLooking(final boolean looking) { this.looking = looking; }
 
-	public Value<Boolean> getInteractValue() { return MMOKeys.FACTORY.createValue(MMOKeys.INTERACT, this.interact); }
+	public Value<Boolean> getInteractValue() { return NPCKeys.FACTORY.createValue(NPCKeys.INTERACT, this.interact); }
 	public boolean canInteract() { return this.interact; }
 	public void setInteract(final boolean interact) { this.interact = interact; }
-
-	public Value<NPCActions> getActionsValue() { return MMOKeys.FACTORY.createValue(MMOKeys.ACTIONS, this.actions); }
-	public NPCActions getActions() { return this.actions; }
-	public void setActions(final NPCActions actions) { this.actions = actions; }
-
-	public boolean setMode(@Nonnull final String type) {
-		if (type.equalsIgnoreCase("random")) { this.actions = new RandomActions(this.actions.getActions()); }
-		else if (type.equalsIgnoreCase("iterate")) { this.actions = new IterateActions(this.actions.getActions(), this.actions.getCurrent()); }
-		else if (type.equalsIgnoreCase("only_once")) { this.actions = new OnlyOnceActions(this.actions.getActions(), this.actions.getCurrent()); }
-		else if (type.equalsIgnoreCase("only_once_repeat_last")) { this.actions = new OnlyOnceRepeatLastActions(this.actions.getActions(), this.actions.getCurrent()); }
-		else if (type.equalsIgnoreCase("condition_repeat_last")) { this.actions = new ConditionRepeatLastActions(this.actions.getActions(), Lists.newArrayList(), this.actions.getCurrent(), Lists.newArrayList(), Lists.newArrayList()); }
-		else if (type.equalsIgnoreCase("condition_repeat_all")) { this.actions = new ConditionRepeatAllActions(this.actions.getActions(), Lists.newArrayList(), this.actions.getCurrent(), this.actions.getConditions(), Lists.newArrayList()); }
-		else return false;
-
-		return true;
-	}
-
-	@Override
-	public DataContainer toContainer() {
-		return super.toContainer()
-				.set(MMOKeys.SKIN.getQuery(), this.skin)
-				.set(MMOKeys.LOOKING.getQuery(), this.looking)
-				.set(MMOKeys.INTERACT.getQuery(), this.interact)
-				.set(MMOKeys.ACTIONS.getQuery(), this.actions);
-	}
 
 	@Nonnull
 	public Optional<NPCData> from(@Nonnull final DataView view) {
 		return Optional.of(new NPCData(
-				view.getString(MMOKeys.SKIN.getQuery()).orElse("Steve"),
-				view.getBoolean(MMOKeys.LOOKING.getQuery()).orElse(false),
-				view.getBoolean(MMOKeys.INTERACT.getQuery()).orElse(true),
-				view.getSerializable(MMOKeys.ACTIONS.getQuery(), NPCActions.class).orElse(new RandomActions(Lists.newArrayList()))));
+				view.getInt(NPCKeys.STARTUP.getQuery()).orElse(0),
+				view.getInt(NPCKeys.ID.getQuery()).orElse(0),
+				view.getBoolean(NPCKeys.LOOKING.getQuery()).orElse(false),
+				view.getBoolean(NPCKeys.INTERACT.getQuery()).orElse(true)));
 	}
 
+	@Override public DataContainer toContainer() { return this.asImmutable().toContainer(); }
 	@Override public Optional<NPCData> fill(DataHolder holder, MergeFunction overlap) { return Optional.of(Preconditions.checkNotNull(overlap).merge(copy(), from(holder.toContainer()).orElse(null))); }
 	@Override public Optional<NPCData> from(DataContainer container) { return from((DataView)container); }
-	@Override public NPCData copy() { return new NPCData(this.skin, this.looking, this.interact, this.actions); }
-	@Override public ImmutableNPCData asImmutable() { return new ImmutableNPCData(this.skin, this.looking, this.interact, this.actions); }
+	@Override public NPCData copy() { return new NPCData(this.startup, this.id, this.looking, this.interact); }
+	@Override public ImmutableNPCData asImmutable() { return new ImmutableNPCData(this.startup, this.id, this.looking, this.interact); }
 	@Override public int getContentVersion() { return 1; }
 
 	public void tick(@Nonnull final Living npc) {
@@ -122,5 +91,9 @@ public class NPCData extends AbstractData<NPCData, ImmutableNPCData> {
 			Vector3d pos = npc.getLocation().getPosition();
 			npc.getNearbyEntities(e -> e instanceof Player && e.getLocation().getPosition().distance(npc.getLocation().getPosition()) <= 20.0).stream().reduce(BinaryOperator.minBy((p1, p2) -> (int) (p1.getLocation().getPosition().distance(pos) - p2.getLocation().getPosition().distance(pos)))).ifPresent(p -> npc.lookAt(p.getLocation().getPosition().add(0.0, 1.62, 0.0)));
 		}
+	}
+
+	public void ifOld(@Nonnull final int startup, @Nonnull final Runnable run) {
+		if (this.startup != startup) { run.run(); }
 	}
 }

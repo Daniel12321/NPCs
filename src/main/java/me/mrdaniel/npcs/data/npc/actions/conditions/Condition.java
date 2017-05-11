@@ -1,16 +1,17 @@
 package me.mrdaniel.npcs.data.npc.actions.conditions;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import org.spongepowered.api.data.DataContainer;
-import org.spongepowered.api.data.DataQuery;
-import org.spongepowered.api.data.DataSerializable;
-import org.spongepowered.api.data.MemoryDataContainer;
-import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.item.ItemTypes;
+import org.spongepowered.api.text.Text;
 
-public class Condition implements DataSerializable {
+import me.mrdaniel.npcs.catalogtypes.conditions.ConditionType;
+import me.mrdaniel.npcs.catalogtypes.conditions.ConditionTypes;
+import me.mrdaniel.npcs.exceptions.ConditionException;
+import ninja.leaping.configurate.ConfigurationNode;
+
+public abstract class Condition {
 
 	private final ConditionType type;
 
@@ -18,22 +19,23 @@ public class Condition implements DataSerializable {
 		this.type = type;
 	}
 
-	public boolean isMet(@Nonnull final Player p) {
-		return type == ConditionType.EXP ?
-				p.get(Keys.EXPERIENCE_LEVEL).orElse(0) > 10 : 
-				p.getInventory().query(ItemTypes.EMERALD).peek().isPresent();
+	@Nonnull public ConditionType getType() { return this.type; }
+	@Nonnull public abstract Text getLine();
+
+	public abstract boolean isMet(@Nonnull final Player p);
+	public abstract void take(@Nonnull final Player p);
+
+	public void serialize(@Nonnull final ConfigurationNode node) {
+		node.getNode("Type").setValue(this.type.getId());
+		this.serializeValue(node);
 	}
 
-	@Override
-	public DataContainer toContainer() {
-		return new MemoryDataContainer()
-				.set(DataQuery.of("ContentVersion"), this.getContentVersion())
-				.set(DataQuery.of("condition_type"), this.type.getId());
-	}
+	public abstract void serializeValue(@Nonnull final ConfigurationNode value);
 
-	@Override public int getContentVersion() { return 1; }
-
-	public void apply() {
-		;
+	@Nullable
+	public static Condition of(@Nonnull final ConfigurationNode node) throws ConditionException {
+		ConditionType type = ConditionTypes.of(node.getNode("Type").getString("")).orElseThrow(() -> new ConditionException("Invalid ConditionType!"));
+		try { return type.getConditionClass().getConstructor(ConfigurationNode.class).newInstance(node); }
+		catch (final Exception exc) { throw new ConditionException("Failed to read condition value!", exc); }
 	}
 }

@@ -16,7 +16,7 @@ public class NPCDataBuilder extends AbstractDataBuilder<NPCData> implements Data
 		super(NPCData.class, 1);
 	}
 
-	@Override public NPCData create() { return new NPCData(); }
+	@Override public NPCData create() { return new NPCData(0, 0, false, true); }
 	@Override public Optional<NPCData> createFrom(@Nonnull DataHolder dataHolder) { return create().fill(dataHolder); }
 	@Override protected Optional<NPCData> buildContent(@Nonnull DataView view) throws InvalidDataException { return create().from(view); }
 }

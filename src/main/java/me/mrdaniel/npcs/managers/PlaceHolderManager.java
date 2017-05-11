@@ -5,6 +5,7 @@ import org.spongepowered.api.text.Text;
 
 public interface PlaceHolderManager {
 
-	String formatCMD(Player p, String txt);
-	Text formatMSG(Player p, String txt, String npc_name);
+	String formatCommand(Player p, String txt);
+	Text formatNPCMessage(Player p, String txt, String npc_name);
+	Text formatChoiceMessage(Player p, Text choices);
 }
