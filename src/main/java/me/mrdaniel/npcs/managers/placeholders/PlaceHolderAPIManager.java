@@ -22,8 +22,8 @@ public class PlaceHolderAPIManager implements PlaceHolderManager {
 	public PlaceHolderAPIManager(@Nonnull final NPCs npcs, @Nonnull final Config config) throws NoClassDefFoundError, ClassNotFoundException, NoSuchElementException {
 		this.service = npcs.getGame().getServiceManager().provide(PlaceholderService.class).get();
 
-		this.msg_format = config.getNode("messages", "npc_message_format").getString("%npc_name%&7: %message%");
-		this.choice_format = config.getNode("messages", "npc_choice_format").getString("&6&lChoose: &c&%choices%");
+		this.msg_format = config.getNode("messages", "npc_message_format").getString("%npc_name%&7: ");
+		this.choice_format = config.getNode("messages", "npc_choice_format").getString("&6&lChoose: ");
 	}
 
 	@Override
@@ -35,15 +35,13 @@ public class PlaceHolderAPIManager implements PlaceHolderManager {
 	@Nonnull
 	@Override
 	public Text formatNPCMessage(@Nonnull final Player p, @Nonnull final String message, @Nonnull final String npc_name) {
-		return this.format(p, this.msg_format.replace("%message%", message).replace("%npc_name%", npc_name));
+		return this.format(p, this.msg_format.concat(message).replace("%npc_name%", npc_name));
 	}
 
 	@Nonnull
 	@Override
 	public Text formatChoiceMessage(@Nonnull final Player p, @Nonnull final Text choices) {
-		String[] formatted = TextUtils.toString(this.format(p, this.choice_format)).split("%choices%");
-		if (formatted.length < 2) { return Text.builder().append(TextUtils.toText(formatted[0])).append(choices).build(); }
-		return Text.builder().append(TextUtils.toText(formatted[0])).append(choices).append(TextUtils.toText(formatted[1])).build();
+		return Text.builder().append(this.format(p, this.choice_format), choices).build();
 	}
 
 	@Nonnull

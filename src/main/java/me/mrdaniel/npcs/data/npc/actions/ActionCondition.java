@@ -61,11 +61,11 @@ public class ActionCondition extends Action {
 				Text.of(TextColors.GOLD, "Condition: "),
 				this.condition.getLine(),
 				Text.of(TextColors.GOLD, " Failed"),
-				Text.builder().append(Text.of(TextColors.AQUA, "→", this.goto_failed))
+				Text.builder().append(Text.of(TextColors.AQUA, "➡", this.goto_failed))
 				.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Change")))
 				.onClick(TextActions.suggestCommand("/npc action edit " + index + " goto_failed <goto>")).build(),
 				Text.of(TextColors.GOLD, " Met"),
-				Text.builder().append(Text.of(TextColors.AQUA, "→", this.goto_met))
+				Text.builder().append(Text.of(TextColors.AQUA, "➡", this.goto_met))
 				.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Change")))
 				.onClick(TextActions.suggestCommand("/npc action edit " + index + " goto_met <goto>")).build(),
 				Text.of(" "),

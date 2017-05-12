@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -62,6 +63,16 @@ public class NPCManager extends NPCObject {
 			try { this.npcs.put(file, this.spawn(file, world)); }
 			catch (final NPCException exc) { super.getLogger().error("Failed to spawn NPC: {}", exc); }
 		});
+	}
+
+	@Nonnull
+	public Set<NPCFile> getAll() {
+		return this.npcs.keySet();
+	}
+
+	@Nonnull
+	public Optional<Living> getNPC(@Nonnull final NPCFile file) {
+		return Optional.ofNullable(this.npcs.get(file));
 	}
 
 	@Nonnull

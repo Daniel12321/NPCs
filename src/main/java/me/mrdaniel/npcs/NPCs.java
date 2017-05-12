@@ -78,6 +78,7 @@ import me.mrdaniel.npcs.commands.edit.CommandStyle;
 import me.mrdaniel.npcs.commands.main.CommandCopy;
 import me.mrdaniel.npcs.commands.main.CommandCreate;
 import me.mrdaniel.npcs.commands.main.CommandDeselect;
+import me.mrdaniel.npcs.commands.main.CommandGoto;
 import me.mrdaniel.npcs.commands.main.CommandInfo;
 import me.mrdaniel.npcs.commands.main.CommandList;
 import me.mrdaniel.npcs.commands.main.CommandMount;
@@ -176,7 +177,8 @@ public class NPCs {
 			.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Remove Command")).permission("npc.remove").executor(new CommandRemove(this)).build(), "remove")
 			.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Copy Command")).permission("npc.copy").executor(new CommandCopy(this)).build(), "copy")
 			.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Mount Command")).permission("npc.mount").executor(new CommandMount(this)).build(), "mount")
-			.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Deselect Command")).permission("npc.edit.deselect").executor(new CommandDeselect(this)).build(), "deselect")
+			.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Deselect Command")).permission("npc.deselect").executor(new CommandDeselect(this)).build(), "deselect")
+			.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | GoTo Command")).permission("npc.goto").executor(new CommandGoto(this)).build(), "goto")
 			.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Move Command")).permission("npc.edit.move").executor(new CommandMove(this)).build(), "move")
 			.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Name Command")).permission("npc.edit.name").arguments(GenericArguments.remainingJoinedStrings(Text.of("name"))).executor(new CommandName(this)).build(), "name")
 			.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Look Command")).permission("npc.edit.look").arguments(GenericArguments.optional(GenericArguments.bool(Text.of("look")))).executor(new CommandLook(this)).build(), "look")
@@ -229,7 +231,7 @@ public class NPCs {
 					.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Add Pause Action Command")).permission("npc.action.pause").executor(new CommandActionAdd.Pause(this)).build(), "pause")
 					.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Add Goto Action Command")).permission("npc.action.goto").arguments(GenericArguments.integer(Text.of("next"))).executor(new CommandActionAdd.Goto(this)).build(), "goto")
 					.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Add Choices Action Command")).permission("npc.action.choices").arguments(GenericArguments.string(Text.of("first")), GenericArguments.integer(Text.of("goto_first")), GenericArguments.string(Text.of("second")), GenericArguments.integer(Text.of("goto_second"))).executor(new CommandActionAdd.Choices(this)).build(), "choices")
-					.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Add Condition Action Command")).arguments(GenericArguments.integer(Text.of("goto_failed")), GenericArguments.integer(Text.of("goto_met")), GenericArguments.bool(Text.of("take")))
+					.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Add Condition Action Command"))
 						.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Add Item Condition Action Command")).permission("npc.action.condition.item").arguments(GenericArguments.catalogedElement(Text.of("type"), ItemType.class), GenericArguments.integer(Text.of("amount")), GenericArguments.optionalWeak(GenericArguments.string(Text.of("name")))).executor(new CommandActionAddCondition.Item(this)).build(), "item")
 						.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Add Level Condition Action Command")).permission("npc.action.condition.level").arguments(GenericArguments.integer(Text.of("level"))).executor(new CommandActionAddCondition.Level(this)).build(), "level")
 						.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Add Exp Condition Action Command")).permission("npc.action.condition.exp").arguments(GenericArguments.integer(Text.of("exp"))).executor(new CommandActionAddCondition.Exp(this)).build(), "exp")
