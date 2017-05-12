@@ -81,6 +81,7 @@ public class NPCManager extends NPCObject {
 
 		file.delete(this.storage_path);
 		npc.remove();
+		super.getNPCs().getMenuManager().deselect(file);
 	}
 
 	public void create(@Nonnull final Player p, @Nonnull final EntityType type) throws NPCException {

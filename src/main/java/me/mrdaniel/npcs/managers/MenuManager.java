@@ -53,6 +53,10 @@ public class MenuManager extends NPCObject {
 		this.menus.remove(uuid);
 	}
 
+	public void deselect(@Nonnull final NPCFile file) {
+		for (final UUID uuid : this.menus.keySet()) { if (this.menus.get(uuid).getFile() == file) { this.deselect(uuid); return; } }
+	}
+
 	@Nonnull
 	public Optional<NPCMenu> get(@Nonnull final UUID uuid) {
 		return Optional.ofNullable(this.menus.get(uuid));
