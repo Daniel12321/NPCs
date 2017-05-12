@@ -45,11 +45,11 @@ public class ActionChoices extends Action {
 
 		UUID uuid = p.getUniqueId();
 
-		Text.Builder b = Text.builder();
+		Text.Builder b = Text.builder().append(Text.of(" "));
 		this.choices.forEach((txt, next) -> b.append(Text.builder().append(Text.of(TextColors.RED, TextStyles.UNDERLINE, txt)).onHover(TextActions.showText(Text.of(TextColors.GOLD, "Choose"))).onClick(TextActions.executeCallback(src -> {
 			try { npcs.getActionManager().executeChoice(file, uuid, next);  }
 			catch (final NPCException exc) {}
-		})).build()).append(Text.of("   ")));
+		})).build(), Text.of("  ")));
 
 		p.sendMessage(npcs.getPlaceHolderManager().formatChoiceMessage(p, b.build()));
 		result.setPerformNext(false);
@@ -75,7 +75,7 @@ public class ActionChoices extends Action {
 	private Text getChoiceText(final int index, @Nonnull final String name, final int next) {
 		return Text.builder()
 				.append(Text.of(TextColors.GOLD, name), 
-						Text.builder().append(Text.of(TextColors.GOLD, "→", next))
+						Text.builder().append(Text.of(TextColors.AQUA, "➡", next))
 						.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Change")))
 						.onClick(TextActions.suggestCommand("/npc action edit " + index + " setchoice " + name + " <goto>")).build(),
 						Text.of(" "),

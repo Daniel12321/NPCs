@@ -1,8 +1,11 @@
 package me.mrdaniel.npcs.utils;
 
+import java.util.function.Consumer;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
@@ -33,10 +36,10 @@ public class TextUtils {
 
 	@Nonnull
 	public static Text getToggleText(@Nonnull final String name, @Nonnull final String cmd, final boolean value) {
-		return Text.builder()
-				.append(Text.of(TextColors.GOLD, name, ": ", value ? TextColors.DARK_GREEN : TextColors.RED, value ? "Enabled" : "Disabled"))
+		return Text.builder().append(Text.of(TextColors.GOLD, name, ": "), 
+				Text.builder().append(Text.of(value ? TextColors.DARK_GREEN : TextColors.RED, value ? "Enabled" : "Disabled"))
 				.onHover(TextActions.showText(Text.of(value ? TextColors.RED : TextColors.DARK_GREEN, value ? "Disable" : "Enable")))
-				.onClick(TextActions.runCommand(cmd + " " + !value))
+				.onClick(TextActions.runCommand(cmd + " " + !value)).build())
 				.build();
 	}
 
@@ -47,5 +50,12 @@ public class TextUtils {
 				.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Change")))
 				.onClick(TextActions.suggestCommand(cmd))
 				.build();
+	}
+
+	@Nonnull
+	public static Text getButton(@Nonnull final String name, @Nonnull final Consumer<CommandSource> cmd) {
+		return Text.builder().append(Text.of(TextColors.RED, name))
+				.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Open")))
+				.onClick(TextActions.executeCallback(cmd)).build();
 	}
 }

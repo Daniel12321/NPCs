@@ -33,7 +33,6 @@ public class ArmorPage extends Page {
 
 		lines[++c] = getArmorText("MainHand", ae.getItemInHand(HandTypes.MAIN_HAND));
 		lines[++c] = getArmorText("OffHand", ae.getItemInHand(HandTypes.OFF_HAND));
-		++c;
 	}
 
 	@Nonnull

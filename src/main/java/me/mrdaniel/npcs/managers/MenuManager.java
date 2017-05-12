@@ -35,6 +35,11 @@ public class MenuManager extends NPCObject {
 		this.open_menu = config.getNode("open_menu_on_select").getBoolean(true);
 	}
 
+	public void select(@Nonnull final Player p, @Nonnull final NPCFile file) throws NPCException {
+		Living npc = super.getNPCs().getNPCManager().getNPC(file).orElseThrow(() -> new NPCException("Failed to select NPC: NPC hasn't been spawned."));
+		this.select(p, npc, file);
+	}
+
 	public void select(@Nonnull final Player p, @Nonnull final Living npc) throws NPCException {
 		NPCData data = npc.get(NPCData.class).orElseThrow(() -> new NPCException("This Entity is not an NPC!"));
 		NPCFile file = super.getNPCs().getNPCManager().getFile(data.getId()).orElseThrow(() -> new NPCException("No NPC file with this id was found!"));
