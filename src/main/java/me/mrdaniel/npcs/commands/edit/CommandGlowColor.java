@@ -31,7 +31,7 @@ public class CommandGlowColor extends NPCCommand {
 
 		TextColor color = args.<TextColor>getOne("color").get();
 
-		super.getNPCs().getGlowColorManager().setGlowColor(menu.getNPC(), color);
+		super.getNPCs().getGlowColorManager().setGlowColor(menu.getNPC(), menu.getFile().getId(), color);
 		menu.getFile().setGlowColor(color);
 		menu.getFile().save();
 	}

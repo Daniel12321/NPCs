@@ -10,14 +10,20 @@ import org.spongepowered.api.text.serializer.TextSerializers;
 
 public class TextUtils {
 
-	@Nonnull
+	@Nullable
 	public static Text toText(@Nullable final String msg) {
 		return msg == null ? null : TextSerializers.formattingCode('&').deserialize(msg);
 	}
 
-	@Nonnull
+	@Nullable
 	public static String toString(@Nullable final Text txt) {
 		return txt == null ? null : TextSerializers.formattingCode('&').serialize(txt);
+	}
+
+	@SuppressWarnings("deprecation")
+	@Nullable
+	public static String toLegacy(@Nullable final Text txt) {
+		return txt == null ? null : TextSerializers.LEGACY_FORMATTING_CODE.serialize(txt);
 	}
 
 	@Nonnull
