@@ -1,5 +1,7 @@
 package me.mrdaniel.npcs.listeners;
 
+import java.util.UUID;
+
 import javax.annotation.Nonnull;
 
 import org.spongepowered.api.data.key.Keys;
@@ -11,14 +13,12 @@ import org.spongepowered.api.event.entity.CollideEntityEvent;
 import org.spongepowered.api.event.entity.DamageEntityEvent;
 import org.spongepowered.api.event.entity.InteractEntityEvent;
 import org.spongepowered.api.event.entity.SpawnEntityEvent;
-import org.spongepowered.api.event.filter.IsCancelled;
 import org.spongepowered.api.event.filter.cause.Root;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.event.world.LoadWorldEvent;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.util.Tristate;
 import org.spongepowered.api.world.World;
 
 import me.mrdaniel.npcs.NPCObject;
@@ -33,32 +33,27 @@ public class WorldListener extends NPCObject {
 		super(npcs);
 	}
 
-	@IsCancelled(value = Tristate.FALSE)
 	@Listener(order = Order.LATE)
 	public void onLoadWorld(final LoadWorldEvent e) {
 		World w = e.getTargetWorld();
 		Task.builder().delayTicks(100).execute(() -> super.getNPCs().getNPCManager().load(w)).submit(super.getNPCs());
 	}
 
-	@IsCancelled(value = Tristate.FALSE)
 	@Listener(order = Order.EARLY)
 	public void onEntitySpawn(final SpawnEntityEvent e) {
 		e.getEntities().forEach(ent -> ent.get(NPCData.class).ifPresent(data -> data.ifOld(super.getNPCs().getStartup(), () -> ent.remove())));
 	}
 
-	@IsCancelled(value = Tristate.FALSE)
 	@Listener(order = Order.EARLY)
 	public void onCollide(final CollideEntityEvent e) {
 		e.getEntities().forEach(ent -> ent.get(NPCData.class).ifPresent(data -> e.setCancelled(true)));
 	}
 
-	@IsCancelled(value = Tristate.FALSE)
 	@Listener(order = Order.EARLY)
 	public void onDamage(final DamageEntityEvent e) {
 		e.getTargetEntity().get(NPCData.class).ifPresent(data -> e.setCancelled(true));
 	}
 
-	@IsCancelled(value = Tristate.FALSE)
 	@Listener(order = Order.EARLY)
 	public void onClick(final InteractEntityEvent e, @Root final Player p) {
 		e.getTargetEntity().get(NPCData.class).ifPresent(data -> {
@@ -81,14 +76,11 @@ public class WorldListener extends NPCObject {
 		});
 	}
 
-	@Listener(order = Order.EARLY)
-	public void onJoin(final ClientConnectionEvent.Join e) {
-		e.getTargetEntity().setScoreboard(super.getServer().getServerScoreboard().get());
-	}
-
-	@Listener(order = Order.EARLY)
+	@Listener(order = Order.LATE)
 	public void onQuit(final ClientConnectionEvent.Disconnect e) {
-		super.getNPCs().getMenuManager().deselect(e.getTargetEntity().getUniqueId());
-		super.getNPCs().getActionManager().removeChoosing(e.getTargetEntity().getUniqueId());
+		UUID uuid = e.getTargetEntity().getUniqueId();
+
+		super.getNPCs().getMenuManager().deselect(uuid);
+		super.getNPCs().getActionManager().removeChoosing(uuid);
 	}
 }

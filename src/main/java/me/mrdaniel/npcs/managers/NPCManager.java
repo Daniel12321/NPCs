@@ -81,6 +81,7 @@ public class NPCManager extends NPCObject {
 
 		file.delete(this.storage_path);
 		npc.remove();
+		super.getNPCs().getMenuManager().deselect(file);
 	}
 
 	public void create(@Nonnull final Player p, @Nonnull final EntityType type) throws NPCException {
@@ -157,7 +158,7 @@ public class NPCManager extends NPCObject {
 		file.getSkinUUID().ifPresent(uuid -> npc.offer(Keys.SKIN_UNIQUE_ID, uuid));
 		if (file.getGlow()) {
 			npc.offer(Keys.GLOWING, true);
-			file.getGlowColor().ifPresent(color -> super.getNPCs().getGlowColorManager().setGlowColor(npc, color));
+			file.getGlowColor().ifPresent(color -> super.getNPCs().getGlowColorManager().setGlowColor(npc, file.getId(), color));
 		}
 		if (file.getAngry()) { npc.offer(Keys.ANGRY, true); }
 		if (file.getCharged()) { npc.offer(Keys.CREEPER_CHARGED, true); }

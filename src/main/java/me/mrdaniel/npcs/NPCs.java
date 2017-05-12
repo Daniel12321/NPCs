@@ -135,8 +135,11 @@ public class NPCs {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@Listener
 	public void onPreInit(@Nullable final GamePreInitializationEvent e) {
+//		DataRegistration.builder().dataClass(NPCData.class).immutableClass(ImmutableNPCData.class).builder(new NPCDataBuilder()).dataName("npc").manipulatorId("npc").buildAndRegister(this.container);
+
 		this.game.getDataManager().register(NPCData.class, ImmutableNPCData.class, new NPCDataBuilder());
 		this.game.getRegistry().registerModule(ActionType.class, new ActionTypeRegistryModule());
 		this.game.getRegistry().registerModule(ConditionType.class, new ConditionTypeRegistryModule());
@@ -235,8 +238,8 @@ public class NPCs {
 				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Edit Action Command")).arguments(GenericArguments.integer(Text.of("index")))
 					.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Set Console Command Command")).permission("npc.action.edit.command.console").arguments(GenericArguments.remainingRawJoinedStrings(Text.of("command"))).executor(new CommandSetConsoleCommand(this)).build(), "consolecmd")
 					.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Set Player Command Command")).permission("npc.action.edit.command.player").arguments(GenericArguments.remainingRawJoinedStrings(Text.of("command"))).executor(new CommandSetPlayerCommand(this)).build(), "playercmd")
-					.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Set Message Command")).permission("npc.action.edit.message").arguments(GenericArguments.remainingRawJoinedStrings(Text.of("message"))).executor(new CommandSetGoto(this)).build(), "goto")
-					.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Set Goto Command")).permission("npc.action.edit.goto").arguments(GenericArguments.integer(Text.of("goto"))).executor(new CommandSetMessage(this)).build(), "message")
+					.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Set Message Command")).permission("npc.action.edit.message").arguments(GenericArguments.remainingRawJoinedStrings(Text.of("message"))).executor(new CommandSetMessage(this)).build(), "message")
+					.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Set Goto Command")).permission("npc.action.edit.goto").arguments(GenericArguments.integer(Text.of("goto"))).executor(new CommandSetGoto(this)).build(), "goto")
 					.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Set Delay Command")).permission("npc.action.edit.delay").arguments(GenericArguments.integer(Text.of("ticks"))).executor(new CommandSetDelay(this)).build(), "delay")
 					.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Set Take Command")).permission("npc.action.edit.condition.take").arguments(GenericArguments.bool(Text.of("take"))).executor(new CommandSetTake(this)).build(), "take")
 					.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Set Goto Failed Command")).permission("npc.action.edit.condition.goto.failed").arguments(GenericArguments.integer(Text.of("goto"))).executor(new CommandSetGotoFailed(this)).build(), "goto_failed")
