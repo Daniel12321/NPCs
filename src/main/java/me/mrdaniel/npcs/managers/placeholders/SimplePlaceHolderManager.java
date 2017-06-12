@@ -15,8 +15,8 @@ public class SimplePlaceHolderManager implements PlaceHolderManager {
 	private final String choice_format;
 
 	public SimplePlaceHolderManager(@Nonnull final Config config) {
-		this.msg_format = config.getNode("messages", "npc_message_format").getString("%npc_name%&7: %message%");
-		this.choice_format = config.getNode("messages", "npc_choice_format").getString("&6&lChoose: &c&%choices%");
+		this.msg_format = config.getNode("messages", "npc_message_format").getString("%npc_name%&7: ");
+		this.choice_format = config.getNode("messages", "npc_choice_format").getString("&6&lChoose: ");
 	}
 
 	@Override
@@ -26,16 +26,12 @@ public class SimplePlaceHolderManager implements PlaceHolderManager {
 
 	@Override
 	public Text formatNPCMessage(@Nonnull final Player p, @Nonnull final String message, @Nonnull final String npc_name) {
-		return TextUtils.toText(this.format(p, this.msg_format)
-				.replace("%message%", message)
-				.replace("%npc_name%", npc_name));
+		return TextUtils.toText(this.format(p, this.msg_format).concat(message).replace("%npc_name%", npc_name));
 	}
 
 	@Override
 	public Text formatChoiceMessage(@Nonnull final Player p, @Nonnull final Text choices) {
-		String[] formatted = this.format(p, this.choice_format).split("%choices%");
-		if (formatted.length < 2) { return Text.builder().append(TextUtils.toText(formatted[0])).append(choices).build(); }
-		return Text.builder().append(TextUtils.toText(formatted[0])).append(choices).append(TextUtils.toText(formatted[1])).build();
+		return Text.builder().append(TextUtils.toText(this.format(p, this.choice_format)), choices).build();
 	}
 
 	@Nonnull
