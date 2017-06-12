@@ -1,7 +1,5 @@
 package me.mrdaniel.npcs.listeners;
 
-import java.util.UUID;
-
 import javax.annotation.Nonnull;
 
 import org.spongepowered.api.data.key.Keys;
@@ -78,9 +76,7 @@ public class WorldListener extends NPCObject {
 
 	@Listener(order = Order.LATE)
 	public void onQuit(final ClientConnectionEvent.Disconnect e) {
-		UUID uuid = e.getTargetEntity().getUniqueId();
-
-		super.getNPCs().getMenuManager().deselect(uuid);
-		super.getNPCs().getActionManager().removeChoosing(uuid);
+		super.getNPCs().getMenuManager().deselect(e.getTargetEntity().getUniqueId());
+		super.getNPCs().getActionManager().removeChoosing(e.getTargetEntity().getUniqueId());
 	}
 }

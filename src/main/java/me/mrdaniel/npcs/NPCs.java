@@ -14,6 +14,7 @@ import org.spongepowered.api.Game;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.config.ConfigDir;
+import org.spongepowered.api.data.DataRegistration;
 import org.spongepowered.api.data.type.Career;
 import org.spongepowered.api.data.type.HorseColor;
 import org.spongepowered.api.data.type.HorseStyle;
@@ -103,7 +104,7 @@ import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 
 @Plugin(id = "npcs",
 		name = "NPCs",
-		version = "2.0.0-API6",
+		version = "2.0.1-API6",
 		authors = {"Daniel12321"},
 		url = "https://github.com/Daniel12321/NPCs",
 		description = "A plugin that adds simple custom NPC's to your worlds.",
@@ -136,12 +137,9 @@ public class NPCs {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	@Listener
 	public void onPreInit(@Nullable final GamePreInitializationEvent e) {
-//		DataRegistration.builder().dataClass(NPCData.class).immutableClass(ImmutableNPCData.class).builder(new NPCDataBuilder()).dataName("npc").manipulatorId("npc").buildAndRegister(this.container);
-
-		this.game.getDataManager().register(NPCData.class, ImmutableNPCData.class, new NPCDataBuilder());
+		DataRegistration.builder().dataClass(NPCData.class).immutableClass(ImmutableNPCData.class).builder(new NPCDataBuilder()).dataName("npc").manipulatorId("npc").buildAndRegister(this.container);
 		this.game.getRegistry().registerModule(ActionType.class, new ActionTypeRegistryModule());
 		this.game.getRegistry().registerModule(ConditionType.class, new ConditionTypeRegistryModule());
 
