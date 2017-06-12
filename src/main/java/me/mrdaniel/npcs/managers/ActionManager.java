@@ -81,7 +81,7 @@ public class ActionManager extends NPCObject {
 					try { this.execute(uuid, file); }
 					catch (final NPCException exc) {}
 				}
-			});
+			}).submit(super.getNPCs());
 		}
 		else {
 			file.getCurrent().put(uuid, result.getNext());
