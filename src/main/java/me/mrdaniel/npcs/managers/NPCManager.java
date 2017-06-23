@@ -83,6 +83,12 @@ public class NPCManager extends NPCObject {
 		return Optional.empty();
 	}
 
+	private int getNextId() {
+		int highest = 1;
+		while (Files.exists(this.storage_path.resolve("npc_" + highest + ".conf"))) { highest++; }
+		return highest;
+	}
+
 	public void remove(@Nonnull final Player p, final int id) throws NPCException {
 		NPCFile file = this.getFile(id).orElseThrow(() -> new NPCException("No NPC with that ID is exists!"));
 		Living npc = this.npcs.get(file);
@@ -113,48 +119,6 @@ public class NPCManager extends NPCObject {
 		this.npcs.put(file, npc);
 		super.getNPCs().getMenuManager().select(p, npc, file);
 		file.save();
-	}
-
-	public void copy(@Nonnull final Player p, @Nonnull final NPCFile file) throws NPCException {
-		EntityType type = file.getType().orElseThrow(() -> new NPCException("Invalid EntityType was found!"));
-		if (super.getGame().getEventManager().post(new NPCCreateEvent(super.getContainer(), p, file.getType().get()))) {
-			throw new NPCException("Event was cancelled!");
-		}
-
-		NPCFile copy = new NPCFile(super.getNPCs(), this.storage_path, this.getNextId());
-		copy.setType(type);
-		copy.setLocation(p.getLocation());
-		copy.setHead(file.getHead());
-		copy.setInteract(file.getInteract());
-		copy.setLooking(file.getLooking());
-		copy.setRotation(file.getRotation());
-
-		if (file.getAngry()) { copy.setAngry(true); }
-		if (file.getCharged()) { copy.setCharged(true); }
-		if (file.getGlow()) { copy.setGlow(true); }
-		if (file.getSize() > 0) { copy.setSize(file.getSize()); }
-		file.getCareer().ifPresent(v -> copy.setCareer(v));
-		file.getCat().ifPresent(v -> copy.setCat(v));
-		file.getGlowColor().ifPresent(v -> copy.setGlowColor(v));
-		file.getHorseColor().ifPresent(v -> copy.setHorseColor(v));
-		file.getHorseStyle().ifPresent(v -> copy.setHorseStyle(v));
-		file.getName().ifPresent(v -> copy.setName(v));
-		file.getSkinName().ifPresent(v -> copy.setSkinName(v));
-		file.getSkinUUID().ifPresent(v -> copy.setSkinUUID(v));
-		file.getVariant().ifPresent(v -> copy.setVariant(v));
-		for (int i = 0; i < file.getActions().size(); i++) { copy.getActions().add(i, file.getActions().get(i)); }
-		file.getCurrent().forEach((uuid, current) -> copy.getCurrent().put(uuid, current));
-
-		Living npc = this.spawn(copy, p.getWorld());
-		this.npcs.put(copy, npc);
-		super.getNPCs().getMenuManager().select(p, npc, copy);
-		file.save();
-	}
-
-	private int getNextId() {
-		int highest = 1;
-		while (Files.exists(this.storage_path.resolve("npc_" + highest + ".conf"))) { highest++; }
-		return highest;
 	}
 
 	@Nonnull
@@ -194,5 +158,41 @@ public class NPCManager extends NPCObject {
 
 		world.spawnEntity(npc, ServerUtils.getSpawnCause(npc));
 		return npc;
+	}
+
+	public void copy(@Nonnull final Player p, @Nonnull final NPCFile file) throws NPCException {
+		EntityType type = file.getType().orElseThrow(() -> new NPCException("Invalid EntityType was found!"));
+		if (super.getGame().getEventManager().post(new NPCCreateEvent(super.getContainer(), p, file.getType().get()))) {
+			throw new NPCException("Event was cancelled!");
+		}
+
+		NPCFile copy = new NPCFile(super.getNPCs(), this.storage_path, this.getNextId());
+		copy.setType(type);
+		copy.setLocation(p.getLocation());
+		copy.setHead(file.getHead());
+		copy.setInteract(file.getInteract());
+		copy.setLooking(file.getLooking());
+		copy.setRotation(file.getRotation());
+
+		if (file.getAngry()) { copy.setAngry(true); }
+		if (file.getCharged()) { copy.setCharged(true); }
+		if (file.getGlow()) { copy.setGlow(true); }
+		if (file.getSize() > 0) { copy.setSize(file.getSize()); }
+		file.getCareer().ifPresent(v -> copy.setCareer(v));
+		file.getCat().ifPresent(v -> copy.setCat(v));
+		file.getGlowColor().ifPresent(v -> copy.setGlowColor(v));
+		file.getHorseColor().ifPresent(v -> copy.setHorseColor(v));
+		file.getHorseStyle().ifPresent(v -> copy.setHorseStyle(v));
+		file.getName().ifPresent(v -> copy.setName(v));
+		file.getSkinName().ifPresent(v -> copy.setSkinName(v));
+		file.getSkinUUID().ifPresent(v -> copy.setSkinUUID(v));
+		file.getVariant().ifPresent(v -> copy.setVariant(v));
+		for (int i = 0; i < file.getActions().size(); i++) { copy.getActions().add(i, file.getActions().get(i)); }
+		file.getCurrent().forEach((uuid, current) -> copy.getCurrent().put(uuid, current));
+
+		Living npc = this.spawn(copy, p.getWorld());
+		this.npcs.put(copy, npc);
+		super.getNPCs().getMenuManager().select(p, npc, copy);
+		file.save();
 	}
 }
