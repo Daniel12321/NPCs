@@ -26,7 +26,7 @@ public class SimplePlaceHolderManager implements PlaceHolderManager {
 
 	@Override
 	public Text formatNPCMessage(@Nonnull final Player p, @Nonnull final String message, @Nonnull final String npc_name) {
-		return TextUtils.toText(this.format(p, this.msg_format).concat(message).replace("%npc_name%", npc_name));
+		return TextUtils.toText(this.format(p, (this.msg_format + message).replace("%npc_name%", npc_name)));
 	}
 
 	@Override

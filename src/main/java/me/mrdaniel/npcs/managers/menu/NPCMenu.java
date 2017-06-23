@@ -51,16 +51,16 @@ public class NPCMenu {
 		Optional.ofNullable(this.pages.get(PageTypes.ARMOR)).ifPresent(pg -> b.append(this.getButton(TextUtils.getButton("Armor", src -> this.send((Player)src, PageTypes.ARMOR)))));
 		b.append(this.getActionsButton(TextUtils.getButton("Actions", src -> this.send((Player)src, PageTypes.ACTIONS))));
 
-		String bar = this.sum("-", (56 - b.build().toPlain().length()) / 2);
+		String bar = this.getBar((56 - b.build().toPlain().length()) / 2);
 
 		return Text.builder().append(Text.of(TextColors.YELLOW, bar), b.build(), Text.of(TextColors.YELLOW, bar)).build();
 	}
 
 	@Nonnull
-	private String sum(@Nonnull final String txt, final int times) {
-		String str = "";
-		for (int i = 0; i < times; i++) { str += txt; }
-		return str;
+	private String getBar(final int times) {
+		StringBuilder b = new StringBuilder();
+		for (int i = 0; i < times; i++) { b.append('-'); }
+		return b.toString();
 	}
 
 	@Nonnull

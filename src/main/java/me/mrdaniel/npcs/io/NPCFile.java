@@ -3,8 +3,6 @@ package me.mrdaniel.npcs.io;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -47,7 +45,7 @@ public class NPCFile extends NPCObject {
 	private final ConfigurationLoader<CommentedConfigurationNode> loader;
 	private final CommentedConfigurationNode node;
 
-	private final ArrayList<Action> actions;
+	private final List<Action> actions;
 	private final Map<UUID, Integer> current;
 
 	public NPCFile(@Nonnull final NPCs npcs, @Nonnull final Path storage_path, final int id) {
@@ -70,7 +68,7 @@ public class NPCFile extends NPCObject {
 			try { actions[i] = Action.of(this.node.getNode("actions", String.valueOf(i))); }
 			catch (final ActionException exc) { npcs.getLogger().error("Failed to read action {} for npc {}!", i, id); }
 		}
-		this.actions = Lists.newArrayList(Arrays.asList(actions));
+		this.actions = Lists.newArrayList(actions);
 	}
 
 	private CommentedConfigurationNode load() {
@@ -155,8 +153,6 @@ public class NPCFile extends NPCObject {
 
 	@Nonnull public Optional<OcelotType> getCat() { return Optional.ofNullable(this.node.getNode("cat").getString()).map(id -> super.getGame().getRegistry().getType(OcelotType.class, id).orElse(null)); }
 	public void setCat(@Nonnull final OcelotType cat) { this.node.getNode("cat").setValue(cat.getId()); }
-
-//	public void setHelmet(@Nullable final ItemStack stack) { this.node.getNode("equipment").removeChild("helmet"); Optional.ofNullable(stack).ifPresent(this.node.getNode("equipment", "helmet").setValue(stack)); }
 
 	@Nonnull public Optional<ItemStack> getHelmet() { return this.getItemStack(this.node.getNode("equipment", "helmet")); }
 	public void setHelmet(@Nullable final ItemStack stack) { this.setItemStack(this.node.getNode("equipment", "helmet"), stack); }

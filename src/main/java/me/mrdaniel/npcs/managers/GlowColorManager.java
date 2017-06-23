@@ -34,12 +34,8 @@ public class GlowColorManager extends NPCObject {
 	}
 
 	private void addMember(@Nonnull final String name, @Nonnull final Living npc) {
-		if (npc instanceof Human) { this.addMember(name, npc.get(Keys.DISPLAY_NAME).map(txt -> TextUtils.toLegacy(txt)).orElse("Steve")); }
-		else { this.addMember(name, npc.getUniqueId().toString()); }
-	}
-
-	private void addMember(@Nonnull final String name, @Nonnull final String uuid) {
-		this.execute("scoreboard teams join " + name + " " + uuid);
+		String id = npc instanceof Human ? npc.get(Keys.DISPLAY_NAME).map(txt -> TextUtils.toLegacy(txt)).orElse("Steve") : npc.getUniqueId().toString();
+		this.execute("scoreboard teams join " + name + " " + id);
 	}
 
 	private void setColor(@Nonnull final String name, @Nonnull final String color) {

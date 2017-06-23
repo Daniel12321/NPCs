@@ -27,7 +27,7 @@ public class CommandList extends NPCObject implements CommandExecutor {
 
 	@Override
 	public CommandResult execute(final CommandSource src, final CommandContext args) throws CommandException {
-		src.sendMessage(Text.of(Text.of(TextColors.YELLOW, "----------------=====[ ", TextColors.RED, "NPC List", TextColors.YELLOW, " ]=====----------------")));
+		src.sendMessage(Text.of(Text.of(TextColors.YELLOW, "---------------=====[ ", TextColors.RED, "NPC List", TextColors.YELLOW, " ]=====---------------")));
 		super.getNPCs().getNPCManager().getAll().forEach(file -> src.sendMessage(this.getNPCText(file)));
 		src.sendMessage(Text.of(TextColors.YELLOW, "--------------------------------------------------"));
 		return CommandResult.success();
