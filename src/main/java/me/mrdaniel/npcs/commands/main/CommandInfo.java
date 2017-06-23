@@ -26,7 +26,8 @@ public class CommandInfo extends PlayerCommand {
 				Text.EMPTY,
 				Text.of(TextColors.YELLOW, "---------------=====[ ", TextColors.RED, "NPC Info", TextColors.YELLOW, " ]=====---------------"),
 				Text.of(TextColors.AQUA, "You have currently no selected NPC."),
-				Text.of(TextColors.AQUA, "You can select an NPC by shift right-clicking it."),
+				Text.of(TextColors.AQUA, "You can select an NPC by shift right clicking it."),
+				Text.of(TextColors.AQUA, "You can see a list of NPC's by doing: ", TextColors.YELLOW, "/npc list"),
 				Text.of(TextColors.AQUA, "You can create an NPC by doing: ", TextColors.YELLOW, "/npc create ", TextColors.GOLD, "[entitytype]"),
 				Text.of(TextColors.YELLOW, "--------------------------------------------------")
 		};

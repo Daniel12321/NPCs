@@ -29,7 +29,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.mrdaniel</groupId>
   <artifactId>NPCs</artifactId>
-  <version>2.0.1-API7</version>
+  <version>2.0.2-API7</version>
   <name>NPCs</name>
   <repositories>
     <repository>
@@ -41,12 +41,11 @@
       <url>https://jitpack.io</url>
     </repository>
   </repositories>
-
   <dependencies>
     <dependency>
       <groupId>org.spongepowered</groupId>
       <artifactId>spongeapi</artifactId>
-      <version>7.0.0-20170612.101645-14</version>
+      <version>7.0.0-20170618.190748-16</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

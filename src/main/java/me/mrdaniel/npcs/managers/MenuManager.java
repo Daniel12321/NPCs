@@ -22,16 +22,19 @@ import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.io.Config;
 import me.mrdaniel.npcs.io.NPCFile;
 import me.mrdaniel.npcs.managers.menu.NPCMenu;
+import me.mrdaniel.npcs.utils.TextUtils;
 
 public class MenuManager extends NPCObject {
 
 	private final Map<UUID, NPCMenu> menus;
+	private final Text select_message;
 	private final boolean open_menu;
 
 	public MenuManager(@Nonnull final NPCs npcs, @Nonnull final Config config) {
 		super(npcs);
 
 		this.menus = Maps.newHashMap();
+		this.select_message = TextUtils.toText(config.getNode("npc_select_message").getString("&eYou selected an NPC."));
 		this.open_menu = config.getNode("open_menu_on_select").getBoolean(true);
 	}
 
@@ -51,7 +54,7 @@ public class MenuManager extends NPCObject {
 		this.menus.put(p.getUniqueId(), menu);
 
 		if (this.open_menu) { menu.send(p, PageTypes.MAIN); }
-		else { p.sendMessage(ChatTypes.ACTION_BAR, Text.of(TextColors.DARK_GRAY, "[", TextColors.GOLD, "NPCs", TextColors.DARK_GRAY, "] ", TextColors.YELLOW, "You selected an NPC.")); }
+		else { p.sendMessage(ChatTypes.ACTION_BAR, Text.of(TextColors.DARK_GRAY, "[", TextColors.GOLD, "NPCs", TextColors.DARK_GRAY, "] ", this.select_message)); }
 	}
 
 	public void deselect(@Nonnull final UUID uuid) {

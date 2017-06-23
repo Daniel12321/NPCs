@@ -104,7 +104,7 @@ import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 
 @Plugin(id = "npcs",
 		name = "NPCs",
-		version = "2.0.1-API7",
+		version = "2.0.2-API7",
 		authors = {"Daniel12321"},
 		url = "https://github.com/Daniel12321/NPCs",
 		description = "A plugin that adds simple custom NPC's to your worlds.",
@@ -165,7 +165,7 @@ public class NPCs {
 		}
 		catch (final Throwable exc) {
 			this.placeholders = new SimplePlaceHolderManager(config);
-			this.logger.info("Could not find PlaceholderAPI: Loading a simple version instead.");
+			this.logger.info("Could not find PlaceholderAPI: Loaded a simple version instead.");
 		}
 
 		this.game.getCommandManager().register(this, CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Main Command"))
@@ -252,7 +252,7 @@ public class NPCs {
 
 		this.game.getEventManager().registerListeners(this, new WorldListener(this));
 
-		Task.builder().delayTicks(50).intervalTicks(config.getNode("npc_update_ticks").getInt(2)).execute(() -> this.game.getServer().getWorlds().forEach(w -> w.getEntities().stream().filter(ent -> ent.get(NPCData.class).isPresent()).forEach(ent -> ent.get(NPCData.class).get().tick((Living)ent)))).submit(this);
+		Task.builder().delayTicks(60).intervalTicks(config.getNode("npc_update_ticks").getInt(2)).execute(() -> this.game.getServer().getWorlds().forEach(w -> w.getEntities().stream().filter(ent -> ent.get(NPCData.class).isPresent()).forEach(ent -> ent.get(NPCData.class).get().tick((Living)ent)))).submit(this);
 
 		this.logger.info("Plugin loaded successfully.");
 	}
