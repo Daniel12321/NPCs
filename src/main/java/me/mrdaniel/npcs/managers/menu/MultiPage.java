@@ -4,12 +4,11 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.text.Text;
 
 import com.google.common.collect.Lists;
 
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 
 public abstract class MultiPage extends Page {
 
@@ -17,22 +16,21 @@ public abstract class MultiPage extends Page {
 	protected int count;
 	protected int current;
 
-	public MultiPage(@Nonnull final Living npc, @Nonnull final NPCFile file) {
-		super(npc, file);
+	public MultiPage(@Nonnull final NPCAble npc) {
+		super(npc);
 	}
 
-	@Nonnull
 	@Override
 	public Text[] getLines() {
 		return this.pages.get(this.current);
 	}
 
 	@Override
-	public void update(@Nonnull final Living npc, @Nonnull final NPCFile file) {
+	public void update(@Nonnull final NPCAble npc) {
 		this.pages = Lists.newArrayList();
 		this.count = 0;
 		this.current = 0;
-		this.updatePage(npc, file);
+		this.updatePage(npc);
 	}
 
 	protected void add(@Nonnull final Text txt) {

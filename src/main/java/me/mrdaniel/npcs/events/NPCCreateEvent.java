@@ -2,33 +2,33 @@ package me.mrdaniel.npcs.events;
 
 import javax.annotation.Nonnull;
 
+import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.EntityType;
-import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Cancellable;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.impl.AbstractEvent;
-import org.spongepowered.api.plugin.PluginContainer;
+
+import lombok.Getter;
+import lombok.Setter;
+import me.mrdaniel.npcs.NPCs;
 
 public class NPCCreateEvent extends AbstractEvent implements Cancellable {
 
-	private final Player player;
-	private final EntityType type;
-	private final Cause cause;
+	@Getter private final CommandSource source;
+	@Getter private final EntityType type;
+	@Getter private final Cause cause;
 
-	private boolean cancelled;
+	@Getter @Setter private boolean cancelled;
 
-	public NPCCreateEvent(@Nonnull final PluginContainer container, @Nonnull final Player player, @Nonnull final EntityType type) {
-		this.player = player;
+	public NPCCreateEvent(@Nonnull final CommandSource source, @Nonnull final EntityType type) {
+		this.source = source;
 		this.type = type;
-		this.cause = Cause.source(container).named("player", player).named("type", type).build();
+		this.cause = Cause.source(NPCs.getInstance().getContainer()).named("source", source).named("type", type).build();
 
 		this.cancelled = false;
 	}
 
-	@Nonnull public Player getPlayer() { return this.player; }
-	@Nonnull public EntityType getType() { return this.type; }
-	@Nonnull @Override public Cause getCause() { return this.cause; }
-
-	@Override public boolean isCancelled() { return this.cancelled; }
-	@Override public void setCancelled(final boolean cancelled) { this.cancelled = cancelled; }
+	public boolean post() {
+		return NPCs.getInstance().getGame().getEventManager().post(this);
+	}
 }

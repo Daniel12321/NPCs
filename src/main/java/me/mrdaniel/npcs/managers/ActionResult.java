@@ -7,7 +7,7 @@ public class ActionResult {
 	private boolean perform_next;
 	private int wait_ticks;
 
-	public ActionResult(int current) {
+	public ActionResult(final int current) {
 		this.current = current;
 		this.next = current;
 		this.perform_next = true;

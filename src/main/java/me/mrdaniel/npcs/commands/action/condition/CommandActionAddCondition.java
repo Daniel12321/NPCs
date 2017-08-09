@@ -4,20 +4,18 @@ import javax.annotation.Nonnull;
 
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.item.ItemType;
+import org.spongepowered.api.service.economy.Currency;
 
-import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.actions.Action;
+import me.mrdaniel.npcs.actions.ActionCondition;
+import me.mrdaniel.npcs.actions.conditions.Condition;
+import me.mrdaniel.npcs.actions.conditions.ConditionExp;
+import me.mrdaniel.npcs.actions.conditions.ConditionItem;
+import me.mrdaniel.npcs.actions.conditions.ConditionLevel;
+import me.mrdaniel.npcs.actions.conditions.ConditionMoney;
 import me.mrdaniel.npcs.commands.action.CommandActionAdd;
-import me.mrdaniel.npcs.data.npc.actions.Action;
-import me.mrdaniel.npcs.data.npc.actions.ActionCondition;
-import me.mrdaniel.npcs.data.npc.actions.conditions.ConditionExp;
-import me.mrdaniel.npcs.data.npc.actions.conditions.ConditionItem;
-import me.mrdaniel.npcs.data.npc.actions.conditions.ConditionLevel;
 
 public abstract class CommandActionAddCondition extends CommandActionAdd {
-
-	public CommandActionAddCondition(@Nonnull final NPCs npcs) {
-		super(npcs);
-	}
 
 	@Override
 	public Action create(final CommandContext args) {
@@ -25,29 +23,21 @@ public abstract class CommandActionAddCondition extends CommandActionAdd {
 	}
 
 	@Nonnull
-	public abstract me.mrdaniel.npcs.data.npc.actions.conditions.Condition createCondition(@Nonnull final CommandContext args);
+	public abstract Condition createCondition(@Nonnull final CommandContext args);
 
 	public static class Item extends CommandActionAddCondition {
-		public Item(@Nonnull final NPCs npcs) {
-			super(npcs);
-		}
+		@Override public Condition createCondition(final CommandContext args) { return new ConditionItem(args.<ItemType>getOne("type").get(), args.<Integer>getOne("amount").get(), args.<String>getOne("name").orElse(null)); }
+	}
 
-		@Override public me.mrdaniel.npcs.data.npc.actions.conditions.Condition createCondition(final CommandContext args) { return new ConditionItem(args.<ItemType>getOne("type").get(), args.<Integer>getOne("amount").get(), args.<String>getOne("name").orElse(null)); }
+	public static class Money extends CommandActionAddCondition {
+		@Override public Condition createCondition(final CommandContext args) { return new ConditionMoney(args.<Currency>getOne("currency").get(), args.<Double>getOne("amount").get()); }
 	}
 
 	public static class Level extends CommandActionAddCondition {
-		public Level(@Nonnull final NPCs npcs) {
-			super(npcs);
-		}
-
-		@Override public me.mrdaniel.npcs.data.npc.actions.conditions.Condition createCondition(final CommandContext args) { return new ConditionLevel(args.<Integer>getOne("level").get()); }
+		@Override public Condition createCondition(final CommandContext args) { return new ConditionLevel(args.<Integer>getOne("level").get()); }
 	}
 
 	public static class Exp extends CommandActionAddCondition {
-		public Exp(@Nonnull final NPCs npcs) {
-			super(npcs);
-		}
-
-		@Override public me.mrdaniel.npcs.data.npc.actions.conditions.Condition createCondition(final CommandContext args) { return new ConditionExp(args.<Integer>getOne("exp").get()); }
+		@Override public Condition createCondition(final CommandContext args) { return new ConditionExp(args.<Integer>getOne("exp").get()); }
 	}
 }

@@ -2,34 +2,32 @@ package me.mrdaniel.npcs.managers.menu;
 
 import javax.annotation.Nonnull;
 
-import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.text.Text;
 
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 
 public abstract class Page {
 
 	protected final Text[] lines;
 
-	public Page(@Nonnull final Living npc, @Nonnull final NPCFile file) {
+	public Page(@Nonnull final NPCAble npc) {
 		this.lines = new Text[18];
 
-		this.update(npc, file);
+		this.update(npc);
 	}
 
 	private void reset() {
 		for (int i = 0; i < 18; i++) { this.lines[i] = Text.EMPTY; }
 	}
 
-	@Nonnull
 	public Text[] getLines() {
 		return this.lines;
 	}
 
-	public void update(@Nonnull final Living npc, @Nonnull final NPCFile file) {
+	public void update(@Nonnull final NPCAble npc) {
 		this.reset();
-		this.updatePage(npc, file);
+		this.updatePage(npc);
 	}
 
-	protected abstract void updatePage(@Nonnull final Living npc, @Nonnull final NPCFile file);
+	protected abstract void updatePage(@Nonnull final NPCAble npc);
 }

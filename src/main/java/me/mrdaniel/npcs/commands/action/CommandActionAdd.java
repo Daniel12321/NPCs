@@ -12,92 +12,67 @@ import org.spongepowered.api.text.format.TextColors;
 
 import com.google.common.collect.Maps;
 
-import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.actions.Action;
+import me.mrdaniel.npcs.actions.ActionChoices;
+import me.mrdaniel.npcs.actions.ActionConsoleCommand;
+import me.mrdaniel.npcs.actions.ActionCooldown;
+import me.mrdaniel.npcs.actions.ActionDelay;
+import me.mrdaniel.npcs.actions.ActionGoto;
+import me.mrdaniel.npcs.actions.ActionMessage;
+import me.mrdaniel.npcs.actions.ActionPause;
+import me.mrdaniel.npcs.actions.ActionPlayerCommand;
 import me.mrdaniel.npcs.catalogtypes.menupages.PageTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
-import me.mrdaniel.npcs.data.npc.actions.Action;
-import me.mrdaniel.npcs.data.npc.actions.ActionChoices;
-import me.mrdaniel.npcs.data.npc.actions.ActionConsoleCommand;
-import me.mrdaniel.npcs.data.npc.actions.ActionDelay;
-import me.mrdaniel.npcs.data.npc.actions.ActionGoto;
-import me.mrdaniel.npcs.data.npc.actions.ActionMessage;
-import me.mrdaniel.npcs.data.npc.actions.ActionPause;
-import me.mrdaniel.npcs.data.npc.actions.ActionPlayerCommand;
 import me.mrdaniel.npcs.events.NPCEvent;
-import me.mrdaniel.npcs.managers.menu.NPCMenu;
+import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 
 public abstract class CommandActionAdd extends NPCCommand {
 
-	public CommandActionAdd(@Nonnull final NPCs npcs) {
-		super(npcs, PageTypes.ACTIONS);
+	public CommandActionAdd() {
+		super(PageTypes.ACTIONS);
 	}
 
 	@Override
-	public void execute(final Player p, final NPCMenu menu, final CommandContext args) throws CommandException {
-		if (super.getGame().getEventManager().post(new NPCEvent.Edit(super.getContainer(), p, menu.getNPC(), menu.getFile()))) {
+	public void execute(final Player p, final NPCAble npc, final CommandContext args) throws CommandException {
+		if (new NPCEvent.Edit(p, npc).post()) {
 			throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
 		}
 
-		menu.getFile().getActions().add(this.create(args));
-		menu.getFile().writeActions();
-		menu.getFile().save();
+		npc.getNPCFile().getActions().add(this.create(args));
+		npc.getNPCFile().writeActions().save();
 	}
 
-	@Nonnull
-	public abstract Action create(@Nonnull final CommandContext args);
+	@Nonnull public abstract Action create(@Nonnull final CommandContext args);
 
 	public static class PlayerCommand extends CommandActionAdd {
-		public PlayerCommand(@Nonnull final NPCs npcs) {
-			super(npcs);
-		}
-
 		@Override public Action create(final CommandContext args) { return new ActionPlayerCommand(args.<String>getOne("command").get()); }
 	}
 
 	public static class ConsoleCommand extends CommandActionAdd {
-		public ConsoleCommand(@Nonnull final NPCs npcs) {
-			super(npcs);
-		}
-
 		@Override public Action create(final CommandContext args) { return new ActionConsoleCommand(args.<String>getOne("command").get()); }
 	}
 
 	public static class Message extends CommandActionAdd {
-		public Message(@Nonnull final NPCs npcs) {
-			super(npcs);
-		}
-
 		@Override public Action create(final CommandContext args) { return new ActionMessage(args.<String>getOne("message").get()); }
 	}
 
 	public static class Delay extends CommandActionAdd {
-		public Delay(@Nonnull final NPCs npcs) {
-			super(npcs);
-		}
-
 		@Override public Action create(final CommandContext args) { return new ActionDelay(args.<Integer>getOne("ticks").get()); }
 	}
 
-	public static class Pause extends CommandActionAdd {
-		public Pause(@Nonnull final NPCs npcs) {
-			super(npcs);
-		}
+	public static class Cooldown extends CommandActionAdd {
+		@Override public Action create(CommandContext args) { return new ActionCooldown(args.<Integer>getOne("seconds").get(), args.<String>getOne("message").get()); }
+	}
 
+	public static class Pause extends CommandActionAdd {
 		@Override public Action create(final CommandContext args) { return new ActionPause(); }
 	}
 
 	public static class Goto extends CommandActionAdd {
-		public Goto(@Nonnull final NPCs npcs) {
-			super(npcs);
-		}
-
 		@Override public Action create(final CommandContext args) { return new ActionGoto(args.<Integer>getOne("next").get()); }
 	}
 
 	public static class Choices extends CommandActionAdd {
-		public Choices(@Nonnull final NPCs npcs) {
-			super(npcs);
-		}
 
 		@Override
 		public Action create(final CommandContext args) {

@@ -6,22 +6,21 @@ import javax.annotation.Nonnull;
 
 import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.entity.ArmorEquipable;
-import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
 
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 
 public class ArmorPage extends Page {
 
-	public ArmorPage(@Nonnull final Living npc, @Nonnull final NPCFile file) {
-		super(npc, file);
+	public ArmorPage(@Nonnull final NPCAble npc) {
+		super(npc);
 	}
 
 	@Override
-	public void updatePage(final Living npc, final NPCFile file) {
+	public void updatePage(final NPCAble npc) {
 		int c = 0;
 
 		ArmorEquipable ae = (ArmorEquipable) npc;
@@ -35,7 +34,6 @@ public class ArmorPage extends Page {
 		lines[++c] = getArmorText("OffHand", ae.getItemInHand(HandTypes.OFF_HAND));
 	}
 
-	@Nonnull
 	private Text getArmorText(@Nonnull final String name, @Nonnull final Optional<ItemStack> item) {
 		Text.Builder b = Text.builder()
 				.append(Text.of(TextColors.GOLD, name, ": "))

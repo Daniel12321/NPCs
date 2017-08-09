@@ -209,7 +209,7 @@ public class MetricsLite {
 		connection.addRequestProperty("Accept", "application/json");
 		connection.addRequestProperty("Connection", "close");
 		connection.addRequestProperty("Content-Encoding", "gzip");
-		connection.addRequestProperty("Content-Length", String.valueOf(compressedData.length));
+		connection.addRequestProperty("Content-Length", Integer.toString(compressedData.length));
 		connection.setRequestProperty("Content-Type", "application/json");
 		connection.setRequestProperty("User-Agent", "MC-Server/" + B_STATS_VERSION);
 

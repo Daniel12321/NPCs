@@ -14,36 +14,36 @@ import org.spongepowered.api.text.serializer.TextSerializers;
 public class TextUtils {
 
 	@Nullable
-	public static Text toText(@Nullable final String msg) {
-		return msg == null ? null : TextSerializers.formattingCode('&').deserialize(msg);
+	public static Text toText(@Nonnull final String msg) {
+		return TextSerializers.formattingCode('&').deserialize(msg);
 	}
 
 	@Nullable
-	public static String toString(@Nullable final Text txt) {
-		return txt == null ? null : TextSerializers.formattingCode('&').serialize(txt);
+	public static String toString(@Nonnull final Text txt) {
+		return TextSerializers.formattingCode('&').serialize(txt);
 	}
 
 	@SuppressWarnings("deprecation")
-	@Nullable
-	public static String toLegacy(@Nullable final Text txt) {
-		return txt == null ? null : TextSerializers.LEGACY_FORMATTING_CODE.serialize(txt);
+	public static String toLegacy(@Nonnull final Text txt) {
+		return TextSerializers.LEGACY_FORMATTING_CODE.serialize(txt);
 	}
 
-	@Nonnull
+	public static String toLegacy(@Nonnull final String msg) {
+		return msg.replace('&', '\u00A7');
+	}
+
 	public static String capitalize(@Nonnull final String str) {
 		return str.substring(0, 1).toUpperCase() + str.substring(1, str.length());
 	}
 
-	@Nonnull
 	public static Text getToggleText(@Nonnull final String name, @Nonnull final String cmd, final boolean value) {
 		return Text.builder().append(Text.of(TextColors.GOLD, name, ": "), 
 				Text.builder().append(Text.of(value ? TextColors.DARK_GREEN : TextColors.RED, value ? "Enabled" : "Disabled"))
 				.onHover(TextActions.showText(Text.of(value ? TextColors.RED : TextColors.DARK_GREEN, value ? "Disable" : "Enable")))
-				.onClick(TextActions.runCommand(cmd + " " + !value)).build())
+				.onClick(TextActions.runCommand(cmd + " " + Boolean.toString(!value))).build())
 				.build();
 	}
 
-	@Nonnull
 	public static Text getOptionsText(@Nonnull final String name, @Nonnull final String cmd, @Nonnull final String value) {
 		return Text.builder()
 				.append(Text.of(TextColors.GOLD, name, ": ", TextColors.AQUA, value))
@@ -52,7 +52,6 @@ public class TextUtils {
 				.build();
 	}
 
-	@Nonnull
 	public static Text getButton(@Nonnull final String name, @Nonnull final Consumer<CommandSource> cmd) {
 		return Text.builder().append(Text.of(TextColors.RED, name))
 				.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Open")))

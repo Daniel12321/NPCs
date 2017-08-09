@@ -11,14 +11,7 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import me.mrdaniel.npcs.NPCObject;
-import me.mrdaniel.npcs.NPCs;
-
-public abstract class PlayerCommand extends NPCObject implements CommandExecutor {
-
-	public PlayerCommand(@Nonnull final NPCs npcs) {
-		super(npcs);
-	}
+public abstract class PlayerCommand implements CommandExecutor {
 
 	@Override
 	public CommandResult execute(final CommandSource src, final CommandContext args) throws CommandException {

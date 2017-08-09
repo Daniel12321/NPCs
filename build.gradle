@@ -1,0 +1,63 @@
+buildscript {
+    repositories {
+        maven {
+            name = 'forge'
+            url = 'http://files.minecraftforge.net/maven'
+        }
+        maven {
+            name = 'sponge'
+            url = 'https://repo.spongepowered.org/maven'
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'org.spongepowered:mixingradle:0.4-SNAPSHOT'
+    }
+}
+
+plugins {
+    id 'org.spongepowered.plugin' version '0.7'
+    id 'net.minecrell.vanillagradle.server' version '2.2-3'
+}
+
+apply plugin: 'org.spongepowered.mixin'
+apply plugin: 'signing'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+group = 'me.mrdaniel.npcs'
+version = '2.1.0'
+description = 'A plugin that adds simple custom NPCs to your worlds.'
+
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+dependencies {
+    compileOnly "org.projectlombok:lombok:1.16.16"
+    compile 'org.spongepowered:spongeapi:6.1.0-SNAPSHOT'
+    compile 'org.spongepowered:mixin:0.5.17-SNAPSHOT'
+    compile 'com.github.rojo8399:PlaceholderAPI:master-SNAPSHOT'
+}
+
+minecraft {
+    version = '1.11'
+    mappings = 'stable_32'
+}
+
+sourceSets {
+    main {
+        refMap = "mixins.npcs.refmap.json"
+    }
+}
+
+jar {
+    manifest.attributes(
+        'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+        'MixinConfigs': 'mixins.npcs.json',
+        'FMLCorePluginContainsFMLMod': 'true',
+    )
+}

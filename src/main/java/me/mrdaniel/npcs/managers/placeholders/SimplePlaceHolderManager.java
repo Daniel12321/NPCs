@@ -5,16 +5,18 @@ import javax.annotation.Nonnull;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 
+import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.io.Config;
-import me.mrdaniel.npcs.managers.PlaceHolderManager;
 import me.mrdaniel.npcs.utils.TextUtils;
 
-public class SimplePlaceHolderManager implements PlaceHolderManager {
+public class SimplePlaceholderManager implements PlaceholderHandler {
 
 	private final String msg_format;
 	private final String choice_format;
 
-	public SimplePlaceHolderManager(@Nonnull final Config config) {
+	public SimplePlaceholderManager() {
+		Config config = NPCs.getInstance().getConfig();
+
 		this.msg_format = config.getNode("messages", "npc_message_format").getString("%npc_name%&7: ");
 		this.choice_format = config.getNode("messages", "npc_choice_format").getString("&6&lChoose: ");
 	}
@@ -34,7 +36,6 @@ public class SimplePlaceHolderManager implements PlaceHolderManager {
 		return Text.builder().append(TextUtils.toText(this.format(p, this.choice_format)), choices).build();
 	}
 
-	@Nonnull
 	private String format(@Nonnull final Player p, @Nonnull final String message) {
 		return message
 				.replace("%player_name%", p.getName())

@@ -8,29 +8,28 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.actions.Action;
 import me.mrdaniel.npcs.catalogtypes.actions.ActionType;
 import me.mrdaniel.npcs.catalogtypes.menupages.PageTypes;
-import me.mrdaniel.npcs.data.npc.actions.Action;
 import me.mrdaniel.npcs.exceptions.ActionException;
-import me.mrdaniel.npcs.managers.menu.NPCMenu;
+import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 
 public abstract class ActionCommand extends NPCCommand {
 
 	protected final ActionType type;
 
-	public ActionCommand(@Nonnull final NPCs npcs, @Nonnull final ActionType type) {
-		super(npcs, PageTypes.ACTIONS);
+	public ActionCommand(@Nonnull final ActionType type) {
+		super(PageTypes.ACTIONS);
 
 		this.type = type;
 	}
 
 	@Override
-	public void execute(final Player p, final NPCMenu menu, final CommandContext args) throws CommandException {
-		Action a = menu.getFile().getActions().get(args.<Integer>getOne("index").get());
+	public void execute(final Player p, final NPCAble npc, final CommandContext args) throws CommandException {
+		Action a = npc.getNPCFile().getActions().get(args.<Integer>getOne("index").get());
 		if (a.getType() != this.type) { throw new CommandException(Text.of(TextColors.RED, "This action does not match the required action for this command!")); }
 
-		try { this.execute(p, a, args); menu.getFile().writeActions(); menu.getFile().save(); }
+		try { this.execute(p, a, args); npc.getNPCFile().writeActions().save();; }
 		catch (final ActionException exc) { throw new CommandException(Text.of(TextColors.RED, "Failed to edit action!"), exc); }
 	}
 

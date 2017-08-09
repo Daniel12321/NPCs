@@ -2,13 +2,12 @@ package me.mrdaniel.npcs.managers.menu;
 
 import javax.annotation.Nonnull;
 
-import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
 
-import me.mrdaniel.npcs.data.npc.actions.Action;
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.actions.Action;
+import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.utils.TextUtils;
 
 public class ActionsPage extends MultiPage {
@@ -60,16 +59,16 @@ public class ActionsPage extends MultiPage {
 			.onClick(TextActions.suggestCommand("/npc action add condition exp <exp>")).build())
 			.build();
 
-	public ActionsPage(@Nonnull final Living npc, @Nonnull final NPCFile file) {
-		super(npc, file);
+	public ActionsPage(@Nonnull final NPCAble npc) {
+		super(npc);
 	}
 
 	@Override
-	public void updatePage(final Living npc, final NPCFile file) {
+	public void updatePage(final NPCAble npc) {
 		this.add(Text.of(TextColors.GOLD, "Actions: "));
 
-		for (int i = 0; i < file.getActions().size(); i++) {
-			Action a = file.getActions().get(i);
+		for (int i = 0; i < npc.getNPCFile().getActions().size(); i++) {
+			Action a = npc.getNPCFile().getActions().get(i);
 			this.add(Text.builder()
 					.append(this.getRemoveText(i), Text.of(" "), this.getUpText(i), Text.of(" "), this.getDownText(i), Text.of(TextColors.BLUE, " ", String.valueOf(i), ": "),a.getLine(i))
 					.build());
@@ -81,10 +80,9 @@ public class ActionsPage extends MultiPage {
 		this.add(ADD_CONDITION);
 
 		this.add(Text.EMPTY);
-		this.add(TextUtils.getToggleText("Repeat", "/npc action repeat", file.getRepeatActions()));
+		this.add(TextUtils.getToggleText("Repeat", "/npc action repeat", npc.getNPCFile().getRepeatActions()));
 	}
 
-	@Nonnull
 	private Text getRemoveText(final int index) {
 		return Text.builder()
 				.append(Text.of(TextColors.RED, "[x]"))
@@ -93,19 +91,17 @@ public class ActionsPage extends MultiPage {
 				.build();
 	}
 
-	@Nonnull
 	private final Text getUpText(final int index) {
 		return Text.builder()
-				.append(Text.of(TextColors.YELLOW, "[⬆]"))
+				.append(Text.of(TextColors.YELLOW, "[˄]"))
 				.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Move Up")))
 				.onClick(TextActions.runCommand("/npc action swap " + (index - 1) + " " + index))
 				.build();
 	}
 
-	@Nonnull
 	private final Text getDownText(final int index) {
 		return Text.builder()
-				.append(Text.of(TextColors.YELLOW, "[⬇]"))
+				.append(Text.of(TextColors.YELLOW, "[˅]"))
 				.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Move Down")))
 				.onClick(TextActions.runCommand("/npc action swap " + index + " " + (index + 1)))
 				.build();
