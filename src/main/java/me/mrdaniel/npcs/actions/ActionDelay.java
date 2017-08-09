@@ -16,7 +16,6 @@ public class ActionDelay extends Action {
 	private int ticks;
 
 	public ActionDelay(@Nonnull final ConfigurationNode node) { this(node.getNode("Ticks").getInt(20)); }
-
 	public ActionDelay(@Nonnull final int ticks) {
 		super(ActionTypes.DELAY);
 

@@ -14,7 +14,6 @@ import ninja.leaping.configurate.ConfigurationNode;
 public class ActionPause extends Action {
 
 	public ActionPause(@Nonnull final ConfigurationNode node) { this(); }
-
 	public ActionPause() {
 		super(ActionTypes.PAUSE);
 	}

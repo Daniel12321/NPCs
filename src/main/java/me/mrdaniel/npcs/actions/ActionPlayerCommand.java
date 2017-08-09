@@ -19,7 +19,6 @@ public class ActionPlayerCommand extends Action {
 	private String command;
 
 	public ActionPlayerCommand(@Nonnull final ConfigurationNode node) { this(node.getNode("Command").getString("")); }
-
 	public ActionPlayerCommand(@Nonnull final String command) {
 		super(ActionTypes.PLAYERCMD);
 

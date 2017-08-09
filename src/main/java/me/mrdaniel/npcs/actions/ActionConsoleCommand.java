@@ -19,7 +19,6 @@ public class ActionConsoleCommand extends Action {
 	private String command;
 
 	public ActionConsoleCommand(@Nonnull final ConfigurationNode node) { this(node.getNode("Command").getString("")); }
-
 	public ActionConsoleCommand(@Nonnull final String command) {
 		super(ActionTypes.CONSOLECMD);
 

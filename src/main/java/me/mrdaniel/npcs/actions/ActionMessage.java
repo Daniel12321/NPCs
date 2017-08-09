@@ -18,7 +18,6 @@ public class ActionMessage extends Action {
 	private String message;
 
 	public ActionMessage(@Nonnull final ConfigurationNode node) { this(node.getNode("Message").getString("")); }
-
 	public ActionMessage(@Nonnull final String message) {
 		super(ActionTypes.MESSAGE);
 
