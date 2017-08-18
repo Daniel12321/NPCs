@@ -27,7 +27,7 @@ public class ActionMessage extends Action {
 	public void setMessage(@Nonnull final String message) { this.message = message; }
 
 	@Override
-	public void execute(final ActionResult result, final Player p, final NPCFile file) {
+	public void execute(final Player p, final NPCFile file, final ActionResult result) {
 		p.sendMessage(PlaceholderManager.getInstance().formatNPCMessage(p, this.message, file.getName().orElse("")));
 		result.setNext(result.getCurrent()+1);
 	}

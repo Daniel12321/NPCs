@@ -20,7 +20,7 @@ public class CommandRespawn extends NPCFileCommand {
 
 	@Override
 	public void execute(final Player p, final NPCFile file, final CommandContext args) throws CommandException {
-		try { NPCManager.getInstance().respawn(file); }
+		try { NPCManager.getInstance().spawn(file); }
 		catch (final NPCException exc) { throw new CommandException(Text.of(TextColors.RED, "Failed to spawn NPC: ", exc.getMessage())); }
 	}
 }

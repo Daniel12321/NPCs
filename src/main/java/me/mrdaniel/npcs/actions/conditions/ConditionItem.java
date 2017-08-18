@@ -41,7 +41,7 @@ public class ConditionItem extends Condition {
 			Optional<ItemStack> item = s.peek();
 			if (item.isPresent()) {
 				ItemStack stack = item.get();
-				if (stack.getItem() == this.type) {
+				if (stack.getType() == this.type) {
 					if (this.name != null && !this.name.equalsIgnoreCase(stack.get(Keys.DISPLAY_NAME).map(txt -> TextUtils.toString(txt)).orElse(""))) { continue; }
 					i += stack.getQuantity();
 					if (i >= this.amount) { return true; }
@@ -58,7 +58,7 @@ public class ConditionItem extends Condition {
 			Optional<ItemStack> item = s.peek();
 			if (item.isPresent()) {
 				ItemStack stack = item.get();
-				if (stack.getItem() == this.type) {
+				if (stack.getType() == this.type) {
 					if (stack.getQuantity() < take) { take -= stack.getQuantity(); s.clear(); }
 					else if (stack.getQuantity() == take) { s.clear(); return; }
 					else { stack.setQuantity(stack.getQuantity() - take); s.set(stack); return; }

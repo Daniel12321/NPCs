@@ -27,7 +27,7 @@ public class ActionGoto extends Action {
 	public void setNext(final int next) { this.next = next; }
 
 	@Override
-	public void execute(final ActionResult result, final Player p, final NPCFile file) {
+	public void execute(final Player p, final NPCFile file, final ActionResult result) {
 		result.setNext(this.next);
 	}
 

@@ -65,7 +65,7 @@ public class ActionManager {
 
 		ActionResult result = new ActionResult(next);
 
-		file.getActions().get(next).execute(result, p, file);
+		file.getActions().get(next).execute(p, file, result);
 
 		if (result.getWaitTicks() > 0) {
 			this.waiting.add(uuid);

@@ -28,7 +28,7 @@ public class ActionConsoleCommand extends Action {
 	public void setCommand(@Nonnull final String command) { this.command = command; }
 
 	@Override
-	public void execute(final ActionResult result, final Player p, final NPCFile file) {
+	public void execute(final Player p, final NPCFile file, final ActionResult result) {
 		NPCs.getInstance().getGame().getCommandManager().process(NPCs.getInstance().getGame().getServer().getConsole(), PlaceholderManager.getInstance().formatCommand(p, this.command));
 		result.setNext(result.getCurrent()+1);
 	}

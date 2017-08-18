@@ -21,7 +21,7 @@ public class OptionTypeRegistryModule implements CatalogRegistryModule<OptionTyp
 	@Getter private final List<OptionType> all;
 
 	private OptionTypeRegistryModule() {
-		this.main = Lists.newArrayList(OptionTypes.NAME, OptionTypes.LOOKING, OptionTypes.INTERACT, OptionTypes.GLOWING, OptionTypes.GLOWCOLOR, OptionTypes.BABY, OptionTypes.CHARGED, OptionTypes.ANGRY, OptionTypes.SIZE, OptionTypes.SITTING, OptionTypes.CAREER, OptionTypes.HORSESTYLE, OptionTypes.HORSECOLOR, OptionTypes.LLAMAVARIANT, OptionTypes.CATTYPE, OptionTypes.RABBITTYPE);
+		this.main = Lists.newArrayList(OptionTypes.NAME, OptionTypes.LOOKING, OptionTypes.INTERACT, OptionTypes.GLOWING, OptionTypes.GLOWCOLOR, OptionTypes.BABY, OptionTypes.CHARGED, OptionTypes.ANGRY, OptionTypes.SIZE, OptionTypes.SITTING, OptionTypes.SADDLE, OptionTypes.CAREER, OptionTypes.HORSESTYLE, OptionTypes.HORSECOLOR, OptionTypes.LLAMATYPE, OptionTypes.CATTYPE, OptionTypes.RABBITTYPE, OptionTypes.PARROTTYPE);
 		this.armor = Lists.newArrayList(OptionTypes.HELMET, OptionTypes.CHESTPLATE, OptionTypes.LEGGINGS, OptionTypes.BOOTS, OptionTypes.MAINHAND, OptionTypes.OFFHAND);
 		this.all = Lists.newArrayList(OptionTypes.WORLD, OptionTypes.POSITION, OptionTypes.SKIN);
 		this.all.addAll(this.main);

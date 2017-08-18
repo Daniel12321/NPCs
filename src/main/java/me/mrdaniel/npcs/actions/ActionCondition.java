@@ -49,7 +49,7 @@ public class ActionCondition extends Action {
 	public void setTake(final boolean take) { this.take = take; }
 
 	@Override
-	public void execute(final ActionResult result, final Player p, final NPCFile file) {
+	public void execute(final Player p, final NPCFile file, final ActionResult result) {
 		if (this.condition.isMet(p)) {
 			if (this.take) { this.condition.take(p); }
 			result.setNext(this.goto_met);

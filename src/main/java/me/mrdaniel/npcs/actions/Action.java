@@ -28,7 +28,7 @@ public abstract class Action {
 		this.serializeValue(node);
 	}
 
-	public abstract void execute(final ActionResult result, @Nonnull final Player p, @Nonnull final NPCFile file);
+	public abstract void execute(@Nonnull final Player p, @Nonnull final NPCFile file, @Nonnull final ActionResult result);
 	public abstract void serializeValue(@Nonnull final ConfigurationNode node);
 
 	@Nonnull

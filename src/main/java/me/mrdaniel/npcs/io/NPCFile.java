@@ -16,6 +16,7 @@ import org.spongepowered.api.data.type.HorseColor;
 import org.spongepowered.api.data.type.HorseStyle;
 import org.spongepowered.api.data.type.LlamaVariant;
 import org.spongepowered.api.data.type.OcelotType;
+import org.spongepowered.api.data.type.ParrotVariant;
 import org.spongepowered.api.data.type.RabbitType;
 import org.spongepowered.api.entity.EntityType;
 import org.spongepowered.api.item.inventory.ItemStack;
@@ -158,14 +159,17 @@ public class NPCFile {
 	public NPCFile setHorseColor(@Nonnull final HorseColor value) { this.node.getNode("horse", "color").setValue(value.getId()); return this; }
 	public Optional<HorseColor> getHorseColor() { return Optional.ofNullable(this.node.getNode("horse", "color").getString()).map(id -> NPCs.getInstance().getGame().getRegistry().getType(HorseColor.class, id).orElse(null)); }
 
-	public NPCFile setLlamaVariant(@Nonnull final LlamaVariant value) { this.node.getNode("llamavariant").setValue(value.getId()); return this; }
-	public Optional<LlamaVariant> getLlamaVariant() { return Optional.ofNullable(this.node.getNode("llamavariant").getString()).map(id -> NPCs.getInstance().getGame().getRegistry().getType(LlamaVariant.class, id).orElse(null)); }
+	public NPCFile setLlamaType(@Nonnull final LlamaVariant value) { this.node.getNode("llamatype").setValue(value.getId()); return this; }
+	public Optional<LlamaVariant> getLlamaType() { return Optional.ofNullable(this.node.getNode("llamatype").getString()).map(id -> NPCs.getInstance().getGame().getRegistry().getType(LlamaVariant.class, id).orElse(null)); }
 
 	public NPCFile setCatType(@Nonnull final OcelotType value) { this.node.getNode("cattype").setValue(value.getId()); return this; }
 	public Optional<OcelotType> getCatType() { return Optional.ofNullable(this.node.getNode("cattype").getString()).map(id -> NPCs.getInstance().getGame().getRegistry().getType(OcelotType.class, id).orElse(null)); }
 
 	public NPCFile setRabbitType(@Nonnull final RabbitType value) { this.node.getNode("rabbittype").setValue(value.getId()); return this; }
 	public Optional<RabbitType> getRabbitType() { return Optional.ofNullable(this.node.getNode("rabbittype").getString()).map(id -> NPCs.getInstance().getGame().getRegistry().getType(RabbitType.class, id).orElse(null)); }
+
+	public NPCFile setParrotType(@Nonnull final ParrotVariant value) { this.node.getNode("parrottype").setValue(value.getId()); return this; }
+	public Optional<ParrotVariant> getParrotType() { return Optional.ofNullable(this.node.getNode("parrottype").getString()).map(id -> NPCs.getInstance().getGame().getRegistry().getType(ParrotVariant.class, id).orElse(null)); }
 
 	public NPCFile setHelmet(@Nullable final ItemStack value) { this.setItemStack(this.node.getNode("equipment", "helmet"), value); return this; }
 	public Optional<ItemStack> getHelmet() { return this.getItemStack(this.node.getNode("equipment", "helmet")); }

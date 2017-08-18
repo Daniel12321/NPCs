@@ -46,18 +46,20 @@ public class CommandList implements CommandExecutor {
 	}
 
 	private void sendNPCInfo(@Nonnull final Player p, @Nonnull final NPCFile file) {
-		boolean world_loaded = file.getWorld().isPresent();
-		boolean npc_loaded = world_loaded ? NPCManager.getInstance().getNPC(file).isPresent() : false;
+		boolean worldLoaded = file.getWorld().isPresent();
+		boolean npcLoaded = worldLoaded ? NPCManager.getInstance().getNPC(file, false).isPresent() : false;
 
 		p.sendMessage(Text.EMPTY);
 		p.sendMessage(Text.of(Text.of(TextColors.YELLOW, "---------------=====[ ", TextColors.RED, "NPC Info", TextColors.YELLOW, " ]=====---------------")));
-		p.sendMessage(Text.of(TextColors.GOLD, "World Loaded: ", world_loaded ? TextColors.DARK_GREEN : TextColors.RED, world_loaded ? "True" : "False"));
-		p.sendMessage(Text.of(TextColors.GOLD, "NPC Loaded: ", npc_loaded ? TextColors.DARK_GREEN : TextColors.RED, npc_loaded ? "True" : "False"));
+		p.sendMessage(Text.of(TextColors.GOLD, "World Loaded: ", worldLoaded ? TextColors.DARK_GREEN : TextColors.RED, worldLoaded ? "True" : "False"));
+		p.sendMessage(Text.of(TextColors.GOLD, "NPC Loaded: ", npcLoaded ? TextColors.DARK_GREEN : TextColors.RED, npcLoaded ? "True" : "False"));
 		p.sendMessage(Text.EMPTY);
 
 		Text.Builder buttons = Text.builder();
-		if (npc_loaded) { buttons.append(Text.of("  "), Text.builder().append(Text.of(TextColors.GOLD, "[Select]")).onHover(TextActions.showText(Text.of(TextColors.GOLD, "Select"))).onClick(TextActions.executeCallback(src -> this.select((Player)src, file))).build()); }
-		buttons.append(Text.of("  "), Text.builder().append(Text.of(TextColors.RED, "[Remove]")).onHover(TextActions.showText(Text.of(TextColors.RED, "Remove"))).onClick(TextActions.suggestCommand("/npc remove " + Integer.toString(file.getId()))).build());
+		if (worldLoaded) {
+			buttons.append(Text.of("  "), Text.builder().append(Text.of(TextColors.GOLD, "[Select]")).onHover(TextActions.showText(Text.of(TextColors.GOLD, "Select"))).onClick(TextActions.executeCallback(src -> this.select((Player)src, file))).build());
+			buttons.append(Text.of("  "), Text.builder().append(Text.of(TextColors.RED, "[Remove]")).onHover(TextActions.showText(Text.of(TextColors.RED, "Remove"))).onClick(TextActions.suggestCommand("/npc remove " + Integer.toString(file.getId()))).build());
+		}
 
 		p.sendMessage(buttons.build());
 		p.sendMessage(Text.EMPTY);

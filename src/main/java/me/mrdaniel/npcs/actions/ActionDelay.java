@@ -25,7 +25,7 @@ public class ActionDelay extends Action {
 	public void setTicks(final int ticks) { this.ticks = ticks; }
 
 	@Override
-	public void execute(final ActionResult result, final Player p, final NPCFile file) {
+	public void execute(final Player p, final NPCFile file, final ActionResult result) {
 		result.setNext(result.getCurrent()+1).setWaitTicks(this.ticks);
 	}
 

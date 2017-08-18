@@ -10,6 +10,7 @@ import org.spongepowered.api.data.type.HorseColor;
 import org.spongepowered.api.data.type.HorseStyle;
 import org.spongepowered.api.data.type.LlamaVariant;
 import org.spongepowered.api.data.type.OcelotType;
+import org.spongepowered.api.data.type.ParrotVariant;
 import org.spongepowered.api.data.type.RabbitType;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.item.inventory.ItemStack;
@@ -48,9 +49,10 @@ public interface NPCAble {
 	public void setNPCCareer(@Nonnull final Career value);
 	public void setNPCHorseStyle(@Nonnull final HorseStyle value);
 	public void setNPCHorseColor(@Nonnull final HorseColor value);
-	public void setNPCLlamaVariant(@Nonnull final LlamaVariant value);
+	public void setNPCLlamaType(@Nonnull final LlamaVariant value);
 	public void setNPCCatType(@Nonnull final OcelotType value);
 	public void setNPCRabbitType(@Nonnull final RabbitType value);
+	public void setNPCParrotType(@Nonnull final ParrotVariant value);
 
 	public void setNPCHelmet(@Nonnull final ItemStack value);
 	public void setNPCChestplate(@Nonnull final ItemStack value);

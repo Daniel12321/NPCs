@@ -19,7 +19,7 @@ public class ActionPause extends Action {
 	}
 
 	@Override
-	public void execute(final ActionResult result, final Player p, final NPCFile file) {
+	public void execute(final Player p, final NPCFile file, final ActionResult result) {
 		result.setNext(result.getCurrent()+1).setPerformNext(false);
 	}
 

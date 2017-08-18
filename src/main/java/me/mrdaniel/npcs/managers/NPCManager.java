@@ -3,10 +3,8 @@ package me.mrdaniel.npcs.managers;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -19,6 +17,7 @@ import org.spongepowered.api.world.World;
 
 import com.flowpowered.math.vector.Vector3d;
 import com.flowpowered.math.vector.Vector3f;
+import com.flowpowered.math.vector.Vector3i;
 import com.google.common.collect.Sets;
 
 import lombok.Getter;
@@ -29,7 +28,6 @@ import me.mrdaniel.npcs.events.NPCRemoveEvent;
 import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.NPCFile;
-import me.mrdaniel.npcs.utils.Position;
 import me.mrdaniel.npcs.utils.ServerUtils;
 import net.minecraft.entity.EntityLiving;
 
@@ -58,13 +56,13 @@ public class NPCManager {
 		return this.npcs;
 	}
 
-	public Optional<NPCAble> getNPC(@Nonnull final NPCFile file) {
+	public Optional<NPCAble> getNPC(@Nonnull final NPCFile file, final boolean loadChunk) {
 		Optional<org.spongepowered.api.world.World> w = file.getWorld();
 		if (!w.isPresent()) { return Optional.empty(); }
 
-		List<NPCAble> l = w.get().getEntities().stream().filter(ent -> ent instanceof NPCAble).map(ent -> (NPCAble)ent).filter(npc -> npc.getNPCFile() != null).filter(npc -> npc.getNPCFile().getId() == file.getId()).collect(Collectors.toList());
+		Vector3i chunkPos = new Vector3i(((int)file.getX()) % 16, 0, ((int)file.getZ()) % 16);
 
-		return l.isEmpty() ? Optional.empty() : Optional.of(l.get(0));
+		return w.get().getChunk(chunkPos).orElse(w.get().loadChunk(chunkPos, true).get()).getEntities().stream().filter(ent -> ent instanceof NPCAble).map(ent -> (NPCAble)ent).filter(npc -> npc.getNPCFile() != null && npc.getNPCFile().getId() == file.getId()).findAny();
 	}
 
 	public Optional<NPCFile> getFile(final int id) {
@@ -91,17 +89,19 @@ public class NPCManager {
 		catch (final IOException exc) { NPCs.getInstance().getLogger().error("Failed to delete npc data file for npc {}: {}", file.getId(), exc.getMessage(), exc); }
 
 		this.npcs.remove(file);
-		this.getNPC(file).ifPresent(npc -> {
+		this.getNPC(file, true).ifPresent(npc -> {
 			MenuManager.getInstance().deselect(npc);
 			ActionManager.getInstance().removeChoosing(npc);
 			((EntityLiving)npc).setDead();
 		});
 	}
 
-	public void create(@Nonnull final Player p, @Nonnull final EntityType type) throws NPCException {
+	public NPCAble create(@Nonnull final Player p, @Nonnull final EntityType type) throws NPCException {
 		if (new NPCCreateEvent(p, type).post()) { throw new NPCException("Event was cancelled!"); }
 
 		NPCFile file = new NPCFile(this.storagePath, this.getNextID());
+		this.npcs.add(file);
+
 		Vector3d loc = p.getLocation().getPosition();
 		Vector3f rot = p.getHeadRotation().toFloat();
 
@@ -117,52 +117,34 @@ public class NPCManager {
 		.setLooking(false)
 		.save();
 
-		this.spawn(file, p);
+		NPCAble npc = this.spawn(file);
+		npc.selectNPC(p);
+
+		return npc;
 	}
 
 	public void copy(@Nonnull final Player p, @Nonnull final NPCFile old) throws NPCException {
-		EntityType type = old.getType().orElseThrow(() -> new NPCException("Could not find EntityType \"" + old.getTypeName() + "\""));
-		if (new NPCCreateEvent(p, type).post()) {
-			throw new NPCException("Event was cancelled!");
-		}
+		NPCAble npc = this.create(p, old.getType().orElseThrow(() -> new NPCException("Could not find EntityType \"" + old.getTypeName() + "\"")));
+		NPCFile file = npc.getNPCFile();
 
-		NPCFile copy = new NPCFile(this.storagePath, this.getNextID());
-		copy.setType(type)
-		.setWorld(p.getWorld())
-		.setX(old.getX())
-		.setY(old.getY())
-		.setZ(old.getZ())
-		.setYaw(old.getYaw())
-		.setPitch(old.getPitch())
-		.setInteract(true)
-		.setLooking(false)
-		.save();
-		old.getSkinUUID().ifPresent(v -> copy.setSkinUUID(v));
+		old.getSkinUUID().ifPresent(v -> file.setSkinUUID(v));
+		OptionTypeRegistryModule.getInstance().getMain().forEach(option -> option.writeToFileFromFile(old, file));
+		OptionTypeRegistryModule.getInstance().getArmor().forEach(option -> option.writeToFileFromFile(old, file));
 
-		OptionTypeRegistryModule.getInstance().getMain().forEach(option -> option.writeToFileFromFile(old, copy));
-		OptionTypeRegistryModule.getInstance().getArmor().forEach(option -> option.writeToFileFromFile(old, copy));
+		for (int i = 0; i < old.getActions().size(); i++) { file.getActions().add(i, old.getActions().get(i)); }
+		old.writeActions();
 
-		Vector3d loc = p.getLocation().getPosition();
-		Vector3f rot = p.getHeadRotation().toFloat();
-		copy.setPosition(new Position(loc.getX(), loc.getY(), loc.getZ(), rot.getY(), rot.getX()));
+		old.getCurrent().forEach((uuid, current) -> file.getCurrent().put(uuid, current));
+		old.writeCurrent();
 
-		for (int i = 0; i < old.getActions().size(); i++) { copy.getActions().add(i, old.getActions().get(i)); }
-		old.getCurrent().forEach((uuid, current) -> copy.getCurrent().put(uuid, current));
-		old.getCooldowns().forEach((uuid, end) -> copy.getCooldowns().put(uuid, end));
-		copy.save();
+		old.getCooldowns().forEach((uuid, end) -> file.getCooldowns().put(uuid, end));
+		old.writeCooldowns();
 
-		this.spawn(copy, p);
+		file.save();
 	}
 
-	public void spawn(@Nonnull final NPCFile file, @Nonnull final Player p) throws NPCException {
-		NPCAble npc = this.respawn(file);
-
-		npc.selectNPC(p);
-		this.npcs.add(file);
-	}
-
-	public NPCAble respawn(@Nonnull final NPCFile file) throws NPCException {
-		this.getNPC(file).ifPresent(npc -> ((EntityLiving)npc).setDead());
+	public NPCAble spawn(@Nonnull final NPCFile file) throws NPCException {
+		this.getNPC(file, true).ifPresent(npc -> ((EntityLiving)npc).setDead());
 
 		World world = file.getWorld().orElseThrow(() -> new NPCException("Invalid world!"));
 		Entity ent = world.createEntity(file.getType().orElseThrow(() -> new NPCException("Could not find EntityType \"" + file.getTypeName() + "\"")), new Vector3d(0, 0, 0));

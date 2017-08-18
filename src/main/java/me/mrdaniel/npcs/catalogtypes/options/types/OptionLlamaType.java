@@ -9,10 +9,10 @@ import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.NPCFile;
 import net.minecraft.entity.passive.EntityLlama;
 
-public class OptionLlamaVariant extends OptionType<LlamaVariant> {
+public class OptionLlamaType extends OptionType<LlamaVariant> {
 
-	public OptionLlamaVariant() {
-		super("LlamaVariant", "llamavariant");
+	public OptionLlamaType() {
+		super("LlamaType", "llamatype");
 	}
 
 	@Override
@@ -22,16 +22,16 @@ public class OptionLlamaVariant extends OptionType<LlamaVariant> {
 
 	@Override
 	public void writeToNPC(final NPCAble npc, final LlamaVariant value) {
-		npc.setNPCLlamaVariant(value);
+		npc.setNPCLlamaType(value);
 	}
 
 	@Override
 	public void writeToFile(final NPCFile file, final LlamaVariant value) {
-		file.setLlamaVariant(value);
+		file.setLlamaType(value);
 	}
 
 	@Override
 	public Optional<LlamaVariant> readFromFile(final NPCFile file) {
-		return file.getLlamaVariant();
+		return file.getLlamaType();
 	}
 }

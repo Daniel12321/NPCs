@@ -57,10 +57,12 @@ public class MainPage extends Page {
 		if (OptionTypes.ANGRY.isSupported(npc)) { lines[++c] = TextUtils.getToggleText("Angry", "/npc angry", file.getAngry()); }
 		if (OptionTypes.SIZE.isSupported(npc)) { lines[++c] = TextUtils.getOptionsText("Size", "/npc size <size>", String.valueOf(file.getSize())); }
 		if (OptionTypes.SITTING.isSupported(npc)) { lines[++c] = TextUtils.getToggleText("Sit", "/npc sitting", file.getSitting()); }
-		if (OptionTypes.CAREER.isSupported(npc)) { lines[++c] = TextUtils.getOptionsText("Career", "/npc career <career>", file.getCareer().map(v -> v.getName()).orElse("None")); }
-		if (OptionTypes.HORSESTYLE.isSupported(npc)) { lines[++c] = TextUtils.getOptionsText("Style", "/npc horsestyle <style>", file.getHorseStyle().map(v -> TextUtils.capitalize(v.getName().toLowerCase())).orElse("None")); }
-		if (OptionTypes.HORSECOLOR.isSupported(npc)) { lines[++c] = TextUtils.getOptionsText("Color", "/npc horsecolor <color>", file.getHorseColor().map(v -> TextUtils.capitalize(v.getName().toLowerCase())).orElse("None")); }
-		if (OptionTypes.LLAMAVARIANT.isSupported(npc)) { lines[++c] = TextUtils.getOptionsText("Variant", "/npc llamavariant <variant>", file.getLlamaVariant().map(v -> TextUtils.capitalize(v.getName().toLowerCase())).orElse("None")); }
-		if (OptionTypes.CATTYPE.isSupported(npc)) { lines[++c] = TextUtils.getOptionsText("Cat", "/npc cattype <type>", file.getCatType().map(v -> TextUtils.capitalize(v.getId().toLowerCase().replace("ocelot", ""))).orElse("None")); }
+		if (OptionTypes.CAREER.isSupported(npc)) { lines[++c] = TextUtils.getOptionsText("Career", "/npc career <career>", file.getCareer().map(v -> TextUtils.capitalize(v.getName())).orElse("None")); }
+		if (OptionTypes.HORSESTYLE.isSupported(npc)) { lines[++c] = TextUtils.getOptionsText("Style", "/npc horsestyle <style>", file.getHorseStyle().map(v -> TextUtils.capitalize(v.getName())).orElse("None")); }
+		if (OptionTypes.HORSECOLOR.isSupported(npc)) { lines[++c] = TextUtils.getOptionsText("Color", "/npc horsecolor <color>", file.getHorseColor().map(v -> TextUtils.capitalize(v.getName())).orElse("None")); }
+		if (OptionTypes.LLAMATYPE.isSupported(npc)) { lines[++c] = TextUtils.getOptionsText("Variant", "/npc llamavariant <variant>", file.getLlamaType().map(v -> TextUtils.capitalize(v.getName())).orElse("None")); }
+		if (OptionTypes.CATTYPE.isSupported(npc)) { lines[++c] = TextUtils.getOptionsText("Cat", "/npc cattype <type>", file.getCatType().map(v -> TextUtils.capitalize(v.getName())).orElse("None")); }
+		if (OptionTypes.RABBITTYPE.isSupported(npc)) { lines[++c] = TextUtils.getOptionsText("Cat", "/npc rabbittype <type>", file.getCatType().map(v -> TextUtils.capitalize(v.getName())).orElse("None")); }
+		if (OptionTypes.PARROTTYPE.isSupported(npc)) { lines[++c] = TextUtils.getOptionsText("Cat", "/npc parrottype <type>", file.getCatType().map(v -> TextUtils.capitalize(v.getName())).orElse("None")); }
 	}
 }

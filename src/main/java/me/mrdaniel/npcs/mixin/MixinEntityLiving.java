@@ -3,7 +3,6 @@ package me.mrdaniel.npcs.mixin;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.spongepowered.api.data.key.Keys;
@@ -13,6 +12,7 @@ import org.spongepowered.api.data.type.HorseColor;
 import org.spongepowered.api.data.type.HorseStyle;
 import org.spongepowered.api.data.type.LlamaVariant;
 import org.spongepowered.api.data.type.OcelotType;
+import org.spongepowered.api.data.type.ParrotVariant;
 import org.spongepowered.api.data.type.RabbitType;
 import org.spongepowered.api.entity.ArmorEquipable;
 import org.spongepowered.api.entity.living.Human;
@@ -81,7 +81,7 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 	}
 
 	@Override
-	public void setNPCFile(@Nonnull final NPCFile file) {
+	public void setNPCFile(final NPCFile file) {
 		this.file = file;
 
 		this.enablePersistence();
@@ -181,6 +181,7 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 		((Living)this).offer(Keys.IS_SITTING, value);
 	}
 
+	@Override
 	public void setNPCSaddle(final boolean value) {
 		((Living)this).offer(Keys.PIG_SADDLE, value);
 	}
@@ -201,7 +202,7 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 	}
 
 	@Override
-	public void setNPCLlamaVariant(final LlamaVariant value) {
+	public void setNPCLlamaType(final LlamaVariant value) {
 		((Living)this).offer(Keys.LLAMA_VARIANT, value);
 	}
 
@@ -210,8 +211,14 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 		((Living)this).offer(Keys.OCELOT_TYPE, value);
 	}
 
-	public void setNPCRabbitType(@Nonnull final RabbitType value) {
+	@Override
+	public void setNPCRabbitType(final RabbitType value) {
 		((Living)this).offer(Keys.RABBIT_TYPE, value);
+	}
+
+	@Override
+	public void setNPCParrotType(final ParrotVariant value) {
+		((Living)this).offer(Keys.PARROT_VARIANT, value);
 	}
 
 	@Override

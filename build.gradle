@@ -10,7 +10,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
         classpath 'org.spongepowered:mixingradle:0.4-SNAPSHOT'
     }
 }
@@ -38,14 +38,14 @@ allprojects {
 
 dependencies {
     compileOnly "org.projectlombok:lombok:1.16.16"
-    compile 'org.spongepowered:spongeapi:6.1.0-SNAPSHOT'
+    compile 'org.spongepowered:spongeapi:7.0.0-SNAPSHOT'
     compile 'org.spongepowered:mixin:0.5.17-SNAPSHOT'
     compile 'com.github.rojo8399:PlaceholderAPI:master-SNAPSHOT'
 }
 
 minecraft {
-    version = '1.11'
-    mappings = 'stable_32'
+    version = '1.12'
+    mappings = 'snapshot_20170818'
 }
 
 sourceSets {

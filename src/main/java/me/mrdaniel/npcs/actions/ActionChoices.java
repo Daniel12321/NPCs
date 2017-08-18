@@ -41,7 +41,7 @@ public class ActionChoices extends Action {
 	@Nonnull public Map<String, Integer> getChoices() { return this.choices; }
 
 	@Override
-	public void execute(final ActionResult result, final Player p, final NPCFile file) {
+	public void execute(final Player p, final NPCFile file, final ActionResult result) {
 		ActionManager.getInstance().setChoosing(p.getUniqueId(), file);
 
 		UUID uuid = p.getUniqueId();
