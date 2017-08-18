@@ -146,6 +146,9 @@ public class NPCFile {
 	public NPCFile setSitting(final boolean value) { this.node.getNode("sitting").setValue(value); return this; }
 	public boolean getSitting() { return this.node.getNode("sitting").getBoolean(false); }
 
+	public NPCFile setSaddle(final boolean value) { this.node.getNode("saddle").setValue(value); return this; }
+	public boolean getSaddle() { return this.node.getNode("saddle").getBoolean(false); }
+
 	public NPCFile setCareer(@Nonnull final Career value) { this.node.getNode("career").setValue(value.getId()); return this; }
 	public Optional<Career> getCareer() { return Optional.ofNullable(this.node.getNode("career").getString()).map(id -> NPCs.getInstance().getGame().getRegistry().getType(Career.class, id).orElse(null)); }
 

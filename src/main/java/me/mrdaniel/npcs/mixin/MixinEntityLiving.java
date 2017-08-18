@@ -96,9 +96,9 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 		super.setLocationAndAngles(file.getX(), file.getY(), file.getZ(), file.getYaw(), file.getPitch());
 
 		file.getSkinUUID().ifPresent(skin -> this.setNPCSkin(skin));
-		OptionTypeRegistryModule.getInstance().getMain().forEach(option -> option.setFromFile(this, file));
-		OptionTypeRegistryModule.getInstance().getArmor().forEach(option -> option.setFromFile(this, file));
-		OptionTypes.POSITION.setFromFile(this, file);
+		OptionTypeRegistryModule.getInstance().getMain().forEach(option -> option.writeToNPCFromFile(this, file));
+		OptionTypeRegistryModule.getInstance().getArmor().forEach(option -> option.writeToNPCFromFile(this, file));
+		OptionTypes.POSITION.writeToNPCFromFile(this, file);
 	}
 
 	@Override
@@ -181,6 +181,10 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 	@Override
 	public void setNPCSitting(final boolean value) {
 		((Living)this).offer(Keys.IS_SITTING, value);
+	}
+
+	public void setNPCSaddle(final boolean value) {
+		((Living)this).offer(Keys.PIG_SADDLE, value);
 	}
 
 	@Override

@@ -139,8 +139,8 @@ public class NPCManager {
 		.save();
 		old.getSkinUUID().ifPresent(v -> copy.setSkinUUID(v));
 
-		OptionTypeRegistryModule.getInstance().getMain().forEach(option -> option.setFromFile(old, copy));
-		OptionTypeRegistryModule.getInstance().getArmor().forEach(option -> option.setFromFile(old, copy));
+		OptionTypeRegistryModule.getInstance().getMain().forEach(option -> option.writeToFileFromFile(old, copy));
+		OptionTypeRegistryModule.getInstance().getArmor().forEach(option -> option.writeToFileFromFile(old, copy));
 
 		Vector3d loc = p.getLocation().getPosition();
 		Vector3f rot = p.getHeadRotation().toFloat();

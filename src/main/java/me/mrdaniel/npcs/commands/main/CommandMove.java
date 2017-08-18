@@ -23,6 +23,6 @@ public class CommandMove extends NPCCommand {
 	public void execute(final Player p, final NPCAble npc, final CommandContext args) throws CommandException {
 		Vector3d loc = p.getLocation().getPosition();
 		Vector3f rot = p.getHeadRotation().toFloat();
-		OptionTypes.POSITION.setFileAndNPC(npc, new Position(loc.getX(), loc.getY(), loc.getZ(), rot.getY(), rot.getX()));
+		OptionTypes.POSITION.writeToFileAndNPC(npc, new Position(loc.getX(), loc.getY(), loc.getZ(), rot.getY(), rot.getX()));
 	}
 }

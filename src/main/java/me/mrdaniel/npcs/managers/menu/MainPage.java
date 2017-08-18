@@ -44,23 +44,23 @@ public class MainPage extends Page {
 		++c;
 
 		lines[++c] = Text.builder().append(Text.of(TextColors.GOLD, "Name: ", TextColors.AQUA)).append(TextUtils.toText(file.getName().orElse("None"))).onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Change"))).onClick(TextActions.suggestCommand("/npc name <name>")).build();
-		if (OptionTypes.SKIN.supports(npc)) { lines[++c] = Text.builder().append(Text.of(TextColors.GOLD, "Skin: ", TextColors.AQUA, file.getSkinName().orElse("None"))).onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Change"))).onClick(TextActions.suggestCommand("/npc skin <name>")).build(); }
+		if (OptionTypes.SKIN.isSupported(npc)) { lines[++c] = Text.builder().append(Text.of(TextColors.GOLD, "Skin: ", TextColors.AQUA, file.getSkinName().orElse("None"))).onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Change"))).onClick(TextActions.suggestCommand("/npc skin <name>")).build(); }
 		++c;
 
 		lines[++c] = TextUtils.getToggleText("Looking", "/npc looking", file.getLooking());
 		lines[++c] = TextUtils.getToggleText("Interact", "/npc interact", file.getInteract());
 		lines[++c] = TextUtils.getToggleText("Silent", "/npc silent", file.getSilent());
-		if (OptionTypes.GLOWING.supports(npc)) { lines[++c] = TextUtils.getToggleText("Glowing", "/npc glowing", file.getGlowing()); }
-		if (OptionTypes.GLOWCOLOR.supports(npc)) { lines[++c] = TextUtils.getOptionsText("GlowColor", "/npc glowcolor <color>", file.getGlowColor().map(v -> TextUtils.capitalize(v.getName())).orElse("White")); }
-		if (OptionTypes.BABY.supports(npc)) { lines[++c] = TextUtils.getToggleText("Baby", "/npc baby", file.getBaby()); }
-		if (OptionTypes.CHARGED.supports(npc)) { lines[++c] = TextUtils.getToggleText("Charged", "/npc charged", file.getCharged()); }
-		if (OptionTypes.ANGRY.supports(npc)) { lines[++c] = TextUtils.getToggleText("Angry", "/npc angry", file.getAngry()); }
-		if (OptionTypes.SIZE.supports(npc)) { lines[++c] = TextUtils.getOptionsText("Size", "/npc size <size>", String.valueOf(file.getSize())); }
-		if (OptionTypes.SITTING.supports(npc)) { lines[++c] = TextUtils.getToggleText("Sit", "/npc sitting", file.getSitting()); }
-		if (OptionTypes.CAREER.supports(npc)) { lines[++c] = TextUtils.getOptionsText("Career", "/npc career <career>", file.getCareer().map(v -> v.getName()).orElse("None")); }
-		if (OptionTypes.HORSESTYLE.supports(npc)) { lines[++c] = TextUtils.getOptionsText("Style", "/npc horsestyle <style>", file.getHorseStyle().map(v -> TextUtils.capitalize(v.getName().toLowerCase())).orElse("None")); }
-		if (OptionTypes.HORSECOLOR.supports(npc)) { lines[++c] = TextUtils.getOptionsText("Color", "/npc horsecolor <color>", file.getHorseColor().map(v -> TextUtils.capitalize(v.getName().toLowerCase())).orElse("None")); }
-		if (OptionTypes.LLAMAVARIANT.supports(npc)) { lines[++c] = TextUtils.getOptionsText("Variant", "/npc llamavariant <variant>", file.getLlamaVariant().map(v -> TextUtils.capitalize(v.getName().toLowerCase())).orElse("None")); }
-		if (OptionTypes.CATTYPE.supports(npc)) { lines[++c] = TextUtils.getOptionsText("Cat", "/npc cattype <type>", file.getCatType().map(v -> TextUtils.capitalize(v.getId().toLowerCase().replace("ocelot", ""))).orElse("None")); }
+		if (OptionTypes.GLOWING.isSupported(npc)) { lines[++c] = TextUtils.getToggleText("Glowing", "/npc glowing", file.getGlowing()); }
+		if (OptionTypes.GLOWCOLOR.isSupported(npc)) { lines[++c] = TextUtils.getOptionsText("GlowColor", "/npc glowcolor <color>", file.getGlowColor().map(v -> TextUtils.capitalize(v.getName())).orElse("White")); }
+		if (OptionTypes.BABY.isSupported(npc)) { lines[++c] = TextUtils.getToggleText("Baby", "/npc baby", file.getBaby()); }
+		if (OptionTypes.CHARGED.isSupported(npc)) { lines[++c] = TextUtils.getToggleText("Charged", "/npc charged", file.getCharged()); }
+		if (OptionTypes.ANGRY.isSupported(npc)) { lines[++c] = TextUtils.getToggleText("Angry", "/npc angry", file.getAngry()); }
+		if (OptionTypes.SIZE.isSupported(npc)) { lines[++c] = TextUtils.getOptionsText("Size", "/npc size <size>", String.valueOf(file.getSize())); }
+		if (OptionTypes.SITTING.isSupported(npc)) { lines[++c] = TextUtils.getToggleText("Sit", "/npc sitting", file.getSitting()); }
+		if (OptionTypes.CAREER.isSupported(npc)) { lines[++c] = TextUtils.getOptionsText("Career", "/npc career <career>", file.getCareer().map(v -> v.getName()).orElse("None")); }
+		if (OptionTypes.HORSESTYLE.isSupported(npc)) { lines[++c] = TextUtils.getOptionsText("Style", "/npc horsestyle <style>", file.getHorseStyle().map(v -> TextUtils.capitalize(v.getName().toLowerCase())).orElse("None")); }
+		if (OptionTypes.HORSECOLOR.isSupported(npc)) { lines[++c] = TextUtils.getOptionsText("Color", "/npc horsecolor <color>", file.getHorseColor().map(v -> TextUtils.capitalize(v.getName().toLowerCase())).orElse("None")); }
+		if (OptionTypes.LLAMAVARIANT.isSupported(npc)) { lines[++c] = TextUtils.getOptionsText("Variant", "/npc llamavariant <variant>", file.getLlamaVariant().map(v -> TextUtils.capitalize(v.getName().toLowerCase())).orElse("None")); }
+		if (OptionTypes.CATTYPE.isSupported(npc)) { lines[++c] = TextUtils.getOptionsText("Cat", "/npc cattype <type>", file.getCatType().map(v -> TextUtils.capitalize(v.getId().toLowerCase().replace("ocelot", ""))).orElse("None")); }
 	}
 }

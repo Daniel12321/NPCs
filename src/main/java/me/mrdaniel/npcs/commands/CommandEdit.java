@@ -25,13 +25,13 @@ public class CommandEdit<T> extends NPCCommand {
 
 	@Override
 	public void execute(final Player p, final NPCAble npc, final CommandContext args) throws CommandException {
-		if (!this.option.supports(npc)) {
+		if (!this.option.isSupported(npc)) {
 			throw new CommandException(Text.of(TextColors.RED, "That NPC does not support that option!"));
 		}
 		if (new NPCEvent.Edit(p, npc).post()) {
 			throw new CommandException(Text.of(TextColors.RED, "Event was cancelled!"));
 		}
 
-		this.option.setFileAndNPC(npc, args.<T>getOne(this.option.getId()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "Invalid value!"))));
+		this.option.writeToFileAndNPC(npc, args.<T>getOne(this.option.getId()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "Invalid value!"))));
 	}
 }

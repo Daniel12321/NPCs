@@ -44,6 +44,7 @@ public interface NPCAble {
 	public void setNPCAngry(final boolean value);
 	public void setNPCSize(final int value);
 	public void setNPCSitting(final boolean value);
+	public void setNPCSaddle(final boolean value);
 	public void setNPCCareer(@Nonnull final Career value);
 	public void setNPCHorseStyle(@Nonnull final HorseStyle value);
 	public void setNPCHorseColor(@Nonnull final HorseColor value);
