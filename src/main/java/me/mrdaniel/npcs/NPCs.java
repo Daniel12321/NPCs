@@ -99,7 +99,7 @@ import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 
 @Plugin(id = "npcs",
 		name = "NPCs",
-		version = "2.1.0-1.11.2",
+		version = "2.1.0",
 		authors = {"Daniel12321"},
 		url = "https://github.com/Daniel12321/NPCs",
 		description = "A plugin that adds simple custom NPC's to your worlds.",

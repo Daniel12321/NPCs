@@ -26,10 +26,10 @@ public class NPCData extends AbstractData<NPCData, ImmutableNPCData> {
 	}
 
 	@Override protected void registerGettersAndSetters() {}
-	public Optional<NPCData> from(@Nonnull final DataView view) { return Optional.of(new NPCData(view.getInt(NPCKeys.ID.getQuery()).orElse(0))); }
 	@Override public DataContainer toContainer() { return this.asImmutable().toContainer(); }
 	@Override public Optional<NPCData> fill(DataHolder holder, MergeFunction overlap) { return Optional.of(Preconditions.checkNotNull(overlap).merge(copy(), from(holder.toContainer()).orElse(null))); }
 	@Override public Optional<NPCData> from(DataContainer container) { return from((DataView)container); }
+	public Optional<NPCData> from(@Nonnull final DataView view) { return Optional.of(new NPCData(view.getInt(NPCKeys.ID.getQuery()).orElse(0))); }
 	@Override public NPCData copy() { return new NPCData(this.id); }
 	@Override public ImmutableNPCData asImmutable() { return new ImmutableNPCData(this.id); }
 	@Override public int getContentVersion() { return 1; }

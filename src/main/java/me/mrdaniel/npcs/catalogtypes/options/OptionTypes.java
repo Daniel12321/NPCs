@@ -58,9 +58,6 @@ public final class OptionTypes {
 	public static final OptionType<Boolean> SITTING = new OptionSitting();
 	public static final OptionType<Boolean> SADDLE = new OptionSaddle();
 	public static final OptionType<Career> CAREER = new OptionCareer();
-//	public static final OptionType<SkeletonType> SKELETONTYPE = new OptionSkeletonType();
-//	public static final OptionType<ZombieType> ZOMBIETYPE = new OptionZombieType();
-//	public static final OptionType<HorseVariant> HORSEVARIANT = new OptionHorseVariant();
 	public static final OptionType<HorseStyle> HORSESTYLE = new OptionHorseStyle();
 	public static final OptionType<HorseColor> HORSECOLOR = new OptionHorseColor();
 	public static final OptionType<LlamaVariant> LLAMAVARIANT = new OptionLlamaVariant();

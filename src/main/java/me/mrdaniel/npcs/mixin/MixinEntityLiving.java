@@ -46,7 +46,6 @@ import me.mrdaniel.npcs.managers.MenuManager;
 import me.mrdaniel.npcs.managers.NPCManager;
 import me.mrdaniel.npcs.utils.Position;
 import me.mrdaniel.npcs.utils.TextUtils;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -71,7 +70,6 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 		this.interact = true;
 	}
 
-	@Shadow public abstract void faceEntity(Entity entityIn, float maxYawIncrease, float maxPitchIncrease);
 	@Shadow public abstract void enablePersistence();
 	@Shadow public abstract void setCanPickUpLoot(boolean canPickup);
 	@Shadow public abstract void setNoAI(boolean disable);
@@ -160,7 +158,7 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 		if ((Object)this instanceof EntityZombie) { ((EntityZombie)(Object)this).setChild(value); }
 		else { ((EntityAgeable)(Object)this).setGrowingAge(value ? Integer.MIN_VALUE : 0); }
 
-		this.setLocationAndAngles(this.file.getX(), this.file.getY(), this.file.getZ(), this.file.getYaw(), this.file.getPitch());
+		super.setLocationAndAngles(this.file.getX(), this.file.getY(), this.file.getZ(), this.file.getYaw(), this.file.getPitch());
 	}
 
 	@Override

@@ -23,7 +23,7 @@ import me.mrdaniel.npcs.utils.Position;
 public interface NPCAble {
 
 	@Nullable public NPCFile getNPCFile();
-	public void setNPCFile(@Nullable final NPCFile file);
+	public void setNPCFile(@Nonnull final NPCFile file);
 
 	default void selectNPC(@Nonnull final Player p) { MenuManager.getInstance().select(p, this); }
 
