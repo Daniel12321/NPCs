@@ -13,7 +13,7 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import lombok.Getter;
-import me.mrdaniel.npcs.catalogtypes.menupages.PageType;
+import me.mrdaniel.npcs.catalogtypes.menupagetype.PageType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.NPCFile;
 import me.mrdaniel.npcs.managers.MenuManager;
@@ -41,7 +41,7 @@ public abstract class NPCCommand extends PlayerCommand {
 		}
 		else if (id.isPresent()) {
 			NPCFile file = NPCManager.getInstance().getFile(id.get()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "No NPC with that ID exists!")));
-			NPCAble npc = NPCManager.getInstance().getNPC(file, true).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "NPC is not spawned in!")));
+			NPCAble npc = NPCManager.getInstance().getNPC(file).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "NPC is not spawned in!")));
 			this.execute(p, npc, args);
 		}
 		else throw new CommandException(Text.of(TextColors.RED, "You don't have an NPC selected!"));

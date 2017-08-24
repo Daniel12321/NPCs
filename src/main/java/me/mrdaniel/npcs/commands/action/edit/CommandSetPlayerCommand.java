@@ -5,7 +5,7 @@ import org.spongepowered.api.entity.living.player.Player;
 
 import me.mrdaniel.npcs.actions.Action;
 import me.mrdaniel.npcs.actions.ActionPlayerCommand;
-import me.mrdaniel.npcs.catalogtypes.actions.ActionTypes;
+import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
 import me.mrdaniel.npcs.commands.ActionCommand;
 import me.mrdaniel.npcs.exceptions.ActionException;
 

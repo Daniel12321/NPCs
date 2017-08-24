@@ -7,7 +7,7 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import me.mrdaniel.npcs.catalogtypes.conditions.ConditionTypes;
+import me.mrdaniel.npcs.catalogtypes.conditiontype.ConditionTypes;
 import ninja.leaping.configurate.ConfigurationNode;
 
 public class ConditionLevel extends Condition {

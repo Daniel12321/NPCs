@@ -11,10 +11,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-@Mixin(value = EntityLivingBase.class, priority = 1000)
+@Mixin(value = EntityLivingBase.class, priority = 10)
 public abstract class MixinEntityLivingBase extends Entity {
 
 	public MixinEntityLivingBase(World worldIn) {
@@ -25,15 +24,8 @@ public abstract class MixinEntityLivingBase extends Entity {
 
 	@Overwrite
 	protected boolean canDropLoot() {
-        return !this.isChild() || this.isNPC();
+        return !(this.isChild() || this.isNPC());
     }
-
-	@Inject(method = "attackEntityFrom", at = @At("HEAD"), cancellable = true)
-	public void onAttackEntityFrom(final DamageSource source, final float amount, CallbackInfoReturnable<Boolean> cir) {
-		if (this.isNPC()) {
-			cir.setReturnValue(false);
-		}
-	}
 
 	@Inject(method = "canBreatheUnderwater", at = @At("RETURN"), cancellable = true)
 	public void onCanBreatheUnderwater(final CallbackInfoReturnable<Boolean> cir) {
@@ -46,13 +38,6 @@ public abstract class MixinEntityLivingBase extends Entity {
 	protected void onCollideWithEntity(Entity entityIn, CallbackInfo ci) {
 		if (this.isNPC()) {
 			ci.cancel();
-		}
-	}
-
-	@Inject(method = "canBeCollidedWith", at = @At("RETURN"), cancellable = true)
-	public void onCanBeCollidedWith(final CallbackInfoReturnable<Boolean> cir) {
-		if (this.isNPC() && cir.getReturnValue() != false) {
-			cir.setReturnValue(false);
 		}
 	}
 

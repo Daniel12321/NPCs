@@ -6,23 +6,12 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import org.spongepowered.api.data.key.Keys;
-import org.spongepowered.api.data.type.Career;
 import org.spongepowered.api.data.type.HandTypes;
-import org.spongepowered.api.data.type.HorseColor;
-import org.spongepowered.api.data.type.HorseStyle;
-import org.spongepowered.api.data.type.LlamaVariant;
-import org.spongepowered.api.data.type.OcelotType;
-import org.spongepowered.api.data.type.ParrotVariant;
-import org.spongepowered.api.data.type.RabbitType;
 import org.spongepowered.api.entity.ArmorEquipable;
 import org.spongepowered.api.entity.living.Human;
 import org.spongepowered.api.entity.living.Living;
-import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.scheduler.Task;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColor;
-import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -34,45 +23,71 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import com.flowpowered.math.vector.Vector3d;
 
 import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.catalogtypes.options.OptionTypeRegistryModule;
-import me.mrdaniel.npcs.catalogtypes.options.OptionTypes;
-import me.mrdaniel.npcs.events.NPCEvent;
-import me.mrdaniel.npcs.exceptions.NPCException;
+import me.mrdaniel.npcs.catalogtypes.career.Career;
+import me.mrdaniel.npcs.catalogtypes.cattype.CatType;
+import me.mrdaniel.npcs.catalogtypes.glowcolor.GlowColor;
+import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColor;
+import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColors;
+import me.mrdaniel.npcs.catalogtypes.horsepattern.HorsePattern;
+import me.mrdaniel.npcs.catalogtypes.horsepattern.HorsePatterns;
+import me.mrdaniel.npcs.catalogtypes.llamatype.LlamaType;
+import me.mrdaniel.npcs.catalogtypes.optiontype.OptionTypeRegistryModule;
+import me.mrdaniel.npcs.catalogtypes.optiontype.OptionTypes;
+import me.mrdaniel.npcs.catalogtypes.parrottype.ParrotType;
+import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitType;
+import me.mrdaniel.npcs.interfaces.mixin.IMixinEntityVillager;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.NPCFile;
-import me.mrdaniel.npcs.managers.ActionManager;
-import me.mrdaniel.npcs.managers.GlowColorManager;
-import me.mrdaniel.npcs.managers.MenuManager;
 import me.mrdaniel.npcs.managers.NPCManager;
 import me.mrdaniel.npcs.utils.Position;
 import me.mrdaniel.npcs.utils.TextUtils;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntitySnowman;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.passive.EntityBat;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityLlama;
+import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.passive.EntityParrot;
+import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntityRabbit;
+import net.minecraft.entity.passive.EntityTameable;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.scoreboard.ScorePlayerTeam;
+import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextFormatting;
 
-@Mixin(value = EntityLiving.class, priority = 1000)
+@Mixin(value = EntityLiving.class, priority = 10)
 public abstract class MixinEntityLiving extends EntityLivingBase implements NPCAble {
 
 	private NPCFile file;
 	private boolean looking;
-	private boolean interact;
+//	private boolean interact;
 
 	public MixinEntityLiving(final net.minecraft.world.World worldIn) {
 		super(worldIn);
 
 		this.file = null;
 		this.looking = false;
-		this.interact = true;
+//		this.interact = true;
 	}
 
 	@Shadow public abstract void enablePersistence();
 	@Shadow public abstract void setCanPickUpLoot(boolean canPickup);
 	@Shadow public abstract void setNoAI(boolean disable);
+	@Shadow public abstract boolean getLeashed();
+	@Shadow public abstract Entity getLeashedToEntity();
+	@Shadow public abstract void clearLeashed(boolean sendPacket, boolean dropLead);
+	@Shadow public abstract boolean canBeLeashedTo(EntityPlayer player);
+	@Shadow public abstract void setLeashedToEntity(Entity entityIn, boolean sendAttachNotification);
+	@Shadow protected abstract boolean processInteract(EntityPlayer player, EnumHand hand);
 
 	@Nullable
 	@Override
@@ -135,7 +150,7 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 
 	@Override
 	public void setNPCInteract(final boolean value) {
-		this.interact = value;
+//		this.interact = value;
 	}
 
 	@Override
@@ -146,11 +161,24 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 	@Override
 	public void setNPCGlowing(final boolean value) {
 		super.setGlowing(value);
+
+		if (value) { this.file.getGlowColor().ifPresent(color -> this.setNPCGlowColor(color)); }
 	}
 
 	@Override
-	public void setNPCGlowColor(final TextColor value) {
-		if (this.isGlowing()) { GlowColorManager.getInstance().setGlowColor((EntityLiving)(Object)this, value); }
+	public void setNPCGlowColor(final GlowColor value) {
+		if (this.isGlowing()) {
+			String teamName = "NPC_" + value.getName();
+			String npcName = (this instanceof Human) ? super.getCustomNameTag() : super.getCachedUniqueIdString();
+			Scoreboard board =  super.world.getScoreboard();
+			ScorePlayerTeam team = board.getTeam(teamName);
+			if (team == null) { team = board.createTeam(teamName); }
+
+			board.addPlayerToTeam(npcName, teamName);
+			team.setColor(value.getColor());
+			team.setPrefix(value.getColor().toString());
+			team.setSuffix(TextFormatting.RESET.toString());
+		}
 	}
 
 	@Override
@@ -178,47 +206,67 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 
 	@Override
 	public void setNPCSitting(final boolean value) {
-		((Living)this).offer(Keys.IS_SITTING, value);
+		((EntityTameable)(Object)this).setSitting(value);
+	}
+
+	@Override
+	public void setNPCHanging(final boolean value) {
+		((EntityBat)(Object)this).setIsBatHanging(value);
+	}
+
+	@Override
+	public void setNPCPumpkin(final boolean value) {
+		((EntitySnowman)(Object)this).setPumpkinEquipped(value);
 	}
 
 	@Override
 	public void setNPCSaddle(final boolean value) {
-		((Living)this).offer(Keys.PIG_SADDLE, value);
+		((EntityPig)(Object)this).setSaddled(value);
 	}
 
 	@Override
 	public void setNPCCareer(final Career value) {
-		((Living)this).offer(Keys.CAREER, value);
+		((EntityVillager)(Object)this).setProfession(value.getProfessionId());
+		((IMixinEntityVillager)this).setCareerId(value.getCareerId());
+
+//		try {
+//			Field f = villager.getClass().getField("careerId");
+//			f.setAccessible(true);
+//			f.set(villager, value.getCareerId());
+//		}
+//		catch (final Exception exc) {
+//			exc.printStackTrace();
+//		}
 	}
 
 	@Override
-	public void setNPCHorseStyle(final HorseStyle value) {
-		((Living)this).offer(Keys.HORSE_STYLE, value);
+	public void setNPCHorsePattern(final HorsePattern value) {
+		((EntityHorse)(Object)this).setHorseVariant(value.getNbtId() + this.file.getHorseColor().orElse(HorseColors.BROWN).getNbtId());
 	}
 
 	@Override
 	public void setNPCHorseColor(final HorseColor value) {
-		((Living)this).offer(Keys.HORSE_COLOR, value);
+		((EntityHorse)(Object)this).setHorseVariant(value.getNbtId() + this.file.getHorsePattern().orElse(HorsePatterns.NONE).getNbtId());
 	}
 
 	@Override
-	public void setNPCLlamaType(final LlamaVariant value) {
-		((Living)this).offer(Keys.LLAMA_VARIANT, value);
+	public void setNPCLlamaType(final LlamaType value) {
+		((EntityLlama)(Object)this).setVariant(value.getNbtId());
 	}
 
 	@Override
-	public void setNPCCatType(final OcelotType value) {
-		((Living)this).offer(Keys.OCELOT_TYPE, value);
+	public void setNPCCatType(final CatType value) {
+		((EntityOcelot)(Object)this).setTameSkin(value.getNbtId());
 	}
 
 	@Override
 	public void setNPCRabbitType(final RabbitType value) {
-		((Living)this).offer(Keys.RABBIT_TYPE, value);
+		((EntityRabbit)(Object)this).setRabbitType(value.getNbtId());
 	}
 
 	@Override
-	public void setNPCParrotType(final ParrotVariant value) {
-		((Living)this).offer(Keys.PARROT_VARIANT, value);
+	public void setNPCParrotType(final ParrotType value) {
+		((EntityParrot)(Object)this).setVariant(value.getNbtId());
 	}
 
 	@Override
@@ -265,27 +313,67 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 		}
 	}
 
-	@Inject(method = "processInitialInteract", at = @At("RETURN"), cancellable = true)
-	public void onProcessInitialInteract(final EntityPlayer player, final EnumHand hand, final CallbackInfoReturnable<Boolean> cir) {
-		if (this.file != null) {
-			if (hand == EnumHand.OFF_HAND) {
-				Player spongePlayer = (Player) player;
-				NPCAble npc = (NPCAble) this;
-				if (player.isSneaking() && spongePlayer.hasPermission("npc.edit.select")) {
-					MenuManager.getInstance().select(spongePlayer, npc);
-				}
-				else {
-					if (!new NPCEvent.Interact(spongePlayer, npc).post()) {
-						try { ActionManager.getInstance().execute(player.getUniqueID(), this.file); }
-						catch (final NPCException exc) { spongePlayer.sendMessage(Text.of(TextColors.RED, "Failed to perform NPC actions: " + exc.getMessage())); }
-					}
-				}
-			}
-			if (cir.getReturnValue() != this.interact) {
-				cir.setReturnValue(this.interact);
-			}
-		}
-	}
+//	@Overwrite
+//	public final boolean processInitialInteract(final EntityPlayer player, final EnumHand hand) {
+//		return true;
+//	}
+
+//		if (this.getLeashed() && this.getLeashedToEntity() == player) {
+//			this.clearLeashed(true, !player.capabilities.isCreativeMode);
+//			return true;
+//		}
+//		else {
+//			net.minecraft.item.ItemStack itemstack = player.getHeldItem(hand);
+//
+//			if (this.processNPCInterract(player, hand)) {
+//				return true;
+//			}
+//			else if (itemstack.getItem() == Items.LEAD && this.canBeLeashedTo(player)) {
+//				this.setLeashedToEntity(player, true);
+//				itemstack.shrink(1);
+//				return true;
+//			}
+//			else {
+//				return this.processInteract(player, hand) ? true : super.processInitialInteract(player, hand);
+//			}
+//		}
+//	}
+//
+//	private boolean processNPCInterract(EntityPlayer player, EnumHand hand) {
+//		Player spongePlayer = (Player) player;
+//		if (this.file != null && hand == EnumHand.OFF_HAND) {
+//			if (player.isSneaking() && spongePlayer.hasPermission("npc.edit.select")) {
+//				MenuManager.getInstance().select(((Player)player), (NPCAble) this);
+//				return true;
+//			}
+//			else if (this.interact == false) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
+//
+//	@Inject(method = "processInitialInteract", at = @At("HEAD"), cancellable = true)
+//	public void onProcessInitialInteract(final EntityPlayer player, final EnumHand hand, final CallbackInfoReturnable<Boolean> cir) {
+//		if (this.file != null) {
+//			if (hand == EnumHand.OFF_HAND) {
+//				Player spongePlayer = (Player) player;
+//				NPCAble npc = (NPCAble) this;
+//				if (player.isSneaking() && spongePlayer.hasPermission("npc.edit.select")) {
+//					MenuManager.getInstance().select(spongePlayer, npc);
+//				}
+//				else {
+//					if (!new NPCEvent.Interact(spongePlayer, npc).post()) {
+//						try { ActionManager.getInstance().execute(player.getUniqueID(), this.file); }
+//						catch (final NPCException exc) { spongePlayer.sendMessage(Text.of(TextColors.RED, "Failed to perform NPC actions: " + exc.getMessage())); }
+//					}
+//				}
+//			}
+//			if (this.interact == false) {
+//				cir.setReturnValue(this.interact);
+//			}
+//		}
+//	}
 
 	@Inject(method = "onEntityUpdate", at = @At("RETURN"), cancellable = false)
 	public void onOnEntityUpdate(final CallbackInfo ci) {

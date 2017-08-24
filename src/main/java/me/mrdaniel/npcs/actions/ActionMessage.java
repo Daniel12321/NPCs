@@ -7,7 +7,7 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
 
-import me.mrdaniel.npcs.catalogtypes.actions.ActionTypes;
+import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
 import me.mrdaniel.npcs.io.NPCFile;
 import me.mrdaniel.npcs.managers.ActionResult;
 import me.mrdaniel.npcs.managers.PlaceholderManager;
@@ -29,7 +29,7 @@ public class ActionMessage extends Action {
 	@Override
 	public void execute(final Player p, final NPCFile file, final ActionResult result) {
 		p.sendMessage(PlaceholderManager.getInstance().formatNPCMessage(p, this.message, file.getName().orElse("")));
-		result.setNext(result.getCurrent()+1);
+		result.setNextAction(result.getCurrentAction()+1);
 	}
 
 	@Override

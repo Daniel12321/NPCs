@@ -6,6 +6,7 @@
     "mixins": [
         "MixinEntity",
         "MixinEntityLiving",
-        "MixinEntityLivingBase"
+        "MixinEntityLivingBase",
+        "MixinEntityVillager"
     ]
 }

@@ -8,7 +8,7 @@ import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
 
 import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.catalogtypes.actions.ActionTypes;
+import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
 import me.mrdaniel.npcs.io.NPCFile;
 import me.mrdaniel.npcs.managers.ActionResult;
 import me.mrdaniel.npcs.managers.PlaceholderManager;
@@ -30,7 +30,7 @@ public class ActionPlayerCommand extends Action {
 	@Override
 	public void execute(final Player p, final NPCFile file, final ActionResult result) {
 		NPCs.getInstance().getGame().getCommandManager().process(p, PlaceholderManager.getInstance().formatCommand(p, this.command));
-		result.setNext(result.getCurrent()+1);
+		result.setNextAction(result.getCurrentAction()+1);
 	}
 
 	@Override

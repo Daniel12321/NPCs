@@ -5,8 +5,8 @@ import javax.annotation.Nonnull;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 
-import me.mrdaniel.npcs.catalogtypes.actions.ActionType;
-import me.mrdaniel.npcs.catalogtypes.actions.ActionTypeRegistryModule;
+import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.catalogtypes.actiontype.ActionType;
 import me.mrdaniel.npcs.exceptions.ActionException;
 import me.mrdaniel.npcs.io.NPCFile;
 import me.mrdaniel.npcs.managers.ActionResult;
@@ -33,6 +33,6 @@ public abstract class Action {
 
 	@Nonnull
 	public static Action of(@Nonnull final ConfigurationNode node) throws ActionException {
-		return ActionTypeRegistryModule.getInstance().getById(node.getNode("Type").getString("")).orElseThrow(() -> new ActionException("Invalid ActionType!")).getAction().apply(node);
+		return NPCs.getInstance().getGame().getRegistry().getType(ActionType.class, node.getNode("Type").getString("")).orElseThrow(() -> new ActionException("Invalid ActionType!")).getAction().apply(node);
 	}
 }

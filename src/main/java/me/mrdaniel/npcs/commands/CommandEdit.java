@@ -8,8 +8,8 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import me.mrdaniel.npcs.catalogtypes.menupages.PageType;
-import me.mrdaniel.npcs.catalogtypes.options.OptionType;
+import me.mrdaniel.npcs.catalogtypes.menupagetype.PageType;
+import me.mrdaniel.npcs.catalogtypes.optiontype.OptionType;
 import me.mrdaniel.npcs.events.NPCEvent;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 

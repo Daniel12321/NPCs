@@ -7,7 +7,7 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
 
-import me.mrdaniel.npcs.catalogtypes.actions.ActionTypes;
+import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
 import me.mrdaniel.npcs.io.NPCFile;
 import me.mrdaniel.npcs.managers.ActionResult;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -28,7 +28,7 @@ public class ActionGoto extends Action {
 
 	@Override
 	public void execute(final Player p, final NPCFile file, final ActionResult result) {
-		result.setNext(this.next);
+		result.setNextAction(this.next);
 	}
 
 	@Override

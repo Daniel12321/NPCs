@@ -6,7 +6,7 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import me.mrdaniel.npcs.catalogtypes.menupages.PageTypes;
+import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
 import me.mrdaniel.npcs.commands.NPCFileCommand;
 import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.io.NPCFile;

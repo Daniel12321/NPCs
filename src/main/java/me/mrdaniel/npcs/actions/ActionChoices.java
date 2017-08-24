@@ -13,7 +13,7 @@ import org.spongepowered.api.text.format.TextStyles;
 
 import com.google.common.collect.Maps;
 
-import me.mrdaniel.npcs.catalogtypes.actions.ActionTypes;
+import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
 import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.io.NPCFile;
 import me.mrdaniel.npcs.managers.ActionManager;
@@ -53,7 +53,7 @@ public class ActionChoices extends Action {
 		})).build(), Text.of("  ")));
 
 		p.sendMessage(PlaceholderManager.getInstance().formatChoiceMessage(p, b.build()));
-		result.setPerformNext(false);
+		result.setPerformNextAction(false);
 	}
 
 	@Override

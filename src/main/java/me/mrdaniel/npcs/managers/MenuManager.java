@@ -15,7 +15,7 @@ import com.google.common.collect.Maps;
 
 import lombok.Getter;
 import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.catalogtypes.menupages.PageTypes;
+import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
 import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.Config;
@@ -40,7 +40,7 @@ public class MenuManager {
 	}
 
 	public void select(@Nonnull final Player p, @Nonnull final NPCFile file) throws NPCException {
-		this.select(p, (NPCAble) NPCManager.getInstance().getNPC(file, true).orElseThrow(() -> new NPCException("Failed to select NPC: NPC hasn't been spawned.")));
+		this.select(p, (NPCAble) NPCManager.getInstance().getNPC(file).orElseThrow(() -> new NPCException("Failed to select NPC: NPC hasn't been spawned.")));
 	}
 
 	public void select(@Nonnull final Player p, @Nonnull final NPCAble npc) {
@@ -51,12 +51,13 @@ public class MenuManager {
 		else { p.sendMessage(ChatTypes.ACTION_BAR, Text.of(TextColors.DARK_GRAY, "[", TextColors.GOLD, "NPCs", TextColors.DARK_GRAY, "] ", this.select_message)); }
 	}
 
-	public void deselect(@Nonnull final UUID uuid) {
-		this.menus.remove(uuid);
+	public boolean deselect(@Nonnull final UUID uuid) {
+		return this.menus.remove(uuid) != null;
 	}
 
-	public void deselect(@Nonnull final NPCAble npc) {
-		for (final UUID uuid : this.menus.keySet()) { if (this.menus.get(uuid).getNpc() == npc) { this.deselect(uuid); return; } }
+	public boolean deselect(@Nonnull final NPCAble npc) {
+		for (final UUID uuid : this.menus.keySet()) { if (this.menus.get(uuid).getNpc() == npc) { return this.deselect(uuid); } }
+		return false;
 	}
 
 	public Optional<NPCMenu> get(@Nonnull final UUID uuid) {

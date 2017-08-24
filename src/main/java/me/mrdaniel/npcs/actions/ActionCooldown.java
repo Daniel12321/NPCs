@@ -6,7 +6,7 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import me.mrdaniel.npcs.catalogtypes.actions.ActionTypes;
+import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
 import me.mrdaniel.npcs.io.NPCFile;
 import me.mrdaniel.npcs.managers.ActionResult;
 import me.mrdaniel.npcs.managers.PlaceholderManager;
@@ -33,9 +33,9 @@ public class ActionCooldown extends Action {
 		Long end = file.getCooldowns().get(p.getUniqueId());
 		if (end == null || end > System.currentTimeMillis()) {
 			p.sendMessage(PlaceholderManager.getInstance().formatNPCMessage(p, this.message, file.getName().orElse("NPC")));
-			result.setPerformNext(false);
+			result.setPerformNextAction(false);
 		}
-		else { result.setNext(result.getCurrent() + 1); }
+		else { result.setNextAction(result.getCurrentAction() + 1); }
 	}
 
 	@Override

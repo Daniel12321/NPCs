@@ -9,8 +9,8 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import me.mrdaniel.npcs.actions.Action;
-import me.mrdaniel.npcs.catalogtypes.actions.ActionType;
-import me.mrdaniel.npcs.catalogtypes.menupages.PageTypes;
+import me.mrdaniel.npcs.catalogtypes.actiontype.ActionType;
+import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
 import me.mrdaniel.npcs.exceptions.ActionException;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 

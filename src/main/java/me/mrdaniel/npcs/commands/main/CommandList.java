@@ -47,7 +47,7 @@ public class CommandList implements CommandExecutor {
 
 	private void sendNPCInfo(@Nonnull final Player p, @Nonnull final NPCFile file) {
 		boolean worldLoaded = file.getWorld().isPresent();
-		boolean npcLoaded = worldLoaded ? NPCManager.getInstance().getNPC(file, false).isPresent() : false;
+		boolean npcLoaded = worldLoaded ? NPCManager.getInstance().getNPC(file).isPresent() : false;
 
 		p.sendMessage(Text.EMPTY);
 		p.sendMessage(Text.of(Text.of(TextColors.YELLOW, "---------------=====[ ", TextColors.RED, "NPC Info", TextColors.YELLOW, " ]=====---------------")));

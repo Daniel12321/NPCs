@@ -11,24 +11,26 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.spongepowered.api.data.type.Career;
-import org.spongepowered.api.data.type.HorseColor;
-import org.spongepowered.api.data.type.HorseStyle;
-import org.spongepowered.api.data.type.LlamaVariant;
-import org.spongepowered.api.data.type.OcelotType;
-import org.spongepowered.api.data.type.ParrotVariant;
-import org.spongepowered.api.data.type.RabbitType;
-import org.spongepowered.api.entity.EntityType;
 import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.text.format.TextColor;
 import org.spongepowered.api.world.World;
 
+import com.flowpowered.math.vector.Vector3d;
+import com.flowpowered.math.vector.Vector3i;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.reflect.TypeToken;
 
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.actions.Action;
+import me.mrdaniel.npcs.catalogtypes.career.Career;
+import me.mrdaniel.npcs.catalogtypes.cattype.CatType;
+import me.mrdaniel.npcs.catalogtypes.glowcolor.GlowColor;
+import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColor;
+import me.mrdaniel.npcs.catalogtypes.horsepattern.HorsePattern;
+import me.mrdaniel.npcs.catalogtypes.llamatype.LlamaType;
+import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
+import me.mrdaniel.npcs.catalogtypes.parrottype.ParrotType;
+import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitType;
 import me.mrdaniel.npcs.exceptions.ActionException;
 import me.mrdaniel.npcs.utils.Position;
 import ninja.leaping.configurate.ConfigurationNode;
@@ -88,6 +90,8 @@ public class NPCFile {
 	public String getWorldName() { return this.node.getNode("location", "world").getString("world"); }
 
 	public NPCFile setPosition(@Nonnull final Position value) { this.setX(value.getX()).setY(value.getY()).setZ(value.getZ()).setYaw(value.getYaw()).setPitch(value.getPitch()); return this; }
+	public Position getPosition() { return new Position(this.getX(), this.getY(), this.getZ(), this.getYaw(), this.getPitch()); }
+	public Vector3i getChunkPosition() { return new Vector3d(this.getX(), 0, this.getZ()).toInt().div(16); }
 
 	public NPCFile setX(final double value) { this.node.getNode("location", "x").setValue(value); return this; }
 	public double getX() { return this.node.getNode("location", "x").getDouble(0.0); }
@@ -104,8 +108,8 @@ public class NPCFile {
 	public NPCFile setPitch(final float value) { this.node.getNode("location", "pitch").setValue(value); return this; }
 	public float getPitch() { return this.node.getNode("location", "pitch").getFloat(0.0F); }
 
-	public NPCFile setType(@Nonnull final EntityType value) { this.node.getNode("type").setValue(value.getId()); return this; }
-	public Optional<EntityType> getType() { return Optional.ofNullable(this.getTypeName()).map(id -> NPCs.getInstance().getGame().getRegistry().getType(EntityType.class, id).orElse(null)); }
+	public NPCFile setType(@Nonnull final NPCType value) { this.node.getNode("type").setValue(value.getId()); return this; }
+	public Optional<NPCType> getType() { return NPCs.getInstance().getGame().getRegistry().getType(NPCType.class, this.getTypeName()); }
 	public String getTypeName() { return this.node.getNode("type").getString(); }
 
 	public NPCFile setName(@Nonnull final String value) { this.node.getNode("name").setValue(value); return this; }
@@ -129,8 +133,8 @@ public class NPCFile {
 	public NPCFile setGlowing(final boolean value) { this.node.getNode("glowing", "enabled").setValue(value); return this; }
 	public boolean getGlowing() { return this.node.getNode("glowing", "enabled").getBoolean(false); }
 
-	public NPCFile setGlowColor(@Nonnull final TextColor value) { this.node.getNode("glowing", "color").setValue(value.getId()); return this; }
-	public Optional<TextColor> getGlowColor() { return Optional.ofNullable(this.node.getNode("glowing", "color").getString()).map(id -> NPCs.getInstance().getGame().getRegistry().getType(TextColor.class, id).orElse(null)); }
+	public NPCFile setGlowColor(@Nonnull final GlowColor value) { this.node.getNode("glowing", "color").setValue(value.getId()); return this; }
+	public Optional<GlowColor> getGlowColor() { return NPCs.getInstance().getGame().getRegistry().getType(GlowColor.class, this.node.getNode("glowing", "color").getString("")); }
 
 	public NPCFile setBaby(final boolean value) { this.node.getNode("baby").setValue(value); return this; }
 	public boolean getBaby() { return this.node.getNode("baby").getBoolean(false); }
@@ -150,26 +154,32 @@ public class NPCFile {
 	public NPCFile setSaddle(final boolean value) { this.node.getNode("saddle").setValue(value); return this; }
 	public boolean getSaddle() { return this.node.getNode("saddle").getBoolean(false); }
 
-	public NPCFile setCareer(@Nonnull final Career value) { this.node.getNode("career").setValue(value.getId()); return this; }
-	public Optional<Career> getCareer() { return Optional.ofNullable(this.node.getNode("career").getString()).map(id -> NPCs.getInstance().getGame().getRegistry().getType(Career.class, id).orElse(null)); }
+	public NPCFile setHanging(final boolean value) { this.node.getNode("hanging").setValue(value); return this; }
+	public boolean getHanging() { return this.node.getNode("hanging").getBoolean(false); }
 
-	public NPCFile setHorseStyle(@Nonnull final HorseStyle value) { this.node.getNode("horse", "style").setValue(value.getId()); return this; }
-	public Optional<HorseStyle> getHorseStyle() { return Optional.ofNullable(this.node.getNode("horse", "style").getString()).map(id -> NPCs.getInstance().getGame().getRegistry().getType(HorseStyle.class, id).orElse(null)); }
+	public NPCFile setPumpkin(final boolean value) { this.node.getNode("pumpkin").setValue(value); return this; }
+	public boolean getPumpkin() { return this.node.getNode("pumpkin").getBoolean(false); }
+
+	public NPCFile setCareer(@Nonnull final Career value) { this.node.getNode("career").setValue(value.getId()); return this; }
+	public Optional<Career> getCareer() { return NPCs.getInstance().getGame().getRegistry().getType(Career.class, this.node.getNode("career").getString("")); }
+
+	public NPCFile setHorsePattern(@Nonnull final HorsePattern value) { this.node.getNode("horse", "pattern").setValue(value.getId()); return this; }
+	public Optional<HorsePattern> getHorsePattern() { return NPCs.getInstance().getGame().getRegistry().getType(HorsePattern.class, this.node.getNode("horse", "pattern").getString("")); }
 
 	public NPCFile setHorseColor(@Nonnull final HorseColor value) { this.node.getNode("horse", "color").setValue(value.getId()); return this; }
-	public Optional<HorseColor> getHorseColor() { return Optional.ofNullable(this.node.getNode("horse", "color").getString()).map(id -> NPCs.getInstance().getGame().getRegistry().getType(HorseColor.class, id).orElse(null)); }
+	public Optional<HorseColor> getHorseColor() { return NPCs.getInstance().getGame().getRegistry().getType(HorseColor.class, this.node.getNode("horse", "color").getString("")); }
 
-	public NPCFile setLlamaType(@Nonnull final LlamaVariant value) { this.node.getNode("llamatype").setValue(value.getId()); return this; }
-	public Optional<LlamaVariant> getLlamaType() { return Optional.ofNullable(this.node.getNode("llamatype").getString()).map(id -> NPCs.getInstance().getGame().getRegistry().getType(LlamaVariant.class, id).orElse(null)); }
+	public NPCFile setLlamaType(@Nonnull final LlamaType value) { this.node.getNode("llamatype").setValue(value.getId()); return this; }
+	public Optional<LlamaType> getLlamaType() { return NPCs.getInstance().getGame().getRegistry().getType(LlamaType.class, this.node.getNode("llamatype").getString("")); }
 
-	public NPCFile setCatType(@Nonnull final OcelotType value) { this.node.getNode("cattype").setValue(value.getId()); return this; }
-	public Optional<OcelotType> getCatType() { return Optional.ofNullable(this.node.getNode("cattype").getString()).map(id -> NPCs.getInstance().getGame().getRegistry().getType(OcelotType.class, id).orElse(null)); }
+	public NPCFile setCatType(@Nonnull final CatType value) { this.node.getNode("cattype").setValue(value.getId()); return this; }
+	public Optional<CatType> getCatType() { return NPCs.getInstance().getGame().getRegistry().getType(CatType.class, this.node.getNode("cattype").getString("")); }
 
 	public NPCFile setRabbitType(@Nonnull final RabbitType value) { this.node.getNode("rabbittype").setValue(value.getId()); return this; }
-	public Optional<RabbitType> getRabbitType() { return Optional.ofNullable(this.node.getNode("rabbittype").getString()).map(id -> NPCs.getInstance().getGame().getRegistry().getType(RabbitType.class, id).orElse(null)); }
+	public Optional<RabbitType> getRabbitType() { return NPCs.getInstance().getGame().getRegistry().getType(RabbitType.class, this.node.getNode("rabbittype").getString("")); }
 
-	public NPCFile setParrotType(@Nonnull final ParrotVariant value) { this.node.getNode("parrottype").setValue(value.getId()); return this; }
-	public Optional<ParrotVariant> getParrotType() { return Optional.ofNullable(this.node.getNode("parrottype").getString()).map(id -> NPCs.getInstance().getGame().getRegistry().getType(ParrotVariant.class, id).orElse(null)); }
+	public NPCFile setParrotType(@Nonnull final ParrotType value) { this.node.getNode("parrottype").setValue(value.getId()); return this; }
+	public Optional<ParrotType> getParrotType() { return NPCs.getInstance().getGame().getRegistry().getType(ParrotType.class, this.node.getNode("parrottype").getString("")); }
 
 	public NPCFile setHelmet(@Nullable final ItemStack value) { this.setItemStack(this.node.getNode("equipment", "helmet"), value); return this; }
 	public Optional<ItemStack> getHelmet() { return this.getItemStack(this.node.getNode("equipment", "helmet")); }

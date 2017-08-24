@@ -20,7 +20,7 @@ public class Config {
 		Path path = directory.resolve(name);
 		if (!Files.exists(path)) {
 			try { NPCs.getInstance().getContainer().getAsset(name).get().copyToFile(path); }
-			catch (final IOException exc) { NPCs.getInstance().getLogger().error("Failed to save config asset: {}", exc); }
+			catch (final IOException exc) { NPCs.getInstance().getLogger().error("Failed to save config asset", exc); }
 		}
 
 		this.loader = HoconConfigurationLoader.builder().setPath(path).build();

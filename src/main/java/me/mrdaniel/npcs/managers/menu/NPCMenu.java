@@ -14,8 +14,8 @@ import org.spongepowered.api.text.format.TextColors;
 import com.google.common.collect.Maps;
 
 import lombok.Getter;
-import me.mrdaniel.npcs.catalogtypes.menupages.PageType;
-import me.mrdaniel.npcs.catalogtypes.menupages.PageTypes;
+import me.mrdaniel.npcs.catalogtypes.menupagetype.PageType;
+import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.utils.TextUtils;
 

@@ -1,25 +1,24 @@
 package me.mrdaniel.npcs.managers;
 
+import lombok.Getter;
+
 public class ActionResult {
 
-	private final int current;
-	private int next;
-	private boolean perform_next;
-	private int wait_ticks;
+	@Getter private final int currentAction;
+	@Getter private int nextAction;
+	private boolean performNextAction;
+	@Getter private int waitTicks;
 
 	public ActionResult(final int current) {
-		this.current = current;
-		this.next = current;
-		this.perform_next = true;
-		this.wait_ticks = 0;
+		this.currentAction = current;
+		this.nextAction = current;
+		this.performNextAction = true;
+		this.waitTicks = 0;
 	}
 
-	public int getCurrent() { return this.current; }
-	protected int getNext() { return this.next; }
-	protected boolean getPerformNext() { return this.perform_next; }
-	protected int getWaitTicks() { return this.wait_ticks; }
+	public boolean getPerformNextAction() { return this.performNextAction; }
 
-	public ActionResult setNext(final int next) { this.next = next; return this; }
-	public ActionResult setPerformNext(final boolean perform_next) { this.perform_next = perform_next; return this; }
-	public ActionResult setWaitTicks(final int wait_ticks) { this.wait_ticks = wait_ticks; return this; }
+	public ActionResult setNextAction(final int nextAction) { this.nextAction = nextAction; return this; }
+	public ActionResult setPerformNextAction(final boolean performNextAction) { this.performNextAction = performNextAction; return this; }
+	public ActionResult setWaitTicks(final int waitTicks) { this.waitTicks = waitTicks; return this; }
 }

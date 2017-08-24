@@ -71,18 +71,18 @@ public class ActionManager {
 			this.waiting.add(uuid);
 			Task.builder().delayTicks(result.getWaitTicks()).execute(() -> {
 				this.waiting.remove(uuid);
-				file.getCurrent().put(uuid, result.getNext());
+				file.getCurrent().put(uuid, result.getNextAction());
 				file.writeCurrent().save();
-				if (result.getPerformNext()) {
+				if (result.getPerformNextAction()) {
 					try { this.execute(uuid, file); }
 					catch (final NPCException exc) {}
 				}
 			}).submit(NPCs.getInstance());
 		}
 		else {
-			file.getCurrent().put(uuid, result.getNext());
+			file.getCurrent().put(uuid, result.getNextAction());
 			file.writeCurrent().save();
-			if (result.getPerformNext()) { this.execute(uuid, file); }
+			if (result.getPerformNextAction()) { this.execute(uuid, file); }
 		}
 	}
 

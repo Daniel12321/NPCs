@@ -7,8 +7,8 @@ import org.spongepowered.api.entity.living.player.Player;
 import com.flowpowered.math.vector.Vector3d;
 import com.flowpowered.math.vector.Vector3f;
 
-import me.mrdaniel.npcs.catalogtypes.menupages.PageTypes;
-import me.mrdaniel.npcs.catalogtypes.options.OptionTypes;
+import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
+import me.mrdaniel.npcs.catalogtypes.optiontype.OptionTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.utils.Position;

@@ -12,7 +12,7 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.catalogtypes.conditions.ConditionTypes;
+import me.mrdaniel.npcs.catalogtypes.conditiontype.ConditionTypes;
 import me.mrdaniel.npcs.utils.ServerUtils;
 import ninja.leaping.configurate.ConfigurationNode;
 

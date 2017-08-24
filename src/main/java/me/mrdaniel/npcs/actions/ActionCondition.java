@@ -8,7 +8,7 @@ import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
 
 import me.mrdaniel.npcs.actions.conditions.Condition;
-import me.mrdaniel.npcs.catalogtypes.actions.ActionTypes;
+import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
 import me.mrdaniel.npcs.exceptions.ConditionException;
 import me.mrdaniel.npcs.io.NPCFile;
 import me.mrdaniel.npcs.managers.ActionResult;
@@ -52,9 +52,9 @@ public class ActionCondition extends Action {
 	public void execute(final Player p, final NPCFile file, final ActionResult result) {
 		if (this.condition.isMet(p)) {
 			if (this.take) { this.condition.take(p); }
-			result.setNext(this.goto_met);
+			result.setNextAction(this.goto_met);
 		}
-		else { result.setNext(this.goto_failed); }
+		else { result.setNextAction(this.goto_failed); }
 	}
 
 	@Override

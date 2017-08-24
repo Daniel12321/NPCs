@@ -10,7 +10,7 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import me.mrdaniel.npcs.catalogtypes.menupages.PageTypes;
+import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
 import me.mrdaniel.npcs.commands.PlayerCommand;
 import me.mrdaniel.npcs.managers.MenuManager;
 import me.mrdaniel.npcs.managers.menu.NPCMenu;

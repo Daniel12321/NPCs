@@ -5,7 +5,7 @@ import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.entity.living.player.Player;
 
-import me.mrdaniel.npcs.catalogtypes.menupages.PageTypes;
+import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 

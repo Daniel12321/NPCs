@@ -6,7 +6,7 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import me.mrdaniel.npcs.catalogtypes.menupages.PageTypes;
+import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.events.NPCEvent;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
@@ -29,7 +29,7 @@ public class CommandActionSwap extends NPCCommand {
 		int second = args.<Integer>getOne("second").get();
 		int size = file.getActions().size();
 
-		if (first < 0 || second < 0 || first >= size || second >= size) { throw new CommandException(Text.of(TextColors.RED, "No Action was found for one of the two numbers.")); }
+		if (first < 0 || second < 0 || first >= size || second >= size) { return; }
 
 		file.getActions().set(first, file.getActions().set(second, file.getActions().get(first)));
 		file.writeActions().save();

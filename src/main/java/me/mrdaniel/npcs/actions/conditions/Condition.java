@@ -6,8 +6,8 @@ import javax.annotation.Nullable;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 
-import me.mrdaniel.npcs.catalogtypes.conditions.ConditionType;
-import me.mrdaniel.npcs.catalogtypes.conditions.ConditionTypeRegistryModule;
+import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.catalogtypes.conditiontype.ConditionType;
 import me.mrdaniel.npcs.exceptions.ConditionException;
 import ninja.leaping.configurate.ConfigurationNode;
 
@@ -34,6 +34,6 @@ public abstract class Condition {
 
 	@Nullable
 	public static Condition of(@Nonnull final ConfigurationNode node) throws ConditionException {
-		return ConditionTypeRegistryModule.getInstance().getById(node.getNode("Type").getString("")).orElseThrow(() -> new ConditionException("Invalid ConditionType!")).getCondition().apply(node);
+		return NPCs.getInstance().getGame().getRegistry().getType(ConditionType.class, node.getNode("Type").getString("")).orElseThrow(() -> new ConditionException("Invalid ConditionType!")).getCondition().apply(node);
 	}
 }
