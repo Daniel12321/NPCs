@@ -35,7 +35,9 @@ public interface NPCAble {
 	void setNPCSkin(@Nonnull final String value);
 	void setNPCSkin(@Nonnull final UUID value);
 	void setNPCLooking(final boolean value);
+	boolean isNPCLooking();
 	void setNPCInteract(final boolean value);
+	boolean canNPCInteract();
 	void setNPCSilent(final boolean value);
 	void setNPCGlowing(final boolean value);
 	void setNPCGlowColor(@Nonnull final GlowColor value);

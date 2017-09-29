@@ -12,7 +12,6 @@ import org.spongepowered.api.entity.living.Human;
 import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.scheduler.Task;
-import org.spongepowered.api.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -63,20 +62,21 @@ import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 
 @Mixin(value = EntityLiving.class, priority = 10)
 public abstract class MixinEntityLiving extends EntityLivingBase implements NPCAble {
 
 	private NPCFile file;
 	private boolean looking;
-//	private boolean interact;
+	private boolean interact;
 
-	public MixinEntityLiving(final net.minecraft.world.World worldIn) {
+	public MixinEntityLiving(final World worldIn) {
 		super(worldIn);
 
 		this.file = null;
 		this.looking = false;
-//		this.interact = true;
+		this.interact = true;
 	}
 
 	@Shadow public abstract void enablePersistence();
@@ -115,8 +115,8 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 	}
 
 	@Override
-	public void setNPCWorld(final World value) {
-		super.setWorld((net.minecraft.world.World)value);
+	public void setNPCWorld(final org.spongepowered.api.world.World value) {
+		super.setWorld((World)value);
 	}
 
 	@Override
@@ -149,8 +149,18 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 	}
 
 	@Override
+	public boolean isNPCLooking() {
+		return this.looking;
+	}
+
+	@Override
 	public void setNPCInteract(final boolean value) {
-//		this.interact = value;
+		this.interact = value;
+	}
+
+	@Override
+	public boolean canNPCInteract() {
+		return this.interact;
 	}
 
 	@Override
@@ -228,15 +238,6 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 	public void setNPCCareer(final Career value) {
 		((EntityVillager)(Object)this).setProfession(value.getProfessionId());
 		((IMixinEntityVillager)this).setCareerId(value.getCareerId());
-
-//		try {
-//			Field f = villager.getClass().getField("careerId");
-//			f.setAccessible(true);
-//			f.set(villager, value.getCareerId());
-//		}
-//		catch (final Exception exc) {
-//			exc.printStackTrace();
-//		}
 	}
 
 	@Override
@@ -312,68 +313,6 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 			else { this.setDead(); }
 		}
 	}
-
-//	@Overwrite
-//	public final boolean processInitialInteract(final EntityPlayer player, final EnumHand hand) {
-//		return true;
-//	}
-
-//		if (this.getLeashed() && this.getLeashedToEntity() == player) {
-//			this.clearLeashed(true, !player.capabilities.isCreativeMode);
-//			return true;
-//		}
-//		else {
-//			net.minecraft.item.ItemStack itemstack = player.getHeldItem(hand);
-//
-//			if (this.processNPCInterract(player, hand)) {
-//				return true;
-//			}
-//			else if (itemstack.getItem() == Items.LEAD && this.canBeLeashedTo(player)) {
-//				this.setLeashedToEntity(player, true);
-//				itemstack.shrink(1);
-//				return true;
-//			}
-//			else {
-//				return this.processInteract(player, hand) ? true : super.processInitialInteract(player, hand);
-//			}
-//		}
-//	}
-//
-//	private boolean processNPCInterract(EntityPlayer player, EnumHand hand) {
-//		Player spongePlayer = (Player) player;
-//		if (this.file != null && hand == EnumHand.OFF_HAND) {
-//			if (player.isSneaking() && spongePlayer.hasPermission("npc.edit.select")) {
-//				MenuManager.getInstance().select(((Player)player), (NPCAble) this);
-//				return true;
-//			}
-//			else if (this.interact == false) {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-//
-//	@Inject(method = "processInitialInteract", at = @At("HEAD"), cancellable = true)
-//	public void onProcessInitialInteract(final EntityPlayer player, final EnumHand hand, final CallbackInfoReturnable<Boolean> cir) {
-//		if (this.file != null) {
-//			if (hand == EnumHand.OFF_HAND) {
-//				Player spongePlayer = (Player) player;
-//				NPCAble npc = (NPCAble) this;
-//				if (player.isSneaking() && spongePlayer.hasPermission("npc.edit.select")) {
-//					MenuManager.getInstance().select(spongePlayer, npc);
-//				}
-//				else {
-//					if (!new NPCEvent.Interact(spongePlayer, npc).post()) {
-//						try { ActionManager.getInstance().execute(player.getUniqueID(), this.file); }
-//						catch (final NPCException exc) { spongePlayer.sendMessage(Text.of(TextColors.RED, "Failed to perform NPC actions: " + exc.getMessage())); }
-//					}
-//				}
-//			}
-//			if (this.interact == false) {
-//				cir.setReturnValue(this.interact);
-//			}
-//		}
-//	}
 
 	@Inject(method = "onEntityUpdate", at = @At("RETURN"), cancellable = false)
 	public void onOnEntityUpdate(final CallbackInfo ci) {
