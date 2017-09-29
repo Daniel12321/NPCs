@@ -119,7 +119,7 @@ import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 		authors = {"Daniel12321"},
 		url = "https://github.com/Daniel12321/NPCs",
 		description = "A plugin that adds simple custom NPC's to your worlds.",
-		dependencies = { @Dependency(id = "placeholderapi", version = "[4.1,)", optional = true) })
+		dependencies = { @Dependency(id = "placeholderapi", version = "[4.0,)", optional = true) })
 public class NPCs {
 
 	@Getter private static NPCs instance;

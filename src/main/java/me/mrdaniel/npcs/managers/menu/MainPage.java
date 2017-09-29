@@ -59,8 +59,8 @@ public class MainPage extends Page {
 		lines[++c] = TextUtils.getToggleText("Looking", "/npc looking", file.getLooking());
 		lines[++c] = TextUtils.getToggleText("Interact", "/npc interact", file.getInteract());
 		lines[++c] = TextUtils.getToggleText("Silent", "/npc silent", file.getSilent());
-		if (OptionTypes.GLOWING.isSupported(npc)) { lines[++c] = TextUtils.getToggleText("Glowing", "/npc glowing", file.getGlowing()); }
-		if (OptionTypes.GLOWCOLOR.isSupported(npc)) { lines[++c] = TextUtils.getOptionsText("GlowColor", "/npc glowcolor <color>", file.getGlowColor().orElse(GlowColors.WHITE).getName()); }
+		lines[++c] = TextUtils.getToggleText("Glowing", "/npc glowing", file.getGlowing());
+		lines[++c] = TextUtils.getOptionsText("GlowColor", "/npc glowcolor <color>", file.getGlowColor().orElse(GlowColors.WHITE).getName());
 		if (OptionTypes.BABY.isSupported(npc)) { lines[++c] = TextUtils.getToggleText("Baby", "/npc baby", file.getBaby()); }
 		if (OptionTypes.CHARGED.isSupported(npc)) { lines[++c] = TextUtils.getToggleText("Charged", "/npc charged", file.getCharged()); }
 		if (OptionTypes.ANGRY.isSupported(npc)) { lines[++c] = TextUtils.getToggleText("Angry", "/npc angry", file.getAngry()); }
