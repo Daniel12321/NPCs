@@ -40,6 +40,6 @@ public class PlaceholderAPIManager implements PlaceholderHandler {
 	}
 
 	private Text format(@Nonnull final Player p, @Nonnull final String txt) {
-		return this.service.replacePlaceholders(txt, p);
+		return this.service.replacePlaceholders(txt, p, p);
 	}
 }

@@ -23,43 +23,43 @@ import me.mrdaniel.npcs.utils.Position;
 
 public interface NPCAble {
 
-	@Nullable public NPCFile getNPCFile();
-	public void setNPCFile(@Nonnull final NPCFile file);
+	@Nullable NPCFile getNPCFile();
+	void setNPCFile(@Nonnull final NPCFile file);
 
 	default void selectNPC(@Nonnull final Player p) { MenuManager.getInstance().select(p, this); }
 
-	public void setNPCWorld(@Nonnull final World value);
-	public void setNPCPosition(@Nonnull final Position value);
+	void setNPCWorld(@Nonnull final World value);
+	void setNPCPosition(@Nonnull final Position value);
 
-	public void setNPCName(@Nonnull final String value);
-	public void setNPCSkin(@Nonnull final String value);
-	public void setNPCSkin(@Nonnull final UUID value);
-	public void setNPCLooking(final boolean value);
-	public void setNPCInteract(final boolean value);
-	public void setNPCSilent(final boolean value);
-	public void setNPCGlowing(final boolean value);
-	public void setNPCGlowColor(@Nonnull final GlowColor value);
+	void setNPCName(@Nonnull final String value);
+	void setNPCSkin(@Nonnull final String value);
+	void setNPCSkin(@Nonnull final UUID value);
+	void setNPCLooking(final boolean value);
+	void setNPCInteract(final boolean value);
+	void setNPCSilent(final boolean value);
+	void setNPCGlowing(final boolean value);
+	void setNPCGlowColor(@Nonnull final GlowColor value);
 
-	public void setNPCBaby(final boolean value);
-	public void setNPCCharged(final boolean value);
-	public void setNPCAngry(final boolean value);
-	public void setNPCSize(final int value);
-	public void setNPCSitting(final boolean value);
-	public void setNPCSaddle(final boolean value);
-	public void setNPCHanging(final boolean value);
-	public void setNPCPumpkin(final boolean value);
-	public void setNPCCareer(@Nonnull final Career value);
-	public void setNPCHorsePattern(@Nonnull final HorsePattern value);
-	public void setNPCHorseColor(@Nonnull final HorseColor value);
-	public void setNPCLlamaType(@Nonnull final LlamaType value);
-	public void setNPCCatType(@Nonnull final CatType value);
-	public void setNPCRabbitType(@Nonnull final RabbitType value);
-	public void setNPCParrotType(@Nonnull final ParrotType value);
+	void setNPCBaby(final boolean value);
+	void setNPCCharged(final boolean value);
+	void setNPCAngry(final boolean value);
+	void setNPCSize(final int value);
+	void setNPCSitting(final boolean value);
+	void setNPCSaddle(final boolean value);
+	void setNPCHanging(final boolean value);
+	void setNPCPumpkin(final boolean value);
+	void setNPCCareer(@Nonnull final Career value);
+	void setNPCHorsePattern(@Nonnull final HorsePattern value);
+	void setNPCHorseColor(@Nonnull final HorseColor value);
+	void setNPCLlamaType(@Nonnull final LlamaType value);
+	void setNPCCatType(@Nonnull final CatType value);
+	void setNPCRabbitType(@Nonnull final RabbitType value);
+	void setNPCParrotType(@Nonnull final ParrotType value);
 
-	public void setNPCHelmet(@Nonnull final ItemStack value);
-	public void setNPCChestplate(@Nonnull final ItemStack value);
-	public void setNPCLeggings(@Nonnull final ItemStack value);
-	public void setNPCBoots(@Nonnull final ItemStack value);
-	public void setNPCMainHand(@Nonnull final ItemStack value);
-	public void setNPCOffHand(@Nonnull final ItemStack value);
+	void setNPCHelmet(@Nonnull final ItemStack value);
+	void setNPCChestplate(@Nonnull final ItemStack value);
+	void setNPCLeggings(@Nonnull final ItemStack value);
+	void setNPCBoots(@Nonnull final ItemStack value);
+	void setNPCMainHand(@Nonnull final ItemStack value);
+	void setNPCOffHand(@Nonnull final ItemStack value);
 }

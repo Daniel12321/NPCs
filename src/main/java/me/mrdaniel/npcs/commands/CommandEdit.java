@@ -10,7 +10,7 @@ import org.spongepowered.api.text.format.TextColors;
 
 import me.mrdaniel.npcs.catalogtypes.menupagetype.PageType;
 import me.mrdaniel.npcs.catalogtypes.optiontype.OptionType;
-import me.mrdaniel.npcs.events.NPCEvent;
+import me.mrdaniel.npcs.events.NPCEditEvent;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 
 public class CommandEdit<T> extends NPCCommand {
@@ -28,7 +28,7 @@ public class CommandEdit<T> extends NPCCommand {
 		if (!this.option.isSupported(npc)) {
 			throw new CommandException(Text.of(TextColors.RED, "That NPC does not support that option!"));
 		}
-		if (new NPCEvent.Edit(p, npc).post()) {
+		if (new NPCEditEvent(p, npc).post()) {
 			throw new CommandException(Text.of(TextColors.RED, "Event was cancelled!"));
 		}
 

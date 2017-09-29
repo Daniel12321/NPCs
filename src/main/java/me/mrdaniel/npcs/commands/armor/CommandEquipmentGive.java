@@ -14,7 +14,7 @@ import org.spongepowered.api.text.format.TextColors;
 
 import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
-import me.mrdaniel.npcs.events.NPCEvent;
+import me.mrdaniel.npcs.events.NPCEditEvent;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.NPCFile;
 
@@ -31,7 +31,7 @@ public abstract class CommandEquipmentGive extends NPCCommand {
 
 		ItemStack hand = p.getItemInHand(HandTypes.MAIN_HAND).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "You must be holding an item.")));
 
-		if (new NPCEvent.Edit(p, npc).post()) {
+		if (new NPCEditEvent(p, npc).post()) {
 			throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
 		}
 

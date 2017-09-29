@@ -8,7 +8,7 @@ import org.spongepowered.api.text.format.TextColors;
 
 import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
-import me.mrdaniel.npcs.events.NPCEvent;
+import me.mrdaniel.npcs.events.NPCEditEvent;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 
 public class CommandActionRepeat extends NPCCommand {
@@ -19,7 +19,7 @@ public class CommandActionRepeat extends NPCCommand {
 
 	@Override
 	public void execute(final Player p, final NPCAble npc, final CommandContext args) throws CommandException {
-		if (new NPCEvent.Edit(p, npc).post()) {
+		if (new NPCEditEvent(p, npc).post()) {
 			throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
 		}
 
