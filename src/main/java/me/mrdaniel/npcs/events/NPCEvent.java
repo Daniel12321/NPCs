@@ -10,6 +10,7 @@ import org.spongepowered.api.event.impl.AbstractEvent;
 import lombok.Getter;
 import lombok.Setter;
 import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.utils.ServerUtils;
 
 public abstract class NPCEvent<T> extends AbstractEvent implements Cancellable {
 
@@ -22,7 +23,7 @@ public abstract class NPCEvent<T> extends AbstractEvent implements Cancellable {
 	protected NPCEvent(@Nonnull final CommandSource source, @Nonnull final T npc) {
 		this.source = source;
 		this.npc = npc;
-		this.cause = Cause.source(NPCs.getInstance().getContainer()).named("source", source).named("npc", npc).build();
+		this.cause = ServerUtils.getCause(npc, source);
 
 		this.cancelled = false;
 	}

@@ -43,6 +43,9 @@ public class InteractListener {
 		}
 	}
 
+	/*
+	 * @return whether to cancel the original event
+	 */
 	private boolean onNPCInteract(@Nonnull final NPCAble npc, @Nonnull final Player p) {
 		if (p.get(Keys.IS_SNEAKING).orElse(false) && p.hasPermission("npc.edit.select")) {
 			MenuManager.getInstance().select(p, npc);

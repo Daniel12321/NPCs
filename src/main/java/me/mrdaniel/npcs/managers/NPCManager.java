@@ -29,7 +29,6 @@ import me.mrdaniel.npcs.events.NPCRemoveEvent;
 import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.NPCFile;
-import me.mrdaniel.npcs.utils.ServerUtils;
 import net.minecraft.entity.EntityLiving;
 
 public class NPCManager {
@@ -164,7 +163,7 @@ public class NPCManager {
 		NPCAble npc = (NPCAble) ent;
 
 		npc.setNPCFile(file);
-		world.spawnEntity(ent, ServerUtils.getSpawnCause(ent));
+		world.spawnEntity(ent);
 		return npc;
 	}
 }
