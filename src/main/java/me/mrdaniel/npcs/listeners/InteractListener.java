@@ -12,7 +12,10 @@ import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.filter.cause.Root;
 import org.spongepowered.api.event.item.inventory.InteractInventoryEvent;
 
+import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.managers.ActionManager;
 import me.mrdaniel.npcs.managers.MenuManager;
 
 public class InteractListener {
@@ -20,37 +23,36 @@ public class InteractListener {
 	@Listener
 	public void onEntityInteract(final InteractEntityEvent.Secondary.OffHand e, @Root final Player p) {
 		if (e.getTargetEntity() instanceof NPCAble) {
-			NPCAble npc = (NPCAble) e.getTargetEntity();
-			if (npc.getNPCFile() != null) {
-				e.setCancelled(this.onNPCInteract(npc, p));
-			}
+			e.setCancelled(this.onEntityInteract((NPCAble) e.getTargetEntity(), p));
 		}
 	}
 
 	@Listener
 	public void onHorseMount(final RideEntityEvent.Mount e, @Root final Player p) {
-		NPCAble npc = (NPCAble) e.getTargetEntity();
-		if (npc.getNPCFile() != null) {
-			e.setCancelled(this.onNPCInteract(npc, p));			
-		}
+		e.setCancelled(this.onEntityInteract((NPCAble) e.getTargetEntity(), p));
 	}
 
 	@Listener
 	public void onInventoryOpen(final InteractInventoryEvent.Open e, @Root final Player p, @First final Villager villager) {
-		NPCAble npc = (NPCAble) villager;
-		if (npc.getNPCFile() != null) {
-			e.setCancelled(this.onNPCInteract(npc, p));
-		}
+		e.setCancelled(this.onEntityInteract((NPCAble) villager, p));
 	}
 
 	/*
 	 * @return whether to cancel the original event
 	 */
-	private boolean onNPCInteract(@Nonnull final NPCAble npc, @Nonnull final Player p) {
+	private boolean onEntityInteract(@Nonnull final NPCAble npc, @Nonnull final Player p) {
+		if (npc.getNPCFile() == null) {
+			return false;
+		}
+
 		if (p.get(Keys.IS_SNEAKING).orElse(false) && p.hasPermission("npc.edit.select")) {
 			MenuManager.getInstance().select(p, npc);
 			return true;
 		}
-		else { return !npc.canNPCInteract(); }
+
+		try { ActionManager.getInstance().execute(p.getUniqueId(), npc.getNPCFile()); }
+		catch ( final NPCException exc) { NPCs.getInstance().getLogger().error("Failed to execute action for npc " + npc.getNPCFile().getId()); }
+
+		return !npc.canNPCInteract();
 	}
 }

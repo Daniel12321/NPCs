@@ -6,10 +6,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Optional;
 
-import javax.annotation.Nonnull;
 import javax.net.ssl.HttpsURLConnection;
 
-import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.EventContext;
 
@@ -24,9 +22,9 @@ public class ServerUtils {
 		return b.build(EventContext.builder().build());
 	}
 
-	public static Cause getSpawnCause(@Nonnull final Entity e, final NamedCause... causes) {
-		return getCause(EntitySpawnCause.builder().entity(e).type(SpawnTypes.PLUGIN).build(), causes);
-	}
+//	public static Cause getSpawnCause(@Nonnull final Entity e, final NamedCause... causes) {
+//		return getCause(EntitySpawnCause.builder().entity(e).type(SpawnTypes.PLUGIN).build(), causes);
+//	}
 
 	public static Optional<String> getLatestVersion() {
 		try {
@@ -34,8 +32,9 @@ public class ServerUtils {
 			HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
 
 			InputStream is = connection.getInputStream();
+			InputStreamReader isr = new InputStreamReader(is, "UTF-8");
+	        BufferedReader reader = new BufferedReader(isr);
 			StringBuilder builder = new StringBuilder();
-	        BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
 
 	        String line = reader.readLine();
 	        while (line != null){
@@ -44,6 +43,8 @@ public class ServerUtils {
 	        }
 
 	        is.close();
+	        isr.close();
+	        reader.close();
 
 			JsonElement element = new JsonParser().parse(builder.toString());
 			String name = element.getAsJsonObject().get("name").getAsString();

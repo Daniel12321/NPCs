@@ -300,12 +300,14 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 		((ArmorEquipable)this).setItemInHand(HandTypes.MAIN_HAND, value);
 	}
 
-	@Inject(method = "writeEntityToNBT", at = @At("RETURN"), cancellable = false)
+	// Start of Injections
+
+	@Inject(method = "writeEntityToNBT", at = @At("RETURN"))
 	public void onWriteEntityToNBT(final NBTTagCompound compound, final CallbackInfo info) {
 		if (this.file != null) { compound.setInteger("NPC_ID", this.file.getId()); }
 	}
 
-	@Inject(method = "readEntityFromNBT", at = @At("RETURN"), cancellable = false)
+	@Inject(method = "readEntityFromNBT", at = @At("RETURN"))
 	public void onReadEntityFromNBT(final NBTTagCompound compound, final CallbackInfo info) {
 		if (compound.hasKey("NPC_ID", 3)) {
 			Optional<NPCFile> file = NPCManager.getInstance().getFile(compound.getInteger("NPC_ID"));
@@ -314,7 +316,7 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 		}
 	}
 
-	@Inject(method = "onEntityUpdate", at = @At("RETURN"), cancellable = false)
+	@Inject(method = "onEntityUpdate", at = @At("RETURN"))
 	public void onOnEntityUpdate(final CallbackInfo ci) {
 		if (this.file != null && this.looking) {
 			super.world.getEntities(EntityPlayer.class, p -> true)

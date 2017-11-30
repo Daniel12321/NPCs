@@ -30,7 +30,9 @@ public class CommandRemove implements CommandExecutor {
 				try { NPCManager.getInstance().remove(src, menu.get().getNpc(), true); CommandList.getInstance().sendNPCList(src); }
 				catch (final NPCException exc) { throw new CommandException(Text.of(TextColors.RED, "Failed to remove NPC: ", exc.getMessage())); }
 			}
-		}	
+			else { throw new CommandException(Text.of(TextColors.RED, "You don't have an NPC selected!")); }
+		}
+		else { throw new CommandException(Text.of(TextColors.RED, "Specify an NPC ID to remove an entity without selecting one ingame.")); }
 		return CommandResult.success();
 	}
 }

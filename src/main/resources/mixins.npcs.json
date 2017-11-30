@@ -1,12 +1,17 @@
 {
+    "required": true,
+    "minVersion": "0.5.17",
     "package": "me.mrdaniel.npcs.mixin",
     "refmap": "mixins.npcs.refmap.json",
     "target": "@env(DEFAULT)",
     "compatibilityLevel": "JAVA_8",
-    "mixins": [
+    "server": [
         "MixinEntity",
         "MixinEntityLiving",
         "MixinEntityLivingBase",
         "MixinEntityVillager"
-    ]
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
 }

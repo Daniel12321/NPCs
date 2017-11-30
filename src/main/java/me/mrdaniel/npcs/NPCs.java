@@ -105,10 +105,12 @@ import me.mrdaniel.npcs.data.npc.ImmutableNPCData;
 import me.mrdaniel.npcs.data.npc.NPCData;
 import me.mrdaniel.npcs.data.npc.NPCDataBuilder;
 import me.mrdaniel.npcs.io.Config;
+import me.mrdaniel.npcs.io.NPCDataUpdater;
 import me.mrdaniel.npcs.listeners.InteractListener;
 import me.mrdaniel.npcs.listeners.WorldListener;
 import me.mrdaniel.npcs.managers.ActionManager;
 import me.mrdaniel.npcs.managers.MenuManager;
+import me.mrdaniel.npcs.managers.NPCManager;
 import me.mrdaniel.npcs.utils.ServerUtils;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;
@@ -120,12 +122,13 @@ import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 		authors = {"Daniel12321"},
 		url = "https://github.com/Daniel12321/NPCs",
 		description = "A plugin that adds simple custom NPC's to your worlds.",
-		dependencies = { @Dependency(id = "placeholderapi", version = "[4.0,)", optional = true) })
+		dependencies = { @Dependency(id = "placeholderapi", version = "[4.1,)", optional = true) })
 public class NPCs {
 
 	public static final String MODID = "npcs";
 	public static final String NAME = "NPCs";
-	public static final String VERSION = "2.1.0";
+	public static final String VERSION = "3.0.0";
+	public static final int NPC_DATA_VERSION = 2;
 
 	@Getter private static NPCs instance;
 
@@ -148,12 +151,28 @@ public class NPCs {
 			try { Files.createDirectory(path); }
 			catch (final IOException exc) { this.logger.error("Failed to create main config directory: {}", exc.getMessage()); }
 		}
-		this.config = new Config(this.configDir, "config.conf");
+
+		if (!Files.exists(path.resolve("config.conf"))) {
+			try { this.container.getAsset("config.conf").get().copyToFile(path); }
+			catch (final IOException exc) { NPCs.getInstance().getLogger().error("Failed to copy config asset", exc); }
+		}
+
+		this.config = new Config(this.configDir.resolve("config.conf"));
 	}
 
 	@Listener
 	public void onPreInit(@Nullable final GamePreInitializationEvent e) {
-		DataRegistration.builder().dataClass(NPCData.class).immutableClass(ImmutableNPCData.class).builder(new NPCDataBuilder()).dataName("npc").manipulatorId("npc").buildAndRegister(this.container);
+
+		// Makes the server not spam unknown data errors
+		// Will be removed in the next version
+		DataRegistration.builder()
+			.dataClass(NPCData.class)
+			.immutableClass(ImmutableNPCData.class)
+			.builder(new NPCDataBuilder())
+			.dataName("npc")
+			.manipulatorId("npc")
+			.buildAndRegister(this.container);
+
 		this.game.getRegistry().registerModule(NPCType.class, new NPCTypeRegistryModule());
 		this.game.getRegistry().registerModule(GlowColor.class, new GlowColorRegistryModule());
 		this.game.getRegistry().registerModule(Career.class, new CareerRegistryModule());
@@ -171,6 +190,14 @@ public class NPCs {
 
 		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Action.class), new ActionTypeSerializer());
 		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Condition.class), new ConditionTypeSerializer());
+
+		if (this.config.getNode("npc_data_version").getInt(1) < NPC_DATA_VERSION) {
+			NPCManager.getInstance().getFiles().forEach(NPCDataUpdater::update);
+
+			this.config.getNode("npc_data_version").setValue(NPC_DATA_VERSION);
+			this.config.getNode("npc_respawn_on_world_load").setValue(true);
+			this.config.save();
+		}
 	}
 
 	@Listener
@@ -178,7 +205,9 @@ public class NPCs {
 		this.logger.info("Loading plugin...");
 
 		this.game.getEventManager().registerListeners(this, new InteractListener());
-		if (this.config.getNode("npc_respawn_on_world_load").getBoolean(true)) { this.game.getEventManager().registerListeners(this, new WorldListener()); }
+		if (this.config.getNode("npc_respawn_on_world_load").getBoolean(true)) {
+			this.game.getEventManager().registerListeners(this, new WorldListener());
+		}
 
 		this.game.getCommandManager().register(this, CommandSpec.builder().description(this.desc("Main Command"))
 			.executor(new CommandInfo())
@@ -276,14 +305,16 @@ public class NPCs {
 
 		this.logger.info("Loaded plugin successfully.");
 
-		new Thread(() -> {
-			ServerUtils.getLatestVersion().ifPresent(v -> {
-				if (!v.equals("v" + NPCs.VERSION)) {
-					this.logger.info("A new version (" + v + ") of NPCs is available!");
-					this.logger.info("Download it a https://github.com/Daniel12321/NPCs/releases");
-				}
-			});
-		}).start();
+		if (this.config.getNode("update_message").getBoolean(true)) {
+			new Thread(() -> {
+				ServerUtils.getLatestVersion().ifPresent(v -> {
+					if (!v.equals("v" + NPCs.VERSION)) {
+						this.logger.info("A new version (" + v + ") of NPCs is available!");
+						this.logger.info("Download it a https://github.com/Daniel12321/NPCs/releases");
+					}
+				});
+			}).start();
+		}
 	}
 
 	private Text desc(@Nonnull final String str) {
@@ -332,13 +363,4 @@ public class NPCs {
 		MenuManager.getInstance().deselect(e.getTargetEntity().getUniqueId());
 		ActionManager.getInstance().removeChoosing(e.getTargetEntity().getUniqueId());
 	}
-
-//	@Listener
-//	public void updateNPC(final SpawnEntityEvent.ChunkLoad e) {
-//		e.getEntities().forEach(ent -> ent.get(NPCData.class).ifPresent(data -> NPCManager.getInstance().getFile(data.getId()).ifPresent(file -> {
-//			NPCAble npc = (NPCAble) ent;
-//			ent.remove(NPCData.class);
-//			npc.setNPCFile(file);
-//		})));
-//	}
 }

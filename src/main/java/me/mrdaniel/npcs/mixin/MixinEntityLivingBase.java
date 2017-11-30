@@ -1,8 +1,6 @@
 package me.mrdaniel.npcs.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -20,22 +18,22 @@ public abstract class MixinEntityLivingBase extends Entity {
 		super(worldIn);
 	}
 
-	@Shadow public abstract boolean isChild();
-
-	@Overwrite
-	protected boolean canDropLoot() {
-        return !(this.isChild() || this.isNPC());
-    }
+	@Inject(method = "canDropLoot", at = @At("RETURN"), cancellable = true)
+	public void onCanDropLoot(CallbackInfoReturnable<Boolean> cir) {
+		if (this.isNPC() && cir.getReturnValue() == true) {
+			cir.setReturnValue(false);
+		}
+	}
 
 	@Inject(method = "canBreatheUnderwater", at = @At("RETURN"), cancellable = true)
 	public void onCanBreatheUnderwater(final CallbackInfoReturnable<Boolean> cir) {
-		if (this.isNPC() && cir.getReturnValue() != true) {
+		if (this.isNPC() && cir.getReturnValue() == false) {
 			cir.setReturnValue(true);
 		}
 	}
 
 	@Inject(method = "collideWithEntity", at = @At("HEAD"), cancellable = true)
-	protected void onCollideWithEntity(Entity entityIn, CallbackInfo ci) {
+	protected void onCollideWithEntity(final Entity entityIn, final CallbackInfo ci) {
 		if (this.isNPC()) {
 			ci.cancel();
 		}

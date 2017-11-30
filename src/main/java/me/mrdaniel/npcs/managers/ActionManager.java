@@ -13,7 +13,6 @@ import org.spongepowered.api.scheduler.Task;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
-import lombok.Getter;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
@@ -21,7 +20,7 @@ import me.mrdaniel.npcs.io.NPCFile;
 
 public class ActionManager {
 
-	@Getter private static ActionManager instance = new ActionManager();
+	private static ActionManager instance;
 
 	private final Map<UUID, NPCFile> choosing;
 	private final List<UUID> waiting;
@@ -29,6 +28,11 @@ public class ActionManager {
 	public ActionManager() {
 		this.choosing = Maps.newHashMap();
 		this.waiting = Lists.newArrayList();
+	}
+
+	public static ActionManager getInstance() {
+		if (instance == null) { instance = new ActionManager(); }
+		return instance;
 	}
 
 	public void executeChoice(@Nonnull final NPCFile file, @Nonnull final UUID uuid, final int next) throws NPCException {

@@ -27,7 +27,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 group = 'me.mrdaniel.npcs'
-version = '2.1.0'
+version = '3.0.0'
 description = 'A plugin that adds simple custom NPCs to your worlds.'
 
 allprojects {
@@ -38,7 +38,7 @@ allprojects {
 
 dependencies {
     compileOnly "org.projectlombok:lombok:1.16.16"
-    compile 'org.spongepowered:spongeapi:6.0.0-SNAPSHOT'
+    compile 'org.spongepowered:spongeapi:7.0.0-SNAPSHOT'
     compile 'org.spongepowered:mixin:0.5.17-SNAPSHOT'
     compile 'com.github.rojo8399:PlaceholderAPI:master-SNAPSHOT'
 }

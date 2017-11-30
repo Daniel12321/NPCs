@@ -14,7 +14,7 @@ import me.mrdaniel.npcs.managers.placeholders.SimplePlaceholderManager;
 
 public class PlaceholderManager implements PlaceholderHandler {
 
-	@Getter private static PlaceholderManager instance = new PlaceholderManager();
+	private static PlaceholderManager instance;
 
 	@Getter private final PlaceholderHandler handler;
 
@@ -36,6 +36,11 @@ public class PlaceholderManager implements PlaceholderHandler {
 			this.handler = new SimplePlaceholderManager();
 			NPCs.getInstance().getLogger().info("Could not find PlaceholderAPI and loaded a simple version instead.");
 		}
+	}
+
+	public static PlaceholderManager getInstance() {
+		if (instance == null) { instance = new PlaceholderManager(); }
+		return instance;
 	}
 
 	@Override public String formatCommand(final Player p, final String txt) { return this.handler.formatCommand(p, txt); }

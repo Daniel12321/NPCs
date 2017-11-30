@@ -13,7 +13,6 @@ import org.spongepowered.api.text.format.TextColors;
 
 import com.google.common.collect.Maps;
 
-import lombok.Getter;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
 import me.mrdaniel.npcs.exceptions.NPCException;
@@ -25,7 +24,7 @@ import me.mrdaniel.npcs.utils.TextUtils;
 
 public class MenuManager {
 
-	@Getter private static MenuManager instance = new MenuManager();
+	private static MenuManager instance;
 
 	private final Map<UUID, NPCMenu> menus;
 	private final Text select_message;
@@ -37,6 +36,11 @@ public class MenuManager {
 		this.menus = Maps.newHashMap();
 		this.select_message = TextUtils.toText(config.getNode("npc_select_message").getString("&eYou selected an NPC."));
 		this.open_menu = config.getNode("open_menu_on_select").getBoolean(true);
+	}
+
+	public static MenuManager getInstance() {
+		if (instance == null) { instance = new MenuManager(); }
+		return instance;
 	}
 
 	public void select(@Nonnull final Player p, @Nonnull final NPCFile file) throws NPCException {

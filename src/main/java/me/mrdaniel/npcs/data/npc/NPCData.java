@@ -10,27 +10,18 @@ import org.spongepowered.api.data.DataView;
 import org.spongepowered.api.data.manipulator.mutable.common.AbstractData;
 import org.spongepowered.api.data.merge.MergeFunction;
 
-import com.google.common.base.Preconditions;
-
-import lombok.Getter;
-import me.mrdaniel.npcs.data.NPCKeys;
-
 public class NPCData extends AbstractData<NPCData, ImmutableNPCData> {
 
-	@Getter private int id;
-
-	public NPCData(final int id) {
-		this.id = id;
-
+	public NPCData() {
 		registerGettersAndSetters();
 	}
 
 	@Override protected void registerGettersAndSetters() {}
-	@Override public DataContainer toContainer() { return this.asImmutable().toContainer(); }
-	@Override public Optional<NPCData> fill(DataHolder holder, MergeFunction overlap) { return Optional.of(Preconditions.checkNotNull(overlap).merge(copy(), from(holder.toContainer()).orElse(null))); }
-	@Override public Optional<NPCData> from(DataContainer container) { return from((DataView)container); }
-	public Optional<NPCData> from(@Nonnull final DataView view) { return Optional.of(new NPCData(view.getInt(NPCKeys.ID.getQuery()).orElse(0))); }
-	@Override public NPCData copy() { return new NPCData(this.id); }
-	@Override public ImmutableNPCData asImmutable() { return new ImmutableNPCData(this.id); }
+	@Override public DataContainer toContainer() { return DataContainer.createNew(); }
+	@Override public Optional<NPCData> fill(DataHolder holder, MergeFunction overlap) { return Optional.empty(); }
+	@Override public Optional<NPCData> from(DataContainer container) { return Optional.empty(); }
+	public Optional<NPCData> from(@Nonnull final DataView view) { return Optional.empty(); }
+	@Override public NPCData copy() { return new NPCData(); }
+	@Override public ImmutableNPCData asImmutable() { return new ImmutableNPCData(); }
 	@Override public int getContentVersion() { return 1; }
 }

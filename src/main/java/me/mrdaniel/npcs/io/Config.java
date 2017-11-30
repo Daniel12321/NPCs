@@ -16,11 +16,10 @@ public class Config {
 	private final ConfigurationLoader<CommentedConfigurationNode> loader;
 	private final CommentedConfigurationNode node;
 
-	public Config(@Nonnull final Path directory, @Nonnull final String name) {
-		Path path = directory.resolve(name);
+	public Config(@Nonnull final Path path) {
 		if (!Files.exists(path)) {
-			try { NPCs.getInstance().getContainer().getAsset(name).get().copyToFile(path); }
-			catch (final IOException exc) { NPCs.getInstance().getLogger().error("Failed to save config asset", exc); }
+			try { Files.createFile(path); }
+			catch (final IOException exc) { NPCs.getInstance().getLogger().error("Failed to create config file: " + path.toString(), exc); }
 		}
 
 		this.loader = HoconConfigurationLoader.builder().setPath(path).build();
@@ -29,7 +28,12 @@ public class Config {
 
 	private CommentedConfigurationNode load() {
 		try { return this.loader.load(); }
-		catch (final IOException exc) { NPCs.getInstance().getLogger().error("Failed to load config file: {}", exc); return this.loader.createEmptyNode(); }
+		catch (final IOException exc) { NPCs.getInstance().getLogger().error("Failed to load config file", exc); return this.loader.createEmptyNode(); }
+	}
+
+	public void save() {
+		try { this.loader.save(this.node); }
+		catch (final IOException exc) { NPCs.getInstance().getLogger().error("Failed to save config file", exc); }
 	}
 
 	public CommentedConfigurationNode getNode() {

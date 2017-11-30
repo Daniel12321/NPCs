@@ -17,7 +17,6 @@ import com.flowpowered.math.vector.Vector3d;
 import com.flowpowered.math.vector.Vector3f;
 import com.google.common.collect.Sets;
 
-import lombok.Getter;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColors;
 import me.mrdaniel.npcs.catalogtypes.horsepattern.HorsePatterns;
@@ -33,7 +32,7 @@ import net.minecraft.entity.EntityLiving;
 
 public class NPCManager {
 
-	@Getter private static NPCManager instance = new NPCManager();
+	private static NPCManager instance;
 
 	private final Path storagePath;
 	private final Set<NPCFile> npcs;
@@ -50,6 +49,11 @@ public class NPCManager {
 		for (final String name : this.storagePath.toFile().list()) {
 			this.npcs.add(new NPCFile(this.storagePath, Integer.valueOf(name.replaceAll("[^\\d]", ""))));
 		}
+	}
+
+	public static NPCManager getInstance() {
+		if (instance == null) { instance = new NPCManager(); }
+		return instance;
 	}
 
 	public Set<NPCFile> getFiles() {
