@@ -20,6 +20,7 @@ import me.mrdaniel.npcs.managers.MenuManager;
 
 public class InteractListener {
 
+	// This doesn't work for villagers and horses
 	@Listener
 	public void onEntityInteract(final InteractEntityEvent.Secondary.OffHand e, @Root final Player p) {
 		if (e.getTargetEntity() instanceof NPCAble) {
@@ -27,17 +28,19 @@ public class InteractListener {
 		}
 	}
 
+	// Doesn't work yet
 	@Listener
 	public void onHorseMount(final RideEntityEvent.Mount e, @Root final Player p) {
 		e.setCancelled(this.onEntityInteract((NPCAble) e.getTargetEntity(), p));
 	}
 
+	// Doesn't work yet
 	@Listener
 	public void onInventoryOpen(final InteractInventoryEvent.Open e, @Root final Player p, @First final Villager villager) {
 		e.setCancelled(this.onEntityInteract((NPCAble) villager, p));
 	}
 
-	/*
+	/**
 	 * @return whether to cancel the original event
 	 */
 	private boolean onEntityInteract(@Nonnull final NPCAble npc, @Nonnull final Player p) {

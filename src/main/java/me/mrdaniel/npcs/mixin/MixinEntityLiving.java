@@ -40,7 +40,6 @@ import me.mrdaniel.npcs.io.NPCFile;
 import me.mrdaniel.npcs.managers.NPCManager;
 import me.mrdaniel.npcs.utils.Position;
 import me.mrdaniel.npcs.utils.TextUtils;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -60,7 +59,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
@@ -82,12 +80,6 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 	@Shadow public abstract void enablePersistence();
 	@Shadow public abstract void setCanPickUpLoot(boolean canPickup);
 	@Shadow public abstract void setNoAI(boolean disable);
-	@Shadow public abstract boolean getLeashed();
-	@Shadow public abstract Entity getLeashedToEntity();
-	@Shadow public abstract void clearLeashed(boolean sendPacket, boolean dropLead);
-	@Shadow public abstract boolean canBeLeashedTo(EntityPlayer player);
-	@Shadow public abstract void setLeashedToEntity(Entity entityIn, boolean sendAttachNotification);
-	@Shadow protected abstract boolean processInteract(EntityPlayer player, EnumHand hand);
 
 	@Nullable
 	@Override
@@ -126,16 +118,20 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 
 	@Override
 	public void setNPCName(final String value) {
-		super.setCustomNameTag(TextUtils.toLegacy(value));
+		((Living)this).offer(Keys.DISPLAY_NAME, TextUtils.toText(value));
 		super.setAlwaysRenderNameTag(true);
+
+		if (this.file.getGlowing()) { this.file.getGlowColor().ifPresent(color -> this.setNPCGlowColor(color)); }
 	}
 
 	@Override
 	public void setNPCSkin(final String value) {
-		NPCs.getInstance().getGame().getServer().getGameProfileManager().get(value).thenAccept(gp -> Task.builder().delayTicks(0).execute(() -> {
-			this.setNPCSkin(gp.getUniqueId());
-			this.file.setSkinUUID(gp.getUniqueId()).save();
-		}).submit(NPCs.getInstance()));
+		new Thread(() -> {
+			NPCs.getInstance().getGame().getServer().getGameProfileManager().get(value).thenAccept(gp -> Task.builder().delayTicks(0).execute(() -> {
+				this.setNPCSkin(gp.getUniqueId());
+				this.file.setSkinUUID(gp.getUniqueId()).save();
+			}).submit(NPCs.getInstance()));
+		}).start();
 	}
 
 	@Override

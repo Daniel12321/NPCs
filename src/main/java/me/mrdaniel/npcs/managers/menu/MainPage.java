@@ -2,7 +2,6 @@ package me.mrdaniel.npcs.managers.menu;
 
 import javax.annotation.Nonnull;
 
-import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
@@ -13,6 +12,7 @@ import me.mrdaniel.npcs.catalogtypes.glowcolor.GlowColors;
 import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColors;
 import me.mrdaniel.npcs.catalogtypes.horsepattern.HorsePatterns;
 import me.mrdaniel.npcs.catalogtypes.llamatype.LlamaTypes;
+import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.catalogtypes.optiontype.OptionTypes;
 import me.mrdaniel.npcs.catalogtypes.parrottype.ParrotTypes;
 import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitTypes;
@@ -48,7 +48,7 @@ public class MainPage extends Page {
 
 		lines[c++] = BUTTONS;
 		lines[++c] = Text.of(TextColors.GOLD, "NPC ID: ", TextColors.RED, file.getId());
-		lines[++c] = Text.of(TextColors.GOLD, "Type: ", TextColors.RED, TextUtils.capitalize(((Living)npc).getType().getName()));
+		lines[++c] = Text.of(TextColors.GOLD, "Type: ", TextColors.RED, file.getType().orElse(NPCTypes.HUMAN).getName());
 		lines[++c] = Text.of(TextColors.GOLD, "Location: ", TextColors.RED, file.getWorldName(), " ", (int)file.getX(), " ", (int)file.getY(), " ", (int)file.getZ());
 		++c;
 
@@ -64,7 +64,7 @@ public class MainPage extends Page {
 		if (OptionTypes.BABY.isSupported(npc)) { lines[++c] = TextUtils.getToggleText("Baby", "/npc baby", file.getBaby()); }
 		if (OptionTypes.CHARGED.isSupported(npc)) { lines[++c] = TextUtils.getToggleText("Charged", "/npc charged", file.getCharged()); }
 		if (OptionTypes.ANGRY.isSupported(npc)) { lines[++c] = TextUtils.getToggleText("Angry", "/npc angry", file.getAngry()); }
-		if (OptionTypes.SIZE.isSupported(npc)) { lines[++c] = TextUtils.getOptionsText("Size", "/npc size <size>", String.valueOf(file.getSize())); }
+		if (OptionTypes.SIZE.isSupported(npc)) { lines[++c] = TextUtils.getOptionsText("Size", "/npc size <size>", Integer.toString(file.getSize())); }
 		if (OptionTypes.SITTING.isSupported(npc)) { lines[++c] = TextUtils.getToggleText("Sitting", "/npc sitting", file.getSitting()); }
 		if (OptionTypes.SADDLE.isSupported(npc)) { lines[++c] = TextUtils.getToggleText("Saddle", "/npc saddle", file.getSaddle()); }
 		if (OptionTypes.HANGING.isSupported(npc)) { lines[++c] = TextUtils.getToggleText("Hanging", "/npc hanging", file.getHanging()); }

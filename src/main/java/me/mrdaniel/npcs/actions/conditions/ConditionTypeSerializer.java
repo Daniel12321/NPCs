@@ -10,13 +10,13 @@ import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
 public class ConditionTypeSerializer implements TypeSerializer<Condition> {
 
 	@Override
-	public Condition deserialize(TypeToken<?> type, ConfigurationNode value) throws ObjectMappingException {
+	public Condition deserialize(final TypeToken<?> type, final ConfigurationNode value) throws ObjectMappingException {
 		try { return Condition.of(value); }
 		catch (final ConditionException exc) { throw new ObjectMappingException("Failed to read condition!", exc); }
 	}
 
 	@Override
-	public void serialize(TypeToken<?> type, Condition condition, ConfigurationNode value) throws ObjectMappingException {
+	public void serialize(final TypeToken<?> type, final Condition condition, final ConfigurationNode value) throws ObjectMappingException {
 		condition.serialize(value);
 	}
 }

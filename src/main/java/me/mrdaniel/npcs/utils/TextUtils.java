@@ -23,15 +23,6 @@ public class TextUtils {
 		return TextSerializers.formattingCode('&').serialize(txt);
 	}
 
-	@SuppressWarnings("deprecation")
-	public static String toLegacy(@Nonnull final Text txt) {
-		return TextSerializers.LEGACY_FORMATTING_CODE.serialize(txt);
-	}
-
-	public static String toLegacy(@Nonnull final String msg) {
-		return msg.replace('&', '\u00A7');
-	}
-
 	public static String capitalize(@Nonnull final String str) {
 		return str.substring(0, 1).toUpperCase() + str.substring(1, str.length());
 	}

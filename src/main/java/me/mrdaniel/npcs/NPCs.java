@@ -30,7 +30,6 @@ import org.spongepowered.api.service.economy.Currency;
 import org.spongepowered.api.service.economy.EconomyService;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.world.World;
 
 import com.google.common.reflect.TypeToken;
 import com.google.inject.Inject;
@@ -112,8 +111,6 @@ import me.mrdaniel.npcs.managers.ActionManager;
 import me.mrdaniel.npcs.managers.MenuManager;
 import me.mrdaniel.npcs.managers.NPCManager;
 import me.mrdaniel.npcs.utils.ServerUtils;
-import net.minecraft.scoreboard.ScorePlayerTeam;
-import net.minecraft.scoreboard.Scoreboard;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 
 @Plugin(id = NPCs.MODID,
@@ -163,7 +160,7 @@ public class NPCs {
 	@Listener
 	public void onPreInit(@Nullable final GamePreInitializationEvent e) {
 
-		// Makes the server not spam unknown data errors
+		// Prevents the server from spamming unknown data errors
 		// Will be removed in the next version
 		DataRegistration.builder()
 			.dataClass(NPCData.class)
@@ -325,24 +322,21 @@ public class NPCs {
 	public void onStopping(@Nullable final GameStoppingServerEvent e) {
 		this.logger.info("Unloading Plugin...");
 
-		this.cleanScoreboards();
+		// Clean the Scoreboards
+//		for (World world : this.game.getServer().getWorlds()) {
+//			Scoreboard board = ((net.minecraft.world.World)world).getScoreboard();
+//			for (ScorePlayerTeam team : board.getTeams()) {
+//				if (team.getName().startsWith("NPC_")) {
+//					board.removeTeam(team);
+//				}
+//			}
+//		}
 
 		this.game.getEventManager().unregisterPluginListeners(this);
 		this.game.getScheduler().getScheduledTasks().forEach(task -> task.cancel());
 		this.game.getCommandManager().getOwnedBy(this).forEach(this.game.getCommandManager()::removeMapping);
 
 		this.logger.info("Unloaded plugin successfully.");
-	}
-
-	private void cleanScoreboards() {
-		for (World world : this.game.getServer().getWorlds()) {
-			Scoreboard board = ((net.minecraft.world.World)world).getScoreboard();
-			for (ScorePlayerTeam team : board.getTeams()) {
-				if (team.getName().startsWith("NPC_")) {
-					board.removeTeam(team);
-				}
-			}
-		}
 	}
 
 	@Listener
