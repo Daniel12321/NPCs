@@ -7,7 +7,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
-import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.DamageSource;
 
@@ -25,13 +24,6 @@ public abstract class MixinEntity {
 	public void onIsPushedByWater(final CallbackInfoReturnable<Boolean> cir) {
 		if (this.isNPC() && cir.getReturnValue() != false) {
 			cir.setReturnValue(false);
-		}
-    }
-
-	@Inject(method = "getPushReaction", at = @At("RETURN"), cancellable = true)
-	public void onGetPushReaction(final CallbackInfoReturnable<EnumPushReaction> cir) {
-		if (this.isNPC() && cir.getReturnValue() != EnumPushReaction.IGNORE) {
-			cir.setReturnValue(EnumPushReaction.IGNORE);
 		}
     }
 

@@ -17,7 +17,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.flowpowered.math.vector.Vector3d;
 
@@ -315,24 +314,9 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 	@Inject(method = "onEntityUpdate", at = @At("RETURN"))
 	public void onOnEntityUpdate(final CallbackInfo ci) {
 		if (this.file != null && this.looking) {
-			super.world.getEntities(EntityPlayer.class, p -> true)
-			.stream().filter(p -> p.getDistanceToEntity(this) < 20.0 && p.getUniqueID() != super.entityUniqueID)
-			.reduce((p1, p2) -> p1.getDistanceToEntity(this) < p2.getDistanceToEntity(this) ? p1 : p2)
+			super.world.getEntities(EntityPlayer.class, p -> p.getDistanceToEntity(this) < 20.0 && p.getUniqueID() != super.entityUniqueID)
+			.stream().reduce((p1, p2) -> p1.getDistanceToEntity(this) < p2.getDistanceToEntity(this) ? p1 : p2)
 			.ifPresent(p -> ((Living)this).lookAt(new Vector3d(p.posX, p.posY + p.getEyeHeight(), p.posZ)));
-		}
-	}
-
-	@Inject(method = "canDespawn", at = @At("RETURN"), cancellable = true)
-	public void onCanDespawn(final CallbackInfoReturnable<Boolean> cir) {
-		if (this.file != null && cir.getReturnValue() != false) {
-			cir.setReturnValue(false);
-		}
-	}
-
-	@Inject(method = "canBeSteered", at = @At("RETURN"), cancellable = true)
-	public void onCanBeRidden(final CallbackInfoReturnable<Boolean> cir) {
-		if (this.file != null && cir.getReturnValue() != false) {
-			cir.setReturnValue(false);
 		}
 	}
 }
