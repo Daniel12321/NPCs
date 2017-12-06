@@ -214,9 +214,9 @@ public class NPCs {
 			.child(CommandSpec.builder().description(this.desc("Remove")).permission("npc.remove").arguments(NPCCommand.ID_ARG).executor(new CommandRemove()).build(), "remove")
 			.child(CommandSpec.builder().description(this.desc("Copy")).permission("npc.copy").arguments(NPCCommand.ID_ARG).executor(new CommandCopy()).build(), "copy")
 			.child(CommandSpec.builder().description(this.desc("Mount")).permission("npc.mount").arguments(NPCCommand.ID_ARG).executor(new CommandMount()).build(), "mount")
-			.child(CommandSpec.builder().description(this.desc("Deselect")).permission("npc.deselect").executor(new CommandDeselect()).build(), "deselect")
 			.child(CommandSpec.builder().description(this.desc("GoTo")).permission("npc.goto").arguments(NPCCommand.ID_ARG).executor(new CommandGoto()).build(), "goto")
 			.child(CommandSpec.builder().description(this.desc("Move")).permission("npc.edit.move").arguments(NPCCommand.ID_ARG).executor(new CommandMove()).build(), "move")
+			.child(CommandSpec.builder().description(this.desc("Deselect")).permission("npc.edit.deselect").executor(new CommandDeselect()).build(), "deselect")
 			.child(CommandSpec.builder().description(this.desc("Set Name")).permission("npc.edit.name").arguments(GenericArguments.remainingJoinedStrings(Text.of("name"))).executor(new CommandEdit<>(PageTypes.MAIN, OptionTypes.NAME)).build(), "name")
 			.child(CommandSpec.builder().description(this.desc("Set Skin")).permission("npc.edit.skin").arguments(GenericArguments.string(Text.of("skin"))).executor(new CommandEdit<>(PageTypes.MAIN, OptionTypes.SKIN)).build(), "skin")
 			.child(CommandSpec.builder().description(this.desc("Set Looking")).permission("npc.edit.look").arguments(GenericArguments.bool(Text.of("looking"))).executor(new CommandEdit<>(PageTypes.MAIN, OptionTypes.LOOKING)).build(), "looking")
@@ -321,16 +321,6 @@ public class NPCs {
 	@Listener
 	public void onStopping(@Nullable final GameStoppingServerEvent e) {
 		this.logger.info("Unloading Plugin...");
-
-		// Clean the Scoreboards
-//		for (World world : this.game.getServer().getWorlds()) {
-//			Scoreboard board = ((net.minecraft.world.World)world).getScoreboard();
-//			for (ScorePlayerTeam team : board.getTeams()) {
-//				if (team.getName().startsWith("NPC_")) {
-//					board.removeTeam(team);
-//				}
-//			}
-//		}
 
 		this.game.getEventManager().unregisterPluginListeners(this);
 		this.game.getScheduler().getScheduledTasks().forEach(task -> task.cancel());

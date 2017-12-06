@@ -3,14 +3,10 @@ package me.mrdaniel.npcs.listeners;
 import javax.annotation.Nonnull;
 
 import org.spongepowered.api.data.key.Keys;
-import org.spongepowered.api.entity.living.Villager;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.entity.InteractEntityEvent;
-import org.spongepowered.api.event.entity.RideEntityEvent;
-import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.filter.cause.Root;
-import org.spongepowered.api.event.item.inventory.InteractInventoryEvent;
 
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.exceptions.NPCException;
@@ -28,17 +24,17 @@ public class InteractListener {
 		}
 	}
 
-	// Doesn't work yet
-	@Listener
-	public void onHorseMount(final RideEntityEvent.Mount e, @Root final Player p) {
-		e.setCancelled(this.onEntityInteract((NPCAble) e.getTargetEntity(), p));
-	}
-
-	// Doesn't work yet
-	@Listener
-	public void onInventoryOpen(final InteractInventoryEvent.Open e, @Root final Player p, @First final Villager villager) {
-		e.setCancelled(this.onEntityInteract((NPCAble) villager, p));
-	}
+//	// Doesn't work yet
+//	@Listener
+//	public void onHorseMount(final RideEntityEvent.Mount e, @Root final Player p) {
+//		e.setCancelled(this.onEntityInteract((NPCAble) e.getTargetEntity(), p));
+//	}
+//
+//	// Doesn't work yet
+//	@Listener
+//	public void onInventoryOpen(final InteractInventoryEvent.Open e, @Root final Player p, @First final Villager villager) {
+//		e.setCancelled(this.onEntityInteract((NPCAble) villager, p));
+//	}
 
 	/**
 	 * @return whether to cancel the original event
