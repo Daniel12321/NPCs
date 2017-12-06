@@ -48,7 +48,7 @@ public class ActionChoices extends Action {
 
 		Text.Builder b = Text.builder().append(Text.of(" "));
 		this.choices.forEach((txt, next) -> b.append(Text.builder().append(Text.of(TextColors.RED, TextStyles.UNDERLINE, txt)).onHover(TextActions.showText(Text.of(TextColors.GOLD, "Choose"))).onClick(TextActions.executeCallback(src -> {
-			try { ActionManager.getInstance().executeChoice(file, uuid, next);  }
+			try { ActionManager.getInstance().executeChoice(file, uuid, next); }
 			catch (final NPCException exc) {}
 		})).build(), Text.of("  ")));
 

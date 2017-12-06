@@ -26,14 +26,18 @@ public class ActionsPage extends MultiPage {
 			.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Add Pause")))
 			.onClick(TextActions.runCommand("/npc action add pause")).build(),
 			Text.of(" "),
+			Text.builder().append(Text.of(TextColors.YELLOW, "[Cooldown]"))
+			.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Add Cooldown")))
+			.onClick(TextActions.suggestCommand("/npc action add cooldown <seconds> <message>")).build(),
+			Text.of(" "),
 			Text.builder().append(Text.of(TextColors.YELLOW, "[Goto]"))
 			.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Add Goto")))
 			.onClick(TextActions.suggestCommand("/npc action add goto <goto>")).build(),
 			Text.of(" "),
 			Text.builder().append(Text.of(TextColors.YELLOW, "[Choices]"))
 			.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Add Choices")))
-			.onClick(TextActions.suggestCommand("/npc action add choices <first> <goto_first> <second> <goto_second>")).build())
-			.build();
+			.onClick(TextActions.suggestCommand("/npc action add choices <name_first> <goto_first> <name_second> <goto_second>")).build()
+			).build();
 
 	private static final Text ADD_COMMAND = Text.builder().append(Text.of(TextColors.DARK_GREEN, "Add Command: "),
 			Text.builder().append(Text.of(TextColors.YELLOW, "[Player]"))
@@ -42,8 +46,8 @@ public class ActionsPage extends MultiPage {
 			Text.of(" "),
 			Text.builder().append(Text.of(TextColors.YELLOW, "[Console]"))
 			.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Add Console Command")))
-			.onClick(TextActions.suggestCommand("/npc action add consolecmd <command...>")).build())
-			.build();
+			.onClick(TextActions.suggestCommand("/npc action add consolecmd <command...>")).build()
+			).build();
 
 	private static final Text ADD_CONDITION = Text.builder().append(Text.of(TextColors.DARK_GREEN, "Add Condition: "),
 			Text.builder().append(Text.of(TextColors.YELLOW, "[Item]"))
@@ -56,8 +60,12 @@ public class ActionsPage extends MultiPage {
 			Text.of(" "),
 			Text.builder().append(Text.of(TextColors.YELLOW, "[Exp]"))
 			.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Add Exp Condition")))
-			.onClick(TextActions.suggestCommand("/npc action add condition exp <exp>")).build())
-			.build();
+			.onClick(TextActions.suggestCommand("/npc action add condition exp <exp>")).build(),
+			Text.of(" "),
+			Text.builder().append(Text.of(TextColors.YELLOW, "[Money]"))
+			.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Add Money Condition")))
+			.onClick(TextActions.suggestCommand("/npc action add condition money <money>")).build()
+			).build();
 
 	public ActionsPage(@Nonnull final NPCAble npc) {
 		super(npc);

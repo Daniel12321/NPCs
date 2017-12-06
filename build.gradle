@@ -29,6 +29,12 @@ group = 'me.mrdaniel.npcs'
 version = '3.0.0'
 description = 'A plugin that adds simple custom NPCs to your worlds.'
 
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
 allprojects {
     repositories {
         maven { url 'https://jitpack.io' }
