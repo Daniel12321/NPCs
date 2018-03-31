@@ -11,7 +11,7 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-        classpath 'org.spongepowered:mixingradle:0.4-SNAPSHOT'
+        classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
     }
 }
 
@@ -44,7 +44,7 @@ allprojects {
 dependencies {
     compileOnly "org.projectlombok:lombok:1.16.16"
     compile 'org.spongepowered:spongeapi:7.0.0-SNAPSHOT'
-    compile 'org.spongepowered:mixin:0.5.17-SNAPSHOT'
+    compile 'org.spongepowered:mixin:0.7.4-SNAPSHOT'
     compile 'com.github.rojo8399:PlaceholderAPI:master-SNAPSHOT'
 }
 
@@ -63,6 +63,6 @@ jar {
     manifest.attributes(
         'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
         'MixinConfigs': 'mixins.npcs.json',
-        'FMLCorePluginContainsFMLMod': 'true',
+        'ForceLoadAsMod': true,
     )
 }
