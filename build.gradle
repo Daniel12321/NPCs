@@ -61,6 +61,7 @@ sourceSets {
 
 jar {
     manifest.attributes(
+        'FMLCorePluginContainsFMLMod': 'true',
         'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
         'MixinConfigs': 'mixins.npcs.json',
         'ForceLoadAsMod': true,
