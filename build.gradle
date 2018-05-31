@@ -42,7 +42,7 @@ allprojects {
 }
 
 dependencies {
-    compileOnly "org.projectlombok:lombok:1.16.16"
+    compile 'org.projectlombok:lombok:1.16.16'
     compile 'org.spongepowered:spongeapi:7.0.0-SNAPSHOT'
     compile 'org.spongepowered:mixin:0.7.4-SNAPSHOT'
     compile 'com.github.rojo8399:PlaceholderAPI:master-SNAPSHOT'
