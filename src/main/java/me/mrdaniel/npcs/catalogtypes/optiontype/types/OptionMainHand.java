@@ -1,13 +1,12 @@
 package me.mrdaniel.npcs.catalogtypes.optiontype.types;
 
-import java.util.Optional;
-
-import org.spongepowered.api.entity.ArmorEquipable;
-import org.spongepowered.api.item.inventory.ItemStack;
-
 import me.mrdaniel.npcs.catalogtypes.optiontype.OptionType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.NPCFile;
+import org.spongepowered.api.entity.ArmorEquipable;
+import org.spongepowered.api.item.inventory.ItemStack;
+
+import java.util.Optional;
 
 public class OptionMainHand extends OptionType<ItemStack> {
 

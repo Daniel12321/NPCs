@@ -1,26 +1,36 @@
 package me.mrdaniel.npcs.catalogtypes.actiontype;
 
-import java.util.function.Function;
-
-import javax.annotation.Nonnull;
-
+import me.mrdaniel.npcs.actions.Action;
+import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.CatalogType;
 import org.spongepowered.api.util.annotation.CatalogedBy;
 
-import lombok.Getter;
-import me.mrdaniel.npcs.actions.Action;
-import ninja.leaping.configurate.ConfigurationNode;
+import java.util.function.Function;
 
 @CatalogedBy(ActionTypes.class)
 public class ActionType implements CatalogType {
 
-	@Getter private final String name;
-	@Getter private final String id;
-	@Getter private final Function<ConfigurationNode, Action> action;
+	private final String name;
+	private final String id;
+	private final Function<ConfigurationNode, Action> action;
 
-	protected ActionType(@Nonnull final String name, @Nonnull final  String id, @Nonnull final Function<ConfigurationNode, Action> action) {
+	ActionType(String name, String id, Function<ConfigurationNode, Action> action) {
 		this.name = name;
 		this.id = id;
 		this.action = action;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public String getId() {
+		return id;
+	}
+
+	public Function<ConfigurationNode, Action> getAction() {
+		return action;
 	}
 }

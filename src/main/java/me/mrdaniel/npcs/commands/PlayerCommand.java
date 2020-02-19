@@ -1,7 +1,5 @@
 package me.mrdaniel.npcs.commands;
 
-import javax.annotation.Nonnull;
-
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -14,11 +12,14 @@ import org.spongepowered.api.text.format.TextColors;
 public abstract class PlayerCommand implements CommandExecutor {
 
 	@Override
-	public CommandResult execute(final CommandSource src, final CommandContext args) throws CommandException {
-		if (!(src instanceof Player)) { throw new CommandException(Text.of(TextColors.RED, "This command is for players only!")); }
+	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+		if (!(src instanceof Player)) {
+			throw new CommandException(Text.of(TextColors.RED, "This command is for players only!"));
+		}
 		this.execute((Player)src, args);
+
 		return CommandResult.success();
 	}
 
-	public abstract void execute(@Nonnull final Player p, @Nonnull final CommandContext args) throws CommandException;
+	public abstract void execute(Player p, CommandContext args) throws CommandException;
 }

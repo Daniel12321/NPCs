@@ -1,14 +1,10 @@
 package me.mrdaniel.npcs.managers.menu;
 
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
+import com.google.common.collect.Lists;
+import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import org.spongepowered.api.text.Text;
 
-import com.google.common.collect.Lists;
-
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import java.util.List;
 
 public abstract class MultiPage extends Page {
 
@@ -16,7 +12,7 @@ public abstract class MultiPage extends Page {
 	protected int count;
 	protected int current;
 
-	public MultiPage(@Nonnull final NPCAble npc) {
+	public MultiPage(NPCAble npc) {
 		super(npc);
 	}
 
@@ -26,14 +22,14 @@ public abstract class MultiPage extends Page {
 	}
 
 	@Override
-	public void update(@Nonnull final NPCAble npc) {
+	public void update(NPCAble npc) {
 		this.pages = Lists.newArrayList();
 		this.count = 0;
 		this.current = 0;
 		this.updatePage(npc);
 	}
 
-	protected void add(@Nonnull final Text txt) {
+	protected void add(Text txt) {
 		int page = this.count / 18;
 		while (this.pages.size() <= page) { this.addPage(); }
 		this.pages.get(page)[this.count++ % 18] = txt;
@@ -45,7 +41,7 @@ public abstract class MultiPage extends Page {
 		this.pages.add(page);
 	}
 
-	public void addCurrent(final int add) {
+	public void addCurrent(int add) {
 		this.current += add;
 		if (this.current < 0) { this.current = 0; }
 		else if (this.current >= this.pages.size()) { this.current = this.pages.size()-1; }

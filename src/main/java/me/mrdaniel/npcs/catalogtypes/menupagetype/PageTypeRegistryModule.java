@@ -1,27 +1,25 @@
 package me.mrdaniel.npcs.catalogtypes.menupagetype;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.annotation.Nonnull;
-
 import org.spongepowered.api.registry.CatalogRegistryModule;
 
-import com.google.common.collect.Lists;
-
-import lombok.Getter;
+import javax.annotation.Nonnull;
+import java.util.Collection;
+import java.util.Optional;
 
 public class PageTypeRegistryModule implements CatalogRegistryModule<PageType> {
 
-	@Getter private final List<PageType> all;
-
-	public PageTypeRegistryModule() {
-		this.all = Lists.newArrayList(PageTypes.MAIN, PageTypes.ARMOR, PageTypes.ACTIONS);
+	@Override
+	public Optional<PageType> getById(@Nonnull final String id) {
+		for (PageType type : this.getAll()) {
+			if (type.getId().equalsIgnoreCase(id)) {
+				return Optional.of(type);
+			}
+		}
+		return Optional.empty();
 	}
 
 	@Override
-	public Optional<PageType> getById(@Nonnull final String id) {
-		for (PageType type : this.all) { if (type.getId().equalsIgnoreCase(id)) { return Optional.of(type); } }
-		return Optional.empty();
+	public Collection<PageType> getAll() {
+		return PageTypes.ALL;
 	}
 }

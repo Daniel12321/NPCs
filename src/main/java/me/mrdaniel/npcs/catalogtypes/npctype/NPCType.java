@@ -4,14 +4,30 @@ import org.spongepowered.api.CatalogType;
 import org.spongepowered.api.entity.EntityType;
 import org.spongepowered.api.util.annotation.CatalogedBy;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 @CatalogedBy(NPCTypes.class)
 public class NPCType implements CatalogType {
 
-	@Getter private final String name;
-	@Getter private final String id;
-	@Getter private final EntityType entityType;
+	NPCType(String name, String id, EntityType entityType) {
+		this.name = name;
+		this.id = id;
+		this.entityType = entityType;
+	}
+
+	private final String name;
+	private final String id;
+	private final EntityType entityType;
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public String getId() {
+		return id;
+	}
+
+	public EntityType getEntityType() {
+		return entityType;
+	}
 }

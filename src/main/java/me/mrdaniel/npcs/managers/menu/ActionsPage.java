@@ -1,14 +1,11 @@
 package me.mrdaniel.npcs.managers.menu;
 
-import javax.annotation.Nonnull;
-
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.action.TextActions;
-import org.spongepowered.api.text.format.TextColors;
-
 import me.mrdaniel.npcs.actions.Action;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.utils.TextUtils;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.action.TextActions;
+import org.spongepowered.api.text.format.TextColors;
 
 public class ActionsPage extends MultiPage {
 
@@ -67,12 +64,12 @@ public class ActionsPage extends MultiPage {
 			.onClick(TextActions.suggestCommand("/npc action add condition money <money>")).build()
 			).build();
 
-	public ActionsPage(@Nonnull final NPCAble npc) {
+	public ActionsPage(NPCAble npc) {
 		super(npc);
 	}
 
 	@Override
-	public void updatePage(final NPCAble npc) {
+	public void updatePage(NPCAble npc) {
 		this.add(Text.of(TextColors.GOLD, "Actions: "));
 
 		for (int i = 0; i < npc.getNPCFile().getActions().size(); i++) {
@@ -91,7 +88,7 @@ public class ActionsPage extends MultiPage {
 		this.add(TextUtils.getToggleText("Repeat", "/npc action repeat", npc.getNPCFile().getRepeatActions()));
 	}
 
-	private Text getRemoveText(final int index) {
+	private Text getRemoveText(int index) {
 		return Text.builder()
 				.append(Text.of(TextColors.RED, "[x]"))
 				.onHover(TextActions.showText(Text.of(TextColors.RED, "Remove")))
@@ -99,7 +96,7 @@ public class ActionsPage extends MultiPage {
 				.build();
 	}
 
-	private final Text getUpText(final int index) {
+	private final Text getUpText(int index) {
 		return Text.builder()
 				.append(Text.of(TextColors.YELLOW, "[˄]"))
 				.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Move Up")))
@@ -107,7 +104,7 @@ public class ActionsPage extends MultiPage {
 				.build();
 	}
 
-	private final Text getDownText(final int index) {
+	private final Text getDownText(int index) {
 		return Text.builder()
 				.append(Text.of(TextColors.YELLOW, "[˅]"))
 				.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Move Down")))

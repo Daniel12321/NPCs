@@ -1,5 +1,9 @@
 package me.mrdaniel.npcs.catalogtypes.career;
 
+import com.google.common.collect.Lists;
+
+import java.util.List;
+
 public class Careers {
 
 	public static final Career FARMER = new Career("Farmer", "farmer", 0, 1);
@@ -15,4 +19,6 @@ public class Careers {
 	public static final Career BUTCHER = new Career("Butcher", "butcher", 4, 1);
 	public static final Career LEATHERWORKER = new Career("Leatherworker", "leatherworker", 4, 2);
 	public static final Career NITWIT = new Career("Nitwit", "nitwit", 5, 1);
+
+	public static final List<Career> ALL = Lists.newArrayList(FARMER, FISHERMAN, SHEPHERD, FLETCHER, LIBRARIAN, CARTOGRAPHER, CLERIC, ARMORER, WEAPON_SMITH, TOOL_SMITH, BUTCHER, LEATHERWORKER, NITWIT);
 }

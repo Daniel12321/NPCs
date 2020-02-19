@@ -1,19 +1,16 @@
 package me.mrdaniel.npcs.commands.main;
 
-import java.util.Optional;
-
-import javax.annotation.Nonnull;
-
+import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
+import me.mrdaniel.npcs.commands.PlayerCommand;
+import me.mrdaniel.npcs.managers.MenuManager;
+import me.mrdaniel.npcs.managers.menu.NPCMenu;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
-import me.mrdaniel.npcs.commands.PlayerCommand;
-import me.mrdaniel.npcs.managers.MenuManager;
-import me.mrdaniel.npcs.managers.menu.NPCMenu;
+import java.util.Optional;
 
 public class CommandInfo extends PlayerCommand {
 
@@ -32,9 +29,13 @@ public class CommandInfo extends PlayerCommand {
 	}
 
 	@Override
-	public void execute(@Nonnull final Player p, @Nonnull final CommandContext args) throws CommandException {
+	public void execute(Player p, CommandContext args) throws CommandException {
 		Optional<NPCMenu> menu = MenuManager.getInstance().get(p.getUniqueId());
-		if (menu.isPresent()) { menu.get().send(p, PageTypes.MAIN); }
-		else { p.sendMessages(this.lines); }
+
+		if (menu.isPresent()) {
+			menu.get().send(p, PageTypes.MAIN);
+		} else {
+			p.sendMessages(this.lines);
+		}
 	}
 }

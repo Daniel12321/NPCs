@@ -20,7 +20,7 @@ public class NPCData extends AbstractData<NPCData, ImmutableNPCData> {
 	@Override public DataContainer toContainer() { return DataContainer.createNew(); }
 	@Override public Optional<NPCData> fill(DataHolder holder, MergeFunction overlap) { return Optional.empty(); }
 	@Override public Optional<NPCData> from(DataContainer container) { return Optional.empty(); }
-	public Optional<NPCData> from(@Nonnull final DataView view) { return Optional.empty(); }
+	public Optional<NPCData> from(DataView view) { return Optional.empty(); }
 	@Override public NPCData copy() { return new NPCData(); }
 	@Override public ImmutableNPCData asImmutable() { return new ImmutableNPCData(); }
 	@Override public int getContentVersion() { return 1; }

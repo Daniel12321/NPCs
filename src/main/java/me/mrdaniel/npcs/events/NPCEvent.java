@@ -1,26 +1,23 @@
 package me.mrdaniel.npcs.events;
 
-import javax.annotation.Nonnull;
-
+import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.utils.ServerUtils;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.event.Cancellable;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.impl.AbstractEvent;
 
-import lombok.Getter;
-import lombok.Setter;
-import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.utils.ServerUtils;
+import javax.annotation.Nonnull;
 
 public abstract class NPCEvent<T> extends AbstractEvent implements Cancellable {
 
-	@Getter private final CommandSource source;
-	@Getter private final T npc;
-	@Getter private final Cause cause;
+	private final CommandSource source;
+	private final T npc;
+	private final Cause cause;
 
-	@Getter @Setter private boolean cancelled;
+	private boolean cancelled;
 
-	protected NPCEvent(@Nonnull final CommandSource source, @Nonnull final T npc) {
+	protected NPCEvent(CommandSource source, T npc) {
 		this.source = source;
 		this.npc = npc;
 		this.cause = ServerUtils.getCause(npc, source);
@@ -30,5 +27,29 @@ public abstract class NPCEvent<T> extends AbstractEvent implements Cancellable {
 
 	public boolean post() {
 		return NPCs.getInstance().getGame().getEventManager().post(this);
+	}
+
+	@Override
+	public CommandSource getSource() {
+		return source;
+	}
+
+	public T getNpc() {
+		return npc;
+	}
+
+	@Override
+	public Cause getCause() {
+		return cause;
+	}
+
+	@Override
+	public boolean isCancelled() {
+		return cancelled;
+	}
+
+	@Override
+	public void setCancelled(boolean cancelled) {
+		this.cancelled = cancelled;
 	}
 }

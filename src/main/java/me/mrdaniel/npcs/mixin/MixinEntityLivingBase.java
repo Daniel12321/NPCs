@@ -18,14 +18,17 @@ public abstract class MixinEntityLivingBase extends Entity {
 	}
 
 	@Inject(method = "canBePushed", at = @At("RETURN"), cancellable = true)
-    public void onCanBePushed(final CallbackInfoReturnable<Boolean> cir) {
+    public void onCanBePushed(CallbackInfoReturnable<Boolean> cir) {
 		if (this.isNPC() && cir.getReturnValue() != false) {
 			cir.setReturnValue(false);
 		}
 	}
 
 	private boolean isNPC() {
-		if (!(this instanceof NPCAble)) { return false; }
+		if (!(this instanceof NPCAble)) {
+			return false;
+		}
+
 		return ((NPCAble)this).getNPCFile() != null;
 	}
 }

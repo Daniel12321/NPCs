@@ -1,14 +1,9 @@
 package me.mrdaniel.npcs.catalogtypes.actiontype;
 
-import me.mrdaniel.npcs.actions.ActionChoices;
-import me.mrdaniel.npcs.actions.ActionCondition;
-import me.mrdaniel.npcs.actions.ActionConsoleCommand;
-import me.mrdaniel.npcs.actions.ActionCooldown;
-import me.mrdaniel.npcs.actions.ActionDelay;
-import me.mrdaniel.npcs.actions.ActionGoto;
-import me.mrdaniel.npcs.actions.ActionMessage;
-import me.mrdaniel.npcs.actions.ActionPause;
-import me.mrdaniel.npcs.actions.ActionPlayerCommand;
+import com.google.common.collect.Lists;
+import me.mrdaniel.npcs.actions.*;
+
+import java.util.List;
 
 public final class ActionTypes {
 
@@ -21,4 +16,6 @@ public final class ActionTypes {
 	public static final ActionType GOTO = new ActionType("Goto", "goto", node -> new ActionGoto(node));
 	public static final ActionType DELAY = new ActionType("Delay", "delay", node -> new ActionDelay(node));
 	public static final ActionType COOLDOWN = new ActionType("Cooldown", "cooldown", node -> new ActionCooldown(node));
+
+	public static final List<ActionType> ALL = Lists.newArrayList(MESSAGE, CONSOLECMD, PLAYERCMD, CONDITION, CHOICES, PAUSE, GOTO, DELAY, COOLDOWN);
 }

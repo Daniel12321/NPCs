@@ -1,6 +1,9 @@
 package me.mrdaniel.npcs.catalogtypes.glowcolor;
 
+import com.google.common.collect.Lists;
 import net.minecraft.util.text.TextFormatting;
+
+import java.util.List;
 
 public class GlowColors {
 
@@ -20,4 +23,6 @@ public class GlowColors {
 	public static final GlowColor LIGHT_PURPLE = new GlowColor("Light Purple", "light_purple", TextFormatting.LIGHT_PURPLE);
 	public static final GlowColor YELLOW = new GlowColor("Yellow", "yellow", TextFormatting.YELLOW);
 	public static final GlowColor WHITE = new GlowColor("White", "white", TextFormatting.WHITE);
+
+	public static final List<GlowColor> ALL = Lists.newArrayList(BLACK, DARK_BLUE, DARK_GREEN, DARK_AQUA, DARK_RED, DARK_PURPLE, GOLD, GRAY, DARK_GRAY, BLUE, GREEN, AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE);
 }

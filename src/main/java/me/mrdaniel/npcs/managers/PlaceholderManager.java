@@ -1,22 +1,20 @@
 package me.mrdaniel.npcs.managers;
 
-import java.util.Optional;
-
-import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.plugin.PluginContainer;
-import org.spongepowered.api.text.Text;
-
-import lombok.Getter;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.managers.placeholders.PlaceholderAPIManager;
 import me.mrdaniel.npcs.managers.placeholders.PlaceholderHandler;
 import me.mrdaniel.npcs.managers.placeholders.SimplePlaceholderManager;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.plugin.PluginContainer;
+import org.spongepowered.api.text.Text;
+
+import java.util.Optional;
 
 public class PlaceholderManager implements PlaceholderHandler {
 
 	private static PlaceholderManager instance;
 
-	@Getter private final PlaceholderHandler handler;
+	private final PlaceholderHandler handler;
 
 	public PlaceholderManager() {
 		Optional<PluginContainer> placeholderapi = NPCs.getInstance().getGame().getPluginManager().getPlugin("placeholderapi");
@@ -39,11 +37,28 @@ public class PlaceholderManager implements PlaceholderHandler {
 	}
 
 	public static PlaceholderManager getInstance() {
-		if (instance == null) { instance = new PlaceholderManager(); }
+		if (instance == null) {
+			instance = new PlaceholderManager();
+		}
 		return instance;
 	}
 
-	@Override public String formatCommand(final Player p, final String txt) { return this.handler.formatCommand(p, txt); }
-	@Override public Text formatNPCMessage(final Player p, final String txt, final String npc_name) { return this.handler.formatNPCMessage(p, txt, npc_name); }
-	@Override public Text formatChoiceMessage(final Player p, final Text choices) { return this.handler.formatChoiceMessage(p, choices); }
+	@Override
+	public String formatCommand(final Player p, final String txt) {
+		return this.handler.formatCommand(p, txt);
+	}
+
+	@Override
+	public Text formatNPCMessage(final Player p, final String txt, final String npc_name) {
+		return this.handler.formatNPCMessage(p, txt, npc_name);
+	}
+
+	@Override
+	public Text formatChoiceMessage(final Player p, final Text choices) {
+		return this.handler.formatChoiceMessage(p, choices);
+	}
+
+	public PlaceholderHandler getHandler() {
+		return this.handler;
+	}
 }

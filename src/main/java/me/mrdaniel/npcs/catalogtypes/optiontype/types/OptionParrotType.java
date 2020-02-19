@@ -1,22 +1,24 @@
 package me.mrdaniel.npcs.catalogtypes.optiontype.types;
 
-import java.util.Optional;
-
 import me.mrdaniel.npcs.catalogtypes.optiontype.OptionType;
 import me.mrdaniel.npcs.catalogtypes.parrottype.ParrotType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.NPCFile;
-import net.minecraft.entity.passive.EntityParrot;
+import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.entity.living.animal.Parrot;
+import org.spongepowered.api.text.Text;
+
+import java.util.Optional;
 
 public class OptionParrotType extends OptionType<ParrotType> {
 
 	public OptionParrotType() {
-		super("ParrotType", "parrottype");
+		super("ParrotType", "parrottype", GenericArguments.catalogedElement(Text.of("parrottype"), ParrotType.class));
 	}
 
 	@Override
 	public boolean isSupported(final NPCAble npc) {
-		return npc instanceof EntityParrot;
+		return npc instanceof Parrot;
 	}
 
 	@Override

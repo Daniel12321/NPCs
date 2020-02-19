@@ -1,39 +1,38 @@
 package me.mrdaniel.npcs.actions.conditions;
 
-import javax.annotation.Nonnull;
-
+import me.mrdaniel.npcs.catalogtypes.conditiontype.ConditionTypes;
+import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import me.mrdaniel.npcs.catalogtypes.conditiontype.ConditionTypes;
-import ninja.leaping.configurate.ConfigurationNode;
-
 public class ConditionLevel extends Condition {
 
 	private final int level;
 
-	public ConditionLevel(@Nonnull final ConfigurationNode node) { this(node.getNode("Level").getInt(1)); }
+	public ConditionLevel(ConfigurationNode node) {
+		this(node.getNode("Level").getInt(1));
+	}
 
-	public ConditionLevel(final int level) {
+	public ConditionLevel(int level) {
 		super(ConditionTypes.LEVEL);
 
 		this.level = level;
 	}
 
 	@Override
-	public boolean isMet(final Player p) {
+	public boolean isMet(Player p) {
 		return p.get(Keys.EXPERIENCE_LEVEL).orElse(0) >= this.level;
 	}
 
 	@Override
-	public void take(final Player p) {
+	public void take(Player p) {
 		p.offer(Keys.EXPERIENCE_LEVEL, p.get(Keys.EXPERIENCE_LEVEL).orElse(0) - this.level);
 	}
 
 	@Override
-	public void serializeValue(final ConfigurationNode node) {
+	public void serializeValue(ConfigurationNode node) {
 		node.getNode("Level").setValue(this.level);
 	}
 

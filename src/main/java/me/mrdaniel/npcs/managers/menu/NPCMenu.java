@@ -1,30 +1,25 @@
 package me.mrdaniel.npcs.managers.menu;
 
-import java.util.Map;
-import java.util.Optional;
-
-import javax.annotation.Nonnull;
-
+import com.google.common.collect.Maps;
+import me.mrdaniel.npcs.catalogtypes.menupagetype.PageType;
+import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
+import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.entity.ArmorEquipable;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
 
-import com.google.common.collect.Maps;
-
-import lombok.Getter;
-import me.mrdaniel.npcs.catalogtypes.menupagetype.PageType;
-import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
-import me.mrdaniel.npcs.utils.TextUtils;
+import java.util.Map;
+import java.util.Optional;
 
 public class NPCMenu {
 
-	@Getter private final NPCAble npc;
+	private final NPCAble npc;
 	private final Map<PageType, Page> pages;
 
-	public NPCMenu(@Nonnull final NPCAble npc) {
+	public NPCMenu(NPCAble npc) {
 		this.npc = npc;
 		this.pages = Maps.newHashMap();
 		this.pages.put(PageTypes.MAIN, new MainPage(npc));
@@ -32,11 +27,11 @@ public class NPCMenu {
 		this.pages.put(PageTypes.ACTIONS, new ActionsPage(npc));
 	}
 
-	public void send(@Nonnull final Player p, @Nonnull final PageType page) {
+	public void send(Player p, PageType page) {
 		Optional.ofNullable(this.pages.get(page)).ifPresent(pg -> this.send(p, pg));
 	}
 
-	public void send(@Nonnull final Player p, @Nonnull final Page page) {
+	public void send(Player p, Page page) {
 		p.sendMessage(Text.EMPTY);
 		p.sendMessage(Text.of(Text.of(TextColors.YELLOW, "----------------=====[ ", TextColors.RED, "NPC Menu", TextColors.YELLOW, " ]=====----------------")));
 		p.sendMessages(page.getLines());
@@ -53,17 +48,17 @@ public class NPCMenu {
 		return Text.builder().append(Text.of(TextColors.YELLOW, bar), b.build(), Text.of(TextColors.YELLOW, bar)).build();
 	}
 
-	private String getBar(final int times) {
+	private String getBar(int times) {
 		StringBuilder b = new StringBuilder();
 		for (int i = 0; i < times; i++) { b.append('-'); }
 		return b.toString();
 	}
 
-	private Text getButton(@Nonnull final Text button) {
+	private Text getButton(Text button) {
 		return Text.builder().append(Text.of(TextColors.YELLOW, "-=[ "), button, Text.of(TextColors.YELLOW, " ]=-")).build();
 	}
 
-	private Text getActionsButton(@Nonnull final Text button) {
+	private Text getActionsButton(Text button) {
 		return this.getButton(Text.builder().append(
 				Text.builder().append(Text.of(TextColors.AQUA, "<- "))
 				.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Previous Page")))
@@ -75,11 +70,15 @@ public class NPCMenu {
 				.build());
 	}
 
-	public void update(@Nonnull final PageType page) {
+	public void update(PageType page) {
 		Optional.ofNullable(this.pages.get(page)).ifPresent(pg -> pg.update(this.npc));
 	}
 
-	public void updateAndSend(@Nonnull final Player p, @Nonnull final PageType page) {
+	public void updateAndSend(Player p, PageType page) {
 		Optional.ofNullable(this.pages.get(page)).ifPresent(pg -> { pg.update(this.npc); this.send(p, pg); });
+	}
+
+	public NPCAble getNpc() {
+		return this.npc;
 	}
 }

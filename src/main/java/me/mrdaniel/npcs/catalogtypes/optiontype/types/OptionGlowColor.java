@@ -1,16 +1,18 @@
 package me.mrdaniel.npcs.catalogtypes.optiontype.types;
 
-import java.util.Optional;
-
 import me.mrdaniel.npcs.catalogtypes.glowcolor.GlowColor;
 import me.mrdaniel.npcs.catalogtypes.optiontype.OptionType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.NPCFile;
+import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.text.Text;
+
+import java.util.Optional;
 
 public class OptionGlowColor extends OptionType<GlowColor> {
 
 	public OptionGlowColor() {
-		super("GlowColor", "glowcolor");
+		super("GlowColor", "glowcolor", GenericArguments.catalogedElement(Text.of("glowcolor"), GlowColor.class));
 	}
 
 	@Override

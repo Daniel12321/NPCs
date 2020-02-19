@@ -1,17 +1,18 @@
 package me.mrdaniel.npcs.catalogtypes.optiontype.types;
 
-import java.util.Optional;
-
-import org.spongepowered.api.entity.living.Human;
-
 import me.mrdaniel.npcs.catalogtypes.optiontype.OptionType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.NPCFile;
+import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.entity.living.Human;
+import org.spongepowered.api.text.Text;
+
+import java.util.Optional;
 
 public class OptionSkin extends OptionType<String> {
 
 	public OptionSkin() {
-		super("Skin", "skin");
+		super("Skin", "skin", GenericArguments.string(Text.of("skin")));
 	}
 
 	@Override

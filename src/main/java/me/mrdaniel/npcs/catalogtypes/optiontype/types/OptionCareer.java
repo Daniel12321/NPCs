@@ -1,23 +1,25 @@
 package me.mrdaniel.npcs.catalogtypes.optiontype.types;
 
-import java.util.Optional;
-
 import me.mrdaniel.npcs.catalogtypes.career.Career;
 import me.mrdaniel.npcs.catalogtypes.optiontype.OptionType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.NPCFile;
-import net.minecraft.entity.monster.EntityZombieVillager;
-import net.minecraft.entity.passive.EntityVillager;
+import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.entity.living.Villager;
+import org.spongepowered.api.entity.living.monster.ZombieVillager;
+import org.spongepowered.api.text.Text;
+
+import java.util.Optional;
 
 public class OptionCareer extends OptionType<Career> {
 
 	public OptionCareer() {
-		super("Career", "career");
+		super("Career", "career", GenericArguments.catalogedElement(Text.of("career"), Career.class));
 	}
 
 	@Override
 	public boolean isSupported(final NPCAble npc) {
-		return npc instanceof EntityVillager || npc instanceof EntityZombieVillager;
+		return npc instanceof Villager || npc instanceof ZombieVillager;
 	}
 
 	@Override

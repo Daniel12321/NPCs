@@ -1,41 +1,43 @@
 package me.mrdaniel.npcs.actions;
 
-import javax.annotation.Nonnull;
-
-import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
-
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
 import me.mrdaniel.npcs.io.NPCFile;
 import me.mrdaniel.npcs.managers.ActionResult;
 import ninja.leaping.configurate.ConfigurationNode;
+import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
 
 public class ActionDelay extends Action {
 
 	private int ticks;
 
-	public ActionDelay(@Nonnull final ConfigurationNode node) { this(node.getNode("Ticks").getInt(20)); }
-	public ActionDelay(@Nonnull final int ticks) {
+	public ActionDelay(ConfigurationNode node) {
+		this(node.getNode("Ticks").getInt(20));
+	}
+	
+	public ActionDelay(int ticks) {
 		super(ActionTypes.DELAY);
 
 		this.ticks = ticks;
 	}
 
-	public void setTicks(final int ticks) { this.ticks = ticks; }
+	public void setTicks(int ticks) {
+		this.ticks = ticks;
+	}
 
 	@Override
-	public void execute(final Player p, final NPCFile file, final ActionResult result) {
+	public void execute(Player p, NPCFile file, ActionResult result) {
 		result.setNextAction(result.getCurrentAction()+1).setWaitTicks(this.ticks);
 	}
 
 	@Override
-	public void serializeValue(final ConfigurationNode node) {
+	public void serializeValue(ConfigurationNode node) {
 		node.getNode("Ticks").setValue(this.ticks);
 	}
 
 	@Override
-	public Text getLine(final int index) {
+	public Text getLine(int index) {
 		return Text.of(TextColors.GOLD, "Delay: ", TextColors.AQUA, this.ticks, " ticks");
 	}
 }

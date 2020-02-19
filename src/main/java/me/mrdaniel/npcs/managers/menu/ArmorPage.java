@@ -1,9 +1,6 @@
 package me.mrdaniel.npcs.managers.menu;
 
-import java.util.Optional;
-
-import javax.annotation.Nonnull;
-
+import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.entity.ArmorEquipable;
 import org.spongepowered.api.item.inventory.ItemStack;
@@ -11,16 +8,17 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
 
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import javax.annotation.Nonnull;
+import java.util.Optional;
 
 public class ArmorPage extends Page {
 
-	public ArmorPage(@Nonnull final NPCAble npc) {
+	public ArmorPage(NPCAble npc) {
 		super(npc);
 	}
 
 	@Override
-	public void updatePage(final NPCAble npc) {
+	public void updatePage(NPCAble npc) {
 		int c = 0;
 
 		ArmorEquipable ae = (ArmorEquipable) npc;

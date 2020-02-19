@@ -1,15 +1,17 @@
 package me.mrdaniel.npcs.catalogtypes.optiontype.types;
 
-import java.util.Optional;
-
 import me.mrdaniel.npcs.catalogtypes.optiontype.OptionType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.NPCFile;
+import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.text.Text;
+
+import java.util.Optional;
 
 public class OptionSilent extends OptionType<Boolean> {
 
 	public OptionSilent() {
-		super("Silent", "silent");
+		super("Silent", "silent", GenericArguments.bool(Text.of("silent")));
 	}
 
 	@Override

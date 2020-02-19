@@ -1,21 +1,23 @@
 package me.mrdaniel.npcs.catalogtypes.optiontype.types;
 
-import java.util.Optional;
-
 import me.mrdaniel.npcs.catalogtypes.optiontype.OptionType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.NPCFile;
-import net.minecraft.entity.monster.EntitySlime;
+import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.entity.living.monster.Slime;
+import org.spongepowered.api.text.Text;
+
+import java.util.Optional;
 
 public class OptionSize extends OptionType<Integer> {
 
 	public OptionSize() {
-		super("Size", "size");
+		super("Size", "size", GenericArguments.integer(Text.of("size")));
 	}
 
 	@Override
 	public boolean isSupported(final NPCAble npc) {
-		return npc instanceof EntitySlime;
+		return npc instanceof Slime;
 	}
 
 	@Override

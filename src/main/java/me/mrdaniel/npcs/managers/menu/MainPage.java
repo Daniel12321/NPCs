@@ -1,11 +1,5 @@
 package me.mrdaniel.npcs.managers.menu;
 
-import javax.annotation.Nonnull;
-
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.action.TextActions;
-import org.spongepowered.api.text.format.TextColors;
-
 import me.mrdaniel.npcs.catalogtypes.career.Careers;
 import me.mrdaniel.npcs.catalogtypes.cattype.CatTypes;
 import me.mrdaniel.npcs.catalogtypes.glowcolor.GlowColors;
@@ -19,6 +13,9 @@ import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitTypes;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.NPCFile;
 import me.mrdaniel.npcs.utils.TextUtils;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.action.TextActions;
+import org.spongepowered.api.text.format.TextColors;
 
 public class MainPage extends Page {
 
@@ -37,12 +34,12 @@ public class MainPage extends Page {
 			Text.builder().append(Text.of(TextColors.RED, "[Remove]")).onHover(TextActions.showText(Text.of(TextColors.RED, "Remove"))).onClick(TextActions.suggestCommand("/npc remove")).build())
 			.build();
 
-	public MainPage(@Nonnull final NPCAble npc) {
+	public MainPage(NPCAble npc) {
 		super(npc);
 	}
 
 	@Override
-	public void updatePage(final NPCAble npc) {
+	public void updatePage(NPCAble npc) {
 		NPCFile file = npc.getNPCFile();
 		int c = 0;
 

@@ -1,18 +1,17 @@
 package me.mrdaniel.npcs.listeners;
 
-import javax.annotation.Nonnull;
-
+import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.exceptions.NPCException;
+import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.managers.ActionManager;
+import me.mrdaniel.npcs.managers.MenuManager;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.entity.InteractEntityEvent;
 import org.spongepowered.api.event.filter.cause.Root;
 
-import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.exceptions.NPCException;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
-import me.mrdaniel.npcs.managers.ActionManager;
-import me.mrdaniel.npcs.managers.MenuManager;
+import javax.annotation.Nonnull;
 
 public class InteractListener {
 
@@ -49,8 +48,11 @@ public class InteractListener {
 			return true;
 		}
 
-		try { ActionManager.getInstance().execute(p.getUniqueId(), npc.getNPCFile()); }
-		catch ( final NPCException exc) { NPCs.getInstance().getLogger().error("Failed to execute action for npc " + npc.getNPCFile().getId()); }
+		try {
+			ActionManager.getInstance().execute(p.getUniqueId(), npc.getNPCFile());
+		} catch (NPCException exc) {
+			NPCs.getInstance().getLogger().error("Failed to execute action for npc " + npc.getNPCFile().getId());
+		}
 
 		return !npc.canNPCInteract();
 	}

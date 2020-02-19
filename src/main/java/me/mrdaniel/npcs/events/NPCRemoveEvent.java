@@ -1,14 +1,11 @@
 package me.mrdaniel.npcs.events;
 
-import javax.annotation.Nonnull;
-
-import org.spongepowered.api.command.CommandSource;
-
 import me.mrdaniel.npcs.io.NPCFile;
+import org.spongepowered.api.command.CommandSource;
 
 public class NPCRemoveEvent extends NPCEvent<NPCFile> {
 
-	public NPCRemoveEvent(@Nonnull final CommandSource source, @Nonnull final NPCFile file) {
+	public NPCRemoveEvent(CommandSource source, NPCFile file) {
 		super(source, file);
 	}
 }

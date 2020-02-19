@@ -1,15 +1,14 @@
 package me.mrdaniel.npcs.commands.action;
 
+import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
+import me.mrdaniel.npcs.commands.NPCCommand;
+import me.mrdaniel.npcs.events.NPCEditEvent;
+import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
-
-import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
-import me.mrdaniel.npcs.commands.NPCCommand;
-import me.mrdaniel.npcs.events.NPCEditEvent;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 
 public class CommandActionRepeat extends NPCCommand {
 
@@ -18,13 +17,11 @@ public class CommandActionRepeat extends NPCCommand {
 	}
 
 	@Override
-	public void execute(final Player p, final NPCAble npc, final CommandContext args) throws CommandException {
+	public void execute(Player p, NPCAble npc, CommandContext args) throws CommandException {
 		if (new NPCEditEvent(p, npc).post()) {
 			throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
 		}
 
-		boolean repeat = args.<Boolean>getOne("repeat").orElse(!npc.getNPCFile().getRepeatActions());
-
-		npc.getNPCFile().setRepeatActions(repeat).save();
+		npc.getNPCFile().setRepeatActions(args.<Boolean>getOne("repeat").orElse(!npc.getNPCFile().getRepeatActions())).save();
 	}
 }

@@ -1,10 +1,9 @@
 package me.mrdaniel.npcs.managers.menu;
 
-import javax.annotation.Nonnull;
-
+import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import org.spongepowered.api.text.Text;
 
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import javax.annotation.Nonnull;
 
 public abstract class Page {
 
@@ -20,13 +19,13 @@ public abstract class Page {
 		for (int i = 0; i < 18; i++) { this.lines[i] = Text.EMPTY; }
 	}
 
-	public Text[] getLines() {
-		return this.lines;
-	}
-
 	public void update(@Nonnull final NPCAble npc) {
 		this.reset();
 		this.updatePage(npc);
+	}
+
+	public Text[] getLines() {
+		return this.lines;
 	}
 
 	protected abstract void updatePage(@Nonnull final NPCAble npc);

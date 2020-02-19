@@ -1,12 +1,11 @@
 package me.mrdaniel.npcs.catalogtypes.optiontype.types;
 
-import java.util.Optional;
-
-import org.spongepowered.api.world.World;
-
 import me.mrdaniel.npcs.catalogtypes.optiontype.OptionType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.NPCFile;
+import org.spongepowered.api.world.World;
+
+import java.util.Optional;
 
 public class OptionWorld extends OptionType<World> {
 

@@ -1,21 +1,23 @@
 package me.mrdaniel.npcs.catalogtypes.optiontype.types;
 
-import java.util.Optional;
-
 import me.mrdaniel.npcs.catalogtypes.optiontype.OptionType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.NPCFile;
-import net.minecraft.entity.monster.EntitySnowman;
+import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.entity.living.golem.SnowGolem;
+import org.spongepowered.api.text.Text;
+
+import java.util.Optional;
 
 public class OptionPumpkin extends OptionType<Boolean> {
 
 	public OptionPumpkin() {
-		super("Pumpkin", "pumpkin");
+		super("Pumpkin", "pumpkin", GenericArguments.bool(Text.of("pumpkin")));
 	}
 
 	@Override
 	public boolean isSupported(final NPCAble npc) {
-		return npc instanceof EntitySnowman;
+		return npc instanceof SnowGolem;
 	}
 
 	@Override
