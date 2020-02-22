@@ -1,10 +1,9 @@
 package me.mrdaniel.npcs.commands;
 
+import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.menupagetype.PageType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
-import me.mrdaniel.npcs.io.NPCFile;
-import me.mrdaniel.npcs.managers.MenuManager;
-import me.mrdaniel.npcs.managers.NPCManager;
+import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.managers.menu.NPCMenu;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
@@ -28,15 +27,15 @@ public abstract class NPCCommand extends PlayerCommand {
 
 	@Override
 	public void execute(final Player p, final CommandContext args) throws CommandException {
-		Optional<NPCMenu> menu = MenuManager.getInstance().get(p.getUniqueId());
+		Optional<NPCMenu> menu = NPCs.getInstance().getMenuManager().get(p.getUniqueId());
 		Optional<Integer> id = args.getOne("id");
 
 		if (menu.isPresent()) {
 			this.execute(p, menu.get().getNpc(), args);
 			menu.get().updateAndSend(p, this.page);
 		} else if (id.isPresent()) {
-			NPCFile file = NPCManager.getInstance().getFile(id.get()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "No NPC with that ID exists!")));
-			NPCAble npc = NPCManager.getInstance().getNPC(file).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "NPC is not spawned in!")));
+			INPCData file = NPCs.getInstance().getNpcStore().getData(id.get()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "No NPC with that ID exists!")));
+			NPCAble npc = NPCs.getInstance().getNpcStore().getNPC(file).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "NPC is not spawned in!")));
 			this.execute(p, npc, args);
 		} else {
 			throw new CommandException(Text.of(TextColors.RED, "You don't have an NPC selected!"));

@@ -1,11 +1,12 @@
 package me.mrdaniel.npcs.listeners;
 
 import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.data.npc.NPCData;
 import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
-import me.mrdaniel.npcs.io.NPCFile;
-import me.mrdaniel.npcs.managers.NPCManager;
+import me.mrdaniel.npcs.io.INPCData;
+import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.world.LoadWorldEvent;
 import org.spongepowered.api.world.World;
@@ -20,16 +21,17 @@ public class WorldListener {
 		World world = e.getTargetWorld();
 		String worldName = world.getName();
 
-		List<NPCFile> files = NPCManager.getInstance().getFiles().stream().filter(file -> worldName.equals(file.getWorldName())).collect(Collectors.toList());
-		files.forEach(file -> world.loadChunk(file.getChunkPosition(), true));
+		List<INPCData> files = NPCs.getInstance().getNpcStore().getAllNPCs().stream().filter(file -> worldName.equals(file.getProperty(PropertyTypes.WORLD_NAME).get())).collect(Collectors.toList());
+		files.forEach(file -> world.loadChunk(file.getProperty(PropertyTypes.POSITION).get().getChunkPosition(), true));
 
+		// TODO: Replace to use NPCData only
 		world.getEntities().stream()
-				.filter(ent -> ent.get(NPCData.class).isPresent() || (ent instanceof NPCAble && ((NPCAble)ent).getNPCFile() != null))
-				.forEach(npc -> npc.remove());
+				.filter(ent -> ent.get(NPCData.class).isPresent() || (ent instanceof NPCAble && ((NPCAble)ent).getNPCData() != null))
+				.forEach(Entity::remove);
 
 		files.forEach(file -> {
 			try {
-				NPCManager.getInstance().spawn(file);
+				NPCs.getInstance().getNpcStore().spawn(file);
 			} catch (final NPCException exc) {
 				NPCs.getInstance().getLogger().error("Failed to spawn NPC: " + exc.getMessage(), exc);
 			}

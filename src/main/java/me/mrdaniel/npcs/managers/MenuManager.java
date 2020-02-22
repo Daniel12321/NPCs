@@ -6,7 +6,7 @@ import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
 import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.Config;
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.managers.menu.NPCMenu;
 import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.entity.living.player.Player;
@@ -20,8 +20,6 @@ import java.util.UUID;
 
 public class MenuManager {
 
-	private static MenuManager instance;
-
 	private final Map<UUID, NPCMenu> menus;
 	private final Text select_message;
 	private final boolean open_menu;
@@ -34,15 +32,8 @@ public class MenuManager {
 		this.open_menu = config.getNode("open_menu_on_select").getBoolean(true);
 	}
 
-	public static MenuManager getInstance() {
-		if (instance == null) {
-			instance = new MenuManager();
-		}
-		return instance;
-	}
-
-	public void select(Player p, NPCFile file) throws NPCException {
-		this.select(p, (NPCAble) NPCManager.getInstance().getNPC(file).orElseThrow(() -> new NPCException("Failed to select NPC: NPC hasn't been spawned.")));
+	public void select(Player p, INPCData data) throws NPCException {
+		this.select(p, (NPCAble) NPCs.getInstance().getNpcStore().getNPC(data).orElseThrow(() -> new NPCException("Failed to select NPC: NPC hasn't been spawned.")));
 	}
 
 	public void select(Player p, NPCAble npc) {

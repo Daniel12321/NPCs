@@ -1,7 +1,7 @@
 package me.mrdaniel.npcs.actions;
 
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.managers.ActionResult;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.entity.living.player.Player;
@@ -27,7 +27,7 @@ public class ActionDelay extends Action {
 	}
 
 	@Override
-	public void execute(Player p, NPCFile file, ActionResult result) {
+	public void execute(Player p, INPCData data, ActionResult result) {
 		result.setNextAction(result.getCurrentAction()+1).setWaitTicks(this.ticks);
 	}
 

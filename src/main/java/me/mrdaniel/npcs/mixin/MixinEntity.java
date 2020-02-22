@@ -37,6 +37,6 @@ public abstract class MixinEntity {
 		if (!(this instanceof NPCAble)) {
 			return false;
 		}
-		return ((NPCAble)this).getNPCFile() != null;
+		return ((NPCAble)this).getNPCData() != null;
 	}
 }

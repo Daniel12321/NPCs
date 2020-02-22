@@ -23,11 +23,11 @@ public class CommandActionRemove extends NPCCommand {
 		}
 
 		int id = args.<Integer>getOne("number").get();
-		if (id < 0 || id >= npc.getNPCFile().getActions().size()) {
+		if (id < 0 || id >= npc.getNPCData().getActions().size()) {
 			throw new CommandException(Text.of(TextColors.RED, "No Action with this number exists."));
 		}
 
-		npc.getNPCFile().getActions().remove(id);
-		npc.getNPCFile().writeActions().save();
+		npc.getNPCData().getActions().remove(id);
+		npc.getNPCData().writeActions().save();
 	}
 }

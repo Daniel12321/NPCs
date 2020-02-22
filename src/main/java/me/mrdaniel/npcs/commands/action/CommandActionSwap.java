@@ -4,7 +4,7 @@ import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.events.NPCEditEvent;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.io.INPCData;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.entity.living.player.Player;
@@ -23,7 +23,7 @@ public class CommandActionSwap extends NPCCommand {
 			throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
 		}
 
-		NPCFile file = npc.getNPCFile();
+		INPCData file = npc.getNPCData();
 		int first = args.<Integer>getOne("first").get();
 		int second = args.<Integer>getOne("second").get();
 		int size = file.getActions().size();

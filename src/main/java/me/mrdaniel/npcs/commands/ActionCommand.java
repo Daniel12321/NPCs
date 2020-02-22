@@ -23,13 +23,14 @@ public abstract class ActionCommand extends NPCCommand {
 
 	@Override
 	public void execute(Player p, NPCAble npc, CommandContext args) throws CommandException {
-		Action a = npc.getNPCFile().getActions().get(args.<Integer>getOne("index").get());
+		Action a = npc.getNPCData().getActions().get(args.<Integer>getOne("index").get());
 		if (a.getType() != this.type) {
 			throw new CommandException(Text.of(TextColors.RED, "This action does not match the required action for this command!"));
 		}
 
 		try {
-			this.execute(p, a, args); npc.getNPCFile().writeActions().save();
+			this.execute(p, a, args);
+			npc.getNPCData().writeActions().save();
 		} catch (final ActionException exc) {
 			throw new CommandException(Text.of(TextColors.RED, "Failed to edit action!"), exc);
 		}

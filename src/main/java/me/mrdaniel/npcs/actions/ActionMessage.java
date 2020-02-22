@@ -1,9 +1,10 @@
 package me.mrdaniel.npcs.actions;
 
+import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
+import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.managers.ActionResult;
-import me.mrdaniel.npcs.managers.PlaceholderManager;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
@@ -29,8 +30,8 @@ public class ActionMessage extends Action {
 	}
 
 	@Override
-	public void execute(Player p, NPCFile file, ActionResult result) {
-		p.sendMessage(PlaceholderManager.getInstance().formatNPCMessage(p, this.message, file.getName().orElse("")));
+	public void execute(Player p, INPCData data, ActionResult result) {
+		p.sendMessage(NPCs.getInstance().getPlaceholderManager().formatNPCMessage(p, this.message, data.getProperty(PropertyTypes.NAME).orElse("")));
 		result.setNextAction(result.getCurrentAction()+1);
 	}
 

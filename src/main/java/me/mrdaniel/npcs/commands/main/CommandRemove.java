@@ -1,9 +1,9 @@
 package me.mrdaniel.npcs.commands.main;
 
+import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.exceptions.NPCException;
-import me.mrdaniel.npcs.managers.MenuManager;
-import me.mrdaniel.npcs.managers.NPCManager;
+import me.mrdaniel.npcs.io.INPCStore;
 import me.mrdaniel.npcs.managers.menu.NPCMenu;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -21,27 +21,27 @@ public class CommandRemove implements CommandExecutor {
 
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
+		INPCStore npcStore = NPCs.getInstance().getNpcStore();
 		if (args.getOne("id").isPresent()) {
 			try {
-				NPCManager.getInstance().remove(src, args.<Integer>getOne("id").get()); CommandList.sendNPCList(src);
+				npcStore.remove(src, args.<Integer>getOne("id").get());
+				CommandList.sendNPCList(src);
 			} catch (final NPCException exc) {
 				throw new CommandException(Text.of(TextColors.RED, "Failed to remove NPC: ", exc.getMessage()));
-		}
-		}
-		else if (src instanceof Player) {
-			Optional<NPCMenu> menu = MenuManager.getInstance().get(((Player)src).getUniqueId());
+			}
+		} else if (src instanceof Player) {
+			Optional<NPCMenu> menu = NPCs.getInstance().getMenuManager().get(((Player)src).getUniqueId());
 			if (menu.isPresent()) {
 				try {
-					NPCManager.getInstance().remove(src, menu.get().getNpc(), true); CommandList.sendNPCList(src);
+					npcStore.remove(src, menu.get().getNpc());
+					CommandList.sendNPCList(src);
 				} catch (final NPCException exc) {
 					throw new CommandException(Text.of(TextColors.RED, "Failed to remove NPC: ", exc.getMessage()));
 				}
-			}
-			else {
+			} else {
 				throw new CommandException(Text.of(TextColors.RED, "You don't have an NPC selected!"));
 			}
-		}
-		else {
+		} else {
 			throw new CommandException(Text.of(TextColors.RED, "Specify an NPC ID to remove an entity without selecting one ingame."));
 		}
 		return CommandResult.success();

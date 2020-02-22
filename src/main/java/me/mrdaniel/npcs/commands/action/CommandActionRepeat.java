@@ -22,6 +22,6 @@ public class CommandActionRepeat extends NPCCommand {
 			throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
 		}
 
-		npc.getNPCFile().setRepeatActions(args.<Boolean>getOne("repeat").orElse(!npc.getNPCFile().getRepeatActions())).save();
+		npc.getNPCData().setRepeatActions(args.<Boolean>getOne("repeat").orElse(!npc.getNPCData().getRepeatActions())).save();
 	}
 }

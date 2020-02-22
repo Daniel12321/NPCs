@@ -29,6 +29,6 @@ public abstract class MixinEntityLivingBase extends Entity {
 			return false;
 		}
 
-		return ((NPCAble)this).getNPCFile() != null;
+		return ((NPCAble)this).getNPCData() != null;
 	}
 }

@@ -1,8 +1,8 @@
 package me.mrdaniel.npcs.commands.main;
 
+import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
 import me.mrdaniel.npcs.commands.PlayerCommand;
-import me.mrdaniel.npcs.managers.MenuManager;
 import me.mrdaniel.npcs.managers.menu.NPCMenu;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
@@ -30,7 +30,7 @@ public class CommandInfo extends PlayerCommand {
 
 	@Override
 	public void execute(Player p, CommandContext args) throws CommandException {
-		Optional<NPCMenu> menu = MenuManager.getInstance().get(p.getUniqueId());
+		Optional<NPCMenu> menu = NPCs.getInstance().getMenuManager().get(p.getUniqueId());
 
 		if (menu.isPresent()) {
 			menu.get().send(p, PageTypes.MAIN);

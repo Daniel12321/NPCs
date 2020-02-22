@@ -2,9 +2,8 @@ package me.mrdaniel.npcs.actions;
 
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.managers.ActionResult;
-import me.mrdaniel.npcs.managers.PlaceholderManager;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
@@ -30,8 +29,8 @@ public class ActionConsoleCommand extends Action {
 	}
 
 	@Override
-	public void execute(Player p, NPCFile file, ActionResult result) {
-		NPCs.getInstance().getGame().getCommandManager().process(NPCs.getInstance().getGame().getServer().getConsole(), PlaceholderManager.getInstance().formatCommand(p, this.command));
+	public void execute(Player p, INPCData data, ActionResult result) {
+		NPCs.getInstance().getGame().getCommandManager().process(NPCs.getInstance().getGame().getServer().getConsole(), NPCs.getInstance().getPlaceholderManager().formatCommand(p, this.command));
 		result.setNextAction(result.getCurrentAction()+1);
 	}
 

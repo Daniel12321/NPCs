@@ -1,12 +1,7 @@
 package me.mrdaniel.npcs;
 
-import com.google.common.reflect.TypeToken;
 import com.google.inject.Inject;
-import me.mrdaniel.npcs.actions.Action;
-import me.mrdaniel.npcs.actions.ActionTypeSerializer;
-import me.mrdaniel.npcs.actions.conditions.Condition;
 import me.mrdaniel.npcs.actions.conditions.ConditionMoney;
-import me.mrdaniel.npcs.actions.conditions.ConditionTypeSerializer;
 import me.mrdaniel.npcs.bstats.MetricsLite;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionType;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypeRegistryModule;
@@ -29,14 +24,13 @@ import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypeRegistryModule;
 import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypeRegistryModule;
-import me.mrdaniel.npcs.catalogtypes.optiontype.OptionType;
-import me.mrdaniel.npcs.catalogtypes.optiontype.OptionTypeRegistryModule;
-import me.mrdaniel.npcs.catalogtypes.optiontype.OptionTypes;
 import me.mrdaniel.npcs.catalogtypes.parrottype.ParrotType;
 import me.mrdaniel.npcs.catalogtypes.parrottype.ParrotTypeRegistryModule;
+import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
+import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypeRegistryModule;
+import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitType;
 import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitTypeRegistryModule;
-import me.mrdaniel.npcs.commands.CommandEdit;
 import me.mrdaniel.npcs.commands.action.CommandActionAdd;
 import me.mrdaniel.npcs.commands.action.CommandActionRemove;
 import me.mrdaniel.npcs.commands.action.CommandActionRepeat;
@@ -46,23 +40,23 @@ import me.mrdaniel.npcs.commands.action.edit.*;
 import me.mrdaniel.npcs.commands.armor.CommandEquipmentGive;
 import me.mrdaniel.npcs.commands.armor.CommandEquipmentRemove;
 import me.mrdaniel.npcs.commands.main.*;
-import me.mrdaniel.npcs.data.npc.ImmutableNPCData;
-import me.mrdaniel.npcs.data.npc.NPCData;
+import me.mrdaniel.npcs.data.NPCKeys;
 import me.mrdaniel.npcs.data.npc.NPCDataBuilder;
+import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.io.Config;
 import me.mrdaniel.npcs.listeners.InteractListener;
 import me.mrdaniel.npcs.listeners.WorldListener;
 import me.mrdaniel.npcs.managers.ActionManager;
 import me.mrdaniel.npcs.managers.MenuManager;
+import me.mrdaniel.npcs.managers.NPCManager;
+import me.mrdaniel.npcs.managers.PlaceholderManager;
 import me.mrdaniel.npcs.utils.ServerUtils;
-import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.config.ConfigDir;
-import org.spongepowered.api.data.DataRegistration;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.Order;
 import org.spongepowered.api.event.game.GameReloadEvent;
@@ -75,6 +69,7 @@ import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
+import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.service.economy.Currency;
 import org.spongepowered.api.service.economy.EconomyService;
 import org.spongepowered.api.text.Text;
@@ -110,8 +105,13 @@ public class NPCs {
 	private final Path configDir;
 	private final Config config;
 
+	private final NPCManager npcManager;
+	private final ActionManager actionManager;
+	private final MenuManager menuManager;
+	private final PlaceholderManager placeholderManager;
+
 	@Inject
-	public NPCs(final Game game, final PluginContainer container, @ConfigDir(sharedRoot = false) final Path path, final MetricsLite metrics) {
+	public NPCs(Game game, PluginContainer container, @ConfigDir(sharedRoot = false) Path path, MetricsLite metrics) {
 		instance = this;
 
 		this.game = game;
@@ -131,23 +131,14 @@ public class NPCs {
 		}
 
 		this.config = new Config(path.resolve("config.conf"));
+		this.npcManager = new NPCManager(this.config);
+		this.actionManager = new ActionManager();
+		this.menuManager = new MenuManager();
+		this.placeholderManager = new PlaceholderManager();
 	}
 
 	@Listener
 	public void onPreInit(@Nullable GamePreInitializationEvent e) {
-
-		// Prevents the server from spamming unknown data errors
-		// Will be removed in the next version
-
-		// TODO: Implement proper data
-		DataRegistration.builder()
-			.dataClass(NPCData.class)
-			.immutableClass(ImmutableNPCData.class)
-			.builder(new NPCDataBuilder())
-			.dataName("npc")
-			.manipulatorId("npc")
-			.buildAndRegister(this.container);
-
 		this.game.getRegistry().registerModule(NPCType.class, new NPCTypeRegistryModule());
 		this.game.getRegistry().registerModule(GlowColor.class, new GlowColorRegistryModule());
 		this.game.getRegistry().registerModule(Career.class, new CareerRegistryModule());
@@ -161,15 +152,20 @@ public class NPCs {
 		this.game.getRegistry().registerModule(PageType.class, new PageTypeRegistryModule());
 		this.game.getRegistry().registerModule(ActionType.class, new ActionTypeRegistryModule());
 		this.game.getRegistry().registerModule(ConditionType.class, new ConditionTypeRegistryModule());
-		this.game.getRegistry().registerModule(OptionType.class, new OptionTypeRegistryModule());
+		this.game.getRegistry().registerModule(PropertyType.class, new PropertyTypeRegistryModule());
 
-		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Action.class), new ActionTypeSerializer());
-		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Condition.class), new ConditionTypeSerializer());
+		this.npcManager.setup();
+
+		NPCKeys.init();
+		NPCDataBuilder.register();
 	}
 
 	@Listener
 	public void onInit(@Nullable GameInitializationEvent e) {
 		this.logger.info("Loading plugin...");
+
+		this.npcManager.load();
+		this.placeholderManager.load();
 
 		this.game.getEventManager().registerListeners(this, new InteractListener());
 		if (this.config.getNode("npc_respawn_on_world_load").getBoolean(true)) {
@@ -186,29 +182,32 @@ public class NPCs {
 				.child(new CommandMount().build(), "mount")
 				.child(new CommandGoto().build(), "goto")
 				.child(new CommandMove().build(), "move")
+				.child(new CommandRespawn().build(), "respawn")
 				.child(new CommandDeselect().build(), "deselect")
-				.child(CommandEdit.build(PageTypes.MAIN, OptionTypes.NAME), "name")
-				.child(CommandEdit.build(PageTypes.MAIN, OptionTypes.SKIN), "skin")
-				.child(CommandEdit.build(PageTypes.MAIN, OptionTypes.LOOKING), "looking")
-				.child(CommandEdit.build(PageTypes.MAIN, OptionTypes.INTERACT), "interact")
-				.child(CommandEdit.build(PageTypes.MAIN, OptionTypes.GLOWING), "glowing")
-				.child(CommandEdit.build(PageTypes.MAIN, OptionTypes.SILENT), "silent")
-				.child(CommandEdit.build(PageTypes.MAIN, OptionTypes.GLOWCOLOR), "glowcolor")
-				.child(CommandEdit.build(PageTypes.MAIN, OptionTypes.BABY), "baby")
-				.child(CommandEdit.build(PageTypes.MAIN, OptionTypes.CHARGED), "charged")
-				.child(CommandEdit.build(PageTypes.MAIN, OptionTypes.ANGRY), "angry")
-				.child(CommandEdit.build(PageTypes.MAIN, OptionTypes.SIZE), "size")
-				.child(CommandEdit.build(PageTypes.MAIN, OptionTypes.SITTING), "sitting")
-				.child(CommandEdit.build(PageTypes.MAIN, OptionTypes.SADDLE), "saddle")
-				.child(CommandEdit.build(PageTypes.MAIN, OptionTypes.HANGING), "hanging")
-				.child(CommandEdit.build(PageTypes.MAIN, OptionTypes.PUMPKIN), "pumpkin")
-				.child(CommandEdit.build(PageTypes.MAIN, OptionTypes.CAREER), "career")
-				.child(CommandEdit.build(PageTypes.MAIN, OptionTypes.HORSEPATTERN), "horsepattern")
-				.child(CommandEdit.build(PageTypes.MAIN, OptionTypes.HORSECOLOR), "horsecolor")
-				.child(CommandEdit.build(PageTypes.MAIN, OptionTypes.LLAMATYPE), "llamatype")
-				.child(CommandEdit.build(PageTypes.MAIN, OptionTypes.CATTYPE), "cattype")
-				.child(CommandEdit.build(PageTypes.MAIN, OptionTypes.RABBITTYPE), "rabbittype")
-				.child(CommandEdit.build(PageTypes.MAIN, OptionTypes.PARROTTYPE), "parrottype")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.NAME), "name")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.NAME_VISIBLE), "namevisible")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.SKIN), "skin")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.SKIN_UUID), "skinuuid")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.LOOKING), "looking")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.INTERACT), "interact")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.GLOWING), "glowing")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.SILENT), "silent")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.GLOWCOLOR), "glowcolor")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.BABY), "baby")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.CHARGED), "charged")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.ANGRY), "angry")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.SIZE), "size")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.SITTING), "sitting")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.SADDLE), "saddle")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.HANGING), "hanging")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.PUMPKIN), "pumpkin")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.CAREER), "career")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.HORSEPATTERN), "horsepattern")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.HORSECOLOR), "horsecolor")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.LLAMATYPE), "llamatype")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.CATTYPE), "cattype")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.RABBITTYPE), "rabbittype")
+				.child(CommandEdit.build(PageTypes.MAIN, PropertyTypes.PARROTTYPE), "parrottype")
 				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPC | Helmet"))
 						.child(CommandSpec.builder().description(this.desc("Give Helmet")).permission("npc.armor.helmet.give").executor(new CommandEquipmentGive.Helmet()).build(), "give")
 						.child(CommandSpec.builder().description(this.desc("Remove Helmet")).permission("npc.armor.helmet.remove").executor(new CommandEquipmentRemove.Helmet()).build(), "remove")
@@ -273,12 +272,16 @@ public class NPCs {
 		this.logger.info("Loaded plugin successfully.");
 
 		if (this.config.getNode("update_message").getBoolean(true)) {
-			new Thread(() -> ServerUtils.getLatestVersion().ifPresent(v -> {
-				if (!v.equals("v" + NPCs.VERSION)) {
-					this.logger.info("A new version (" + v + ") of NPCs is available!");
-					this.logger.info("It can be downloaded from https://github.com/Daniel12321/NPCs/releases");
-				}
-			})).start();
+			Task.builder().async().execute(() -> {
+				ServerUtils.getLatestVersion().ifPresent(v -> {
+					Task.builder().execute(() -> {
+						if (!v.equals("v" + NPCs.VERSION)) {
+							this.logger.info("A new version (" + v + ") of NPCs is available!");
+							this.logger.info("It can be downloaded from https://github.com/Daniel12321/NPCs/releases");
+						}
+					}).submit(this);
+				});
+			}).submit(this);
 		}
 	}
 
@@ -291,7 +294,7 @@ public class NPCs {
 		this.logger.info("Unloading Plugin...");
 
 		this.game.getEventManager().unregisterPluginListeners(this);
-		this.game.getScheduler().getScheduledTasks().forEach(task -> task.cancel());
+		this.game.getScheduler().getScheduledTasks().forEach(Task::cancel);
 		this.game.getCommandManager().getOwnedBy(this).forEach(this.game.getCommandManager()::removeMapping);
 
 		this.logger.info("Unloaded plugin successfully.");
@@ -301,6 +304,16 @@ public class NPCs {
 	public void onReload(@Nullable GameReloadEvent e) {
 		this.onStopping(null);
 		this.onInit(null);
+
+		this.game.getServer().getWorlds().forEach(world -> {
+			this.npcManager.getNPCs(world.getName()).forEach(data -> {
+				try {
+					this.npcManager.spawn(data);
+				} catch (NPCException exc) {
+					this.logger.error("Failed to respawn NPC " + data.getId() + ": ", exc);
+				}
+			});
+		});
 	}
 
 	@Listener
@@ -312,8 +325,8 @@ public class NPCs {
 
 	@Listener(order = Order.LATE)
 	public void onQuit(ClientConnectionEvent.Disconnect e) {
-		MenuManager.getInstance().deselect(e.getTargetEntity().getUniqueId());
-		ActionManager.getInstance().removeChoosing(e.getTargetEntity().getUniqueId());
+		this.menuManager.deselect(e.getTargetEntity().getUniqueId());
+		this.actionManager.removeChoosing(e.getTargetEntity().getUniqueId());
 	}
 
 	public Game getGame() {
@@ -334,5 +347,21 @@ public class NPCs {
 
 	public Config getConfig() {
 		return this.config;
+	}
+
+	public NPCManager getNPCManager() {
+		return npcManager;
+	}
+
+	public ActionManager getActionManager() {
+		return actionManager;
+	}
+
+	public MenuManager getMenuManager() {
+		return menuManager;
+	}
+
+	public PlaceholderManager getPlaceholderManager() {
+		return placeholderManager;
 	}
 }

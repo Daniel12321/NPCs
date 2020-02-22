@@ -1,10 +1,11 @@
 package me.mrdaniel.npcs.commands.armor;
 
 import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
+import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.events.NPCEditEvent;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.io.INPCData;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.data.type.HandTypes;
@@ -36,46 +37,46 @@ public abstract class CommandEquipmentRemove extends NPCCommand {
 		}
 
 		this.clear(ae);
-		this.clear(npc.getNPCFile());
+		this.clear(npc.getNPCData());
 	}
 
 	public abstract Optional<ItemStack> get(ArmorEquipable ae);
 	public abstract void clear(ArmorEquipable ae);
-	public abstract void clear(NPCFile file);
+	public abstract void clear(INPCData file);
 
 	public static class Helmet extends CommandEquipmentRemove {
 		@Override public Optional<ItemStack> get(ArmorEquipable ae) { return ae.getHelmet(); }
 		@Override public void clear(ArmorEquipable ae) { ae.setHelmet(null); }
-		@Override public void clear(NPCFile file) { file.setHelmet(null).save(); }
+		@Override public void clear(INPCData file) { file.setProperty(PropertyTypes.HELMET, null).save(); }
 	}
 
 	public static class Chestplate extends CommandEquipmentRemove {
 		@Override public Optional<ItemStack> get(ArmorEquipable ae) { return ae.getChestplate(); }
 		@Override public void clear(ArmorEquipable ae) { ae.setChestplate(null); }
-		@Override public void clear(NPCFile file) { file.setChestplate(null).save(); }
+		@Override public void clear(INPCData file) { file.setProperty(PropertyTypes.CHARGED, null).save(); }
 	}
 
 	public static class Leggings extends CommandEquipmentRemove {
 		@Override public Optional<ItemStack> get(ArmorEquipable ae) { return ae.getLeggings(); }
 		@Override public void clear(ArmorEquipable ae) { ae.setLeggings(null); }
-		@Override public void clear(NPCFile file) { file.setLeggings(null).save(); }
+		@Override public void clear(INPCData file) { file.setProperty(PropertyTypes.LEGGINGS, null).save(); }
 	}
 
 	public static class Boots extends CommandEquipmentRemove {
 		@Override public Optional<ItemStack> get(ArmorEquipable ae) { return ae.getBoots(); }
 		@Override public void clear(ArmorEquipable ae) { ae.setBoots(null); }
-		@Override public void clear(NPCFile file) { file.setBoots(null).save(); }
+		@Override public void clear(INPCData file) { file.setProperty(PropertyTypes.BOOTS, null).save(); }
 	}
 
 	public static class MainHand extends CommandEquipmentRemove {
 		@Override public Optional<ItemStack> get(ArmorEquipable ae) { return ae.getItemInHand(HandTypes.MAIN_HAND); }
 		@Override public void clear(ArmorEquipable ae) { ae.setItemInHand(HandTypes.MAIN_HAND, null); }
-		@Override public void clear(NPCFile file) { file.setMainHand(null).save(); }
+		@Override public void clear(INPCData file) { file.setProperty(PropertyTypes.MAINHAND, null).save(); }
 	}
 
 	public static class OffHand extends CommandEquipmentRemove {
 		@Override public Optional<ItemStack> get(ArmorEquipable ae) { return ae.getItemInHand(HandTypes.OFF_HAND); }
 		@Override public void clear(ArmorEquipable ae) { ae.setItemInHand(HandTypes.OFF_HAND, null); }
-		@Override public void clear(NPCFile file) { file.setOffHand(null).save(); }
+		@Override public void clear(INPCData file) { file.setProperty(PropertyTypes.OFFHAND, null).save(); }
 	}
 }

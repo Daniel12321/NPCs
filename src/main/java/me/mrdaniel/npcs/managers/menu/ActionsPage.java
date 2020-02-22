@@ -72,8 +72,8 @@ public class ActionsPage extends MultiPage {
 	public void updatePage(NPCAble npc) {
 		this.add(Text.of(TextColors.GOLD, "Actions: "));
 
-		for (int i = 0; i < npc.getNPCFile().getActions().size(); i++) {
-			Action a = npc.getNPCFile().getActions().get(i);
+		for (int i = 0; i < npc.getNPCData().getActions().size(); i++) {
+			Action a = npc.getNPCData().getActions().get(i);
 			this.add(Text.builder()
 					.append(this.getRemoveText(i), Text.of(" "), this.getUpText(i), Text.of(" "), this.getDownText(i), Text.of(TextColors.BLUE, " ", String.valueOf(i), ": "),a.getLine(i))
 					.build());
@@ -85,7 +85,7 @@ public class ActionsPage extends MultiPage {
 		this.add(ADD_CONDITION);
 
 		this.add(Text.EMPTY);
-		this.add(TextUtils.getToggleText("Repeat", "/npc action repeat", npc.getNPCFile().getRepeatActions()));
+		this.add(TextUtils.getToggleText("Repeat", "/npc action repeat", npc.getNPCData().getRepeatActions()));
 	}
 
 	private Text getRemoveText(int index) {

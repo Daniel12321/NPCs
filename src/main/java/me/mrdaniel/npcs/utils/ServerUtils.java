@@ -2,6 +2,7 @@ package me.mrdaniel.npcs.utils;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import me.mrdaniel.npcs.NPCs;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.EventContext;
 
@@ -26,7 +27,6 @@ public class ServerUtils {
 //		return getCause(EntitySpawnCause.builder().entity(e).type(SpawnTypes.PLUGIN).build(), causes);
 //	}
 
-	// TODO: Make async
 	public static Optional<String> getLatestVersion() {
 		try {
 			URL url = new URL("https://api.github.com/repos/Daniel12321/NPCs/releases/latest");
@@ -52,7 +52,7 @@ public class ServerUtils {
 
 			return Optional.of(name);
 		} catch (final Exception exc) {
-			exc.printStackTrace();
+			NPCs.getInstance().getLogger().error("Failed to get latest version: ", exc);
 		}
 		return Optional.empty();
 	}

@@ -1,9 +1,10 @@
 package me.mrdaniel.npcs.actions;
 
+import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
+import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.managers.ActionResult;
-import me.mrdaniel.npcs.managers.PlaceholderManager;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
@@ -34,10 +35,10 @@ public class ActionCooldown extends Action {
 	}
 
 	@Override
-	public void execute(Player p, NPCFile file, ActionResult result) {
-		Long end = file.getCooldowns().get(p.getUniqueId());
+	public void execute(Player p, INPCData data, ActionResult result) {
+		Long end = data.getCooldowns().get(p.getUniqueId());
 		if (end == null || end > System.currentTimeMillis()) {
-			p.sendMessage(PlaceholderManager.getInstance().formatNPCMessage(p, this.message, file.getName().orElse("NPC")));
+			p.sendMessage(NPCs.getInstance().getPlaceholderManager().formatNPCMessage(p, this.message, data.getProperty(PropertyTypes.NAME).orElse("NPC")));
 			result.setPerformNextAction(false);
 		} else {
 			result.setNextAction(result.getCurrentAction() + 1);

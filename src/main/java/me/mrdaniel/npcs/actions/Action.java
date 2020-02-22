@@ -3,7 +3,7 @@ package me.mrdaniel.npcs.actions;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionType;
 import me.mrdaniel.npcs.exceptions.ActionException;
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.managers.ActionResult;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.entity.living.player.Player;
@@ -27,7 +27,7 @@ public abstract class Action {
 	}
 
 	public abstract Text getLine(final int index);
-	public abstract void execute(Player p, NPCFile file, ActionResult result);
+	public abstract void execute(Player p, INPCData file, ActionResult result);
 	public abstract void serializeValue(ConfigurationNode node);
 
 	public static Action of(ConfigurationNode node) throws ActionException {
