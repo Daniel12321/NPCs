@@ -1,5 +1,7 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
+import com.google.common.reflect.TypeToken;
+import me.mrdaniel.npcs.catalogtypes.parrottype.ParrotType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
@@ -12,6 +14,11 @@ public class PropertyRabbitType extends PropertyType<RabbitType> {
 
 	public PropertyRabbitType() {
 		super("RabbitType", "rabbittype", GenericArguments.catalogedElement(Text.of("rabbittype"), RabbitType.class));
+	}
+
+	@Override
+	public TypeToken<RabbitType> getTypeToken() {
+		return TypeToken.of(RabbitType.class);
 	}
 
 	@Override

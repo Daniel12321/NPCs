@@ -1,6 +1,8 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
+import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
+import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.monster.EntityZombie;
@@ -12,6 +14,11 @@ public class PropertyBaby extends PropertyType<Boolean> {
 
 	public PropertyBaby() {
 		super("Baby", "baby", GenericArguments.bool(Text.of("baby")));
+	}
+
+	@Override
+	public TypeToken<Boolean> getTypeToken() {
+		return TypeToken.of(Boolean.class);
 	}
 
 	@Override
@@ -27,7 +34,6 @@ public class PropertyBaby extends PropertyType<Boolean> {
 			((EntityAgeable) npc).setGrowingAge(value ? Integer.MIN_VALUE : 0);
 		}
 
-		//TODO: Check if this is needed
-//		super.setLocationAndAngles(this.data.getX(), this.data.getY(), this.data.getZ(), this.data.getYaw(), this.data.getPitch());
+		PropertyTypes.POSITION.apply(npc, npc.getProperty(PropertyTypes.POSITION).get());
 	}
 }

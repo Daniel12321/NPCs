@@ -1,7 +1,6 @@
 package me.mrdaniel.npcs.mixin;
 
 import com.flowpowered.math.vector.Vector3d;
-import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
@@ -9,7 +8,6 @@ import me.mrdaniel.npcs.io.INPCData;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.asm.mixin.Mixin;
@@ -55,15 +53,11 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 		super.setEntityInvulnerable(true);
 		super.setNoGravity(true);
 
-		// TODO: Make a list of properties to apply
-		PropertyTypes.NPC_INIT.forEach(prop -> prop.apply(this, this.data.getProperty(prop)));
-
-//		Position pos = data.getProperty(PropertyTypes.POSITION).get();
-//		super.setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), pos.getYaw(), pos.getPitch());
-
-//		data.getProperty(PropertyTypes.SKIN_UUID).ifPresent(value -> PropertyTypes.SKIN_UUID.apply(this, value));
-//		PropertyTypes.MAIN.forEach(prop -> this.data.getProperty(prop).ifPresent(value -> this.setProperty(prop, value)));
-//		PropertyTypes.ARMOR.forEach(prop -> this.data.getProperty(prop).ifPresent(value -> this.setProperty(prop, value)));
+		PropertyTypes.NPC_INIT.forEach(prop -> {
+			if (prop.isSupported(this)) {
+				this.data.getProperty(prop).ifPresent(value -> prop.apply(this, value));
+			}
+		});
 	}
 
 	@Override
@@ -298,24 +292,22 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 
 	// Start of Injections
 
-	// TODO: Remove and replace with custom data
-	@Inject(method = "writeEntityToNBT", at = @At("RETURN"))
-	public void onWriteEntityToNBT(NBTTagCompound compound, CallbackInfo info) {
-		if (this.data != null) { compound.setInteger("NPC_ID", this.data.getId()); }
-	}
+//	@Inject(method = "writeEntityToNBT", at = @At("RETURN"))
+//	public void onWriteEntityToNBT(NBTTagCompound compound, CallbackInfo info) {
+//		if (this.data != null) { compound.setInteger("NPC_ID", this.data.getId()); }
+//	}
 
-	// TODO: Remove and replace with custom data
-	@Inject(method = "readEntityFromNBT", at = @At("RETURN"))
-	public void onReadEntityFromNBT(NBTTagCompound compound, CallbackInfo info) {
-		if (compound.hasKey("NPC_ID", 3)) {
-			Optional<INPCData> file = NPCs.getInstance().getNpcStore().getData(compound.getInteger("NPC_ID"));
-			if (file.isPresent()) {
-				this.setNPCData(file.get());
-			} else {
-				this.setDead();
-			}
-		}
-	}
+//	@Inject(method = "readEntityFromNBT", at = @At("RETURN"))
+//	public void onReadEntityFromNBT(NBTTagCompound compound, CallbackInfo info) {
+//		if (compound.hasKey("NPC_ID", 3)) {
+//			Optional<INPCData> file = NPCs.getInstance().getNpcStore().getData(compound.getInteger("NPC_ID"));
+//			if (file.isPresent()) {
+//				this.setNPCData(file.get());
+//			} else {
+//				this.setDead();
+//			}
+//		}
+//	}
 
 	// TODO: Check for more efficient methods
 	@Inject(method = "onEntityUpdate", at = @At("RETURN"))

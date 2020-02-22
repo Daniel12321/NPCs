@@ -20,7 +20,7 @@ public class CommandMove extends NPCCommand {
 
 	@Override
 	public void execute(final Player p, final NPCAble npc, final CommandContext args) throws CommandException {
-		npc.setProperty(PropertyTypes.POSITION, new Position(p.getLocation().getPosition(), p.getHeadRotation()));
+		npc.setProperty(PropertyTypes.POSITION, new Position(p.getLocation().getPosition(), p.getHeadRotation())).save();
 	}
 
 	public CommandSpec build() {

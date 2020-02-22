@@ -8,6 +8,7 @@ import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.INPCData;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.entity.ArmorEquipable;
 import org.spongepowered.api.entity.living.player.Player;
@@ -48,35 +49,83 @@ public abstract class CommandEquipmentRemove extends NPCCommand {
 		@Override public Optional<ItemStack> get(ArmorEquipable ae) { return ae.getHelmet(); }
 		@Override public void clear(ArmorEquipable ae) { ae.setHelmet(null); }
 		@Override public void clear(INPCData file) { file.setProperty(PropertyTypes.HELMET, null).save(); }
+
+		public CommandSpec build() {
+			return CommandSpec.builder()
+					.description(Text.of(TextColors.GOLD, "NPCs | Remove Helmet"))
+					.permission("npc.armor.helmet.remove")
+					.executor(this)
+					.build();
+		}
 	}
 
 	public static class Chestplate extends CommandEquipmentRemove {
 		@Override public Optional<ItemStack> get(ArmorEquipable ae) { return ae.getChestplate(); }
 		@Override public void clear(ArmorEquipable ae) { ae.setChestplate(null); }
 		@Override public void clear(INPCData file) { file.setProperty(PropertyTypes.CHARGED, null).save(); }
+
+		public CommandSpec build() {
+			return CommandSpec.builder()
+					.description(Text.of(TextColors.GOLD, "NPCs | Remove Chestplate"))
+					.permission("npc.armor.chestplate.remove")
+					.executor(this)
+					.build();
+		}
 	}
 
 	public static class Leggings extends CommandEquipmentRemove {
 		@Override public Optional<ItemStack> get(ArmorEquipable ae) { return ae.getLeggings(); }
 		@Override public void clear(ArmorEquipable ae) { ae.setLeggings(null); }
 		@Override public void clear(INPCData file) { file.setProperty(PropertyTypes.LEGGINGS, null).save(); }
+
+		public CommandSpec build() {
+			return CommandSpec.builder()
+					.description(Text.of(TextColors.GOLD, "NPCs | Remove Leggings"))
+					.permission("npc.armor.leggings.remove")
+					.executor(this)
+					.build();
+		}
 	}
 
 	public static class Boots extends CommandEquipmentRemove {
 		@Override public Optional<ItemStack> get(ArmorEquipable ae) { return ae.getBoots(); }
 		@Override public void clear(ArmorEquipable ae) { ae.setBoots(null); }
 		@Override public void clear(INPCData file) { file.setProperty(PropertyTypes.BOOTS, null).save(); }
+
+		public CommandSpec build() {
+			return CommandSpec.builder()
+					.description(Text.of(TextColors.GOLD, "NPCs | Remove Boots"))
+					.permission("npc.armor.boots.remove")
+					.executor(this)
+					.build();
+		}
 	}
 
 	public static class MainHand extends CommandEquipmentRemove {
 		@Override public Optional<ItemStack> get(ArmorEquipable ae) { return ae.getItemInHand(HandTypes.MAIN_HAND); }
 		@Override public void clear(ArmorEquipable ae) { ae.setItemInHand(HandTypes.MAIN_HAND, null); }
 		@Override public void clear(INPCData file) { file.setProperty(PropertyTypes.MAINHAND, null).save(); }
+
+		public CommandSpec build() {
+			return CommandSpec.builder()
+					.description(Text.of(TextColors.GOLD, "NPCs | Remove MainHand"))
+					.permission("npc.armor.mainhand.remove")
+					.executor(this)
+					.build();
+		}
 	}
 
 	public static class OffHand extends CommandEquipmentRemove {
 		@Override public Optional<ItemStack> get(ArmorEquipable ae) { return ae.getItemInHand(HandTypes.OFF_HAND); }
 		@Override public void clear(ArmorEquipable ae) { ae.setItemInHand(HandTypes.OFF_HAND, null); }
 		@Override public void clear(INPCData file) { file.setProperty(PropertyTypes.OFFHAND, null).save(); }
+
+		public CommandSpec build() {
+			return CommandSpec.builder()
+					.description(Text.of(TextColors.GOLD, "NPCs | Remove OffHand"))
+					.permission("npc.armor.offhand.remove")
+					.executor(this)
+					.build();
+		}
 	}
 }

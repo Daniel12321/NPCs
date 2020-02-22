@@ -1,5 +1,6 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
+import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
@@ -11,6 +12,11 @@ public class PropertyGlowing extends PropertyType<Boolean> {
 
 	public PropertyGlowing() {
 		super("Glowing", "glowing", GenericArguments.bool(Text.of("glowing")));
+	}
+
+	@Override
+	public TypeToken<Boolean> getTypeToken() {
+		return TypeToken.of(Boolean.class);
 	}
 
 	@Override

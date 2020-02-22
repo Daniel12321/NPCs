@@ -3,7 +3,7 @@ package me.mrdaniel.npcs.commands.main;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.exceptions.NPCException;
-import me.mrdaniel.npcs.io.INPCStore;
+import me.mrdaniel.npcs.managers.NPCManager;
 import me.mrdaniel.npcs.managers.menu.NPCMenu;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -21,10 +21,10 @@ public class CommandRemove implements CommandExecutor {
 
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
-		INPCStore npcStore = NPCs.getInstance().getNpcStore();
+		NPCManager npcManager = NPCs.getInstance().getNPCManager();
 		if (args.getOne("id").isPresent()) {
 			try {
-				npcStore.remove(src, args.<Integer>getOne("id").get());
+				npcManager.remove(src, args.<Integer>getOne("id").get());
 				CommandList.sendNPCList(src);
 			} catch (final NPCException exc) {
 				throw new CommandException(Text.of(TextColors.RED, "Failed to remove NPC: ", exc.getMessage()));
@@ -33,7 +33,7 @@ public class CommandRemove implements CommandExecutor {
 			Optional<NPCMenu> menu = NPCs.getInstance().getMenuManager().get(((Player)src).getUniqueId());
 			if (menu.isPresent()) {
 				try {
-					npcStore.remove(src, menu.get().getNpc());
+					npcManager.remove(src, menu.get().getNpc());
 					CommandList.sendNPCList(src);
 				} catch (final NPCException exc) {
 					throw new CommandException(Text.of(TextColors.RED, "Failed to remove NPC: ", exc.getMessage()));

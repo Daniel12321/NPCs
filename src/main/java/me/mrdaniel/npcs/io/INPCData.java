@@ -2,7 +2,6 @@ package me.mrdaniel.npcs.io;
 
 import me.mrdaniel.npcs.actions.Action;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
-import me.mrdaniel.npcs.commands.armor.CommandEquipmentRemove;
 
 import java.util.List;
 import java.util.Map;
@@ -15,6 +14,7 @@ public interface INPCData {
 
     <T> Optional<T> getProperty(PropertyType<T> property);
     <T> INPCData setProperty(PropertyType<T> property, T value);
+    String getWorldName();
 
     void save();
 
@@ -27,9 +27,6 @@ public interface INPCData {
     INPCData writeCurrent();
 	Map<UUID, Long> getCooldowns();
     INPCData writeCooldowns();
-
-//    void save();
-//    void delete();
 }
 
 

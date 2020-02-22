@@ -1,5 +1,6 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
+import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.cattype.CatType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
@@ -12,6 +13,11 @@ public class PropertyCatType extends PropertyType<CatType> {
 
 	public PropertyCatType() {
 		super("CatType", "cattype", GenericArguments.catalogedElement(Text.of("cattype"), CatType.class));
+	}
+
+	@Override
+	public TypeToken<CatType> getTypeToken() {
+		return TypeToken.of(CatType.class);
 	}
 
 	@Override

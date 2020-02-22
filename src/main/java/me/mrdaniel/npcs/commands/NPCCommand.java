@@ -34,8 +34,8 @@ public abstract class NPCCommand extends PlayerCommand {
 			this.execute(p, menu.get().getNpc(), args);
 			menu.get().updateAndSend(p, this.page);
 		} else if (id.isPresent()) {
-			INPCData file = NPCs.getInstance().getNpcStore().getData(id.get()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "No NPC with that ID exists!")));
-			NPCAble npc = NPCs.getInstance().getNpcStore().getNPC(file).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "NPC is not spawned in!")));
+			INPCData file = NPCs.getInstance().getNPCManager().getData(id.get()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "No NPC with that ID exists!")));
+			NPCAble npc = NPCs.getInstance().getNPCManager().getNPC(file).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "NPC is not spawned in!")));
 			this.execute(p, npc, args);
 		} else {
 			throw new CommandException(Text.of(TextColors.RED, "You don't have an NPC selected!"));

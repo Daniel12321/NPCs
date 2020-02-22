@@ -1,6 +1,8 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
+import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.career.Career;
+import me.mrdaniel.npcs.catalogtypes.cattype.CatType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.interfaces.mixin.IMixinEntityVillager;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
@@ -14,6 +16,11 @@ public class PropertyCareer extends PropertyType<Career> {
 
 	public PropertyCareer() {
 		super("Career", "career", GenericArguments.catalogedElement(Text.of("career"), Career.class));
+	}
+
+	@Override
+	public TypeToken<Career> getTypeToken() {
+		return TypeToken.of(Career.class);
 	}
 
 	@Override

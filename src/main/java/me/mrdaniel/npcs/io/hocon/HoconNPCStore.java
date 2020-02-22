@@ -1,49 +1,67 @@
 package me.mrdaniel.npcs.io.hocon;
 
-import com.flowpowered.math.vector.Vector3d;
-import com.flowpowered.math.vector.Vector3f;
-import com.google.common.collect.Sets;
+import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColors;
-import me.mrdaniel.npcs.catalogtypes.horsepattern.HorsePatterns;
+import me.mrdaniel.npcs.actions.Action;
+import me.mrdaniel.npcs.actions.ActionTypeSerializer;
+import me.mrdaniel.npcs.actions.conditions.Condition;
+import me.mrdaniel.npcs.actions.conditions.ConditionTypeSerializer;
+import me.mrdaniel.npcs.catalogtypes.actiontype.ActionType;
+import me.mrdaniel.npcs.catalogtypes.career.Career;
+import me.mrdaniel.npcs.catalogtypes.cattype.CatType;
+import me.mrdaniel.npcs.catalogtypes.conditiontype.ConditionType;
+import me.mrdaniel.npcs.catalogtypes.glowcolor.GlowColor;
+import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColor;
+import me.mrdaniel.npcs.catalogtypes.horsepattern.HorsePattern;
+import me.mrdaniel.npcs.catalogtypes.llamatype.LlamaType;
+import me.mrdaniel.npcs.catalogtypes.menupagetype.PageType;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
-import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
-import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
-import me.mrdaniel.npcs.events.NPCCreateEvent;
-import me.mrdaniel.npcs.events.NPCRemoveEvent;
+import me.mrdaniel.npcs.catalogtypes.parrottype.ParrotType;
+import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
+import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitType;
 import me.mrdaniel.npcs.exceptions.NPCException;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.io.INPCStore;
 import me.mrdaniel.npcs.utils.Position;
-import net.minecraft.entity.EntityLiving;
-import org.spongepowered.api.Sponge;
-import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.entity.Entity;
-import org.spongepowered.api.entity.living.player.Player;
+import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import org.spongepowered.api.world.World;
 
-import javax.annotation.Nullable;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Optional;
-import java.util.Set;
+import java.util.Map;
 
 public class HoconNPCStore implements INPCStore {
 
     private final Path storageDir;
-	private final Set<INPCData> npcs;
 
     public HoconNPCStore() {
         this.storageDir = NPCs.getInstance().getConfigDir().resolve("storage");
-        this.npcs = Sets.newHashSet();
-
-        this.load();
     }
 
     @Override
-    public void load() {
+    public void setup() {
+		CatalogTypeSerializer.register(NPCType.class);
+		CatalogTypeSerializer.register(GlowColor.class);
+		CatalogTypeSerializer.register(Career.class);
+		CatalogTypeSerializer.register(CatType.class);
+		CatalogTypeSerializer.register(HorseColor.class);
+		CatalogTypeSerializer.register(HorsePattern.class);
+		CatalogTypeSerializer.register(LlamaType.class);
+		CatalogTypeSerializer.register(ParrotType.class);
+		CatalogTypeSerializer.register(RabbitType.class);
+		CatalogTypeSerializer.register(PageType.class);
+		CatalogTypeSerializer.register(ActionType.class);
+		CatalogTypeSerializer.register(ConditionType.class);
+		CatalogTypeSerializer.register(PropertyType.class);
+		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Position.class), new PositionTypeSerializer());
+		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(World.class), new WorldTypeSerializer());
+		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Action.class), new ActionTypeSerializer());
+		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Condition.class), new ConditionTypeSerializer());
+	}
+
+    @Override
+    public void load(Map<Integer, INPCData> npcs) {
 		if (!Files.exists(this.storageDir)) {
 			try {
 				Files.createDirectory(this.storageDir);
@@ -53,57 +71,26 @@ public class HoconNPCStore implements INPCStore {
 		}
 
 		for (String name : this.storageDir.toFile().list()) {
-		    this.npcs.add(new HoconNPCData(this.storageDir.resolve(name)));
+			INPCData data = new HoconNPCData(this.storageDir.resolve(name));
+		    npcs.put(data.getId(), data);
 		}
     }
 
-    @Override
-    public NPCAble spawn(INPCData data) throws NPCException {
-		this.getNPC(data).ifPresent(npc -> ((EntityLiving)npc).setDead());
+	@Override
+	public INPCData create(NPCType type) throws NPCException {
+		int nextId = this.getNextID();
+		return new HoconNPCData(this.storageDir.resolve("npc_" + nextId + ".conf"), nextId);
+	}
 
-		World world = Sponge.getServer().getWorld(data.getProperty(PropertyTypes.WORLD_NAME).get()).orElseThrow(() -> new NPCException("Invalid world!"));
-		Entity ent = world.createEntity(data.getProperty(PropertyTypes.TYPE).orElseThrow(() -> new NPCException("Could not find EntityType for NPC!")).getEntityType(), new Vector3d(0, 0, 0));
-		NPCAble npc = (NPCAble) ent;
-
-		npc.setNPCData(data);
-		world.spawnEntity(ent);
-		return npc;
-    }
-
-    @Override
-    public NPCAble create(Player p, NPCType type) throws NPCException {
-		if (new NPCCreateEvent(p, type).post()) {
-			throw new NPCException("Event was cancelled!");
-		}
-
-		INPCData file = new HoconNPCData(this.storageDir.resolve("npc_" + this.getNextID() + ".conf"));
-		this.npcs.add(file);
-
-		Vector3d loc = p.getLocation().getPosition();
-		Vector3f head = p.getHeadRotation().toFloat();
-
-		if (type == NPCTypes.HUMAN) { file.setProperty(PropertyTypes.NAME, "Steve"); }
-
-		// TODO: Find out if this is really needed
-//		if (type == NPCTypes.SNOWMAN) { file.setPumpkin(true); }
-//		if (type == NPCTypes.BAT) { file.setHanging(false); }
-		if (type == NPCTypes.HORSE) {
-		    file.setProperty(PropertyTypes.HORSECOLOR, HorseColors.BROWN)
-                    .setProperty(PropertyTypes.HORSEPATTERN, HorsePatterns.NONE);
-		}
-
-		file.setProperty(PropertyTypes.TYPE, type)
-                .setProperty(PropertyTypes.WORLD, p.getWorld())
-                .setProperty(PropertyTypes.POSITION, new Position(loc, head))
-                .setProperty(PropertyTypes.INTERACT, true)
-                .setProperty(PropertyTypes.LOOKING, false)
-                .save();
-
-		NPCAble npc = this.spawn(file);
-		NPCs.getInstance().getMenuManager().select(p, npc);
-
-		return npc;
-    }
+	@Override
+	public void remove(INPCData data) throws NPCException {
+        try {
+            //TODO: Fix so it doesnt use directory
+            Files.deleteIfExists(this.storageDir.resolve("npc_" + data.getId() + ".conf"));
+        } catch (final IOException exc) {
+            NPCs.getInstance().getLogger().error("Failed to delete npc data for npc {}: {}", data.getId(), exc.getMessage(), exc);
+        }
+	}
 
     // TODO: Change so it doesnt use IDs in directory
 	private int getNextID() {
@@ -113,70 +100,4 @@ public class HoconNPCStore implements INPCStore {
 		}
 		return highest;
 	}
-
-    @Override
-    public void remove(CommandSource src, int id) throws NPCException {
-        this.remove(src, this.getData(id).orElseThrow(() -> new NPCException("No NPC with that ID exists!")));
-    }
-
-    @Override
-    public void remove(CommandSource src, INPCData data) throws NPCException {
-		if (new NPCRemoveEvent(src, data).post()) {
-			throw new NPCException("Event was cancelled!");
-		}
-
-		Optional<NPCAble> npc = this.getNPC(data);
-		if (npc.isPresent()) {
-		    this.remove(src, npc.get());
-		}
-    }
-
-    @Override
-    public void remove(CommandSource src, INPCData data, @Nullable NPCAble npc) throws NPCException {
-        NPCs.getInstance().getMenuManager().deselect(npc);
-        NPCs.getInstance().getActionManager().removeChoosing(npc);
-
-        try {
-            //TODO: Fix so it doesnt use directory
-            Files.deleteIfExists(this.storageDir.resolve("npc_" + Integer.toString(data.getId()) + ".conf"));
-        } catch (final IOException exc) {
-            NPCs.getInstance().getLogger().error("Failed to delete npc data for npc {}: {}", data.getId(), exc.getMessage(), exc);
-        }
-
-        if (npc != null) {
-            this.npcs.remove(data);
-            ((Entity)npc).remove();
-        }
-    }
-
-    @Override
-    public Optional<INPCData> getData(int id) {
-        for (INPCData data : this.npcs) {
-            if (data.getId() == id) {
-                return Optional.of(data);
-            }
-        }
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<NPCAble> getNPC(INPCData data) {
-        World world = Sponge.getServer().getWorld(data.getProperty(PropertyTypes.WORLD_NAME).get()).orElse(null);
-		if (world == null) {
-			return Optional.empty();
-		}
-
-		world.loadChunk(data.getProperty(PropertyTypes.POSITION).get().getChunkPosition(), true);
-
-		// TODO: Optimize
-		return world.getEntities().stream()
-				.filter(ent -> ent instanceof NPCAble)
-				.map(ent -> (NPCAble)ent).filter(npc -> npc.getNPCData() != null && npc.getNPCData().getId() == data.getId())
-				.findFirst();
-    }
-
-    @Override
-    public Set<INPCData> getAllNPCs() {
-        return this.npcs;
-    }
 }

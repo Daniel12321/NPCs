@@ -25,7 +25,7 @@ public class CommandCreate extends PlayerCommand {
 		}
 
 		try {
-			NPCs.getInstance().getNpcStore().create(p, type);
+			NPCs.getInstance().getNPCManager().create(p, type);
 		} catch (final NPCException exc) {
 			throw new CommandException(Text.of(TextColors.RED, "Failed to create NPC: ", exc.getMessage()));
 		}

@@ -1,5 +1,7 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
+import com.google.common.reflect.TypeToken;
+import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColor;
 import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColors;
 import me.mrdaniel.npcs.catalogtypes.horsepattern.HorsePattern;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
@@ -14,6 +16,11 @@ public class PropertyHorsePattern extends PropertyType<HorsePattern> {
 
 	public PropertyHorsePattern() {
 		super("HorsePattern", "horsepattern", GenericArguments.catalogedElement(Text.of("horsepattern"), HorsePattern.class));
+	}
+
+	@Override
+	public TypeToken<HorsePattern> getTypeToken() {
+		return TypeToken.of(HorsePattern.class);
 	}
 
 	@Override

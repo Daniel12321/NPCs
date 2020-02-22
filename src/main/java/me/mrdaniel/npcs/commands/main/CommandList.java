@@ -6,6 +6,7 @@ import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.utils.Position;
 import me.mrdaniel.npcs.utils.TextUtils;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;
@@ -35,17 +36,22 @@ public class CommandList implements CommandExecutor {
 				.build();
 	}
 
-	//TODO: Remove static stuff
+	//TODO: Remove static stuff and use pagination service
 	public static void sendNPCList(CommandSource src) {
 		src.sendMessage(Text.EMPTY);
 		src.sendMessage(Text.of(Text.of(TextColors.YELLOW, "---------------=====[ ", TextColors.RED, "NPC List", TextColors.YELLOW, " ]=====---------------")));
-		NPCs.getInstance().getNpcStore().getAllNPCs().forEach(data -> src.sendMessage(getNPCText(data)));
+
+		Sponge.getServer().getWorlds().forEach(world -> {
+			src.sendMessage(Text.of(TextColors.GREEN, "--=[ ", world.getName(), " ]=--"));
+			NPCs.getInstance().getNPCManager().getNPCs(world.getName()).forEach(data -> src.sendMessage(getNPCText(data)));
+		});
+
 		src.sendMessage(Text.of(TextColors.YELLOW, "--------------------------------------------------"));
 	}
 
 	private static Text getNPCText(INPCData data) {
 		Position pos = data.getProperty(PropertyTypes.POSITION).get();
-		Text.Builder b = Text.builder().append(Text.of(TextColors.BLUE, data.getId(), ": "), Text.of(TextColors.GOLD, "Location=", TextColors.RED, data.getProperty(PropertyTypes.WORLD), ", ", (int)pos.getX(), ", ", (int)pos.getY(), ", ", (int)pos.getZ()));
+		Text.Builder b = Text.builder().append(Text.of(TextColors.BLUE, data.getId(), ": "), Text.of(TextColors.GOLD, "Location=", TextColors.RED, data.getWorldName(), ", ", (int)pos.getX(), ", ", (int)pos.getY(), ", ", (int)pos.getZ()));
 		data.getProperty(PropertyTypes.TYPE).ifPresent(type -> b.append(Text.of(TextColors.GOLD, " Type=", TextColors.RED, type.getName())));
 		data.getProperty(PropertyTypes.NAME).ifPresent(name -> b.append(Text.of(TextColors.GOLD, " Name=", TextColors.RED), TextUtils.toText(name)));
 		return b.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Info"))).onClick(TextActions.executeCallback(src -> sendNPCInfo((Player)src, data))).build();
@@ -53,7 +59,7 @@ public class CommandList implements CommandExecutor {
 
 	private static void sendNPCInfo(Player p, INPCData data) {
 		boolean worldLoaded = data.getProperty(PropertyTypes.WORLD).isPresent();
-		boolean npcLoaded = worldLoaded ? NPCs.getInstance().getNpcStore().getNPC(data).isPresent() : false;
+		boolean npcLoaded = worldLoaded ? NPCs.getInstance().getNPCManager().getNPC(data).isPresent() : false;
 
 		p.sendMessage(Text.EMPTY);
 		p.sendMessage(Text.of(Text.of(TextColors.YELLOW, "---------------=====[ ", TextColors.RED, "NPC Info", TextColors.YELLOW, " ]=====---------------")));

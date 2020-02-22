@@ -33,7 +33,7 @@ public class MenuManager {
 	}
 
 	public void select(Player p, INPCData data) throws NPCException {
-		this.select(p, (NPCAble) NPCs.getInstance().getNpcStore().getNPC(data).orElseThrow(() -> new NPCException("Failed to select NPC: NPC hasn't been spawned.")));
+		this.select(p, (NPCAble) NPCs.getInstance().getNPCManager().getNPC(data).orElseThrow(() -> new NPCException("Failed to select NPC: NPC hasn't been spawned.")));
 	}
 
 	public void select(Player p, NPCAble npc) {

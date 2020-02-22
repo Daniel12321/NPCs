@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.catalogtypes;
+package me.mrdaniel.npcs.io.hocon;
 
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;

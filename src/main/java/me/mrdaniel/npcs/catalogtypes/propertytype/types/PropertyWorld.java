@@ -1,5 +1,6 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
+import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
@@ -13,6 +14,11 @@ public class PropertyWorld extends PropertyType<World> {
 	}
 
 	@Override
+	public TypeToken<World> getTypeToken() {
+		return TypeToken.of(World.class);
+	}
+
+	@Override
 	public boolean isSupported(final NPCAble npc) {
 		return true;
 	}
@@ -20,6 +26,6 @@ public class PropertyWorld extends PropertyType<World> {
 	@Override
 	public void apply(NPCAble npc, World value) {
 		((Entity) npc).setWorld((net.minecraft.world.World)value);
-		npc.getNPCData().setProperty(PropertyTypes.WORLD_NAME, value.getName());
+		npc.getNPCData().setProperty(PropertyTypes.WORLD, value);
 	}
 }

@@ -1,5 +1,6 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
+import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import net.minecraft.entity.Entity;
@@ -10,6 +11,11 @@ public class PropertySilent extends PropertyType<Boolean> {
 
 	public PropertySilent() {
 		super("Silent", "silent", GenericArguments.bool(Text.of("silent")));
+	}
+
+	@Override
+	public TypeToken<Boolean> getTypeToken() {
+		return TypeToken.of(Boolean.class);
 	}
 
 	@Override

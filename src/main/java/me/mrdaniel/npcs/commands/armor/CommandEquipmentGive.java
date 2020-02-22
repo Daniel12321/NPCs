@@ -8,6 +8,7 @@ import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.INPCData;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.entity.ArmorEquipable;
 import org.spongepowered.api.entity.living.player.Player;
@@ -47,30 +48,78 @@ public abstract class CommandEquipmentGive extends NPCCommand {
 	public static class Helmet extends CommandEquipmentGive {
 		@Override public void set(ArmorEquipable ae, ItemStack stack) { ae.setHelmet(stack); }
 		@Override public void set(INPCData file, ItemStack stack) { file.setProperty(PropertyTypes.HELMET, stack).save(); }
+
+		public CommandSpec build() {
+			return CommandSpec.builder()
+					.description(Text.of(TextColors.GOLD, "NPCs | Give Helmet"))
+					.permission("npc.armor.helmet.give")
+					.executor(this)
+					.build();
+		}
 	}
 
 	public static class Chestplate extends CommandEquipmentGive {
 		@Override public void set(ArmorEquipable ae, ItemStack stack) { ae.setChestplate(stack); }
 		@Override public void set(INPCData file, ItemStack stack) { file.setProperty(PropertyTypes.CHESTPLATE, stack).save(); }
+
+		public CommandSpec build() {
+			return CommandSpec.builder()
+					.description(Text.of(TextColors.GOLD, "NPCs | Give Chestplate"))
+					.permission("npc.armor.chestplate.give")
+					.executor(this)
+					.build();
+		}
 	}
 
 	public static class Leggings extends CommandEquipmentGive {
 		@Override public void set(ArmorEquipable ae, ItemStack stack) { ae.setLeggings(stack); }
 		@Override public void set(INPCData file, ItemStack stack) { file.setProperty(PropertyTypes.LEGGINGS, stack).save(); }
+
+		public CommandSpec build() {
+			return CommandSpec.builder()
+					.description(Text.of(TextColors.GOLD, "NPCs | Give Leggings"))
+					.permission("npc.armor.leggings.give")
+					.executor(this)
+					.build();
+		}
 	}
 
 	public static class Boots extends CommandEquipmentGive {
 		@Override public void set(ArmorEquipable ae, ItemStack stack) { ae.setBoots(stack); }
 		@Override public void set(INPCData file, ItemStack stack) { file.setProperty(PropertyTypes.BOOTS, stack).save(); }
+
+		public CommandSpec build() {
+			return CommandSpec.builder()
+					.description(Text.of(TextColors.GOLD, "NPCs | Give Boots"))
+					.permission("npc.armor.boots.give")
+					.executor(this)
+					.build();
+		}
 	}
 
 	public static class MainHand extends CommandEquipmentGive {
 		@Override public void set(ArmorEquipable ae, ItemStack stack) { ae.setItemInHand(HandTypes.MAIN_HAND, stack); }
 		@Override public void set(INPCData file, ItemStack stack) { file.setProperty(PropertyTypes.MAINHAND, stack).save(); }
+
+		public CommandSpec build() {
+			return CommandSpec.builder()
+					.description(Text.of(TextColors.GOLD, "NPCs | Give MainHand"))
+					.permission("npc.armor.mainhand.give")
+					.executor(this)
+					.build();
+		}
 	}
 
 	public static class OffHand extends CommandEquipmentGive {
 		@Override public void set(ArmorEquipable ae, ItemStack stack) { ae.setItemInHand(HandTypes.OFF_HAND, stack); }
 		@Override public void set(INPCData file, ItemStack stack) { file.setProperty(PropertyTypes.OFFHAND, stack).save(); }
+
+		public CommandSpec build() {
+			return CommandSpec.builder()
+					.description(Text.of(TextColors.GOLD, "NPCs | Give OffHand"))
+					.permission("npc.armor.offhand.give")
+					.executor(this)
+					.build();
+		}
 	}
 }

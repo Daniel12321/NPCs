@@ -1,7 +1,8 @@
-package me.mrdaniel.npcs.commands;
+package me.mrdaniel.npcs.commands.main;
 
 import me.mrdaniel.npcs.catalogtypes.menupagetype.PageType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
+import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.events.NPCEditEvent;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import org.spongepowered.api.command.CommandException;
@@ -30,7 +31,7 @@ public class CommandEdit<T> extends NPCCommand {
 			throw new CommandException(Text.of(TextColors.RED, "Event was cancelled!"));
 		}
 
-		npc.setProperty(this.option, args.<T>getOne(this.option.getId()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "Invalid value!"))));
+		npc.setProperty(this.option, args.<T>getOne(this.option.getId()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "Invalid value!")))).save();
 	}
 
 	public static <T> CommandSpec build(PageType page, PropertyType<T> option) {

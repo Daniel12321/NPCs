@@ -1,5 +1,6 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
+import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import org.spongepowered.api.entity.ArmorEquipable;
@@ -9,6 +10,11 @@ public class PropertyHelmet extends PropertyType<ItemStack> {
 
 	public PropertyHelmet() {
 		super("Helmet", "helmet");
+	}
+
+	@Override
+	public TypeToken<ItemStack> getTypeToken() {
+		return TypeToken.of(ItemStack.class);
 	}
 
 	@Override

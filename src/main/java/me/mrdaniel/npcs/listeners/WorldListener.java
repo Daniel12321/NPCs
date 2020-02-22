@@ -11,8 +11,8 @@ import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.world.LoadWorldEvent;
 import org.spongepowered.api.world.World;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class WorldListener {
 
@@ -21,7 +21,7 @@ public class WorldListener {
 		World world = e.getTargetWorld();
 		String worldName = world.getName();
 
-		List<INPCData> files = NPCs.getInstance().getNpcStore().getAllNPCs().stream().filter(file -> worldName.equals(file.getProperty(PropertyTypes.WORLD_NAME).get())).collect(Collectors.toList());
+		List<INPCData> files = new ArrayList<>(NPCs.getInstance().getNPCManager().getNPCs(worldName));
 		files.forEach(file -> world.loadChunk(file.getProperty(PropertyTypes.POSITION).get().getChunkPosition(), true));
 
 		// TODO: Replace to use NPCData only
@@ -31,7 +31,7 @@ public class WorldListener {
 
 		files.forEach(file -> {
 			try {
-				NPCs.getInstance().getNpcStore().spawn(file);
+				NPCs.getInstance().getNPCManager().spawn(file);
 			} catch (final NPCException exc) {
 				NPCs.getInstance().getLogger().error("Failed to spawn NPC: " + exc.getMessage(), exc);
 			}

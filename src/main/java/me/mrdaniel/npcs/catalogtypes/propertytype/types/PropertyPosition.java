@@ -1,5 +1,6 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
+import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.utils.Position;
@@ -9,6 +10,11 @@ public class PropertyPosition extends PropertyType<Position> {
 
 	public PropertyPosition() {
 		super("Position", "position");
+	}
+
+	@Override
+	public TypeToken<Position> getTypeToken() {
+		return TypeToken.of(Position.class);
 	}
 
 	@Override

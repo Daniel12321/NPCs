@@ -1,5 +1,7 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
+import com.google.common.reflect.TypeToken;
+import me.mrdaniel.npcs.catalogtypes.cattype.CatType;
 import me.mrdaniel.npcs.catalogtypes.glowcolor.GlowColor;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
@@ -16,6 +18,11 @@ public class PropertyGlowColor extends PropertyType<GlowColor> {
 
 	public PropertyGlowColor() {
 		super("GlowColor", "glowcolor", GenericArguments.catalogedElement(Text.of("glowcolor"), GlowColor.class));
+	}
+
+	@Override
+	public TypeToken<GlowColor> getTypeToken() {
+		return TypeToken.of(GlowColor.class);
 	}
 
 	@Override

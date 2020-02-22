@@ -48,11 +48,12 @@ public class MainPage extends Page {
 		lines[c++] = BUTTONS;
 		lines[++c] = Text.of(TextColors.GOLD, "NPC ID: ", TextColors.RED, data.getId());
 		lines[++c] = Text.of(TextColors.GOLD, "Type: ", TextColors.RED, data.getProperty(PropertyTypes.TYPE).orElse(NPCTypes.HUMAN).getName());
-		lines[++c] = Text.of(TextColors.GOLD, "Location: ", TextColors.RED, data.getProperty(PropertyTypes.WORLD_NAME), " ", (int)pos.getX(), " ", (int)pos.getY(), " ", (int)pos.getZ());
+		lines[++c] = Text.of(TextColors.GOLD, "Location: ", TextColors.RED, data.getWorldName(), " ", (int)pos.getX(), " ", (int)pos.getY(), " ", (int)pos.getZ());
 		++c;
 
+		if (PropertyTypes.SKIN_UUID.isSupported(npc)) { lines[++c] = Text.builder().append(Text.of(TextColors.GOLD, "Skin: ", TextColors.AQUA, data.getProperty(PropertyTypes.SKIN).orElse("None"))).onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Change"))).onClick(TextActions.suggestCommand("/npc skin <name>")).build(); }
 		lines[++c] = Text.builder().append(Text.of(TextColors.GOLD, "Name: ", TextColors.AQUA)).append(TextUtils.toText(data.getProperty(PropertyTypes.NAME).orElse("None"))).onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Change"))).onClick(TextActions.suggestCommand("/npc name <name>")).build();
-		if (PropertyTypes.SKIN_UUID.isSupported(npc)) { lines[++c] = Text.builder().append(Text.of(TextColors.GOLD, "Skin: ", TextColors.AQUA, data.getProperty(PropertyTypes.SKIN_NAME).orElse("None"))).onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Change"))).onClick(TextActions.suggestCommand("/npc skin <name>")).build(); }
+		lines[++c] = TextUtils.getToggleText("Name Always Visible", "/npc namevisible", data.getProperty(PropertyTypes.NAME_VISIBLE).orElse(false));
 		++c;
 
 		lines[++c] = TextUtils.getToggleText("Looking", "/npc looking", data.getProperty(PropertyTypes.LOOKING).orElse(false));

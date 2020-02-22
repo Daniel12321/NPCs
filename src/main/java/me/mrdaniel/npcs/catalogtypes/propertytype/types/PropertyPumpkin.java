@@ -1,5 +1,6 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
+import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import net.minecraft.entity.monster.EntitySnowman;
@@ -11,6 +12,11 @@ public class PropertyPumpkin extends PropertyType<Boolean> {
 
 	public PropertyPumpkin() {
 		super("Pumpkin", "pumpkin", GenericArguments.bool(Text.of("pumpkin")));
+	}
+
+	@Override
+	public TypeToken<Boolean> getTypeToken() {
+		return TypeToken.of(Boolean.class);
 	}
 
 	@Override

@@ -22,12 +22,11 @@ public final class PropertyTypes {
 
 	public static final PropertyType<NPCType> TYPE = new PropertyNPCType();
 	public static final PropertyType<World> WORLD = new PropertyWorld();
-	public static final PropertyType<String> WORLD_NAME = new PropertyWorldName();
 	public static final PropertyType<Position> POSITION = new PropertyPosition();
 	public static final PropertyType<String> NAME = new PropertyName();
 	public static final PropertyType<Boolean> NAME_VISIBLE = new PropertyNameVisible();
 	public static final PropertyType<UUID> SKIN_UUID = new PropertySkinUUID();
-	public static final PropertyType<String> SKIN_NAME = new PropertySkinName();
+	public static final PropertyType<String> SKIN = new PropertySkin();
 	public static final PropertyType<Boolean> LOOKING = new PropertyLooking();
 	public static final PropertyType<Boolean> INTERACT = new PropertyInteract();
 	public static final PropertyType<Boolean> SILENT = new PropertySilent();
@@ -57,12 +56,6 @@ public final class PropertyTypes {
 	public static final PropertyType<ItemStack> MAINHAND = new PropertyMainHand();
 	public static final PropertyType<ItemStack> OFFHAND = new PropertyOffHand();
 
-//	public static final List<PropertyType> ARMOR = Lists.newArrayList(HELMET, CHESTPLATE, LEGGINGS, BOOTS, MAINHAND, OFFHAND);
-//	public static final List<PropertyType> MAIN = Lists.newArrayList(
-//			NAME, NAME_VISIBLE, LOOKING, INTERACT, SILENT, GLOWING, GLOWCOLOR,
-//			BABY, CHARGED, ANGRY, SIZE, SITTING, SADDLE, HANGING, PUMPKIN, CAREER,
-//			HORSEPATTERN, HORSECOLOR, LLAMATYPE, CATTYPE, RABBITTYPE, PARROTTYPE);
-
 	public static final List<PropertyType> NPC_INIT = Lists.newArrayList(
 			POSITION, NAME, NAME_VISIBLE, SKIN_UUID, LOOKING, INTERACT, SILENT, GLOWING,
 			GLOWCOLOR, BABY, CHARGED, ANGRY, SIZE, SITTING, SADDLE, HANGING,
@@ -70,12 +63,11 @@ public final class PropertyTypes {
 			HELMET, CHESTPLATE, LEGGINGS, BOOTS, MAINHAND, OFFHAND
 	);
 	public static final List<PropertyType> ALL = Lists.newArrayList(NPC_INIT);
+	public static final List<PropertyType> ARMOR = Lists.newArrayList(HELMET, CHESTPLATE, LEGGINGS, BOOTS, MAINHAND, OFFHAND);
 
-	// TODO: STUFF
 	static {
 		ALL.add(TYPE);
 		ALL.add(WORLD);
-		ALL.add(WORLD_NAME);
-		ALL.add(SKIN_NAME);
+		ALL.add(SKIN);
 	}
 }

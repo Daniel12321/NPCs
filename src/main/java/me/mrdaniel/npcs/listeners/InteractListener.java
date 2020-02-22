@@ -5,40 +5,52 @@ import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.entity.Entity;
+import org.spongepowered.api.entity.living.animal.Donkey;
+import org.spongepowered.api.entity.living.animal.Horse;
+import org.spongepowered.api.entity.living.animal.Llama;
+import org.spongepowered.api.entity.living.animal.Mule;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.entity.InteractEntityEvent;
+import org.spongepowered.api.event.entity.RideEntityEvent;
 import org.spongepowered.api.event.filter.cause.Root;
-
-import javax.annotation.Nonnull;
 
 public class InteractListener {
 
-	// TODO: This doesn't work for villagers and horses
+	// This doesn't work for villagers (opens inventory) and horses (mounts them)
 	@Listener
-	public void onEntityInteract(final InteractEntityEvent.Secondary.OffHand e, @Root final Player p) {
+	public void onEntityInteract(InteractEntityEvent.Secondary.OffHand e, @Root Player p) {
 		if (e.getTargetEntity() instanceof NPCAble) {
 			e.setCancelled(this.onEntityInteract((NPCAble) e.getTargetEntity(), p));
 		}
 	}
 
-	// TODO:
-//	// Doesn't work yet
+	// Allows horses to be selected (Does still try to make you mount)
+	@Listener
+	public void onHorseMount(RideEntityEvent.Mount e, @Root Player p) {
+		Entity target = e.getTargetEntity();
+		if (target instanceof Horse
+				|| target instanceof Mule
+				|| target instanceof Donkey
+				|| target instanceof Llama) {
+			e.setCancelled(this.onEntityInteract((NPCAble) e.getTargetEntity(), p));
+		}
+	}
+
+	// TODO: Find an alternative for villagers
 //	@Listener
-//	public void onHorseMount(final RideEntityEvent.Mount e, @Root final Player p) {
-//		e.setCancelled(this.onEntityInteract((NPCAble) e.getTargetEntity(), p));
-//	}
-//
-//	// Doesn't work yet
-//	@Listener
-//	public void onInventoryOpen(final InteractInventoryEvent.Open e, @Root final Player p, @First final Villager villager) {
+//	public void onInventoryOpen(InteractInventoryEvent.Open e) { // @Root Player p, @First Villager villager
+//		System.out.println("Context: "+ e.getContext().toString());
+//		System.out.println("Cause: "+ e.getCause().toString());
+//		System.out.println("Source: " + e.getSource().toString());
 //		e.setCancelled(this.onEntityInteract((NPCAble) villager, p));
 //	}
 
 	/**
 	 * @return whether to cancel the original event
 	 */
-	private boolean onEntityInteract(@Nonnull final NPCAble npc, @Nonnull final Player p) {
+	private boolean onEntityInteract(NPCAble npc, Player p) {
 		if (npc.getNPCData() == null) {
 			return false;
 		}

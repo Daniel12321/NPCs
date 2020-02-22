@@ -29,6 +29,11 @@ public class DatabaseNPCData implements INPCData {
     }
 
     @Override
+    public String getWorldName() {
+        return "world";
+    }
+
+    @Override
     public void save() {
     }
 

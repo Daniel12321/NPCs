@@ -10,16 +10,17 @@ import org.spongepowered.api.entity.living.Human;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 
-public class PropertySkinName extends PropertyType<String> {
+public class PropertySkin extends PropertyType<String> {
 
-	public PropertySkinName() {
-		super("SkinName", "skin-name", GenericArguments.string(Text.of("skin")));
+	public PropertySkin() {
+		super("Skin", "skin", GenericArguments.string(Text.of("skin")));
 	}
 
 	@Override
 	public TypeToken<String> getTypeToken() {
 		return TypeToken.of(String.class);
 	}
+
 	@Override
 	public boolean isSupported(final NPCAble npc) {
 		return npc instanceof Human;
