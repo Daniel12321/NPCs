@@ -1,6 +1,7 @@
 package me.mrdaniel.npcs.managers;
 
 import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.io.Config;
 import me.mrdaniel.npcs.managers.placeholders.PlaceholderAPIManager;
 import me.mrdaniel.npcs.managers.placeholders.PlaceholderHandler;
 import me.mrdaniel.npcs.managers.placeholders.SimplePlaceholderManager;
@@ -14,22 +15,22 @@ public class PlaceholderManager implements PlaceholderHandler {
 
 	private PlaceholderHandler handler;
 
-	public void load() {
+	public void load(Config config) {
 		Optional<PluginContainer> placeholderapi = NPCs.getInstance().getGame().getPluginManager().getPlugin("placeholderapi");
 
 		if (placeholderapi.isPresent()) {
-			int version = Integer.valueOf(placeholderapi.get().getVersion().get().replaceAll("[^\\d]", ""));
+			int version = Integer.parseInt(placeholderapi.get().getVersion().get().replaceAll("[^\\d]", ""));
 			if (version < 41) {
-				this.handler = new SimplePlaceholderManager();
+				this.handler = new SimplePlaceholderManager(config);
 				NPCs.getInstance().getLogger().info("Could not load PlaceholderAPI and loaded a simple version instead: Please update PlaceholderAPI to version 4.1 or higher.");
 			}
 			else {
-				this.handler = new PlaceholderAPIManager();
+				this.handler = new PlaceholderAPIManager(config);
 				NPCs.getInstance().getLogger().info("Found and loaded PlaceholderAPI successfully.");
 			}
 		}
 		else {
-			this.handler = new SimplePlaceholderManager();
+			this.handler = new SimplePlaceholderManager(config);
 			NPCs.getInstance().getLogger().info("Could not find PlaceholderAPI and loaded a simple version instead.");
 		}
 	}

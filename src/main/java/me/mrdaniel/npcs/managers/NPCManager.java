@@ -2,6 +2,7 @@ package me.mrdaniel.npcs.managers;
 
 import com.flowpowered.math.vector.Vector3d;
 import com.google.common.collect.Maps;
+import com.google.inject.Inject;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColors;
 import me.mrdaniel.npcs.catalogtypes.horsepattern.HorsePatterns;
@@ -27,6 +28,7 @@ import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.World;
 
 import javax.annotation.Nullable;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -34,19 +36,18 @@ import java.util.stream.Collectors;
 
 public class NPCManager {
 
-    private final INPCStore npcStore;
     private final Map<Integer, INPCData> npcs;
+    private INPCStore npcStore;
 
-    public NPCManager(Config config) {
-        this.npcStore = StorageType.of(config.getNode("storage", "storage_type").getString()).orElse(StorageType.HOCON).createNPCStore(this);
+    @Inject
+    public NPCManager() {
         this.npcs = Maps.newHashMap();
+        this.npcStore = null;
     }
 
-    public void setup() {
+    public void load(Config config, Path configDir) {
+        this.npcStore = StorageType.of(config.getNode("storage", "storage_type").getString()).orElse(StorageType.HOCON).createNPCStore(this, configDir);
         this.npcStore.setup();
-    }
-
-    public void load() {
         this.npcs.clear();
         this.npcStore.load(this.npcs);
     }
@@ -72,7 +73,7 @@ public class NPCManager {
                 .saveNPC();
 
 		NPCAble npc = this.spawn(data);
-		NPCs.getInstance().getMenuManager().select(p, npc);
+		NPCs.getInstance().getSelectedManager().select(p, npc);
 
 		return npc;
     }
@@ -107,7 +108,7 @@ public class NPCManager {
             throw new NPCException("Event was cancelled!");
         }
 
-        NPCs.getInstance().getMenuManager().deselect(npc.getNPCData());
+        NPCs.getInstance().getSelectedManager().deselect(npc.getNPCData());
         NPCs.getInstance().getActionManager().removeChoosing(npc);
 
         this.npcStore.remove(data);

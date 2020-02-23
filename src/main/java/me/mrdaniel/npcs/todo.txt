@@ -1,6 +1,7 @@
 
 TODO:
 - Fix the horse mount movement bug
+- Fix magma cube NPCs damaging players
 - Add a way to select villagers (InteractListener)
 - Improve action serialization
 - Find a way to never have 2 of the same NPC in the world (Only when WorldListener is enabled) (Add Entity UUID to INPCData)

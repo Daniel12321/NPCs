@@ -1,6 +1,5 @@
 package me.mrdaniel.npcs.managers.placeholders;
 
-import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.io.Config;
 import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.entity.living.player.Player;
@@ -11,9 +10,7 @@ public class SimplePlaceholderManager implements PlaceholderHandler {
 	private final String msg_format;
 	private final String choice_format;
 
-	public SimplePlaceholderManager() {
-		Config config = NPCs.getInstance().getConfig();
-
+	public SimplePlaceholderManager(Config config) {
 		this.msg_format = config.getNode("messages", "npc_message_format").getString("%npc_name%&7: ");
 		this.choice_format = config.getNode("messages", "npc_choice_format").getString("&6&lChoose: ");
 	}

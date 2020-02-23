@@ -28,7 +28,7 @@ public class CommandNPC extends PlayerCommand {
 
 	@Override
 	public void execute(Player p, CommandContext args) throws CommandException {
-		Optional<INPCData> selected = NPCs.getInstance().getMenuManager().get(p.getUniqueId());
+		Optional<INPCData> selected = NPCs.getInstance().getSelectedManager().get(p.getUniqueId());
 
 		if (selected.isPresent()) {
 			NPCAble npc = NPCs.getInstance().getNPCManager().getNPC(selected.get()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "NPC is not spawned in!")));

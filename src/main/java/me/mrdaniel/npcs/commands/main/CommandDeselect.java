@@ -13,7 +13,7 @@ public class CommandDeselect extends PlayerCommand {
 
 	@Override
 	public void execute(final Player p, final CommandContext args) throws CommandException {
-		if (NPCs.getInstance().getMenuManager().deselect(p.getUniqueId())) {
+		if (NPCs.getInstance().getSelectedManager().deselect(p.getUniqueId())) {
 			for (int i = 0; i < 20; i++) {
 				p.sendMessage(Text.EMPTY);
 			}

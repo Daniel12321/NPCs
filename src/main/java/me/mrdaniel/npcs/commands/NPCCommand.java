@@ -28,7 +28,7 @@ public abstract class NPCCommand extends PlayerCommand {
 	@Override
 	public void execute(Player p, CommandContext args) throws CommandException {
 		Optional<Integer> id = args.getOne("id");
-		Optional<INPCData> selected = NPCs.getInstance().getMenuManager().get(p.getUniqueId());
+		Optional<INPCData> selected = NPCs.getInstance().getSelectedManager().get(p.getUniqueId());
 
 		if (id.isPresent()) {
 			INPCData data = NPCs.getInstance().getNPCManager().getData(id.get()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "No NPC with that ID exists!")));

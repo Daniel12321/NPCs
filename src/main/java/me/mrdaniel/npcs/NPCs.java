@@ -58,8 +58,6 @@ import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.service.economy.EconomyService;
 
 import javax.annotation.Nullable;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 @Plugin(id = NPCs.MODID,
@@ -81,42 +79,23 @@ public class NPCs {
 		return instance;
 	}
 
-	private final Game game;
-	private final PluginContainer container;
 	private final Logger logger;
-	private final Path configDir;
-	private final Config config;
+	@Inject private Game game;
+	@Inject private PluginContainer container;
+	@Inject @ConfigDir(sharedRoot = false) private Path configDir;
+	@Inject private Config config;
 
-	private final NPCManager npcManager;
-	private final ActionManager actionManager;
-	private final SelectedManager menuManager;
-	private final PlaceholderManager placeholderManager;
+	@Inject private MetricsLite metrics;
 
-	@Inject
-	public NPCs(Game game, PluginContainer container, @ConfigDir(sharedRoot = false) Path path, MetricsLite metrics) {
+	@Inject private NPCManager npcManager;
+	@Inject private ActionManager actionManager;
+	@Inject private SelectedManager selectedManager;
+	@Inject private PlaceholderManager placeholderManager;
+
+	public NPCs() {
 		instance = this;
 
-		this.game = game;
-		this.container = container;
 		this.logger = LoggerFactory.getLogger("NPCs");
-		this.configDir = path;
-
-		try {
-			if (!Files.exists(path)) {
-				Files.createDirectory(path);
-			}
-			if (!Files.exists(path.resolve("config.conf"))) {
-				this.container.getAsset("config.conf").get().copyToFile(path);
-			}
-		} catch (final IOException exc) {
-			this.logger.error("Failed to create config asset: ", exc);
-		}
-
-		this.config = new Config(path.resolve("config.conf"));
-		this.npcManager = new NPCManager(this.config);
-		this.actionManager = new ActionManager();
-		this.menuManager = new SelectedManager(this.config);
-		this.placeholderManager = new PlaceholderManager();
 	}
 
 	@Listener
@@ -135,8 +114,6 @@ public class NPCs {
 		this.game.getRegistry().registerModule(ConditionType.class, new ConditionTypeRegistryModule());
 		this.game.getRegistry().registerModule(PropertyType.class, new PropertyTypeRegistryModule());
 
-		this.npcManager.setup();
-
 		NPCKeys.init();
 		NPCDataBuilder.register();
 	}
@@ -145,8 +122,9 @@ public class NPCs {
 	public void onInit(@Nullable GameInitializationEvent e) {
 		this.logger.info("Loading plugin...");
 
-		this.npcManager.load();
-		this.placeholderManager.load();
+		this.npcManager.load(this.config, this.configDir);
+		this.selectedManager.load(this.config);
+		this.placeholderManager.load(this.config);
 
 		this.game.getEventManager().registerListeners(this, new EntityListener());
 		this.game.getEventManager().registerListeners(this, new InteractListener());
@@ -205,7 +183,7 @@ public class NPCs {
 
 	@Listener(order = Order.LATE)
 	public void onQuit(ClientConnectionEvent.Disconnect e) {
-		this.menuManager.deselect(e.getTargetEntity().getUniqueId());
+		this.selectedManager.deselect(e.getTargetEntity().getUniqueId());
 		this.actionManager.removeChoosing(e.getTargetEntity().getUniqueId());
 	}
 
@@ -221,14 +199,6 @@ public class NPCs {
 		return this.logger;
 	}
 
-	public Path getConfigDir() {
-		return this.configDir;
-	}
-
-	public Config getConfig() {
-		return this.config;
-	}
-
 	public NPCManager getNPCManager() {
 		return npcManager;
 	}
@@ -237,8 +207,8 @@ public class NPCs {
 		return actionManager;
 	}
 
-	public SelectedManager getMenuManager() {
-		return menuManager;
+	public SelectedManager getSelectedManager() {
+		return selectedManager;
 	}
 
 	public PlaceholderManager getPlaceholderManager() {
