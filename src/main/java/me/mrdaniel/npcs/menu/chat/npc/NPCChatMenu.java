@@ -1,12 +1,12 @@
-package me.mrdaniel.npcs.menu.chatmenu;
+package me.mrdaniel.npcs.menu.chat.npc;
 
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
-import me.mrdaniel.npcs.menu.ChatMenu;
+import me.mrdaniel.npcs.menu.chat.FullChatMenu;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-public abstract class NPCChatMenu extends ChatMenu {
+public abstract class NPCChatMenu implements FullChatMenu {
 
     protected final NPCAble npc;
 
@@ -15,7 +15,7 @@ public abstract class NPCChatMenu extends ChatMenu {
     }
 
     @Override
-    protected Text getFooter() {
+    public Text getFooter() {
         Text.Builder b = Text.builder().append(new PropertiesChatMenu(npc).getPropertiesButton());
 
         if (PropertyTypes.HELMET.isSupported(npc)) {

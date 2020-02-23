@@ -1,6 +1,7 @@
-package me.mrdaniel.npcs.actions;
+package me.mrdaniel.npcs.actions.actions;
 
-import me.mrdaniel.npcs.actions.conditions.Condition;
+import me.mrdaniel.npcs.actions.Action;
+import me.mrdaniel.npcs.actions.Condition;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
 import me.mrdaniel.npcs.exceptions.ConditionException;
 import me.mrdaniel.npcs.io.INPCData;

@@ -11,14 +11,14 @@ public abstract class PropertyType<T> implements CatalogType {
 
 	private final String name;
 	private final String id;
-	private final String hoconPath;
+	private final Object[] hoconPath;
 	private final CommandElement[] args;
 
 	protected PropertyType(String name, String id, CommandElement... args) {
-		this(name, id, id, args);
+		this(name, id, new Object[]{id}, args);
 	}
 
-	protected PropertyType(String name, String id, String hoconPath, CommandElement... args) {
+	protected PropertyType(String name, String id, Object[] hoconPath, CommandElement... args) {
 		this.name = name;
 		this.id = id;
 		this.hoconPath = hoconPath;
@@ -35,7 +35,7 @@ public abstract class PropertyType<T> implements CatalogType {
 		return this.id;
 	}
 
-	public String getHoconPath() {
+	public Object[] getHoconPath() {
 		return hoconPath;
 	}
 

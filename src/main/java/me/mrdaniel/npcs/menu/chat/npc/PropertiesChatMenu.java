@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.menu.chatmenu;
+package me.mrdaniel.npcs.menu.chat.npc;
 
 import com.google.common.collect.Lists;
 import me.mrdaniel.npcs.catalogtypes.career.Careers;
@@ -42,17 +42,17 @@ public class PropertiesChatMenu extends NPCChatMenu {
     }
 
     @Override
-    protected Text getTitle() {
+    public Text getTitle() {
         return Text.of(TextColors.YELLOW, "[ ", TextColors.RED, "NPC Properties", TextColors.YELLOW, " ]");
     }
 
     @Override
-    protected Text getHeader() {
+    public Text getHeader() {
         return BUTTONS;
     }
 
     @Override
-    protected List<Text> getContents() {
+    public List<Text> getContents() {
         Position pos = npc.getNPCPosition();
         List<Text> lines = Lists.newArrayList(Text.EMPTY);
 

@@ -10,7 +10,7 @@ import org.spongepowered.api.item.inventory.ItemStack;
 public class PropertyMainHand extends PropertyType<ItemStack> {
 
 	public PropertyMainHand() {
-		super("MainHand", "mainhand", "equipment.mainhand");
+		super("MainHand", "mainhand", new Object[]{"equipment", "mainhand"});
 	}
 
 	@Override

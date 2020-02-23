@@ -1,7 +1,8 @@
-package me.mrdaniel.npcs.actions;
+package me.mrdaniel.npcs.actions.actions;
 
 import com.google.common.collect.Maps;
 import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.actions.Action;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
 import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.io.INPCData;

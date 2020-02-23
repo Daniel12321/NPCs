@@ -2,12 +2,11 @@ package me.mrdaniel.npcs.managers;
 
 import com.google.common.collect.Maps;
 import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
 import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.Config;
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.menu.chat.NPCMenu;
+import me.mrdaniel.npcs.menu.chat.npc.PropertiesChatMenu;
 import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
@@ -18,16 +17,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public class MenuManager {
+public class SelectedManager {
 
-	private final Map<UUID, NPCMenu> menus;
+	private final Map<UUID, INPCData> selected;
 	private final Text select_message;
 	private final boolean open_menu;
 
-	public MenuManager() {
-		Config config = NPCs.getInstance().getConfig();
-
-		this.menus = Maps.newHashMap();
+	public SelectedManager(Config config) {
+		this.selected = Maps.newHashMap();
 		this.select_message = TextUtils.toText(config.getNode("npc_select_message").getString("&eYou selected an NPC."));
 		this.open_menu = config.getNode("open_menu_on_select").getBoolean(true);
 	}
@@ -37,30 +34,29 @@ public class MenuManager {
 	}
 
 	public void select(Player p, NPCAble npc) {
-		NPCMenu menu = new NPCMenu(npc);
-		this.menus.put(p.getUniqueId(), menu);
+		this.selected.put(p.getUniqueId(), npc.getNPCData());
 
 		if (this.open_menu) {
-			menu.send(p, PageTypes.MAIN);
+			new PropertiesChatMenu(npc).send(p);
 		} else {
 			p.sendMessage(ChatTypes.ACTION_BAR, Text.of(TextColors.DARK_GRAY, "[", TextColors.GOLD, "NPCs", TextColors.DARK_GRAY, "] ", this.select_message));
 		}
 	}
 
 	public boolean deselect(UUID uuid) {
-		return this.menus.remove(uuid) != null;
+		return this.selected.remove(uuid) != null;
 	}
 
-	public boolean deselect(NPCAble npc) {
-		for (final UUID uuid : this.menus.keySet()) {
-			if (this.menus.get(uuid).getNpc() == npc) {
+	public boolean deselect(INPCData data) {
+		for (UUID uuid : this.selected.keySet()) {
+			if (this.selected.get(uuid) == data) {
 				return this.deselect(uuid);
 			}
 		}
 		return false;
 	}
 
-	public Optional<NPCMenu> get(UUID uuid) {
-		return Optional.ofNullable(this.menus.get(uuid));
+	public Optional<INPCData> get(UUID uuid) {
+		return Optional.ofNullable(this.selected.get(uuid));
 	}
 }

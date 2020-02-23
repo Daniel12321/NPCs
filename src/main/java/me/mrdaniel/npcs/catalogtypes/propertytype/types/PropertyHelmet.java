@@ -9,7 +9,7 @@ import org.spongepowered.api.item.inventory.ItemStack;
 public class PropertyHelmet extends PropertyType<ItemStack> {
 
 	public PropertyHelmet() {
-		super("Helmet", "helmet", "equipment.helmet");
+		super("Helmet", "helmet", new Object[]{"equipment", "helmet"});
 	}
 
 	@Override

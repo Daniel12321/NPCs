@@ -38,7 +38,7 @@ public class NPCManager {
     private final Map<Integer, INPCData> npcs;
 
     public NPCManager(Config config) {
-        this.npcStore = StorageType.of(config.getNode("storage", "storage_type").getString()).orElse(StorageType.HOCON).createNPCStore();
+        this.npcStore = StorageType.of(config.getNode("storage", "storage_type").getString()).orElse(StorageType.HOCON).createNPCStore(this);
         this.npcs = Maps.newHashMap();
     }
 
@@ -51,44 +51,47 @@ public class NPCManager {
         this.npcStore.load(this.npcs);
     }
 
-    public NPCAble spawn(INPCData data) throws NPCException {
-        this.getNPC(data).ifPresent(npc -> ((EntityLiving)npc).setDead());
-
-        World world = data.getPosition().getWorld().orElseThrow(() -> new NPCException("Invalid world!"));
-        Entity ent = world.createEntity(data.getProperty(PropertyTypes.TYPE).orElseThrow(() -> new NPCException("Could not find EntityType for NPC!")).getEntityType(), new Vector3d(0, 0, 0));
-        ent.offer(new NPCData(data.getId()));
-
-        NPCAble npc = (NPCAble) ent;
-        npc.setNPCData(data);
-
-        world.spawnEntity(ent);
-        return npc;
-    }
-
     public NPCAble create(Player p, NPCType type) throws NPCException {
 		if (new NPCCreateEvent(p, type).post()) {
 			throw new NPCException("Event was cancelled!");
 		}
 
 		INPCData data = this.npcStore.create(type);
-		this.npcs.put(data.getId(), data);
+		this.npcs.put(data.getNPCId(), data);
 
         if (type == NPCTypes.HUMAN) {
-            data.setProperty(PropertyTypes.NAME, "Steve");
+            data.setNPCProperty(PropertyTypes.NAME, "Steve");
         } else if (type == NPCTypes.HORSE) {
-		    data.setProperty(PropertyTypes.HORSECOLOR, HorseColors.BROWN).setProperty(PropertyTypes.HORSEPATTERN, HorsePatterns.NONE);
+		    data.setNPCProperty(PropertyTypes.HORSECOLOR, HorseColors.BROWN).setNPCProperty(PropertyTypes.HORSEPATTERN, HorsePatterns.NONE);
 		}
 
-        data.setPosition(new Position(p.getWorld().getName(), p.getLocation().getPosition(), p.getHeadRotation()));
-		data.setProperty(PropertyTypes.TYPE, type)
-                .setProperty(PropertyTypes.INTERACT, true)
-                .setProperty(PropertyTypes.LOOKING, false)
-                .save();
+        data.setNPCPosition(new Position(p.getWorld().getName(), p.getLocation().getPosition(), p.getHeadRotation()));
+		data.setNPCProperty(PropertyTypes.TYPE, type)
+                .setNPCProperty(PropertyTypes.INTERACT, true)
+                .setNPCProperty(PropertyTypes.LOOKING, false)
+                .saveNPC();
 
 		NPCAble npc = this.spawn(data);
 		NPCs.getInstance().getMenuManager().select(p, npc);
 
 		return npc;
+    }
+
+    public NPCAble spawn(INPCData data) throws NPCException {
+        this.getNPC(data).ifPresent(npc -> ((EntityLiving)npc).setDead());
+
+        Position pos = data.getNPCPosition();
+        World world = pos.getWorld().orElseThrow(() -> new NPCException("Invalid world!"));
+        Entity ent = world.createEntity(data.getNPCProperty(PropertyTypes.TYPE).orElseThrow(() -> new NPCException("Could not find EntityType for NPC!")).getEntityType(), new Vector3d(0, 0, 0));
+        ent.offer(new NPCData(data.getNPCId()));
+
+        NPCAble npc = (NPCAble) ent;
+        npc.setNPCData(data);
+
+        ((net.minecraft.entity.Entity) ent).setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), pos.getYaw(), pos.getPitch());
+
+        world.spawnEntity(ent);
+        return npc;
     }
 
     public void remove(CommandSource src, int id) throws NPCException {
@@ -104,11 +107,11 @@ public class NPCManager {
             throw new NPCException("Event was cancelled!");
         }
 
-        NPCs.getInstance().getMenuManager().deselect(npc);
+        NPCs.getInstance().getMenuManager().deselect(npc.getNPCData());
         NPCs.getInstance().getActionManager().removeChoosing(npc);
 
         this.npcStore.remove(data);
-        this.npcs.remove(data.getId());
+        this.npcs.remove(data.getNPCId());
 
         if (npc != null) {
             ((Entity)npc).remove();
@@ -122,21 +125,21 @@ public class NPCManager {
     }
 
     public Optional<NPCAble> getNPC(INPCData data) {
-        World world = data.getPosition().getWorld().orElse(null);
+        World world = data.getNPCPosition().getWorld().orElse(null);
         if (world == null) {
             return Optional.empty();
         }
 
-        world.loadChunk(data.getPosition().getChunkPosition(), true);
+        world.loadChunk(data.getNPCPosition().getChunkPosition(), true);
 
         // TODO: Optimize
         return world.getEntities().stream()
                 .filter(ent -> ent instanceof NPCAble)
-                .map(ent -> (NPCAble)ent).filter(npc -> npc.getNPCData() != null && npc.getNPCData().getId() == data.getId())
+                .map(ent -> (NPCAble)ent).filter(npc -> npc.getNPCData() != null && npc.getNPCData().getNPCId() == data.getNPCId())
                 .findFirst();
     }
 
     public List<INPCData> getNPCs(String worldName) {
-        return this.npcs.values().stream().filter(data -> worldName.equals(data.getPosition().getWorldName())).collect(Collectors.toList());
+        return this.npcs.values().stream().filter(data -> worldName.equals(data.getNPCPosition().getWorldName())).collect(Collectors.toList());
     }
 }

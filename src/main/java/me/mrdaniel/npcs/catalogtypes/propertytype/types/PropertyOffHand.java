@@ -10,7 +10,7 @@ import org.spongepowered.api.item.inventory.ItemStack;
 public class PropertyOffHand extends PropertyType<ItemStack> {
 
 	public PropertyOffHand() {
-		super("OffHand", "offhand", "equipment.offhand");
+		super("OffHand", "offhand", new Object[]{"equipment", "offhand"});
 	}
 
 	@Override
@@ -25,6 +25,6 @@ public class PropertyOffHand extends PropertyType<ItemStack> {
 
 	@Override
 	public void apply(NPCAble npc, ItemStack value) {
-		((ArmorEquipable) npc).setItemInHand(HandTypes.MAIN_HAND, value);
+		((ArmorEquipable) npc).setItemInHand(HandTypes.OFF_HAND, value);
 	}
 }

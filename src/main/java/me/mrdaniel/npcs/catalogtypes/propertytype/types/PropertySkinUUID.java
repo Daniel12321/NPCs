@@ -2,7 +2,6 @@ package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
 import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
-import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.Human;
@@ -12,7 +11,7 @@ import java.util.UUID;
 public class PropertySkinUUID extends PropertyType<UUID> {
 
 	public PropertySkinUUID() {
-		super("SkinUUID", "skin-uuid", "skin.uuid");
+		super("SkinUUID", "skin-uuid", new Object[]{"skin", "uuid"});
 	}
 
 	@Override

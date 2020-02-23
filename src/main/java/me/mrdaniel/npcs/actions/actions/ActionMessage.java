@@ -1,6 +1,7 @@
-package me.mrdaniel.npcs.actions;
+package me.mrdaniel.npcs.actions.actions;
 
 import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.actions.Action;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.io.INPCData;
@@ -31,7 +32,7 @@ public class ActionMessage extends Action {
 
 	@Override
 	public void execute(Player p, INPCData data, ActionResult result) {
-		p.sendMessage(NPCs.getInstance().getPlaceholderManager().formatNPCMessage(p, this.message, data.getProperty(PropertyTypes.NAME).orElse("")));
+		p.sendMessage(NPCs.getInstance().getPlaceholderManager().formatNPCMessage(p, this.message, data.getNPCProperty(PropertyTypes.NAME).orElse("")));
 		result.setNextAction(result.getCurrentAction()+1);
 	}
 

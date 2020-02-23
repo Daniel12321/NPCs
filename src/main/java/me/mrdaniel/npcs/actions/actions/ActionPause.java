@@ -1,5 +1,6 @@
-package me.mrdaniel.npcs.actions;
+package me.mrdaniel.npcs.actions.actions;
 
+import me.mrdaniel.npcs.actions.Action;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.managers.ActionResult;

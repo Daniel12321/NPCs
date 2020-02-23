@@ -13,7 +13,7 @@ import org.spongepowered.api.text.Text;
 public class PropertySkin extends PropertyType<String> {
 
 	public PropertySkin() {
-		super("Skin", "skin", "skin.name", GenericArguments.string(Text.of("skin")));
+		super("Skin", "skin", new Object[]{"skin", "name"}, GenericArguments.string(Text.of("skin")));
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class PropertySkin extends PropertyType<String> {
 		NPCs plugin = NPCs.getInstance();
 		Task.builder().async().execute(() -> {
 			NPCs.getInstance().getGame().getServer().getGameProfileManager().get(value).thenAccept(gp -> {
-				Task.builder().execute(() -> npc.setProperty(PropertyTypes.SKIN_UUID, gp.getUniqueId())).submit(plugin);
+				Task.builder().execute(() -> npc.setNPCProperty(PropertyTypes.SKIN_UUID, gp.getUniqueId())).submit(plugin);
 			});
 		})
 		.submit(plugin);

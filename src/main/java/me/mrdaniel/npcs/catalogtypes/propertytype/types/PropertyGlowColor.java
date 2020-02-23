@@ -16,7 +16,7 @@ import org.spongepowered.api.text.Text;
 public class PropertyGlowColor extends PropertyType<GlowColor> {
 
 	public PropertyGlowColor() {
-		super("GlowColor", "glowcolor", "glow.color", GenericArguments.catalogedElement(Text.of("glowcolor"), GlowColor.class));
+		super("GlowColor", "glowcolor", new Object[]{"glow", "color"}, GenericArguments.catalogedElement(Text.of("glowcolor"), GlowColor.class));
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class PropertyGlowColor extends PropertyType<GlowColor> {
 
 	@Override
 	public void apply(NPCAble npc, GlowColor value) {
-		if (npc.getProperty(PropertyTypes.GLOWING).orElse(false)) {
+		if (npc.getNPCProperty(PropertyTypes.GLOWING).orElse(false)) {
 			EntityLiving el = (EntityLiving) npc;
 
 			String teamName = "NPC_" + value.getName();

@@ -11,7 +11,7 @@ import org.spongepowered.api.text.Text;
 public class PropertyGlowing extends PropertyType<Boolean> {
 
 	public PropertyGlowing() {
-		super("Glowing", "glowing", "glow.enabled", GenericArguments.bool(Text.of("glowing")));
+		super("Glowing", "glowing", new Object[]{"glow", "enabled"}, GenericArguments.bool(Text.of("glowing")));
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class PropertyGlowing extends PropertyType<Boolean> {
 		((Entity) npc).setGlowing(value);
 
 		if (value) {
-			npc.getProperty(PropertyTypes.GLOWCOLOR).ifPresent(color -> PropertyTypes.GLOWCOLOR.apply(npc, color));
+			npc.getNPCProperty(PropertyTypes.GLOWCOLOR).ifPresent(color -> PropertyTypes.GLOWCOLOR.apply(npc, color));
 		}
 	}
 }

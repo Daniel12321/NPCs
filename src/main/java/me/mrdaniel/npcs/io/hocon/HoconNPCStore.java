@@ -2,8 +2,8 @@ package me.mrdaniel.npcs.io.hocon;
 
 import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.actions.Action;
-import me.mrdaniel.npcs.actions.ActionTypeSerializer;
+import me.mrdaniel.npcs.actions.ActionSet;
+import me.mrdaniel.npcs.actions.ActionSetTypeSerializer;
 import me.mrdaniel.npcs.actions.Condition;
 import me.mrdaniel.npcs.actions.conditions.ConditionTypeSerializer;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionType;
@@ -14,7 +14,6 @@ import me.mrdaniel.npcs.catalogtypes.glowcolor.GlowColor;
 import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColor;
 import me.mrdaniel.npcs.catalogtypes.horsepattern.HorsePattern;
 import me.mrdaniel.npcs.catalogtypes.llamatype.LlamaType;
-import me.mrdaniel.npcs.catalogtypes.menupagetype.PageType;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.parrottype.ParrotType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
@@ -22,6 +21,7 @@ import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitType;
 import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.io.INPCStore;
+import me.mrdaniel.npcs.managers.NPCManager;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 
 import java.io.IOException;
@@ -31,9 +31,11 @@ import java.util.Map;
 
 public class HoconNPCStore implements INPCStore {
 
+	private final NPCManager manager;
     private final Path storageDir;
 
-    public HoconNPCStore() {
+    public HoconNPCStore(NPCManager manager) {
+    	this.manager = manager;
         this.storageDir = NPCs.getInstance().getConfigDir().resolve("storage");
     }
 
@@ -48,13 +50,10 @@ public class HoconNPCStore implements INPCStore {
 		CatalogTypeSerializer.register(LlamaType.class);
 		CatalogTypeSerializer.register(ParrotType.class);
 		CatalogTypeSerializer.register(RabbitType.class);
-		CatalogTypeSerializer.register(PageType.class);
 		CatalogTypeSerializer.register(ActionType.class);
 		CatalogTypeSerializer.register(ConditionType.class);
 		CatalogTypeSerializer.register(PropertyType.class);
-//		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Position.class), new PositionTypeSerializer());
-//		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(World.class), new WorldTypeSerializer());
-		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Action.class), new ActionTypeSerializer());
+		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(ActionSet.class), new ActionSetTypeSerializer());
 		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Condition.class), new ConditionTypeSerializer());
 	}
 
@@ -69,33 +68,33 @@ public class HoconNPCStore implements INPCStore {
 		}
 
 		for (String name : this.storageDir.toFile().list()) {
-			INPCData data = new HoconNPCData(this.storageDir.resolve(name));
-		    npcs.put(data.getId(), data);
+			INPCData data = new HoconNPCData(this.storageDir, name);
+		    npcs.put(data.getNPCId(), data);
 		}
     }
 
 	@Override
 	public INPCData create(NPCType type) throws NPCException {
 		int nextId = this.getNextID();
-		return new HoconNPCData(this.storageDir.resolve("npc_" + nextId + ".conf"), nextId);
+		return new HoconNPCData(this.storageDir, "npc_" + nextId + ".conf", nextId);
 	}
 
 	@Override
 	public void remove(INPCData data) throws NPCException {
         try {
-            //TODO: Fix so it doesnt use directory
-            Files.deleteIfExists(this.storageDir.resolve("npc_" + data.getId() + ".conf"));
+            Files.deleteIfExists(this.storageDir.resolve(((HoconNPCData)data).getFileName()));
         } catch (final IOException exc) {
-            NPCs.getInstance().getLogger().error("Failed to delete npc data for npc {}: {}", data.getId(), exc.getMessage(), exc);
+            NPCs.getInstance().getLogger().error("Failed to delete npc data for npc {}: {}", data.getNPCId(), exc.getMessage(), exc);
         }
 	}
 
-    // TODO: Change so it doesnt use IDs in directory
+	// TODO: Move to manager
 	private int getNextID() {
-		int highest = 1;
-		while (Files.exists(this.storageDir.resolve("npc_" + highest + ".conf"))) {
-			++highest;
+		int id = 1;
+
+		while (this.manager.getData(id).isPresent()) {
+			id++;
 		}
-		return highest;
+		return id;
 	}
 }

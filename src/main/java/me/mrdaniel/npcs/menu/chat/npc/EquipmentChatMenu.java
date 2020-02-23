@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.menu.chatmenu;
+package me.mrdaniel.npcs.menu.chat.npc;
 
 import com.google.common.collect.Lists;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
@@ -21,18 +21,18 @@ public class EquipmentChatMenu extends NPCChatMenu {
     }
 
     @Override
-    protected Text getTitle() {
+    public Text getTitle() {
         return Text.of(TextColors.YELLOW, "[ ", TextColors.RED, "NPC Equipment", TextColors.YELLOW, " ]");
     }
 
     @Nullable
     @Override
-    protected Text getHeader() {
+    public Text getHeader() {
         return null;
     }
 
     @Override
-    protected List<Text> getContents() {
+    public List<Text> getContents() {
         ArmorEquipable ae = (ArmorEquipable) npc;
         List<Text> lines = Lists.newArrayList();
 
@@ -48,10 +48,12 @@ public class EquipmentChatMenu extends NPCChatMenu {
     }
 
 	private Text getArmorText(String name, Optional<ItemStack> item) {
+        boolean hasItem = item.isPresent() && !item.get().isEmpty();
+
 		Text.Builder b = Text.builder()
 				.append(Text.of(TextColors.GOLD, name, ": "))
-				.append(Text.of(item.isPresent() && !item.get().isEmpty() ? TextColors.DARK_GREEN : TextColors.RED, item.isPresent() ? "True  " : "False  "));
-		if (item.isPresent()) {
+				.append(hasItem ? Text.of(TextColors.DARK_GREEN, "True  ") : Text.of(TextColors.RED, "False  "));
+		if (hasItem) {
 			b.append(Text.builder().append(Text.of(TextColors.YELLOW, "[Remove]")).onHover(TextActions.showText(Text.of(TextColors.RED, "Remove"))).onClick(TextActions.runCommand("/npc " + name.toLowerCase() + " remove")).append(Text.of("  ")).build());
 		}
 		b.append(Text.builder().append(Text.of(TextColors.YELLOW, "[Give]")).onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Give"))).onClick(TextActions.runCommand("/npc " + name.toLowerCase() + " give")).build());

@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.menu.chatmenu;
+package me.mrdaniel.npcs.menu.chat.npc;
 
 import com.google.common.collect.Lists;
 import me.mrdaniel.npcs.actions.Action;
@@ -74,18 +74,18 @@ public class ActionsChatMenu extends NPCChatMenu {
 	}
 
 	@Override
-	protected Text getTitle() {
+	public Text getTitle() {
 		return Text.of(TextColors.YELLOW, "[ ", TextColors.RED, "NPC Actions", TextColors.YELLOW, " ]");
 	}
 
 	@Nullable
 	@Override
-	protected Text getHeader() {
+	public Text getHeader() {
 		return null;
 	}
 
 	@Override
-	protected List<Text> getContents() {
+	public List<Text> getContents() {
 		ActionSet actions = this.npc.getNPCActions();
 		List<Text> lines = Lists.newArrayList();
 

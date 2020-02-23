@@ -9,7 +9,7 @@ import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
 
 import java.util.UUID;
 
-public class ActionSetSerializer implements TypeSerializer<ActionSet> {
+public class ActionSetTypeSerializer implements TypeSerializer<ActionSet> {
 
 	@Override
 	public ActionSet deserialize(TypeToken<?> type, ConfigurationNode node) throws ObjectMappingException {
@@ -21,7 +21,7 @@ public class ActionSetSerializer implements TypeSerializer<ActionSet> {
 
         for (int i = 0; i < node.getNode("actions").getChildrenMap().size(); i++) {
             try {
-            	actions.addAction(Action.of(node.getNode("actions", i)));
+            	actions.addAction(Action.of(node.getNode("actions", Integer.toString(i))));
             } catch (final ActionException exc) {
             	NPCs.getInstance().getLogger().error("Failed to read action for npc: ", exc);
             }
@@ -34,11 +34,17 @@ public class ActionSetSerializer implements TypeSerializer<ActionSet> {
 	public void serialize(TypeToken<?> type, ActionSet actions, ConfigurationNode node) throws ObjectMappingException {
 		node.getNode("repeat_actions").setValue(actions.isRepeatActions());
 
-		for (int i = 0; i < actions.getActions().size(); i++) {
-			actions.getActions().get(i).serialize(node.getNode("actions", Integer.toString(i)));
+		if (actions.isActionsModified()) {
+			for (int i = 0; i < actions.getAllActions().size(); i++) {
+				node.getNode("actions").removeChild(Integer.toString(i));
+				actions.getAllActions().get(i).serialize(node.getNode("actions", Integer.toString(i)));
+			}
 		}
-
-		actions.getCurrent().forEach((uuid, current) -> node.getNode("current", uuid.toString()).setValue(current));
-		actions.getCooldowns().forEach((uuid, end) -> node.getNode("cooldowns", uuid.toString()).setValue(end));
+		if (actions.isCurrentModified()) {
+			actions.getAllCurrent().forEach((uuid, current) -> node.getNode("current", uuid.toString()).setValue(current));
+		}
+		if (actions.isCooldownsModified()) {
+			actions.getAllCooldowns().forEach((uuid, end) -> node.getNode("cooldowns", uuid.toString()).setValue(end));
+		}
 	}
 }

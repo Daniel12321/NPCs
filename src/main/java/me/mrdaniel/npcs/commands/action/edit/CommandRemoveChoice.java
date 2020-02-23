@@ -6,7 +6,11 @@ import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
 import me.mrdaniel.npcs.commands.ActionCommand;
 import me.mrdaniel.npcs.exceptions.ActionException;
 import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
 
 public class CommandRemoveChoice extends ActionCommand {
 
@@ -18,7 +22,18 @@ public class CommandRemoveChoice extends ActionCommand {
 	public void execute(final Player p, final Action a, final CommandContext args) throws ActionException {
 		ActionChoices ac = (ActionChoices) a;
 
-		if (ac.getChoices().size() <= 2) { throw new ActionException("There must always be more than 1 choice!"); }
+		if (ac.getChoices().size() <= 2) {
+			throw new ActionException("There must always be more than 1 choice!");
+		}
 		ac.getChoices().remove(args.<String>getOne("name").get());
+	}
+
+	public CommandSpec build() {
+		return CommandSpec.builder()
+				.description(Text.of(TextColors.GOLD, "NPCs | Remove Choice"))
+				.permission("npc.action.edit.choice.remove")
+				.arguments(GenericArguments.string(Text.of("name")))
+				.executor(this)
+				.build();
 	}
 }

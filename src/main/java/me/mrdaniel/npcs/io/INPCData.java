@@ -1,35 +1,25 @@
 package me.mrdaniel.npcs.io;
 
-import me.mrdaniel.npcs.actions.Action;
+import me.mrdaniel.npcs.actions.ActionSet;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.utils.Position;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 public interface INPCData {
 
-    int getId();
+    int getNPCId();
 
-    Position getPosition();
-    INPCData setPosition(Position value);
+    Position getNPCPosition();
+    INPCData setNPCPosition(Position value);
 
-    <T> Optional<T> getProperty(PropertyType<T> property);
-    <T> INPCData setProperty(PropertyType<T> property, T value);
+    <T> Optional<T> getNPCProperty(PropertyType<T> property);
+    <T> INPCData setNPCProperty(PropertyType<T> property, T value);
 
-    void save();
+    ActionSet getNPCActions();
+    INPCData writeNPCActions();
 
-    // TODO: Improve to remove this
-    INPCData setRepeatActions(boolean value);
-	boolean getRepeatActions();
-	List<Action> getActions();
-    INPCData writeActions();
-	Map<UUID, Integer> getCurrent();
-    INPCData writeCurrent();
-	Map<UUID, Long> getCooldowns();
-    INPCData writeCooldowns();
+    void saveNPC();
 }
 
 

@@ -9,7 +9,7 @@ import org.spongepowered.api.item.inventory.ItemStack;
 public class PropertyBoots extends PropertyType<ItemStack> {
 
 	public PropertyBoots() {
-		super("Boots", "boots", "equipment.boots");
+		super("Boots", "boots", new Object[]{"equipment", "boots"});
 	}
 
 	@Override
