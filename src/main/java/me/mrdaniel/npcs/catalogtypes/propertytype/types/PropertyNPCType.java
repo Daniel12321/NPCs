@@ -1,15 +1,18 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
 import com.google.common.reflect.TypeToken;
-import me.mrdaniel.npcs.catalogtypes.llamatype.LlamaType;
+import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
+import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.text.Text;
 
 public class PropertyNPCType extends PropertyType<NPCType> {
 
 	public PropertyNPCType() {
-		super("Type", "type");
+		super("Type", "type", GenericArguments.catalogedElement(Text.of("type"), NPCType.class));
 	}
 
 	@Override
@@ -24,6 +27,10 @@ public class PropertyNPCType extends PropertyType<NPCType> {
 
 	@Override
 	public void apply(NPCAble npc, NPCType value) {
-		// TODO: Implement changing NPC types
+		try {
+			NPCs.getInstance().getNPCManager().spawn(npc.getNPCData());
+		} catch (NPCException exc) {
+			NPCs.getInstance().getLogger().error("Failed to respawn NPC after type change: ", exc);
+		}
 	}
 }

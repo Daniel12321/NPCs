@@ -54,11 +54,13 @@ public class PropertiesChatMenu extends NPCChatMenu {
     @Override
     public List<Text> getContents() {
         Position pos = npc.getNPCPosition();
-        List<Text> lines = Lists.newArrayList(Text.EMPTY);
+        List<Text> lines = Lists.newArrayList();
 
+        lines.add(Text.EMPTY);
         lines.add(Text.of(TextColors.GOLD, "NPC ID: ", TextColors.RED, npc.getNPCId()));
-        lines.add(Text.of(TextColors.GOLD, "Type: ", TextColors.RED, npc.getNPCProperty(PropertyTypes.TYPE).orElse(NPCTypes.HUMAN).getName()));
         lines.add(Text.of(TextColors.GOLD, "Location: ", TextColors.RED, pos.getWorldName(), " ", (int)pos.getX(), " ", (int)pos.getY(), " ", (int)pos.getZ()));
+//        lines.add(Text.of(TextColors.GOLD, "Type: ", TextColors.RED, npc.getNPCProperty(PropertyTypes.TYPE).orElse(NPCTypes.HUMAN).getName()));
+        lines.add(TextUtils.getOptionsText("Type", "/npc type <type>", npc.getNPCProperty(PropertyTypes.TYPE).orElse(NPCTypes.HUMAN).getName()));
         lines.add(Text.EMPTY);
         if (PropertyTypes.SKIN_UUID.isSupported(npc)) { lines.add(Text.builder().append(Text.of(TextColors.GOLD, "Skin: ", TextColors.AQUA, npc.getNPCProperty(PropertyTypes.SKIN).orElse("None"))).onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Change"))).onClick(TextActions.suggestCommand("/npc skin <name>")).build()); }
         lines.add(Text.builder().append(Text.of(TextColors.GOLD, "Name: ", TextColors.AQUA)).append(TextUtils.toText(npc.getNPCProperty(PropertyTypes.NAME).orElse("None"))).onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Change"))).onClick(TextActions.suggestCommand("/npc name <name>")).build());

@@ -12,6 +12,7 @@ import me.mrdaniel.npcs.commands.action.edit.*;
 import me.mrdaniel.npcs.commands.equipment.CommandEditEquipment;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.INPCData;
+import me.mrdaniel.npcs.menu.chat.info.InfoMenu;
 import me.mrdaniel.npcs.menu.chat.npc.PropertiesChatMenu;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
@@ -25,20 +26,6 @@ import java.util.Optional;
 
 public class CommandNPC extends PlayerCommand {
 
-	private final Text[] lines;
-
-	public CommandNPC() {
-		this.lines = new Text[]{
-				Text.EMPTY,
-				Text.of(TextColors.YELLOW, "---------------=====[ ", TextColors.RED, "NPC Info", TextColors.YELLOW, " ]=====---------------"),
-				Text.of(TextColors.AQUA, "You currently have not selected an NPC."),
-				Text.of(TextColors.AQUA, "You can select an NPC by shift right clicking it."),
-				Text.of(TextColors.AQUA, "You can see a list of NPC's by running: ", TextColors.YELLOW, "/npc list"),
-				Text.of(TextColors.AQUA, "You can create an NPC by running: ", TextColors.YELLOW, "/npc create ", TextColors.GOLD, "[entitytype]"),
-				Text.of(TextColors.YELLOW, "--------------------------------------------------")
-		};
-	}
-
 	@Override
 	public void execute(Player p, CommandContext args) throws CommandException {
 		Optional<INPCData> selected = NPCs.getInstance().getMenuManager().get(p.getUniqueId());
@@ -47,7 +34,7 @@ public class CommandNPC extends PlayerCommand {
 			NPCAble npc = NPCs.getInstance().getNPCManager().getNPC(selected.get()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "NPC is not spawned in!")));
 			new PropertiesChatMenu(npc).send(p);
 		} else {
-			p.sendMessages(this.lines);
+			new InfoMenu().send(p);
 		}
 	}
 
@@ -64,22 +51,23 @@ public class CommandNPC extends PlayerCommand {
 				.child(new CommandMove().build(), "move")
 				.child(new CommandRespawn().build(), "respawn")
 				.child(new CommandDeselect().build(), "deselect")
+				.child(new CommandEditType().build(), "type", "npctype")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.NAME), "name")
-				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.NAME_VISIBLE), "namevisible")
-				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SKIN), "skin")
-				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SKIN_UUID), "skinuuid")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.NAME_VISIBLE), "namevisible", "name-visible")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SKIN), "skin", "skinname", "skin-name")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SKIN_UUID), "skinuuid", "skin-uuid")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.LOOKING), "looking")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.INTERACT), "interact")
-				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.GLOWING), "glowing")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.GLOWING), "glowing", "glow")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SILENT), "silent")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.GLOWCOLOR), "glowcolor")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.BABY), "baby")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.CHARGED), "charged")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.ANGRY), "angry")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SIZE), "size")
-				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SITTING), "sitting")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SITTING), "sitting", "sit")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SADDLE), "saddle")
-				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.HANGING), "hanging")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.HANGING), "hanging", "hang")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.PUMPKIN), "pumpkin")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.CAREER), "career")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.HORSEPATTERN), "horsepattern")
@@ -91,27 +79,27 @@ public class CommandNPC extends PlayerCommand {
 				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPC | Helmet"))
 						.child(new CommandEditEquipment(PropertyTypes.HELMET, false).build(), "give")
 						.child(new CommandEditEquipment(PropertyTypes.HELMET, true).build(), "remove")
-						.build(), "helmet")
+						.build(), "helmet", "helm")
 				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPC | Chestplate"))
 						.child(new CommandEditEquipment(PropertyTypes.CHESTPLATE, false).build(), "give")
 						.child(new CommandEditEquipment(PropertyTypes.CHESTPLATE, true).build(), "remove")
-						.build(), "chestplate")
+						.build(), "chestplate", "chest")
 				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPC | Leggings"))
 						.child(new CommandEditEquipment(PropertyTypes.LEGGINGS, false).build(), "give")
 						.child(new CommandEditEquipment(PropertyTypes.LEGGINGS, true).build(), "remove")
-						.build(), "leggings")
+						.build(), "leggings", "legs")
 				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPC | Boots"))
 						.child(new CommandEditEquipment(PropertyTypes.BOOTS, false).build(), "give")
 						.child(new CommandEditEquipment(PropertyTypes.BOOTS, true).build(), "remove")
-						.build(), "boots")
+						.build(), "boots", "feet")
 				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPC | MainHand"))
 						.child(new CommandEditEquipment(PropertyTypes.MAINHAND, false).build(), "give")
 						.child(new CommandEditEquipment(PropertyTypes.MAINHAND, true).build(), "remove")
-						.build(), "mainhand")
+						.build(), "mainhand", "main-hand")
 				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPC | OffHand"))
 						.child(new CommandEditEquipment(PropertyTypes.OFFHAND, false).build(), "give")
 						.child(new CommandEditEquipment(PropertyTypes.OFFHAND, true).build(), "remove")
-						.build(), "offhand")
+						.build(), "offhand", "off-hand")
 				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPC | Actions"))
 						.child(new CommandActionRepeat().build(), "repeat")
 						.child(new CommandActionSwap().build(), "swap")

@@ -58,10 +58,15 @@ public final class PropertyTypes {
 			CAREER, HORSEPATTERN, HORSECOLOR, LLAMATYPE, CATTYPE, RABBITTYPE, PARROTTYPE,
 			HELMET, CHESTPLATE, LEGGINGS, BOOTS, MAINHAND, OFFHAND);
 	public static final List<PropertyType> NPC_INIT = Lists.newArrayList(ALL);
-	public static final List<PropertyType> ARMOR = Lists.newArrayList(HELMET, CHESTPLATE, LEGGINGS, BOOTS, MAINHAND, OFFHAND);
+	public static final List<PropertyType> NPC_RELOAD = Lists.newArrayList();
+	public static final List<PropertyType<ItemStack>> ARMOR = Lists.newArrayList(HELMET, CHESTPLATE, LEGGINGS, BOOTS, MAINHAND, OFFHAND);
 
 	static {
-		ALL.remove(TYPE);
-		ALL.remove(SKIN);
+		NPC_INIT.remove(TYPE);
+		NPC_INIT.remove(SKIN);
+
+		NPC_RELOAD.addAll(NPC_INIT);
+		NPC_RELOAD.remove(NAME);
+		NPC_RELOAD.remove(SKIN_UUID);
 	}
 }

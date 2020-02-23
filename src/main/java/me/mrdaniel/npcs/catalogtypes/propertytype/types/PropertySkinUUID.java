@@ -27,5 +27,8 @@ public class PropertySkinUUID extends PropertyType<UUID> {
 	@Override
 	public void apply(NPCAble npc, UUID value) {
 		((Human) npc).offer(Keys.SKIN_UNIQUE_ID, value);
+
+		// Fixes human NPCs losing some of their properties when changing their skin
+		npc.refreshNPC();
 	}
 }

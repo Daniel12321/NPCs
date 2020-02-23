@@ -1,6 +1,7 @@
 package me.mrdaniel.npcs.mixin;
 
 import com.flowpowered.math.vector.Vector3d;
+import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.actions.ActionSet;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
@@ -12,6 +13,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import org.spongepowered.api.entity.living.Living;
+import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,6 +21,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Optional;
 
 @Mixin(value = EntityLiving.class, priority = 10)
@@ -48,6 +51,17 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 	public void setNPCData(INPCData data) {
 		this.data = data;
 
+		this.setup(PropertyTypes.NPC_INIT);
+	}
+
+	@Override
+	public void refreshNPC() {
+		PropertyTypes.ARMOR.forEach(prop -> prop.apply(this, null));
+
+		Task.builder().delayTicks(5).execute(() -> this.setup(PropertyTypes.NPC_RELOAD)).submit(NPCs.getInstance());
+	}
+
+	private void setup(List<PropertyType> properties) {
 		this.enablePersistence();
 		this.setCanPickUpLoot(false);
 		this.setNoAI(true);
@@ -55,11 +69,10 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 		super.setEntityInvulnerable(true);
 		super.setNoGravity(true);
 
-		PropertyTypes.NPC_INIT.forEach(prop -> {
-			if (prop.isSupported(this)) {
-				this.data.getNPCProperty(prop).ifPresent(value -> prop.apply(this, value));
-			}
-		});
+		properties.stream()
+				.filter(prop -> prop.isSupported(this))
+				.forEach(prop -> this.data.getNPCProperty(prop)
+						.ifPresent(value -> prop.apply(this, value)));
 	}
 
 	@Override
@@ -114,7 +127,6 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 		this.data.saveNPC();
 	}
 
-	// TODO: Check for more efficient methods
 	@Inject(method = "onEntityUpdate", at = @At("RETURN"))
 	public void onOnEntityUpdate(CallbackInfo ci) {
 		if (this.data != null && this.looking) {

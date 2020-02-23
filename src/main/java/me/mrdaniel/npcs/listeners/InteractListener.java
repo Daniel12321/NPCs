@@ -38,7 +38,6 @@ public class InteractListener {
 		}
 	}
 
-	// TODO: Find an alternative for villagers
 //	@Listener
 //	public void onInventoryOpen(InteractInventoryEvent.Open e) { // @Root Player p, @First Villager villager
 //		System.out.println("Context: "+ e.getContext().toString());

@@ -75,7 +75,7 @@ public class HoconNPCStore implements INPCStore {
 
 	@Override
 	public INPCData create(NPCType type) throws NPCException {
-		int nextId = this.getNextID();
+		int nextId = this.manager.getNextID();
 		return new HoconNPCData(this.storageDir, "npc_" + nextId + ".conf", nextId);
 	}
 
@@ -86,15 +86,5 @@ public class HoconNPCStore implements INPCStore {
         } catch (final IOException exc) {
             NPCs.getInstance().getLogger().error("Failed to delete npc data for npc {}: {}", data.getNPCId(), exc.getMessage(), exc);
         }
-	}
-
-	// TODO: Move to manager
-	private int getNextID() {
-		int id = 1;
-
-		while (this.manager.getData(id).isPresent()) {
-			id++;
-		}
-		return id;
 	}
 }

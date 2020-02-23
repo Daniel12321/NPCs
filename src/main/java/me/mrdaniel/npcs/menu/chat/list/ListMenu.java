@@ -87,12 +87,4 @@ public class ListMenu implements ChatMenu {
 //        p.sendMessage(Text.EMPTY);
 //        p.sendMessage(Text.builder().append(Text.of(TextColors.YELLOW, "----------------====[ "), Text.builder().append(Text.of(TextColors.RED, "Back")).onHover(TextActions.showText(Text.of(TextColors.RED, "Back"))).onClick(TextActions.executeCallback(src -> sendNPCList(src))).build(), Text.of(TextColors.YELLOW, " ]====----------------")).build());
 //    }
-
-    private void select(Player p, INPCData data) {
-        try {
-            NPCs.getInstance().getMenuManager().select(p, data);
-        } catch (final NPCException exc) {
-            p.sendMessage(Text.of(TextColors.RED, exc.getMessage()));
-        }
-    }
 }

@@ -31,8 +31,7 @@ public class EntityListener {
         if (npc.getNPCData() != null) {
             e.setCancelled(true);
 
-            // TODO: Remove
-            NPCs.getInstance().getLogger().warn("Cancelled a DestructEntityEvent.Death for an NPC!");
+            NPCs.getInstance().getLogger().warn("Cancelled a death for an NPC!");
         }
     }
 }

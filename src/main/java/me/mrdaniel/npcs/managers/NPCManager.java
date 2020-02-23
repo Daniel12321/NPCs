@@ -132,7 +132,6 @@ public class NPCManager {
 
         world.loadChunk(data.getNPCPosition().getChunkPosition(), true);
 
-        // TODO: Optimize
         return world.getEntities().stream()
                 .filter(ent -> ent instanceof NPCAble)
                 .map(ent -> (NPCAble)ent).filter(npc -> npc.getNPCData() != null && npc.getNPCData().getNPCId() == data.getNPCId())
@@ -141,5 +140,14 @@ public class NPCManager {
 
     public List<INPCData> getNPCs(String worldName) {
         return this.npcs.values().stream().filter(data -> worldName.equals(data.getNPCPosition().getWorldName())).collect(Collectors.toList());
+    }
+
+    public int getNextID() {
+        int id = 1;
+
+        while (this.npcs.containsKey(id)) {
+            id++;
+        }
+        return id;
     }
 }

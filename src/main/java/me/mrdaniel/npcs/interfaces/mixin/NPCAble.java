@@ -9,6 +9,7 @@ public interface NPCAble extends INPCData {
 	@Nullable
     INPCData getNPCData();
 	void setNPCData(INPCData data);
+	void refreshNPC();
 
 	void setNPCLooking(boolean value);
 	boolean isNPCLooking();

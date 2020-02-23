@@ -1,8 +1,6 @@
 package me.mrdaniel.npcs.actions;
 
 import com.google.common.reflect.TypeToken;
-import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.exceptions.ActionException;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;
@@ -20,11 +18,7 @@ public class ActionSetTypeSerializer implements TypeSerializer<ActionSet> {
 		node.getNode("cooldowns").getChildrenMap().forEach((uuid, child) -> actions.setCooldown(UUID.fromString((String)uuid), child.getLong(0)));
 
         for (int i = 0; i < node.getNode("actions").getChildrenMap().size(); i++) {
-            try {
-            	actions.addAction(Action.of(node.getNode("actions", Integer.toString(i))));
-            } catch (final ActionException exc) {
-            	NPCs.getInstance().getLogger().error("Failed to read action for npc: ", exc);
-            }
+        	Action.of(node.getNode("actions", Integer.toString(i))).ifPresent(actions::addAction);
         }
 
 		return actions;

@@ -2,7 +2,6 @@ package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
 import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
-import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.command.args.GenericArguments;
@@ -31,12 +30,9 @@ public class PropertyName extends PropertyType<String> {
 	public void apply(NPCAble npc, String value) {
 		((Living) npc).offer(Keys.DISPLAY_NAME, TextUtils.toText(value));
 
+		// Fixes human NPCs losing some of their properties when changing their name
 		if (npc instanceof Human) {
-			PropertyTypes.ARMOR.forEach(prop -> npc.getNPCProperty(prop).ifPresent(is -> prop.apply(npc, is)));
-		}
-
-		if (npc.getNPCProperty(PropertyTypes.GLOWING).orElse(false)) {
-			npc.getNPCProperty(PropertyTypes.GLOWCOLOR).ifPresent(color -> PropertyTypes.GLOWCOLOR.apply(npc, color));
+			npc.refreshNPC();
 		}
 	}
 }
