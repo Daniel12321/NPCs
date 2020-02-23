@@ -32,6 +32,7 @@ public final class PropertyTypes {
 	public static final PropertyType<Boolean> BABY = new PropertyBaby();
 	public static final PropertyType<Boolean> CHARGED = new PropertyCharged();
 	public static final PropertyType<Boolean> ANGRY = new PropertyAngry();
+	public static final PropertyType<Boolean> COLLARCOLOR = new PropertyCollarColor(); // TODO: Implement
 	public static final PropertyType<Integer> SIZE = new PropertySize();
 	public static final PropertyType<Boolean> SITTING = new PropertySitting();
 	public static final PropertyType<Boolean> SADDLE = new PropertySaddle();

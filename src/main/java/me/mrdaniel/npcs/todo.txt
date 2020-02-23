@@ -15,12 +15,26 @@ TODO:
 
 
 - Disable zombie_villager turning
-- Add ZombieVillagetShaking property
-- Add illager properties
-- Add ShulkerColor property
-- Add worf collar color property
 - Add burning property
 - Add size property (Keys#BASE_SIZE, Keys#HEIGHT, Keys#SCALE)
+- Add InLove property (hearts effect)
+
+- Add EatingHaystack property (Horse, Llama, Donkey, Mule, SkeletonHorse, ZombieHorse)
+- Add Saddle property (Horse, Donkey, Mule, SkeletonHorse, ZombieHorse)
+- Add Chest property (Llama, Donkey, Mule)
+- Add Horse Armor property
+- Add Llama decor property
+
+- Add ZombieVillager property: Shaking (might need to set the tick so it doesnt turn)
+- Add Worf property: CollarColor
+- Add Creeper property: Ignited (might need to set the fuse as well)
+- Add Enderman property: CarriedBlock
+- Add Evoker property: SpellTicks (casting spell)
+- Add Sheep properties: Color, Sheared
+- Add Shulker properties: Color, AttachFace, Peek
+- Add Wither property: Invulnerable
+- Add enderman property: Screaming
+
 
 
 
