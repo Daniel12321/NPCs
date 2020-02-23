@@ -31,7 +31,7 @@ public class CommandRemove implements CommandExecutor {
 				throw new CommandException(Text.of(TextColors.RED, "Failed to remove NPC: ", exc.getMessage()));
 			}
 		} else if (src instanceof Player) {
-			Optional<INPCData> selected = NPCs.getInstance().getMenuManager().get(((Player)src).getUniqueId());
+			Optional<INPCData> selected = NPCs.getInstance().getSelectedManager().get(((Player)src).getUniqueId());
 			if (selected.isPresent()) {
 				try {
 					npcManager.remove(src, selected.get());

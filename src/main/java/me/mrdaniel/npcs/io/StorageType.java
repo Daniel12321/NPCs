@@ -5,25 +5,26 @@ import me.mrdaniel.npcs.io.hocon.HoconNPCStore;
 import me.mrdaniel.npcs.io.nbt.NBTNPCStore;
 import me.mrdaniel.npcs.managers.NPCManager;
 
+import java.nio.file.Path;
 import java.util.Optional;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 public enum StorageType {
 
-    DATABASE("database", Database::new),
+    DATABASE("database", (manager, configDir) -> new Database(manager)),
     HOCON("hocon", HoconNPCStore::new),
-    NBT("nbt", NBTNPCStore::new);
+    NBT("nbt", (manager, configDir) -> new NBTNPCStore(manager));
 
     private String name;
-    private Function<NPCManager, INPCStore> npcStoreSupplier;
+    private BiFunction<NPCManager, Path, INPCStore> npcStoreSupplier;
 
-    StorageType(String name, Function<NPCManager, INPCStore> npcStoreSupplier) {
+    StorageType(String name, BiFunction<NPCManager, Path, INPCStore> npcStoreSupplier) {
         this.name = name;
         this.npcStoreSupplier = npcStoreSupplier;
     }
 
-    public INPCStore createNPCStore(NPCManager manager) {
-        return this.npcStoreSupplier.apply(manager);
+    public INPCStore createNPCStore(NPCManager manager, Path configDir) {
+        return this.npcStoreSupplier.apply(manager, configDir);
     }
 
     public static Optional<StorageType> of(String name) {

@@ -2,6 +2,7 @@ package me.mrdaniel.npcs.managers;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.inject.Inject;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.actions.ActionSet;
 import me.mrdaniel.npcs.exceptions.NPCException;
@@ -19,6 +20,7 @@ public class ActionManager {
 	private final Map<UUID, INPCData> choosing;
 	private final List<UUID> waiting;
 
+	@Inject
 	public ActionManager() {
 		this.choosing = Maps.newHashMap();
 		this.waiting = Lists.newArrayList();

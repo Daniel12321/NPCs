@@ -59,7 +59,7 @@ public class ListMenu implements ChatMenu {
         return b.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Select")))
                 .onClick(TextActions.executeCallback(src -> {
                     try {
-                        NPCs.getInstance().getMenuManager().select((Player) src, data);
+                        NPCs.getInstance().getSelectedManager().select((Player) src, data);
                     } catch (NPCException exc) {
                         src.sendMessage(Text.of(TextColors.RED, "Failed to select NPC: NPC is not loaded!"));
                     }

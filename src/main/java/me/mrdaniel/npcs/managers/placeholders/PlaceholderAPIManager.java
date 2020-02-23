@@ -13,9 +13,7 @@ public class PlaceholderAPIManager implements PlaceholderHandler {
 	private final String msg_format;
 	private final String choice_format;
 
-	public PlaceholderAPIManager() {
-		Config config = NPCs.getInstance().getConfig();
-
+	public PlaceholderAPIManager(Config config) {
 		this.service = NPCs.getInstance().getGame().getServiceManager().provide(PlaceholderService.class).get();
 		this.msg_format = config.getNode("messages", "npc_message_format").getString("%npc_name%&7: ");
 		this.choice_format = config.getNode("messages", "npc_choice_format").getString("&6&lChoose: ");

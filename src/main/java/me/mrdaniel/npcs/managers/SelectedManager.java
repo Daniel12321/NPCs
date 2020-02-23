@@ -1,6 +1,7 @@
 package me.mrdaniel.npcs.managers;
 
 import com.google.common.collect.Maps;
+import com.google.inject.Inject;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
@@ -20,11 +21,15 @@ import java.util.UUID;
 public class SelectedManager {
 
 	private final Map<UUID, INPCData> selected;
-	private final Text select_message;
-	private final boolean open_menu;
+	private Text select_message;
+	private boolean open_menu;
 
-	public SelectedManager(Config config) {
+	@Inject
+	public SelectedManager() {
 		this.selected = Maps.newHashMap();
+	}
+
+	public void load(Config config) {
 		this.select_message = TextUtils.toText(config.getNode("npc_select_message").getString("&eYou selected an NPC."));
 		this.open_menu = config.getNode("open_menu_on_select").getBoolean(true);
 	}

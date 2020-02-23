@@ -34,9 +34,9 @@ public class HoconNPCStore implements INPCStore {
 	private final NPCManager manager;
     private final Path storageDir;
 
-    public HoconNPCStore(NPCManager manager) {
+    public HoconNPCStore(NPCManager manager, Path configDir) {
     	this.manager = manager;
-        this.storageDir = NPCs.getInstance().getConfigDir().resolve("storage");
+        this.storageDir = configDir.resolve("storage");
     }
 
     @Override
@@ -61,7 +61,7 @@ public class HoconNPCStore implements INPCStore {
     public void load(Map<Integer, INPCData> npcs) {
 		if (!Files.exists(this.storageDir)) {
 			try {
-				Files.createDirectory(this.storageDir);
+				Files.createDirectories(this.storageDir);
 			} catch (final IOException exc) {
 				NPCs.getInstance().getLogger().error("Failed to create main NPC storage directory: ",  exc);
 			}

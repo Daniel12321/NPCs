@@ -55,7 +55,7 @@ public class InteractListener {
 		}
 
 		if (p.get(Keys.IS_SNEAKING).orElse(false) && p.hasPermission("npc.edit.select")) {
-			NPCs.getInstance().getMenuManager().select(p, npc);
+			NPCs.getInstance().getSelectedManager().select(p, npc);
 			return true;
 		}
 
