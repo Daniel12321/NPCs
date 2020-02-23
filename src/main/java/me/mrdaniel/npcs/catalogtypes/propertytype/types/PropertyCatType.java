@@ -6,7 +6,6 @@ import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import net.minecraft.entity.passive.EntityOcelot;
 import org.spongepowered.api.command.args.GenericArguments;
-import org.spongepowered.api.entity.living.animal.Ocelot;
 import org.spongepowered.api.text.Text;
 
 public class PropertyCatType extends PropertyType<CatType> {
@@ -22,7 +21,7 @@ public class PropertyCatType extends PropertyType<CatType> {
 
 	@Override
 	public boolean isSupported(final NPCAble npc) {
-		return npc instanceof Ocelot;
+		return npc instanceof EntityOcelot;
 	}
 
 	@Override

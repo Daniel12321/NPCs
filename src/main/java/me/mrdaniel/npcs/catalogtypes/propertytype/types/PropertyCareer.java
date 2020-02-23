@@ -2,14 +2,12 @@ package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
 import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.career.Career;
-import me.mrdaniel.npcs.catalogtypes.cattype.CatType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.interfaces.mixin.IMixinEntityVillager;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.entity.passive.EntityVillager;
 import org.spongepowered.api.command.args.GenericArguments;
-import org.spongepowered.api.entity.living.Villager;
-import org.spongepowered.api.entity.living.monster.ZombieVillager;
 import org.spongepowered.api.text.Text;
 
 public class PropertyCareer extends PropertyType<Career> {
@@ -25,12 +23,16 @@ public class PropertyCareer extends PropertyType<Career> {
 
 	@Override
 	public boolean isSupported(final NPCAble npc) {
-		return npc instanceof Villager || npc instanceof ZombieVillager;
+		return npc instanceof EntityVillager || npc instanceof EntityZombieVillager;
 	}
 
 	@Override
 	public void apply(NPCAble npc, Career value) {
-		((EntityVillager) npc).setProfession(value.getProfessionId());
-		((IMixinEntityVillager) npc).setCareerId(value.getCareerId());
+		if (npc instanceof EntityVillager) {
+			((EntityVillager) npc).setProfession(value.getProfessionId());
+			((IMixinEntityVillager) npc).setCareerId(value.getCareerId());
+		} else if (npc instanceof EntityZombieVillager) {
+			((EntityZombieVillager) npc).setProfession(value.getProfessionId());
+		}
 	}
 }

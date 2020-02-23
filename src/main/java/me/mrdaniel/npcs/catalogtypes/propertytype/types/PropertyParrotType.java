@@ -1,13 +1,11 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
 import com.google.common.reflect.TypeToken;
-import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.parrottype.ParrotType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import net.minecraft.entity.passive.EntityParrot;
 import org.spongepowered.api.command.args.GenericArguments;
-import org.spongepowered.api.entity.living.animal.Parrot;
 import org.spongepowered.api.text.Text;
 
 public class PropertyParrotType extends PropertyType<ParrotType> {
@@ -23,7 +21,7 @@ public class PropertyParrotType extends PropertyType<ParrotType> {
 
 	@Override
 	public boolean isSupported(final NPCAble npc) {
-		return npc instanceof Parrot;
+		return npc instanceof EntityParrot;
 	}
 
 	@Override
