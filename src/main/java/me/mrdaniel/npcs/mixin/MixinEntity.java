@@ -21,22 +21,19 @@ public abstract class MixinEntity {
 
 	@Inject(method = "isPushedByWater", at = @At("RETURN"), cancellable = true)
 	public void onIsPushedByWater(final CallbackInfoReturnable<Boolean> cir) {
-		if (this.isNPC() && cir.getReturnValue() != false) {
+		if (this.isNPC() && cir.getReturnValue()) {
 			cir.setReturnValue(false);
 		}
     }
 
 	@Inject(method = "isEntityInvulnerable", at = @At("RETURN"), cancellable = true)
 	public void onIsEntityInvulnerable(final DamageSource source, final CallbackInfoReturnable<Boolean> cir) {
-		if (this.isNPC() && cir.getReturnValue() != true) {
+		if (this.isNPC() && !cir.getReturnValue()) {
 			cir.setReturnValue(true);
 		}
 	}
 
 	private boolean isNPC() {
-		if (!(this instanceof NPCAble)) {
-			return false;
-		}
-		return ((NPCAble)this).getNPCFile() != null;
+		return this instanceof NPCAble && ((NPCAble)this).getNPCData() != null;
 	}
 }

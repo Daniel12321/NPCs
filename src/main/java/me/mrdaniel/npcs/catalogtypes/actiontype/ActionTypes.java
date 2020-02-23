@@ -1,7 +1,7 @@
 package me.mrdaniel.npcs.catalogtypes.actiontype;
 
 import com.google.common.collect.Lists;
-import me.mrdaniel.npcs.actions.*;
+import me.mrdaniel.npcs.actions.actions.*;
 
 import java.util.List;
 

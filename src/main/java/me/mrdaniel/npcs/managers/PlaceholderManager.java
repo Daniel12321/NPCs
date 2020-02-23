@@ -12,11 +12,9 @@ import java.util.Optional;
 
 public class PlaceholderManager implements PlaceholderHandler {
 
-	private static PlaceholderManager instance;
+	private PlaceholderHandler handler;
 
-	private final PlaceholderHandler handler;
-
-	public PlaceholderManager() {
+	public void load() {
 		Optional<PluginContainer> placeholderapi = NPCs.getInstance().getGame().getPluginManager().getPlugin("placeholderapi");
 
 		if (placeholderapi.isPresent()) {
@@ -34,13 +32,6 @@ public class PlaceholderManager implements PlaceholderHandler {
 			this.handler = new SimplePlaceholderManager();
 			NPCs.getInstance().getLogger().info("Could not find PlaceholderAPI and loaded a simple version instead.");
 		}
-	}
-
-	public static PlaceholderManager getInstance() {
-		if (instance == null) {
-			instance = new PlaceholderManager();
-		}
-		return instance;
 	}
 
 	@Override

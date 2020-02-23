@@ -1,193 +1,153 @@
 package me.mrdaniel.npcs.managers;
 
 import com.flowpowered.math.vector.Vector3d;
-import com.flowpowered.math.vector.Vector3f;
-import com.google.common.collect.Sets;
+import com.google.common.collect.Maps;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColors;
 import me.mrdaniel.npcs.catalogtypes.horsepattern.HorsePatterns;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
-import me.mrdaniel.npcs.catalogtypes.optiontype.OptionTypes;
+import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
+import me.mrdaniel.npcs.data.npc.NPCData;
 import me.mrdaniel.npcs.events.NPCCreateEvent;
 import me.mrdaniel.npcs.events.NPCRemoveEvent;
 import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
-import me.mrdaniel.npcs.io.NPCFile;
+import me.mrdaniel.npcs.io.Config;
+import me.mrdaniel.npcs.io.INPCData;
+import me.mrdaniel.npcs.io.INPCStore;
+import me.mrdaniel.npcs.io.StorageType;
+import me.mrdaniel.npcs.utils.Position;
 import net.minecraft.entity.EntityLiving;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.World;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 public class NPCManager {
 
-	private static NPCManager instance;
+    private final INPCStore npcStore;
+    private final Map<Integer, INPCData> npcs;
 
-	private final Path storagePath;
-	private final Set<NPCFile> npcs;
+    public NPCManager(Config config) {
+        this.npcStore = StorageType.of(config.getNode("storage", "storage_type").getString()).orElse(StorageType.HOCON).createNPCStore(this);
+        this.npcs = Maps.newHashMap();
+    }
 
-	public NPCManager() {
-		this.storagePath = NPCs.getInstance().getConfigDir().resolve("storage");
-		this.npcs = Sets.newHashSet();
+    public void setup() {
+        this.npcStore.setup();
+    }
 
-		if (!Files.exists(this.storagePath)) {
-			try {
-				Files.createDirectory(this.storagePath);
-			} catch (final IOException exc) {
-				NPCs.getInstance().getLogger().error("Failed to create main NPC storage directory: {}", exc.getMessage(), exc);
-			}
-		}
+    public void load() {
+        this.npcs.clear();
+        this.npcStore.load(this.npcs);
+    }
 
-		for (final String name : this.storagePath.toFile().list()) {
-			this.npcs.add(new NPCFile(this.storagePath, Integer.valueOf(name.replaceAll("[^\\d]", ""))));
-		}
-	}
-
-	public static NPCManager getInstance() {
-		if (instance == null) {
-			instance = new NPCManager();
-		}
-		return instance;
-	}
-
-	public Set<NPCFile> getFiles() {
-		return this.npcs;
-	}
-
-	public Optional<NPCAble> getNPC(NPCFile file) {
-		World world = file.getWorld().orElse(null);
-		if (world == null) {
-			return Optional.empty();
-		}
-
-		world.loadChunk(file.getChunkPosition(), true);
-
-		return world.getEntities().stream()
-				.filter(ent -> ent instanceof NPCAble)
-				.map(ent -> (NPCAble)ent).filter(npc -> npc.getNPCFile() != null && npc.getNPCFile().getId() == file.getId())
-				.findAny();
-	}
-
-	public Optional<NPCFile> getFile(final int id) {
-		for (NPCFile file : this.npcs) {
-			if (file.getId() == id) {
-				return Optional.of(file);
-			}
-		}
-		return Optional.empty();
-	}
-
-	private int getNextID() {
-		int highest = 1;
-		while (Files.exists(this.storagePath.resolve("npc_" + highest + ".conf"))) {
-			++highest;
-		}
-		return highest;
-	}
-
-	public void remove(CommandSource src, int id) throws NPCException {
-		this.remove(src, this.getFile(id).orElseThrow(() -> new NPCException("No NPC with that ID exists!")), true);
-	}
-
-	public void remove(CommandSource src, NPCFile file, boolean removeNPC) throws NPCException {
-		if (new NPCRemoveEvent(src, file).post()) {
-			throw new NPCException("Event was cancelled!");
-		}
-
-		try {
-			Files.deleteIfExists(this.storagePath.resolve("npc_" + Integer.toString(file.getId()) + ".conf"));
-		} catch (final IOException exc) {
-			NPCs.getInstance().getLogger().error("Failed to delete npc data file for npc {}: {}", file.getId(), exc.getMessage(), exc);
-		}
-
-		this.npcs.remove(file);
-
-		if (removeNPC) {
-			Optional<NPCAble> npc = this.getNPC(file);
-			if (npc.isPresent()) {
-				this.remove(src, npc.get(), false);
-			}
-		}
-	}
-
-	public void remove(CommandSource src, NPCAble npc, boolean removeFile) throws NPCException {
-		MenuManager.getInstance().deselect(npc);
-		ActionManager.getInstance().removeChoosing(npc);
-		((Entity)npc).remove();
-
-		if (removeFile) {
-			this.remove(src, npc.getNPCFile(), false);
-		}
-	}
-
-	public NPCAble create(Player p, NPCType type) throws NPCException {
+    public NPCAble create(Player p, NPCType type) throws NPCException {
 		if (new NPCCreateEvent(p, type).post()) {
 			throw new NPCException("Event was cancelled!");
 		}
 
-		NPCFile file = new NPCFile(this.storagePath, this.getNextID());
-		this.npcs.add(file);
+		INPCData data = this.npcStore.create(type);
+		this.npcs.put(data.getNPCId(), data);
 
-		Vector3d loc = p.getLocation().getPosition();
-		Vector3f rot = p.getHeadRotation().toFloat();
+        if (type == NPCTypes.HUMAN) {
+            data.setNPCProperty(PropertyTypes.NAME, "Steve");
+        } else if (type == NPCTypes.HORSE) {
+		    data.setNPCProperty(PropertyTypes.HORSECOLOR, HorseColors.BROWN).setNPCProperty(PropertyTypes.HORSEPATTERN, HorsePatterns.NONE);
+		}
 
-		if (type == NPCTypes.HUMAN) { file.setName("Steve"); }
-		if (type == NPCTypes.SNOWMAN) { file.setPumpkin(true); }
-		if (type == NPCTypes.BAT) { file.setHanging(false); }
-		if (type == NPCTypes.HORSE) { file.setHorseColor(HorseColors.BROWN); file.setHorsePattern(HorsePatterns.NONE); }
-		file.setType(type)
-		.setWorld(p.getWorld())
-		.setX(loc.getX())
-		.setY(loc.getY())
-		.setZ(loc.getZ())
-		.setYaw(rot.getY())
-		.setPitch(rot.getX())
-		.setInteract(true)
-		.setLooking(false)
-		.save();
+        data.setNPCPosition(new Position(p.getWorld().getName(), p.getLocation().getPosition(), p.getHeadRotation()));
+		data.setNPCProperty(PropertyTypes.TYPE, type)
+                .setNPCProperty(PropertyTypes.INTERACT, true)
+                .setNPCProperty(PropertyTypes.LOOKING, false)
+                .saveNPC();
 
-		NPCAble npc = this.spawn(file);
-		npc.selectNPC(p);
+		NPCAble npc = this.spawn(data);
+		NPCs.getInstance().getMenuManager().select(p, npc);
 
 		return npc;
-	}
+    }
 
-	public void copy(Player p, NPCFile old) throws NPCException {
-		NPCAble npc = this.create(p, old.getType().orElseThrow(() -> new NPCException("Could not find EntityType \"" + old.getTypeName() + "\"")));
-		NPCFile file = npc.getNPCFile();
+    public NPCAble spawn(INPCData data) throws NPCException {
+        this.getNPC(data).ifPresent(npc -> ((EntityLiving)npc).setDead());
 
-		old.getSkinUUID().ifPresent(value -> file.setSkinUUID(value));
-		OptionTypes.MAIN.forEach(option -> option.writeToFileAndNPC(npc, old));
-		OptionTypes.ARMOR.forEach(option -> option.writeToFileAndNPC(npc, old));
+        Position pos = data.getNPCPosition();
+        World world = pos.getWorld().orElseThrow(() -> new NPCException("Invalid world!"));
+        Entity ent = world.createEntity(data.getNPCProperty(PropertyTypes.TYPE).orElseThrow(() -> new NPCException("Could not find EntityType for NPC!")).getEntityType(), new Vector3d(0, 0, 0));
+        ent.offer(new NPCData(data.getNPCId()));
 
-		for (int i = 0; i < old.getActions().size(); i++) { file.getActions().add(i, old.getActions().get(i)); }
-		old.writeActions();
+        NPCAble npc = (NPCAble) ent;
+        npc.setNPCData(data);
 
-		old.getCurrent().forEach((uuid, current) -> file.getCurrent().put(uuid, current));
-		old.writeCurrent();
+        ((net.minecraft.entity.Entity) ent).setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), pos.getYaw(), pos.getPitch());
 
-		old.getCooldowns().forEach((uuid, end) -> file.getCooldowns().put(uuid, end));
-		old.writeCooldowns();
+        world.spawnEntity(ent);
+        return npc;
+    }
 
-		file.save();
-	}
+    public void remove(CommandSource src, int id) throws NPCException {
+        this.remove(src, this.getData(id).orElseThrow(() -> new NPCException("No NPC with that ID exists!")));
+    }
 
-	public NPCAble spawn(NPCFile file) throws NPCException {
-		this.getNPC(file).ifPresent(npc -> ((EntityLiving)npc).setDead());
+    public void remove(CommandSource src, INPCData data) throws NPCException {
+        this.remove(src, data, this.getNPC(data).orElse(null));
+    }
 
-		World world = file.getWorld().orElseThrow(() -> new NPCException("Invalid world!"));
-		Entity ent = world.createEntity(file.getType().orElseThrow(() -> new NPCException("Could not find EntityType '" + file.getTypeName() + "'")).getEntityType(), new Vector3d(0, 0, 0));
-		NPCAble npc = (NPCAble) ent;
+    public void remove(CommandSource src, INPCData data, @Nullable NPCAble npc) throws NPCException {
+        if (new NPCRemoveEvent(src, data).post()) {
+            throw new NPCException("Event was cancelled!");
+        }
 
-		npc.setNPCFile(file);
-		world.spawnEntity(ent);
-		return npc;
-	}
+        NPCs.getInstance().getMenuManager().deselect(npc.getNPCData());
+        NPCs.getInstance().getActionManager().removeChoosing(npc);
+
+        this.npcStore.remove(data);
+        this.npcs.remove(data.getNPCId());
+
+        if (npc != null) {
+            ((Entity)npc).remove();
+        } else {
+            src.sendMessage(Text.of(TextColors.RED, "Failed to delete NPC Entity!"));
+        }
+    }
+
+    public Optional<INPCData> getData(int id) {
+        return Optional.ofNullable(this.npcs.get(id));
+    }
+
+    public Optional<NPCAble> getNPC(INPCData data) {
+        World world = data.getNPCPosition().getWorld().orElse(null);
+        if (world == null) {
+            return Optional.empty();
+        }
+
+        world.loadChunk(data.getNPCPosition().getChunkPosition(), true);
+
+        return world.getEntities().stream()
+                .filter(ent -> ent instanceof NPCAble)
+                .map(ent -> (NPCAble)ent).filter(npc -> npc.getNPCData() != null && npc.getNPCData().getNPCId() == data.getNPCId())
+                .findFirst();
+    }
+
+    public List<INPCData> getNPCs(String worldName) {
+        return this.npcs.values().stream().filter(data -> worldName.equals(data.getNPCPosition().getWorldName())).collect(Collectors.toList());
+    }
+
+    public int getNextID() {
+        int id = 1;
+
+        while (this.npcs.containsKey(id)) {
+            id++;
+        }
+        return id;
+    }
 }

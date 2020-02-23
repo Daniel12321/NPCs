@@ -1,12 +1,16 @@
 package me.mrdaniel.npcs.commands.action.edit;
 
 import me.mrdaniel.npcs.actions.Action;
-import me.mrdaniel.npcs.actions.ActionChoices;
+import me.mrdaniel.npcs.actions.actions.ActionChoices;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
 import me.mrdaniel.npcs.commands.ActionCommand;
 import me.mrdaniel.npcs.exceptions.ActionException;
 import org.spongepowered.api.command.args.CommandContext;
+import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.command.spec.CommandSpec;
 import org.spongepowered.api.entity.living.player.Player;
+import org.spongepowered.api.text.Text;
+import org.spongepowered.api.text.format.TextColors;
 
 public class CommandAddChoice extends ActionCommand {
 
@@ -17,5 +21,14 @@ public class CommandAddChoice extends ActionCommand {
 	@Override
 	public void execute(final Player p, final Action a, final CommandContext args) throws ActionException {
 		((ActionChoices) a).getChoices().put(args.<String>getOne("name").get(), args.<Integer>getOne("goto").get());
+	}
+
+	public CommandSpec build() {
+		return CommandSpec.builder()
+				.description(Text.of(TextColors.GOLD, "NPCs | Add Choice"))
+				.permission("npc.action.edit.choice.add")
+				.arguments(GenericArguments.string(Text.of("name")), GenericArguments.integer(Text.of("goto")))
+				.executor(this)
+				.build();
 	}
 }

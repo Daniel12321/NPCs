@@ -1,6 +1,6 @@
 package me.mrdaniel.npcs.catalogtypes.conditiontype;
 
-import me.mrdaniel.npcs.actions.conditions.Condition;
+import me.mrdaniel.npcs.actions.Condition;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.CatalogType;
 import org.spongepowered.api.util.annotation.CatalogedBy;

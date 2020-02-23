@@ -1,6 +1,7 @@
 package me.mrdaniel.npcs.utils;
 
 import org.spongepowered.api.command.CommandSource;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;

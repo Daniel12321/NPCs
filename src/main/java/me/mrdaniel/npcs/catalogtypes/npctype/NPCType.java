@@ -17,7 +17,7 @@ public class NPCType implements CatalogType {
 	private final String id;
 	private final EntityType entityType;
 
-	@Override
+    @Override
 	public String getName() {
 		return name;
 	}
