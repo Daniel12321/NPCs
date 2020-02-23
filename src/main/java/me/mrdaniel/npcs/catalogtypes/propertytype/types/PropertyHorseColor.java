@@ -8,7 +8,6 @@ import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import net.minecraft.entity.passive.EntityHorse;
 import org.spongepowered.api.command.args.GenericArguments;
-import org.spongepowered.api.entity.living.animal.Horse;
 import org.spongepowered.api.text.Text;
 
 public class PropertyHorseColor extends PropertyType<HorseColor> {
@@ -24,7 +23,7 @@ public class PropertyHorseColor extends PropertyType<HorseColor> {
 
 	@Override
 	public boolean isSupported(final NPCAble npc) {
-		return npc instanceof Horse;
+		return npc instanceof EntityHorse;
 	}
 
 	@Override

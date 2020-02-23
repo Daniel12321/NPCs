@@ -5,7 +5,6 @@ import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import net.minecraft.entity.passive.EntityBat;
 import org.spongepowered.api.command.args.GenericArguments;
-import org.spongepowered.api.entity.living.Bat;
 import org.spongepowered.api.text.Text;
 
 public class PropertyHanging extends PropertyType<Boolean> {
@@ -21,7 +20,7 @@ public class PropertyHanging extends PropertyType<Boolean> {
 
 	@Override
 	public boolean isSupported(final NPCAble npc) {
-		return npc instanceof Bat;
+		return npc instanceof EntityBat;
 	}
 
 	@Override

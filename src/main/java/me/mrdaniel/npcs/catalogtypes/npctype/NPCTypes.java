@@ -36,7 +36,7 @@ public class NPCTypes {
 	public static final NPCType PIG = new NPCType("Pig", "pig", EntityTypes.PIG);
 	public static final NPCType PIG_ZOMBIE = new NPCType("PigZombie", "pig_zombie", EntityTypes.PIG_ZOMBIE);
 	public static final NPCType POLAR_BEAR = new NPCType("Polarbear", "polar_bear", EntityTypes.POLAR_BEAR);
-	public static final NPCType RABBIT = new NPCType("RAbbit", "rabbit", EntityTypes.SHEEP);
+	public static final NPCType RABBIT = new NPCType("Rabbit", "rabbit", EntityTypes.RABBIT);
 	public static final NPCType SHEEP = new NPCType("Sheep", "sheep", EntityTypes.SHEEP);
 	public static final NPCType SHULKER = new NPCType("Shulker", "shulker", EntityTypes.SHULKER);
 	public static final NPCType SILVERFISH = new NPCType("Silverfish", "silverfish", EntityTypes.SILVERFISH);

@@ -5,7 +5,6 @@ import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import net.minecraft.entity.passive.EntityPig;
 import org.spongepowered.api.command.args.GenericArguments;
-import org.spongepowered.api.entity.living.animal.Pig;
 import org.spongepowered.api.text.Text;
 
 public class PropertySaddle extends PropertyType<Boolean> {
@@ -21,7 +20,7 @@ public class PropertySaddle extends PropertyType<Boolean> {
 
 	@Override
 	public boolean isSupported(final NPCAble npc) {
-		return npc instanceof Pig;
+		return npc instanceof EntityPig;
 	}
 
 	@Override
