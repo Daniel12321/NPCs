@@ -8,7 +8,6 @@
     "server": [
         "MixinEntity",
         "MixinEntityLiving",
-        "MixinEntityLivingBase",
         "MixinEntityVillager"
     ],
     "injectors": {
