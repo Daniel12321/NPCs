@@ -34,7 +34,6 @@ import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.io.Config;
 import me.mrdaniel.npcs.listeners.EntityListener;
 import me.mrdaniel.npcs.listeners.InteractListener;
-import me.mrdaniel.npcs.listeners.WorldListener;
 import me.mrdaniel.npcs.managers.ActionManager;
 import me.mrdaniel.npcs.managers.NPCManager;
 import me.mrdaniel.npcs.managers.PlaceholderManager;
@@ -151,9 +150,6 @@ public class NPCs {
 
 		this.game.getEventManager().registerListeners(this, new EntityListener());
 		this.game.getEventManager().registerListeners(this, new InteractListener());
-		if (this.config.getNode("npc_respawn_on_world_load").getBoolean(true)) {
-			this.game.getEventManager().registerListeners(this, new WorldListener());
-		}
 
 		this.game.getCommandManager().register(this, new CommandNPC().build(), "npc", "npcs");
 
