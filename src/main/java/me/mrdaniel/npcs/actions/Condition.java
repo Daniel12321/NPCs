@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.actions.conditions;
+package me.mrdaniel.npcs.actions;
 
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.conditiontype.ConditionType;

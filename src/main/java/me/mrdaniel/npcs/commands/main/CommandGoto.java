@@ -1,8 +1,8 @@
 package me.mrdaniel.npcs.commands.main;
 
-import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.menu.chat.npc.PropertiesChatMenu;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandSpec;
@@ -14,7 +14,7 @@ import org.spongepowered.api.text.format.TextColors;
 public class CommandGoto extends NPCCommand {
 
 	public CommandGoto() {
-		super(PageTypes.MAIN);
+		super(PropertiesChatMenu::new);
 	}
 
 	@Override

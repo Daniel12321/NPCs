@@ -1,6 +1,7 @@
 package me.mrdaniel.npcs.actions.conditions;
 
 import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.actions.Condition;
 import me.mrdaniel.npcs.catalogtypes.conditiontype.ConditionTypes;
 import me.mrdaniel.npcs.utils.ServerUtils;
 import ninja.leaping.configurate.ConfigurationNode;

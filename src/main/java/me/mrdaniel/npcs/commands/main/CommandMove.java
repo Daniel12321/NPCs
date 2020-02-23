@@ -1,10 +1,10 @@
 package me.mrdaniel.npcs.commands.main;
 
-import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
-import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.menu.chat.npc.PropertiesChatMenu;
 import me.mrdaniel.npcs.utils.Position;
+import net.minecraft.entity.Entity;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandSpec;
@@ -15,12 +15,15 @@ import org.spongepowered.api.text.format.TextColors;
 public class CommandMove extends NPCCommand {
 
 	public CommandMove() {
-		super(PageTypes.MAIN);
+		super(PropertiesChatMenu::new);
 	}
 
 	@Override
 	public void execute(final Player p, final NPCAble npc, final CommandContext args) throws CommandException {
-		npc.setProperty(PropertyTypes.POSITION, new Position(p.getLocation().getPosition(), p.getHeadRotation())).save();
+		Position pos = new Position(p.getWorld().getName(), p.getLocation().getPosition(), p.getHeadRotation());
+
+		((Entity)npc).setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), pos.getYaw(), pos.getPitch());
+		npc.getNPCData().setNPCPosition(pos);
 	}
 
 	public CommandSpec build() {

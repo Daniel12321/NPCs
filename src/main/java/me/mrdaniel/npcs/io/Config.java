@@ -36,7 +36,7 @@ public class Config {
 		}
 	}
 
-	public void save() {
+	public void saveNPC() {
 		try {
 			this.loader.save(this.node);
 		} catch (final IOException exc) {

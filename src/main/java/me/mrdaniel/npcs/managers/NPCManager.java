@@ -54,7 +54,7 @@ public class NPCManager {
     public NPCAble spawn(INPCData data) throws NPCException {
         this.getNPC(data).ifPresent(npc -> ((EntityLiving)npc).setDead());
 
-        World world = data.getProperty(PropertyTypes.WORLD).orElseThrow(() -> new NPCException("Invalid world!"));
+        World world = data.getPosition().getWorld().orElseThrow(() -> new NPCException("Invalid world!"));
         Entity ent = world.createEntity(data.getProperty(PropertyTypes.TYPE).orElseThrow(() -> new NPCException("Could not find EntityType for NPC!")).getEntityType(), new Vector3d(0, 0, 0));
         ent.offer(new NPCData(data.getId()));
 
@@ -79,9 +79,8 @@ public class NPCManager {
 		    data.setProperty(PropertyTypes.HORSECOLOR, HorseColors.BROWN).setProperty(PropertyTypes.HORSEPATTERN, HorsePatterns.NONE);
 		}
 
+        data.setPosition(new Position(p.getWorld().getName(), p.getLocation().getPosition(), p.getHeadRotation()));
 		data.setProperty(PropertyTypes.TYPE, type)
-                .setProperty(PropertyTypes.WORLD, p.getWorld())
-                .setProperty(PropertyTypes.POSITION, new Position(p.getLocation().getPosition(), p.getHeadRotation()))
                 .setProperty(PropertyTypes.INTERACT, true)
                 .setProperty(PropertyTypes.LOOKING, false)
                 .save();
@@ -123,12 +122,12 @@ public class NPCManager {
     }
 
     public Optional<NPCAble> getNPC(INPCData data) {
-        World world = data.getProperty(PropertyTypes.WORLD).orElse(null);
+        World world = data.getPosition().getWorld().orElse(null);
         if (world == null) {
             return Optional.empty();
         }
 
-        world.loadChunk(data.getProperty(PropertyTypes.POSITION).get().getChunkPosition(), true);
+        world.loadChunk(data.getPosition().getChunkPosition(), true);
 
         // TODO: Optimize
         return world.getEntities().stream()
@@ -138,6 +137,6 @@ public class NPCManager {
     }
 
     public List<INPCData> getNPCs(String worldName) {
-        return this.npcs.values().stream().filter(data -> worldName.equals(data.getWorldName())).collect(Collectors.toList());
+        return this.npcs.values().stream().filter(data -> worldName.equals(data.getPosition().getWorldName())).collect(Collectors.toList());
     }
 }

@@ -2,6 +2,7 @@ package me.mrdaniel.npcs.commands.action;
 
 import com.google.common.collect.Maps;
 import me.mrdaniel.npcs.actions.*;
+import me.mrdaniel.npcs.actions.actions.*;
 import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.events.NPCEditEvent;
@@ -67,7 +68,7 @@ public abstract class CommandActionAdd extends NPCCommand {
 			Map<String, Integer> choices = Maps.newHashMap();
 			choices.put(args.<String>getOne("first").get(), args.<Integer>getOne("goto_first").get());
 			choices.put(args.<String>getOne("second").get(), args.<Integer>getOne("goto_second").get());
-			return new ActionChoices(choices); 
+			return new ActionChoices(choices);
 		}
 	}
 }

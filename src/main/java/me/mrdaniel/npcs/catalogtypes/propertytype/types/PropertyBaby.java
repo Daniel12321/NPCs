@@ -2,8 +2,9 @@ package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
 import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
-import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.utils.Position;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.monster.EntityZombie;
 import org.spongepowered.api.command.args.GenericArguments;
@@ -34,6 +35,7 @@ public class PropertyBaby extends PropertyType<Boolean> {
 			((EntityAgeable) npc).setGrowingAge(value ? Integer.MIN_VALUE : 0);
 		}
 
-		PropertyTypes.POSITION.apply(npc, npc.getProperty(PropertyTypes.POSITION).get());
+		Position pos = npc.getNPCPosition();
+		((Entity)npc).setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), pos.getYaw(), pos.getPitch());
 	}
 }

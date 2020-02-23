@@ -1,6 +1,7 @@
 package me.mrdaniel.npcs.actions.conditions;
 
 import com.google.common.reflect.TypeToken;
+import me.mrdaniel.npcs.actions.Condition;
 import me.mrdaniel.npcs.exceptions.ConditionException;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;

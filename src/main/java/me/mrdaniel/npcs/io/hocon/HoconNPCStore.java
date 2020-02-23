@@ -4,7 +4,7 @@ import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.actions.Action;
 import me.mrdaniel.npcs.actions.ActionTypeSerializer;
-import me.mrdaniel.npcs.actions.conditions.Condition;
+import me.mrdaniel.npcs.actions.Condition;
 import me.mrdaniel.npcs.actions.conditions.ConditionTypeSerializer;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionType;
 import me.mrdaniel.npcs.catalogtypes.career.Career;
@@ -22,9 +22,7 @@ import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitType;
 import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.io.INPCStore;
-import me.mrdaniel.npcs.utils.Position;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
-import org.spongepowered.api.world.World;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -54,8 +52,8 @@ public class HoconNPCStore implements INPCStore {
 		CatalogTypeSerializer.register(ActionType.class);
 		CatalogTypeSerializer.register(ConditionType.class);
 		CatalogTypeSerializer.register(PropertyType.class);
-		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Position.class), new PositionTypeSerializer());
-		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(World.class), new WorldTypeSerializer());
+//		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Position.class), new PositionTypeSerializer());
+//		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(World.class), new WorldTypeSerializer());
 		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Action.class), new ActionTypeSerializer());
 		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Condition.class), new ConditionTypeSerializer());
 	}

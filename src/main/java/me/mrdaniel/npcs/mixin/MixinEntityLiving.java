@@ -1,10 +1,12 @@
 package me.mrdaniel.npcs.mixin;
 
 import com.flowpowered.math.vector.Vector3d;
+import me.mrdaniel.npcs.actions.ActionSet;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.INPCData;
+import me.mrdaniel.npcs.utils.Position;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,7 +57,7 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 
 		PropertyTypes.NPC_INIT.forEach(prop -> {
 			if (prop.isSupported(this)) {
-				this.data.getProperty(prop).ifPresent(value -> prop.apply(this, value));
+				this.data.getNPCProperty(prop).ifPresent(value -> prop.apply(this, value));
 			}
 		});
 	}
@@ -71,243 +73,46 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 	}
 
 	@Override
-	public int getId() {
-		return this.data.getId();
+	public int getNPCId() {
+		return this.data.getNPCId();
 	}
 
 	@Override
-	public <T> Optional<T> getProperty(PropertyType<T> property) {
-		return this.data.getProperty(property);
+	public Position getNPCPosition() {
+		return this.data.getNPCPosition();
 	}
 
 	@Override
-	public <T> INPCData setProperty(PropertyType<T> property, T value) {
+	public INPCData setNPCPosition(Position value) {
+		return this.data.setNPCPosition(value);
+	}
+
+	@Override
+	public <T> Optional<T> getNPCProperty(PropertyType<T> property) {
+		return this.data.getNPCProperty(property);
+	}
+
+	@Override
+	public <T> INPCData setNPCProperty(PropertyType<T> property, T value) {
+		this.data.setNPCProperty(property, value);
 		property.apply(this, value);
-		return this.data.setProperty(property, value);
+		return this.data;
 	}
 
 	@Override
-	public void save() {
-		this.data.save();
+	public ActionSet getNPCActions() {
+		return this.data.getNPCActions();
 	}
 
-	/*
-		Old methods
-	 */
+	@Override
+	public INPCData writeNPCActions() {
+		return this.data.writeNPCActions();
+	}
 
-//	@Override
-//	public void setNPCWorld(org.spongepowered.api.world.World value) {
-//		super.setWorld((World)value);
-//	}
-//
-//	@Override
-//	public void setNPCPosition(Position value) {
-//		super.setLocationAndAngles(value.getX(), value.getY(), value.getZ(), value.getYaw(), value.getPitch());
-//	}
-//
-//	@Override
-//	public void setNPCName(String value) {
-//		((Living)this).offer(Keys.DISPLAY_NAME, TextUtils.toText(value));
-//		super.setAlwaysRenderNameTag(true);
-//
-//		if (this.data.getProperty(PropertyTypes.GLOWING)) { this.data.getGlowColor().ifPresent(color -> this.setNPCGlowColor(color)); }
-//	}
-//
-//	@Override
-//	public void setNPCSkin(String value) {
-//		new Thread(() -> {
-//			NPCs.getInstance().getGame().getServer().getGameProfileManager().get(value).thenAccept(gp -> Task.builder().delayTicks(0).execute(() -> {
-//				this.setNPCSkin(gp.getUniqueId());
-//				this.data.setSkinUUID(gp.getUniqueId()).save();
-//			}).submit(NPCs.getInstance()));
-//		}).start();
-//	}
-//
-//	@Override
-//	public void setNPCSkin(UUID value) {
-//		((Human)this).offer(Keys.SKIN_UNIQUE_ID, value);
-//	}
-//
-//	@Override
-//	public void setNPCLooking(boolean value) {
-//		this.looking = value;
-//	}
-//
-//	@Override
-//	public boolean isNPCLooking() {
-//		return this.looking;
-//	}
-//
-//	@Override
-//	public void setNPCInteract(boolean value) {
-//		this.interact = value;
-//	}
-//
-//	@Override
-//	public boolean canNPCInteract() {
-//		return this.interact;
-//	}
-//
-//	@Override
-//	public void setNPCSilent(boolean value) {
-//		super.setSilent(value);
-//	}
-//
-//	@Override
-//	public void setNPCGlowing(boolean value) {
-//		super.setGlowing(value);
-//
-//		if (value) {
-//			this.data.getGlowColor().ifPresent(this::setNPCGlowColor);
-//		}
-//	}
-//
-//	@Override
-//	public void setNPCGlowColor(GlowColor value) {
-//		if (this.isGlowing()) {
-//			String teamName = "NPC_" + value.getName();
-//			String npcName = (this instanceof Human) ? super.getCustomNameTag() : super.getCachedUniqueIdString();
-//			Scoreboard board =  super.world.getScoreboard();
-//			ScorePlayerTeam team = board.getTeam(teamName);
-//			if (team == null) { team = board.createTeam(teamName); }
-//
-//			board.addPlayerToTeam(npcName, teamName);
-//			team.setColor(value.getColor());
-//			team.setPrefix(value.getColor().toString());
-//			team.setSuffix(TextFormatting.RESET.toString());
-//		}
-//	}
-//
-//	@Override
-//	public void setNPCBaby(boolean value) {
-//		if ((Object)this instanceof EntityZombie) {
-//			((EntityZombie)(Object)this).setChild(value);
-//		} else {
-//			((EntityAgeable)(Object)this).setGrowingAge(value ? Integer.MIN_VALUE : 0);
-//		}
-//
-//		super.setLocationAndAngles(this.data.getX(), this.data.getY(), this.data.getZ(), this.data.getYaw(), this.data.getPitch());
-//	}
-//
-//	@Override
-//	public void setNPCCharged(boolean value) {
-//		((Living)this).offer(Keys.CREEPER_CHARGED, value);
-//	}
-//
-//	@Override
-//	public void setNPCAngry(boolean value) {
-//		((EntityWolf) (Object) this).setAngry(value);
-//	}
-//
-//	@Override
-//	public void setNPCSize(int value) {
-//		((Living)this).offer(Keys.SLIME_SIZE, value);
-//	}
-//
-//	@Override
-//	public void setNPCSitting(boolean value) {
-//		((EntityTameable)(Object)this).setSitting(value);
-//	}
-//
-//	@Override
-//	public void setNPCHanging(boolean value) {
-//		((EntityBat)(Object)this).setIsBatHanging(value);
-//	}
-//
-//	@Override
-//	public void setNPCPumpkin(boolean value) {
-//		((EntitySnowman)(Object)this).setPumpkinEquipped(value);
-//	}
-//
-//	@Override
-//	public void setNPCSaddle(boolean value) {
-//		((EntityPig)(Object)this).setSaddled(value);
-//	}
-//
-//	@Override
-//	public void setNPCCareer(Career value) {
-//		((EntityVillager)(Object)this).setProfession(value.getProfessionId());
-//		((IMixinEntityVillager)this).setCareerId(value.getCareerId());
-//	}
-//
-//	@Override
-//	public void setNPCHorsePattern(HorsePattern value) {
-//		((EntityHorse)(Object)this).setHorseVariant(value.getNbtId() + this.data.getHorseColor().orElse(HorseColors.BROWN).getNbtId());
-//	}
-//
-//	@Override
-//	public void setNPCHorseColor(HorseColor value) {
-//		((EntityHorse)(Object)this).setHorseVariant(value.getNbtId() + this.data.getHorsePattern().orElse(HorsePatterns.NONE).getNbtId());
-//	}
-//
-//	@Override
-//	public void setNPCLlamaType(LlamaType value) {
-//		((EntityLlama)(Object)this).setVariant(value.getNbtId());
-//	}
-//
-//	@Override
-//	public void setNPCCatType(CatType value) {
-//		((EntityOcelot)(Object)this).setTameSkin(value.getNbtId());
-//	}
-//
-//	@Override
-//	public void setNPCRabbitType(RabbitType value) {
-//		((EntityRabbit)(Object)this).setRabbitType(value.getNbtId());
-//	}
-//
-//	@Override
-//	public void setNPCParrotType(ParrotType value) {
-//		((EntityParrot)(Object)this).setVariant(value.getNbtId());
-//	}
-//
-//	@Override
-//	public void setNPCHelmet(ItemStack value) {
-//		((ArmorEquipable)this).setHelmet(value);
-//	}
-//
-//	@Override
-//	public void setNPCChestplate(ItemStack value) {
-//		((ArmorEquipable)this).setChestplate(value);
-//	}
-//
-//	@Override
-//	public void setNPCLeggings(ItemStack value) {
-//		((ArmorEquipable)this).setLeggings(value);
-//	}
-//
-//	@Override
-//	public void setNPCBoots(ItemStack value) {
-//		((ArmorEquipable)this).setBoots(value);
-//	}
-//
-//	@Override
-//	public void setNPCMainHand(ItemStack value) {
-//		((ArmorEquipable)this).setItemInHand(HandTypes.MAIN_HAND, value);
-//	}
-//
-//	@Override
-//	public void setNPCOffHand(ItemStack value) {
-//		((ArmorEquipable)this).setItemInHand(HandTypes.MAIN_HAND, value);
-//	}
-
-	// Start of Injections
-
-//	@Inject(method = "writeEntityToNBT", at = @At("RETURN"))
-//	public void onWriteEntityToNBT(NBTTagCompound compound, CallbackInfo info) {
-//		if (this.data != null) { compound.setInteger("NPC_ID", this.data.getId()); }
-//	}
-
-//	@Inject(method = "readEntityFromNBT", at = @At("RETURN"))
-//	public void onReadEntityFromNBT(NBTTagCompound compound, CallbackInfo info) {
-//		if (compound.hasKey("NPC_ID", 3)) {
-//			Optional<INPCData> file = NPCs.getInstance().getNpcStore().getData(compound.getInteger("NPC_ID"));
-//			if (file.isPresent()) {
-//				this.setNPCData(file.get());
-//			} else {
-//				this.setDead();
-//			}
-//		}
-//	}
+	@Override
+	public void saveNPC() {
+		this.data.saveNPC();
+	}
 
 	// TODO: Check for more efficient methods
 	@Inject(method = "onEntityUpdate", at = @At("RETURN"))

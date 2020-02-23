@@ -4,10 +4,14 @@ import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.io.INPCStore;
+import me.mrdaniel.npcs.managers.NPCManager;
 
 import java.util.Map;
 
 public class Database implements INPCStore {
+
+    public Database(NPCManager manager) {
+    }
 
     @Override
     public void setup() {

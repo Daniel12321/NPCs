@@ -1,7 +1,8 @@
 package me.mrdaniel.npcs.commands.action.condition;
 
 import me.mrdaniel.npcs.actions.Action;
-import me.mrdaniel.npcs.actions.ActionCondition;
+import me.mrdaniel.npcs.actions.Condition;
+import me.mrdaniel.npcs.actions.actions.ActionCondition;
 import me.mrdaniel.npcs.actions.conditions.*;
 import me.mrdaniel.npcs.commands.action.CommandActionAdd;
 import org.spongepowered.api.command.args.CommandContext;

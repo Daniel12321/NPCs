@@ -2,6 +2,7 @@ package me.mrdaniel.npcs.io;
 
 import me.mrdaniel.npcs.actions.Action;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
+import me.mrdaniel.npcs.utils.Position;
 
 import java.util.List;
 import java.util.Map;
@@ -12,9 +13,11 @@ public interface INPCData {
 
     int getId();
 
+    Position getPosition();
+    INPCData setPosition(Position value);
+
     <T> Optional<T> getProperty(PropertyType<T> property);
     <T> INPCData setProperty(PropertyType<T> property, T value);
-    String getWorldName();
 
     void save();
 

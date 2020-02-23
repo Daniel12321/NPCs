@@ -11,9 +11,7 @@ import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.parrottype.ParrotType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.types.*;
 import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitType;
-import me.mrdaniel.npcs.utils.Position;
 import org.spongepowered.api.item.inventory.ItemStack;
-import org.spongepowered.api.world.World;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,8 +19,6 @@ import java.util.UUID;
 public final class PropertyTypes {
 
 	public static final PropertyType<NPCType> TYPE = new PropertyNPCType();
-	public static final PropertyType<World> WORLD = new PropertyWorld();
-	public static final PropertyType<Position> POSITION = new PropertyPosition();
 	public static final PropertyType<String> NAME = new PropertyName();
 	public static final PropertyType<Boolean> NAME_VISIBLE = new PropertyNameVisible();
 	public static final PropertyType<UUID> SKIN_UUID = new PropertySkinUUID();
@@ -56,18 +52,16 @@ public final class PropertyTypes {
 	public static final PropertyType<ItemStack> MAINHAND = new PropertyMainHand();
 	public static final PropertyType<ItemStack> OFFHAND = new PropertyOffHand();
 
-	public static final List<PropertyType> NPC_INIT = Lists.newArrayList(
-			POSITION, NAME, NAME_VISIBLE, SKIN_UUID, LOOKING, INTERACT, SILENT, GLOWING,
-			GLOWCOLOR, BABY, CHARGED, ANGRY, SIZE, SITTING, SADDLE, HANGING,
-			PUMPKIN, CAREER, HORSEPATTERN, HORSECOLOR, LLAMATYPE, CATTYPE, RABBITTYPE, PARROTTYPE,
-			HELMET, CHESTPLATE, LEGGINGS, BOOTS, MAINHAND, OFFHAND
-	);
-	public static final List<PropertyType> ALL = Lists.newArrayList(NPC_INIT);
+	public static final List<PropertyType> ALL = Lists.newArrayList(
+			TYPE, NAME, NAME_VISIBLE, SKIN_UUID, SKIN, LOOKING, INTERACT, SILENT, GLOWING,
+			GLOWCOLOR, BABY, CHARGED, ANGRY, SIZE, SITTING, SADDLE, HANGING, PUMPKIN,
+			CAREER, HORSEPATTERN, HORSECOLOR, LLAMATYPE, CATTYPE, RABBITTYPE, PARROTTYPE,
+			HELMET, CHESTPLATE, LEGGINGS, BOOTS, MAINHAND, OFFHAND);
+	public static final List<PropertyType> NPC_INIT = Lists.newArrayList(ALL);
 	public static final List<PropertyType> ARMOR = Lists.newArrayList(HELMET, CHESTPLATE, LEGGINGS, BOOTS, MAINHAND, OFFHAND);
 
 	static {
-		ALL.add(TYPE);
-		ALL.add(WORLD);
-		ALL.add(SKIN);
+		ALL.remove(TYPE);
+		ALL.remove(SKIN);
 	}
 }

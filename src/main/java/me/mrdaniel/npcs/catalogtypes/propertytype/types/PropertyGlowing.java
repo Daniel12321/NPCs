@@ -11,7 +11,7 @@ import org.spongepowered.api.text.Text;
 public class PropertyGlowing extends PropertyType<Boolean> {
 
 	public PropertyGlowing() {
-		super("Glowing", "glowing", GenericArguments.bool(Text.of("glowing")));
+		super("Glowing", "glowing", "glow.enabled", GenericArguments.bool(Text.of("glowing")));
 	}
 
 	@Override

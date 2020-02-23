@@ -33,7 +33,7 @@ public class WorldListener {
 			try {
 				NPCs.getInstance().getNPCManager().spawn(file);
 			} catch (final NPCException exc) {
-				NPCs.getInstance().getLogger().error("Failed to spawn NPC: " + exc.getMessage(), exc);
+				NPCs.getInstance().getLogger().error("Failed to spawn NPC: ", exc);
 			}
 		});
 	}

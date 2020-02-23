@@ -5,10 +5,10 @@ import com.google.common.collect.Maps;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.actions.Action;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
-import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.exceptions.ActionException;
 import me.mrdaniel.npcs.io.Config;
 import me.mrdaniel.npcs.io.INPCData;
+import me.mrdaniel.npcs.utils.Position;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 
 import java.nio.file.Path;
@@ -69,7 +69,7 @@ public class HoconNPCData extends Config implements INPCData {
     @Override
     public <T> Optional<T> getProperty(PropertyType<T> property) {
         try {
-            return Optional.ofNullable(super.getNode(property.getId()).getValue(property.getTypeToken()));
+            return Optional.ofNullable(super.getNode(property.getHoconPath()).getValue(property.getTypeToken()));
         } catch (ObjectMappingException exc) {
             return Optional.empty();
         }
@@ -78,7 +78,7 @@ public class HoconNPCData extends Config implements INPCData {
     @Override
     public <T> INPCData setProperty(PropertyType<T> property, T value) {
         try {
-            super.getNode(property.getId()).setValue(property.getTypeToken(), value);
+            super.getNode(property.getHoconPath()).setValue(property.getTypeToken(), value);
         } catch (ObjectMappingException exc) {
             NPCs.getInstance().getLogger().error("Failed to save property to file: ", exc);
             return this;
@@ -87,8 +87,26 @@ public class HoconNPCData extends Config implements INPCData {
     }
 
     @Override
-    public String getWorldName() {
-        return this.getNode(PropertyTypes.WORLD.getId()).getString();
+    public Position getPosition() {
+        return new Position(
+                super.getNode("position", "world").getString("world"),
+                super.getNode("position", "x").getDouble(0),
+                super.getNode("position", "y").getDouble(0),
+                super.getNode("position", "z").getDouble(0),
+                super.getNode("position", "yaw").getFloat(0),
+                super.getNode("position", "pitch").getFloat(0)
+        );
+    }
+
+    @Override
+    public INPCData setPosition(Position value) {
+        super.getNode("position", "world").setValue(value.getWorldName());
+        super.getNode("position", "x").setValue(value.getX());
+        super.getNode("position", "y").setValue(value.getY());
+        super.getNode("position", "z").setValue(value.getZ());
+        super.getNode("position", "yaw").setValue(value.getYaw());
+        super.getNode("position", "pitch").setValue(value.getPitch());
+        return this;
     }
 
     @Override

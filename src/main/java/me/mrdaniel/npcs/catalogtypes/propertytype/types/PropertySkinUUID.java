@@ -12,7 +12,7 @@ import java.util.UUID;
 public class PropertySkinUUID extends PropertyType<UUID> {
 
 	public PropertySkinUUID() {
-		super("SkinUUID", "skin-uuid");
+		super("SkinUUID", "skin-uuid", "skin.uuid");
 	}
 
 	@Override

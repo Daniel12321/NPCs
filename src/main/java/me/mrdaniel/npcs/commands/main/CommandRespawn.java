@@ -1,11 +1,11 @@
 package me.mrdaniel.npcs.commands.main;
 
 import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.catalogtypes.menupagetype.PageTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.commands.NPCFileCommand;
 import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.io.INPCData;
+import me.mrdaniel.npcs.menu.chat.npc.PropertiesChatMenu;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandSpec;
@@ -16,7 +16,7 @@ import org.spongepowered.api.text.format.TextColors;
 public class CommandRespawn extends NPCFileCommand {
 
 	public CommandRespawn() {
-		super(PageTypes.MAIN);
+		super(PropertiesChatMenu::new);
 	}
 
 	@Override

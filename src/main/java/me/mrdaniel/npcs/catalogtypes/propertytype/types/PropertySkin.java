@@ -13,7 +13,7 @@ import org.spongepowered.api.text.Text;
 public class PropertySkin extends PropertyType<String> {
 
 	public PropertySkin() {
-		super("Skin", "skin", GenericArguments.string(Text.of("skin")));
+		super("Skin", "skin", "skin.name", GenericArguments.string(Text.of("skin")));
 	}
 
 	@Override

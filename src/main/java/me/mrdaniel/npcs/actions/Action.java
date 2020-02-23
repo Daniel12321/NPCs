@@ -30,6 +30,7 @@ public abstract class Action {
 	public abstract void execute(Player p, INPCData file, ActionResult result);
 	public abstract void serializeValue(ConfigurationNode node);
 
+	// TODO: Make optional to remove exception
 	public static Action of(ConfigurationNode node) throws ActionException {
 		return NPCs.getInstance().getGame().getRegistry().getType(ActionType.class, node.getNode("Type").getString("")).orElseThrow(() -> new ActionException("Invalid ActionType!")).getAction().apply(node);
 	}

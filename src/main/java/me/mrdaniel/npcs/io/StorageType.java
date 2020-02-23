@@ -3,9 +3,10 @@ package me.mrdaniel.npcs.io;
 import me.mrdaniel.npcs.io.database.Database;
 import me.mrdaniel.npcs.io.hocon.HoconNPCStore;
 import me.mrdaniel.npcs.io.nbt.NBTNPCStore;
+import me.mrdaniel.npcs.managers.NPCManager;
 
 import java.util.Optional;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 public enum StorageType {
 
@@ -14,15 +15,15 @@ public enum StorageType {
     NBT("nbt", NBTNPCStore::new);
 
     private String name;
-    private Supplier<INPCStore> npcStoreSupplier;
+    private Function<NPCManager, INPCStore> npcStoreSupplier;
 
-    StorageType(String name, Supplier<INPCStore> npcStoreSupplier) {
+    StorageType(String name, Function<NPCManager, INPCStore> npcStoreSupplier) {
         this.name = name;
         this.npcStoreSupplier = npcStoreSupplier;
     }
 
-    public INPCStore createNPCStore() {
-        return this.npcStoreSupplier.get();
+    public INPCStore createNPCStore(NPCManager manager) {
+        return this.npcStoreSupplier.apply(manager);
     }
 
     public static Optional<StorageType> of(String name) {

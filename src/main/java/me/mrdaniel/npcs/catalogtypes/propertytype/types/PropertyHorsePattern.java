@@ -1,7 +1,6 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
 import com.google.common.reflect.TypeToken;
-import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColor;
 import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColors;
 import me.mrdaniel.npcs.catalogtypes.horsepattern.HorsePattern;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
@@ -30,6 +29,6 @@ public class PropertyHorsePattern extends PropertyType<HorsePattern> {
 
 	@Override
 	public void apply(NPCAble npc, HorsePattern value) {
-		((EntityHorse) npc).setHorseVariant(value.getNbtId() + npc.getProperty(PropertyTypes.HORSECOLOR).orElse(HorseColors.BROWN).getNbtId());
+		((EntityHorse) npc).setHorseVariant(value.getNbtId() + npc.getNPCProperty(PropertyTypes.HORSECOLOR).orElse(HorseColors.BROWN).getNbtId());
 	}
 }

@@ -1,13 +1,18 @@
-package me.mrdaniel.npcs.managers.menu;
+package me.mrdaniel.npcs.menu.chatmenu;
 
+import com.google.common.collect.Lists;
 import me.mrdaniel.npcs.actions.Action;
+import me.mrdaniel.npcs.actions.ActionSet;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
 
-public class ActionsPage extends MultiPage {
+import javax.annotation.Nullable;
+import java.util.List;
+
+public class ActionsChatMenu extends NPCChatMenu {
 
 	private static final Text ADD = Text.builder().append(
 			Text.of(TextColors.DARK_GREEN, "Add: "),
@@ -64,28 +69,40 @@ public class ActionsPage extends MultiPage {
 			.onClick(TextActions.suggestCommand("/npc action add condition money <money>")).build()
 			).build();
 
-	public ActionsPage(NPCAble npc) {
+	public ActionsChatMenu(NPCAble npc) {
 		super(npc);
 	}
 
 	@Override
-	public void updatePage(NPCAble npc) {
-		this.add(Text.of(TextColors.GOLD, "Actions: "));
+	protected Text getTitle() {
+		return Text.of(TextColors.YELLOW, "[ ", TextColors.RED, "NPC Actions", TextColors.YELLOW, " ]");
+	}
 
-		for (int i = 0; i < npc.getNPCData().getActions().size(); i++) {
-			Action a = npc.getNPCData().getActions().get(i);
-			this.add(Text.builder()
-					.append(this.getRemoveText(i), Text.of(" "), this.getUpText(i), Text.of(" "), this.getDownText(i), Text.of(TextColors.BLUE, " ", String.valueOf(i), ": "),a.getLine(i))
-					.build());
+	@Nullable
+	@Override
+	protected Text getHeader() {
+		return null;
+	}
+
+	@Override
+	protected List<Text> getContents() {
+		ActionSet actions = this.npc.getNPCActions();
+		List<Text> lines = Lists.newArrayList();
+
+		lines.add(Text.of(TextColors.GOLD, "Actions: "));
+		for (int i = 0; i < actions.getAllActions().size(); i++) {
+			Action a = actions.getAction(i);
+			lines.add(Text.of(this.getRemoveText(i), " ", this.getUpText(i), " ", this.getDownText(i), " ", Text.of(TextColors.BLUE, i, ": "), a.getLine(i)));
 		}
-		this.add(Text.EMPTY);
 
-		this.add(ADD);
-		this.add(ADD_COMMAND);
-		this.add(ADD_CONDITION);
+		lines.add(Text.EMPTY);
+		lines.add(ADD);
+		lines.add(ADD_COMMAND);
+		lines.add(ADD_CONDITION);
+		lines.add(Text.EMPTY);
+		lines.add(TextUtils.getToggleText("Repeat", "/npc action repeat", actions.isRepeatActions()));
 
-		this.add(Text.EMPTY);
-		this.add(TextUtils.getToggleText("Repeat", "/npc action repeat", npc.getNPCData().getRepeatActions()));
+		return lines;
 	}
 
 	private Text getRemoveText(int index) {
@@ -96,7 +113,7 @@ public class ActionsPage extends MultiPage {
 				.build();
 	}
 
-	private final Text getUpText(int index) {
+	private Text getUpText(int index) {
 		return Text.builder()
 				.append(Text.of(TextColors.YELLOW, "[˄]"))
 				.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Move Up")))
@@ -104,11 +121,15 @@ public class ActionsPage extends MultiPage {
 				.build();
 	}
 
-	private final Text getDownText(int index) {
+	private Text getDownText(int index) {
 		return Text.builder()
 				.append(Text.of(TextColors.YELLOW, "[˅]"))
 				.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Move Down")))
 				.onClick(TextActions.runCommand("/npc action swap " + index + " " + (index + 1)))
 				.build();
+	}
+
+	public Text getActionsButton() {
+		return this.getButton(TextUtils.getButton("Actions", this::send));
 	}
 }

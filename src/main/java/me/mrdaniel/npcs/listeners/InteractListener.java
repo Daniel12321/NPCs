@@ -63,9 +63,9 @@ public class InteractListener {
 		try {
 			NPCs.getInstance().getActionManager().execute(p.getUniqueId(), npc.getNPCData());
 		} catch (NPCException exc) {
-			NPCs.getInstance().getLogger().error("Failed to execute action for npc " + npc.getNPCData().getId());
+			NPCs.getInstance().getLogger().error("Failed to execute action for npc " + npc.getNPCData().getNPCId());
 		}
 
-		return !npc.getProperty(PropertyTypes.INTERACT).orElse(true);
+		return !npc.getNPCProperty(PropertyTypes.INTERACT).orElse(true);
 	}
 }

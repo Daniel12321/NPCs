@@ -32,11 +32,11 @@ public class PropertyName extends PropertyType<String> {
 		((Living) npc).offer(Keys.DISPLAY_NAME, TextUtils.toText(value));
 
 		if (npc instanceof Human) {
-			PropertyTypes.ARMOR.forEach(prop -> npc.getProperty(prop).ifPresent(is -> prop.apply(npc, is)));
+			PropertyTypes.ARMOR.forEach(prop -> npc.getNPCProperty(prop).ifPresent(is -> prop.apply(npc, is)));
 		}
 
-		if (npc.getProperty(PropertyTypes.GLOWING).orElse(false)) {
-			npc.getProperty(PropertyTypes.GLOWCOLOR).ifPresent(color -> PropertyTypes.GLOWCOLOR.apply(npc, color));
+		if (npc.getNPCProperty(PropertyTypes.GLOWING).orElse(false)) {
+			npc.getNPCProperty(PropertyTypes.GLOWCOLOR).ifPresent(color -> PropertyTypes.GLOWCOLOR.apply(npc, color));
 		}
 	}
 }

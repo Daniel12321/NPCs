@@ -9,7 +9,7 @@ import org.spongepowered.api.item.inventory.ItemStack;
 public class PropertyChestplate extends PropertyType<ItemStack> {
 
 	public PropertyChestplate() {
-		super("Chestplate", "chestplate");
+		super("Chestplate", "chestplate", "equipment.chestplate");
 	}
 
 	@Override
