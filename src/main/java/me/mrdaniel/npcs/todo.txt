@@ -1,6 +1,5 @@
 
 TODO:
-- Fix teleporing over longer distances (unloaded chunks), improve NPC spawning overall
 - Fix the horse mount movement bug
 - Fix squid being glitchy then pushed
 - Add a way to select villagers (InteractListener)
