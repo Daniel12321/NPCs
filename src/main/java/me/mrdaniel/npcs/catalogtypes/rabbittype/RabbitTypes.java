@@ -14,8 +14,5 @@ public class RabbitTypes {
 	public static final RabbitType SALT_AND_PEPPER = new RabbitType("SaltAndPepper", "salt_and_pepper", 5);
 	public static final RabbitType KILLER = new RabbitType("Killer", "killer", 99);
 
-	public static final List<RabbitType> ALL = Lists.newArrayList(
-			RabbitTypes.BROWN, RabbitTypes.WHITE, RabbitTypes.BLACK, RabbitTypes.BLACK_AND_WHITE,
-			RabbitTypes.GOLD, RabbitTypes.SALT_AND_PEPPER, RabbitTypes.KILLER
-	);
+	public static final List<RabbitType> ALL = Lists.newArrayList(BROWN, WHITE, BLACK, BLACK_AND_WHITE, GOLD, SALT_AND_PEPPER, KILLER);
 }

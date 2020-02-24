@@ -4,7 +4,6 @@ TODO:
 - Fix the horse mount movement bug
 - Fix squid being glitchy then pushed
 - Add a way to select villagers (InteractListener)
-- Improve action serialization
 - Check for more efficient ways to make NPCs look at players (MixinEntityLiving) (Possible AI tasks)
 - Check for more efficient ways to find NPC entities (NPCManager#getNPC)
 - Choose between current (SelectedManager) or custom data for selecting NPCs

@@ -31,7 +31,7 @@ public class ActionSetTypeSerializer implements TypeSerializer<ActionSet> {
 		if (actions.isActionsModified()) {
 			for (int i = 0; i < actions.getAllActions().size(); i++) {
 				node.getNode("actions").removeChild(Integer.toString(i));
-				actions.getAllActions().get(i).serialize(node.getNode("actions", Integer.toString(i)));
+				node.getNode("actions", Integer.toString(i)).setValue(TypeToken.of(Action.class), actions.getAction(i));
 			}
 		}
 		if (actions.isCurrentModified()) {

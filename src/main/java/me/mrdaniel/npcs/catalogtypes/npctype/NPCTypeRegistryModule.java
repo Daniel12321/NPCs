@@ -2,14 +2,13 @@ package me.mrdaniel.npcs.catalogtypes.npctype;
 
 import org.spongepowered.api.registry.CatalogRegistryModule;
 
-import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Optional;
 
 public class NPCTypeRegistryModule implements CatalogRegistryModule<NPCType> {
 
 	@Override
-	public Optional<NPCType> getById(@Nonnull String id) {
+	public Optional<NPCType> getById(String id) {
 		for (NPCType type : this.getAll()) {
 			if (type.getId().equalsIgnoreCase(id)) {
 				return Optional.of(type);

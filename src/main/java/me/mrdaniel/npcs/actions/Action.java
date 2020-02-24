@@ -5,9 +5,11 @@ import me.mrdaniel.npcs.catalogtypes.actiontype.ActionType;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.managers.ActionResult;
 import ninja.leaping.configurate.ConfigurationNode;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 
+import java.util.List;
 import java.util.Optional;
 
 public abstract class Action {
@@ -22,14 +24,9 @@ public abstract class Action {
 		return this.type;
 	}
 
-	public void serialize(ConfigurationNode node) {
-		node.getNode("Type").setValue(this.type.getId());
-		this.serializeValue(node);
-	}
-
-	public abstract Text getLine(final int index);
+	public abstract List<Text> getLines(final int index);
 	public abstract void execute(Player p, INPCData file, ActionResult result);
-	public abstract void serializeValue(ConfigurationNode node);
+	public abstract void serializeValue(ConfigurationNode node) throws ObjectMappingException;
 
 	public static Optional<Action> of(ConfigurationNode node) {
 		return NPCs.getInstance().getGame().getRegistry()

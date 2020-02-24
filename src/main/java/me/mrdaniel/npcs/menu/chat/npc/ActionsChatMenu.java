@@ -1,7 +1,6 @@
 package me.mrdaniel.npcs.menu.chat.npc;
 
 import com.google.common.collect.Lists;
-import me.mrdaniel.npcs.actions.Action;
 import me.mrdaniel.npcs.actions.ActionSet;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.utils.TextUtils;
@@ -91,8 +90,13 @@ public class ActionsChatMenu extends NPCChatMenu {
 
 		lines.add(Text.of(TextColors.GOLD, "Actions: "));
 		for (int i = 0; i < actions.getAllActions().size(); i++) {
-			Action a = actions.getAction(i);
-			lines.add(Text.of(this.getRemoveText(i), " ", this.getUpText(i), " ", this.getDownText(i), " ", Text.of(TextColors.BLUE, i, ": "), a.getLine(i)));
+			List<Text> actionLines = actions.getAction(i).getLines(i);
+			int lineIndex = 0;
+
+			lines.add(Text.of(this.getRemoveText(i), " ", this.getUpText(i), " ", this.getDownText(i), " ", Text.of(TextColors.BLUE, i, ": "), actionLines.get(lineIndex++)));
+			while (lineIndex < actionLines.size()) {
+				lines.add(actionLines.get(lineIndex++));
+			}
 		}
 
 		lines.add(Text.EMPTY);
