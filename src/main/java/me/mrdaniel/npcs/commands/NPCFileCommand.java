@@ -15,28 +15,28 @@ import java.util.function.Function;
 
 public abstract class NPCFileCommand extends PlayerCommand {
 
-	private final Function<NPCAble, NPCChatMenu> menu;
+	private final Function<INPCData, NPCChatMenu> menu;
 
-	public NPCFileCommand(Function<NPCAble, NPCChatMenu> menu) {
+	public NPCFileCommand(Function<INPCData, NPCChatMenu> menu) {
 		this.menu = menu;
 	}
 
 	@Override
 	public void execute(Player p, CommandContext args) throws CommandException {
 		Optional<Integer> id = args.getOne("id");
-		Optional<INPCData> selected = NPCs.getInstance().getSelectedManager().get(p.getUniqueId());
+		INPCData selected = NPCs.getInstance().getSelectedManager().get(p.getUniqueId()).orElse(null);
 
 		if (id.isPresent()) {
 			INPCData file = NPCs.getInstance().getNPCManager().getData(id.get()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "No NPC with that ID exists!")));
 			this.execute(p, file, args);
-		} else if (selected.isPresent()) {
-			this.execute(p, selected.get(), args);
-			NPCAble npc = NPCs.getInstance().getNPCManager().getNPC(selected.get()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "NPC is not spawned in!")));
+		} else if (selected != null) {
+			this.execute(p, selected, args);
+			NPCAble npc = NPCs.getInstance().getNPCManager().getNPC(selected).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "NPC is not spawned in!")));
 			this.menu.apply(npc).send(p);
 		}  else {
 			throw new CommandException(Text.of(TextColors.RED, "You don't have an NPC selected!"));
 		}
 	}
 
-	public abstract void execute(Player p, INPCData file, CommandContext args) throws CommandException;
+	public abstract void execute(Player p, INPCData data, CommandContext args) throws CommandException;
 }

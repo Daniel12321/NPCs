@@ -12,5 +12,5 @@ public class ParrotTypes {
 	public static final ParrotType CYAN = new ParrotType("Cyan", "cyan", 3);
 	public static final ParrotType SILVER = new ParrotType("Silver", "silver", 4);
 
-	public static final List<ParrotType> ALL = Lists.newArrayList(ParrotTypes.RED, ParrotTypes.BLUE, ParrotTypes.GREEN, ParrotTypes.CYAN, ParrotTypes.SILVER);
+	public static final List<ParrotType> ALL = Lists.newArrayList(RED, BLUE, GREEN, CYAN, SILVER);
 }

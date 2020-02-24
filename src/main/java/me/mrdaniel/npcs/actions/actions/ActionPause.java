@@ -1,5 +1,6 @@
 package me.mrdaniel.npcs.actions.actions;
 
+import com.google.common.collect.Lists;
 import me.mrdaniel.npcs.actions.Action;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
 import me.mrdaniel.npcs.io.INPCData;
@@ -8,6 +9,8 @@ import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
+
+import java.util.List;
 
 public class ActionPause extends Action {
 
@@ -28,7 +31,7 @@ public class ActionPause extends Action {
 	public void serializeValue(ConfigurationNode node) {}
 
 	@Override
-	public Text getLine(int index) {
-		return Text.of(TextColors.GOLD, "Pause");
+	public List<Text> getLines(int index) {
+		return Lists.newArrayList(Text.of(TextColors.GOLD, "Pause"));
 	}
 }

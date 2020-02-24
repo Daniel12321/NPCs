@@ -6,7 +6,6 @@ import com.google.inject.Inject;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.actions.ActionSet;
 import me.mrdaniel.npcs.exceptions.NPCException;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.INPCData;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.scheduler.Task;
@@ -39,14 +38,6 @@ public class ActionManager {
 		data.writeNPCActions().saveNPC();
 		this.execute(uuid, data);
 	}
-
-//	public void execute(UUID uuid, Living npc) throws NPCException {
-//		this.execute(uuid, npc.get(NPCData.class).orElseThrow(() -> new NPCException("This Entity is not an NPC!")));
-//	}
-
-//	public void execute(UUID uuid, NPCData data) throws NPCException {
-//		this.execute(uuid, NPCManager.getInstance().getFile(data.getId()).orElseThrow(() -> new NPCException("Could not find file for NPC!")));
-//	}
 
 	public void execute(UUID uuid, INPCData data) throws NPCException {
 		if (this.waiting.contains(uuid)) {
@@ -100,7 +91,7 @@ public class ActionManager {
 		this.choosing.remove(uuid);
 	}
 
-	public void removeChoosing(NPCAble npc) {
-		this.choosing.entrySet().stream().filter(e -> e.getValue() == npc.getNPCData()).map(Map.Entry::getKey).forEach(this.choosing::remove);
+	public void removeChoosing(INPCData data) {
+		this.choosing.entrySet().stream().filter(e -> e.getValue() == data).map(Map.Entry::getKey).forEach(this.choosing::remove);
 	}
 }

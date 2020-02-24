@@ -3,6 +3,8 @@ package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColor;
 import me.mrdaniel.npcs.catalogtypes.horsepattern.HorsePatterns;
+import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
+import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
@@ -24,6 +26,11 @@ public class PropertyHorseColor extends PropertyType<HorseColor> {
 	@Override
 	public boolean isSupported(final NPCAble npc) {
 		return npc instanceof EntityHorse;
+	}
+
+	@Override
+	public boolean isSupported(NPCType type) {
+		return type == NPCTypes.HORSE;
 	}
 
 	@Override

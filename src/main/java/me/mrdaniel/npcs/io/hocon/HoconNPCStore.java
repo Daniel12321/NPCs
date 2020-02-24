@@ -2,9 +2,11 @@ package me.mrdaniel.npcs.io.hocon;
 
 import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.actions.Action;
 import me.mrdaniel.npcs.actions.ActionSet;
 import me.mrdaniel.npcs.actions.ActionSetTypeSerializer;
 import me.mrdaniel.npcs.actions.Condition;
+import me.mrdaniel.npcs.actions.actions.ActionTypeSerializer;
 import me.mrdaniel.npcs.actions.conditions.ConditionTypeSerializer;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionType;
 import me.mrdaniel.npcs.catalogtypes.career.Career;
@@ -53,8 +55,9 @@ public class HoconNPCStore implements INPCStore {
 		CatalogTypeSerializer.register(ActionType.class);
 		CatalogTypeSerializer.register(ConditionType.class);
 		CatalogTypeSerializer.register(PropertyType.class);
-		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(ActionSet.class), new ActionSetTypeSerializer());
+		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Action.class), new ActionTypeSerializer());
 		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Condition.class), new ConditionTypeSerializer());
+		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(ActionSet.class), new ActionSetTypeSerializer());
 	}
 
     @Override

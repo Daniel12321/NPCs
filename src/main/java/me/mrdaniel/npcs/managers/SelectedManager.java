@@ -2,9 +2,6 @@ package me.mrdaniel.npcs.managers;
 
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
-import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.exceptions.NPCException;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.Config;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.menu.chat.npc.PropertiesChatMenu;
@@ -34,15 +31,11 @@ public class SelectedManager {
 		this.open_menu = config.getNode("open_menu_on_select").getBoolean(true);
 	}
 
-	public void select(Player p, INPCData data) throws NPCException {
-		this.select(p, NPCs.getInstance().getNPCManager().getNPC(data).orElseThrow(() -> new NPCException("Failed to select NPC: NPC hasn't been spawned.")));
-	}
-
-	public void select(Player p, NPCAble npc) {
-		this.selected.put(p.getUniqueId(), npc.getNPCData());
+	public void select(Player p, INPCData data) {
+		this.selected.put(p.getUniqueId(), data);
 
 		if (this.open_menu) {
-			new PropertiesChatMenu(npc).send(p);
+			new PropertiesChatMenu(data).send(p);
 		} else {
 			p.sendMessage(ChatTypes.ACTION_BAR, Text.of(TextColors.DARK_GRAY, "[", TextColors.GOLD, "NPCs", TextColors.DARK_GRAY, "] ", this.select_message));
 		}

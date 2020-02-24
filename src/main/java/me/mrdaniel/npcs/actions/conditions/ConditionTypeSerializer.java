@@ -20,6 +20,7 @@ public class ConditionTypeSerializer implements TypeSerializer<Condition> {
 
 	@Override
 	public void serialize(TypeToken<?> type, Condition condition, ConfigurationNode value) throws ObjectMappingException {
-		condition.serialize(value);
+		value.getNode("Type").setValue(condition.getType().getId());
+		condition.serializeValue(value);
 	}
 }

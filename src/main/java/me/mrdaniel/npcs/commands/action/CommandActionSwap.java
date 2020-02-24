@@ -7,6 +7,7 @@ import me.mrdaniel.npcs.events.NPCEditEvent;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.menu.chat.npc.ActionsChatMenu;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
@@ -18,16 +19,15 @@ import org.spongepowered.api.text.format.TextColors;
 public class CommandActionSwap extends NPCCommand {
 
 	public CommandActionSwap() {
-		super(ActionsChatMenu::new);
+		super(ActionsChatMenu::new, false);
 	}
 
 	@Override
-	public void execute(Player p, NPCAble npc, CommandContext args) throws CommandException {
-		if (new NPCEditEvent(p, npc).post()) {
+	public void execute(Player p, INPCData data, NPCAble npc, CommandContext args) throws CommandException {
+		if (Sponge.getEventManager().post(new NPCEditEvent(p, data, npc))) {
 			throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
 		}
 
-		INPCData data = npc.getNPCData();
 		ActionSet actions = data.getNPCActions();
 		int first = args.<Integer>getOne("first").get();
 		int second = args.<Integer>getOne("second").get();

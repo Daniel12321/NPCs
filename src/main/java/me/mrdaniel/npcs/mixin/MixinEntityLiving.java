@@ -23,6 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Mixin(value = EntityLiving.class, priority = 10)
 public abstract class MixinEntityLiving extends EntityLivingBase implements NPCAble {
@@ -90,6 +91,17 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 		return this.data.getNPCId();
 	}
 
+	@Nullable
+	@Override
+	public UUID getNPCUUID() {
+		return this.data.getNPCUUID();
+	}
+
+	@Override
+	public void setNPCUUID(@Nullable UUID uuid) {
+		this.data.setNPCUUID(uuid);
+	}
+
 	@Override
 	public Position getNPCPosition() {
 		return this.data.getNPCPosition();
@@ -97,6 +109,7 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 
 	@Override
 	public INPCData setNPCPosition(Position value) {
+		super.setPositionAndRotation(value.getX(), value.getY(), value.getZ(), value.getYaw(), value.getPitch());
 		return this.data.setNPCPosition(value);
 	}
 

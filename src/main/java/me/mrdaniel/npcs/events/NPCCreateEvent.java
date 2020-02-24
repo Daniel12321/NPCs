@@ -1,11 +1,11 @@
 package me.mrdaniel.npcs.events;
 
-import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
+import me.mrdaniel.npcs.io.INPCData;
 import org.spongepowered.api.command.CommandSource;
 
-public class NPCCreateEvent extends NPCEvent<NPCType> {
+public class NPCCreateEvent extends NPCEvent {
 
-	public NPCCreateEvent(CommandSource source, NPCType type) {
-		super(source, type);
+	public NPCCreateEvent(CommandSource source, INPCData data) {
+		super(source, data, null);
 	}
 }

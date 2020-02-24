@@ -21,11 +21,6 @@ public abstract class Condition {
 		return this.type;
 	}
 
-	public void serialize(ConfigurationNode node) {
-		node.getNode("Type").setValue(this.type.getId());
-		this.serializeValue(node);
-	}
-
 	public abstract Text getLine();
 	public abstract boolean isMet(Player p);
 	public abstract void take(Player p);

@@ -5,7 +5,9 @@ import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.utils.Position;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
+import java.util.UUID;
 
 public class DatabaseNPCData implements INPCData {
 
@@ -13,6 +15,15 @@ public class DatabaseNPCData implements INPCData {
     public int getNPCId() {
         return 0;
     }
+
+    @Nullable
+    @Override
+    public UUID getNPCUUID() {
+        return null;
+    }
+
+    @Override
+    public void setNPCUUID(@Nullable UUID uuid) {}
 
     @Override
     public Position getNPCPosition() {
@@ -45,6 +56,5 @@ public class DatabaseNPCData implements INPCData {
     }
 
     @Override
-    public void saveNPC() {
-    }
+    public void saveNPC() {}
 }

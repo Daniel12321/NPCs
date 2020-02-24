@@ -1,7 +1,7 @@
 package me.mrdaniel.npcs.menu.chat.npc;
 
 import com.google.common.collect.Lists;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.data.type.HandTypes;
 import org.spongepowered.api.entity.ArmorEquipable;
@@ -16,7 +16,7 @@ import java.util.Optional;
 
 public class EquipmentChatMenu extends NPCChatMenu {
 
-    public EquipmentChatMenu(NPCAble npc) {
+    public EquipmentChatMenu(INPCData npc) {
         super(npc);
     }
 
@@ -33,7 +33,7 @@ public class EquipmentChatMenu extends NPCChatMenu {
 
     @Override
     public List<Text> getContents() {
-        ArmorEquipable ae = (ArmorEquipable) npc;
+        ArmorEquipable ae = (ArmorEquipable) data;
         List<Text> lines = Lists.newArrayList();
 
         lines.add(getArmorText("Helmet", ae.getHelmet()));

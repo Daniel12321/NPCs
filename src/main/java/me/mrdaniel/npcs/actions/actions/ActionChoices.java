@@ -1,5 +1,6 @@
 package me.mrdaniel.npcs.actions.actions;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.actions.Action;
@@ -14,6 +15,7 @@ import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.format.TextStyles;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -61,14 +63,15 @@ public class ActionChoices extends Action {
 	}
 
 	@Override
-	public Text getLine(int index) {
+	public List<Text> getLines(int index) {
 		Text.Builder b = Text.builder().append(Text.of(TextColors.GOLD, "Choices: "));
 		this.choices.forEach((name, next) -> b.append(this.getChoiceText(index, name, next), Text.of(" ")));
-		return b.append(
+
+		return Lists.newArrayList(b.append(
 				Text.builder().append(Text.of(TextColors.DARK_GREEN, "[+]"))
 				.onHover(TextActions.showText(Text.of(TextColors.DARK_GREEN, "Add Choice")))
 				.onClick(TextActions.suggestCommand("/npc action edit " + index + " addchoice <name> <goto>"))
-				.build()).build();
+				.build()).build());
 	}
 
 	private Text getChoiceText(int index, String name, int next) {

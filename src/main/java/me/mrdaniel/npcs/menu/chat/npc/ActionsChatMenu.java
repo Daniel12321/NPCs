@@ -1,9 +1,8 @@
 package me.mrdaniel.npcs.menu.chat.npc;
 
 import com.google.common.collect.Lists;
-import me.mrdaniel.npcs.actions.Action;
 import me.mrdaniel.npcs.actions.ActionSet;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
@@ -69,7 +68,7 @@ public class ActionsChatMenu extends NPCChatMenu {
 			.onClick(TextActions.suggestCommand("/npc action add condition money <money>")).build()
 			).build();
 
-	public ActionsChatMenu(NPCAble npc) {
+	public ActionsChatMenu(INPCData npc) {
 		super(npc);
 	}
 
@@ -86,13 +85,18 @@ public class ActionsChatMenu extends NPCChatMenu {
 
 	@Override
 	public List<Text> getContents() {
-		ActionSet actions = this.npc.getNPCActions();
+		ActionSet actions = this.data.getNPCActions();
 		List<Text> lines = Lists.newArrayList();
 
 		lines.add(Text.of(TextColors.GOLD, "Actions: "));
 		for (int i = 0; i < actions.getAllActions().size(); i++) {
-			Action a = actions.getAction(i);
-			lines.add(Text.of(this.getRemoveText(i), " ", this.getUpText(i), " ", this.getDownText(i), " ", Text.of(TextColors.BLUE, i, ": "), a.getLine(i)));
+			List<Text> actionLines = actions.getAction(i).getLines(i);
+			int lineIndex = 0;
+
+			lines.add(Text.of(this.getRemoveText(i), " ", this.getUpText(i), " ", this.getDownText(i), " ", Text.of(TextColors.BLUE, i, ": "), actionLines.get(lineIndex++)));
+			while (lineIndex < actionLines.size()) {
+				lines.add(actionLines.get(lineIndex++));
+			}
 		}
 
 		lines.add(Text.EMPTY);

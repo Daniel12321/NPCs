@@ -161,17 +161,16 @@ public class NPCs {
 	@Listener
 	public void onReload(@Nullable GameReloadEvent e) {
 		this.onStopping(null);
-		this.onInit(null);
 
-		this.game.getServer().getWorlds().forEach(world -> {
-			this.npcManager.getNPCs(world.getName()).forEach(data -> {
-				try {
-					this.npcManager.spawn(data);
-				} catch (NPCException exc) {
-					this.logger.error("Failed to respawn NPC " + data.getNPCId() + ": ", exc);
-				}
-			});
-		});
+		this.game.getServer().getWorlds().forEach(world -> this.npcManager.getNPCs(world.getName()).forEach(data -> {
+			try {
+				this.npcManager.spawn(data);
+			} catch (NPCException exc) {
+				this.logger.error("Failed to respawn NPC " + data.getNPCId() + ": ", exc);
+			}
+		}));
+
+		this.onInit(null);
 	}
 
 	@Listener

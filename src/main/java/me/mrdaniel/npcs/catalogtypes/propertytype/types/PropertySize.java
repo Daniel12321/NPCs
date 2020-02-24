@@ -1,6 +1,8 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
 import com.google.common.reflect.TypeToken;
+import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
+import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import org.spongepowered.api.command.args.GenericArguments;
@@ -23,6 +25,11 @@ public class PropertySize extends PropertyType<Integer> {
 	@Override
 	public boolean isSupported(final NPCAble npc) {
 		return npc instanceof Slime;
+	}
+
+	@Override
+	public boolean isSupported(NPCType type) {
+		return type == NPCTypes.SLIME;
 	}
 
 	@Override

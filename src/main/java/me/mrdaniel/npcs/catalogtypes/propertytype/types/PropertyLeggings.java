@@ -1,6 +1,7 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
 import com.google.common.reflect.TypeToken;
+import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import org.spongepowered.api.entity.ArmorEquipable;
@@ -20,6 +21,11 @@ public class PropertyLeggings extends PropertyType<ItemStack> {
 	@Override
 	public boolean isSupported(final NPCAble npc) {
 		return npc instanceof ArmorEquipable;
+	}
+
+	@Override
+	public boolean isSupported(NPCType type) {
+		return type.isArmorEquipable();
 	}
 
 	@Override

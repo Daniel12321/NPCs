@@ -1,5 +1,6 @@
 package me.mrdaniel.npcs.actions.actions;
 
+import com.google.common.collect.Lists;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.actions.Action;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
@@ -11,6 +12,7 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ActionCooldown extends Action {
@@ -55,7 +57,7 @@ public class ActionCooldown extends Action {
 	}
 
 	@Override
-	public Text getLine(int index) {
-		return Text.of(TextColors.GOLD, "Cooldown: ", TextColors.AQUA, this.seconds, " seconds");
+	public List<Text> getLines(int index) {
+		return Lists.newArrayList(Text.of(TextColors.GOLD, "Cooldown: ", TextColors.AQUA, this.seconds, " seconds"));
 	}
 }

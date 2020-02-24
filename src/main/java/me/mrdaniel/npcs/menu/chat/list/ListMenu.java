@@ -3,7 +3,6 @@ package me.mrdaniel.npcs.menu.chat.list;
 import com.google.common.collect.Lists;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
-import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.menu.chat.ChatMenu;
 import me.mrdaniel.npcs.utils.Position;
@@ -57,13 +56,7 @@ public class ListMenu implements ChatMenu {
         data.getNPCProperty(PropertyTypes.NAME).ifPresent(name -> b.append(Text.of(TextColors.GOLD, " Name=", TextColors.RED), TextUtils.toText(name)));
 
         return b.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Select")))
-                .onClick(TextActions.executeCallback(src -> {
-                    try {
-                        NPCs.getInstance().getSelectedManager().select((Player) src, data);
-                    } catch (NPCException exc) {
-                        src.sendMessage(Text.of(TextColors.RED, "Failed to select NPC: NPC is not loaded!"));
-                    }
-                }))
+                .onClick(TextActions.executeCallback(src -> NPCs.getInstance().getSelectedManager().select((Player) src, data)))
                 .build();
     }
 

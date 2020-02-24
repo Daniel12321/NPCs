@@ -1,28 +1,31 @@
 package me.mrdaniel.npcs.menu.chat.npc;
 
+import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
+import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.menu.chat.FullChatMenu;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 public abstract class NPCChatMenu implements FullChatMenu {
 
-    protected final NPCAble npc;
+    protected final INPCData data;
 
-    public NPCChatMenu(NPCAble npc) {
-        this.npc = npc;
+    public NPCChatMenu(INPCData data) {
+        this.data = data;
     }
 
     @Override
     public Text getFooter() {
-        Text.Builder b = Text.builder().append(new PropertiesChatMenu(npc).getPropertiesButton());
+        Text.Builder b = Text.builder().append(new PropertiesChatMenu(this.data).getPropertiesButton());
 
-        if (PropertyTypes.HELMET.isSupported(npc)) {
-            b.append(new EquipmentChatMenu(npc).getEquipmentButton());
+        NPCType type = this.data.getNPCProperty(PropertyTypes.TYPE).get();
+        if (PropertyTypes.HELMET.isSupported(type)) {
+            b.append(new EquipmentChatMenu(this.data).getEquipmentButton());
         }
 
-        b.append(new ActionsChatMenu(npc).getActionsButton());
+        b.append(new ActionsChatMenu(this.data).getActionsButton());
 
         Text bar = Text.of(TextColors.YELLOW, getBar((58 - b.build().toPlain().length()) / 2));
 
