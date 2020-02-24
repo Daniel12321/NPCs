@@ -4,11 +4,16 @@ import me.mrdaniel.npcs.actions.ActionSet;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.utils.Position;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface INPCData {
 
     int getNPCId();
+
+    @Nullable UUID getNPCUUID();
+    void setNPCUUID(@Nullable UUID uuid);
 
     Position getNPCPosition();
     INPCData setNPCPosition(Position value);

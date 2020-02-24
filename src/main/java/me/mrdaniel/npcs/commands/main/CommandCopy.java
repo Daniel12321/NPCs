@@ -4,8 +4,10 @@ import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
+import me.mrdaniel.npcs.commands.NPCFileCommand;
 import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.menu.chat.npc.PropertiesChatMenu;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
@@ -14,16 +16,18 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-public class CommandCopy extends NPCCommand {
+public class CommandCopy extends NPCFileCommand {
 
 	public CommandCopy() {
 		super(PropertiesChatMenu::new);
 	}
 
 	@Override
-	public void execute(final Player p, final NPCAble npc, final CommandContext args) throws CommandException {
+	public void execute(Player p, INPCData data, CommandContext args) throws CommandException {
 		try {
-			NPCs.getInstance().getNPCManager().create(p, npc.getNPCData().getNPCProperty(PropertyTypes.TYPE).orElse(NPCTypes.HUMAN));
+			NPCAble copy = NPCs.getInstance().getNPCManager().create(p, data.getNPCProperty(PropertyTypes.TYPE).orElse(NPCTypes.HUMAN));
+			PropertyTypes.NPC_INIT.forEach(prop -> data.getNPCProperty(prop).ifPresent(value -> copy.setNPCProperty(prop, value)));
+			data.getNPCActions().getAllActions().forEach(action -> copy.getNPCActions().addAction(action));
 		} catch (final NPCException exc) {
 			throw new CommandException(Text.of(TextColors.RED, "Failed to copy NPC: ", exc.getMessage()));
 		}

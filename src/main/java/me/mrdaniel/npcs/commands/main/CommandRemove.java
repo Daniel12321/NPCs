@@ -20,6 +20,7 @@ import java.util.Optional;
 
 public class CommandRemove implements CommandExecutor {
 
+	// TODO: Rewrite to use NPCFileCommand
 	@Override
 	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
 		NPCManager npcManager = NPCs.getInstance().getNPCManager();

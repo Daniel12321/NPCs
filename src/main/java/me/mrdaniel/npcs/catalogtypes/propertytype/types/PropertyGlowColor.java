@@ -2,6 +2,7 @@ package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
 import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.glowcolor.GlowColor;
+import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
@@ -26,6 +27,11 @@ public class PropertyGlowColor extends PropertyType<GlowColor> {
 
 	@Override
 	public boolean isSupported(final NPCAble npc) {
+		return true;
+	}
+
+	@Override
+	public boolean isSupported(NPCType type) {
 		return true;
 	}
 

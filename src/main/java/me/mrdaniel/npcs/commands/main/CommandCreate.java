@@ -4,7 +4,6 @@ import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.commands.PlayerCommand;
-import me.mrdaniel.npcs.events.NPCCreateEvent;
 import me.mrdaniel.npcs.exceptions.NPCException;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
@@ -18,14 +17,8 @@ public class CommandCreate extends PlayerCommand {
 
 	@Override
 	public void execute(final Player p, final CommandContext args) throws CommandException {
-		NPCType type = args.<NPCType>getOne("type").orElse(NPCTypes.HUMAN);
-
-		if (new NPCCreateEvent(p, type).post()) {
-			throw new CommandException(Text.of(TextColors.RED, "Failed to create NPC: Event was cancelled"));
-		}
-
 		try {
-			NPCs.getInstance().getNPCManager().create(p, type);
+			NPCs.getInstance().getNPCManager().create(p, args.<NPCType>getOne("type").orElse(NPCTypes.HUMAN));
 		} catch (final NPCException exc) {
 			throw new CommandException(Text.of(TextColors.RED, "Failed to create NPC: ", exc.getMessage()));
 		}

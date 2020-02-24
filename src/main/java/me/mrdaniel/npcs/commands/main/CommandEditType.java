@@ -34,7 +34,7 @@ public class CommandEditType extends PlayerCommand {
             npc.setNPCProperty(PropertyTypes.TYPE, type).saveNPC();
 
             Task.builder().delayTicks(5).execute(() -> {
-                NPCs.getInstance().getNPCManager().getNPC(npc.getNPCData()).ifPresent(newNPC -> new PropertiesChatMenu(newNPC).send(p));
+                NPCs.getInstance().getNPCManager().getNPC(selected.get()).ifPresent(newNPC -> new PropertiesChatMenu(newNPC).send(p));
             }).submit(NPCs.getInstance());
         } else {
             throw new CommandException(Text.of(TextColors.RED, "You don't have an NPC selected!"));

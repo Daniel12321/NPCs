@@ -1,11 +1,14 @@
 package me.mrdaniel.npcs.events;
 
+import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.INPCData;
 import org.spongepowered.api.command.CommandSource;
 
-public class NPCRemoveEvent extends NPCEvent<INPCData> {
+import javax.annotation.Nullable;
 
-	public NPCRemoveEvent(CommandSource source, INPCData file) {
-		super(source, file);
+public class NPCRemoveEvent extends NPCEvent {
+
+	public NPCRemoveEvent(CommandSource source, INPCData file, @Nullable NPCAble npc) {
+		super(source, file, npc);
 	}
 }

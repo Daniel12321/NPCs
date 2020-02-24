@@ -12,36 +12,31 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import java.util.Optional;
+import javax.annotation.Nullable;
 import java.util.function.Function;
 
-public abstract class NPCCommand extends PlayerCommand {
+public abstract class NPCCommand extends NPCFileCommand {
 
 	public static CommandElement ID_ARG = GenericArguments.optionalWeak(GenericArguments.integer(Text.of("id")));
 
-	private final Function<NPCAble, NPCChatMenu> menu;
+	private final boolean required;
 
-	public NPCCommand(Function<NPCAble, NPCChatMenu> menu) {
-		this.menu = menu;
+	public NPCCommand(Function<INPCData, NPCChatMenu> menu, boolean required) {
+		super(menu);
+
+		this.required = required;
 	}
 
 	@Override
-	public void execute(Player p, CommandContext args) throws CommandException {
-		Optional<Integer> id = args.getOne("id");
-		Optional<INPCData> selected = NPCs.getInstance().getSelectedManager().get(p.getUniqueId());
+	public void execute(Player p, INPCData data, CommandContext args) throws CommandException {
+		NPCAble npc = NPCs.getInstance().getNPCManager().getNPC(data).orElse(null);
 
-		if (id.isPresent()) {
-			INPCData data = NPCs.getInstance().getNPCManager().getData(id.get()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "No NPC with that ID exists!")));
-			NPCAble npc = NPCs.getInstance().getNPCManager().getNPC(data).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "NPC is not spawned in!")));
-			this.execute(p, npc, args);
-		} else if (selected.isPresent()) {
-			NPCAble npc = NPCs.getInstance().getNPCManager().getNPC(selected.get()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "NPC is not spawned in!")));
-			this.execute(p, npc, args);
-			this.menu.apply(npc).send(p);
-		} else {
-			throw new CommandException(Text.of(TextColors.RED, "You don't have an NPC selected!"));
+		if (this.required && npc == null) {
+			throw new CommandException(Text.of(TextColors.RED, "NPC is not loaded in!"));
 		}
+
+		this.execute(p, data, npc, args);
 	}
 
-	public abstract void execute(Player p, NPCAble npc, CommandContext args) throws CommandException;
+	public abstract void execute(Player p, INPCData data, @Nullable NPCAble npc, CommandContext args) throws CommandException;
 }

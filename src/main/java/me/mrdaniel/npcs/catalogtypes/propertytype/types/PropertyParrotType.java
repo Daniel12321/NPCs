@@ -1,6 +1,8 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
 import com.google.common.reflect.TypeToken;
+import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
+import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.catalogtypes.parrottype.ParrotType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
@@ -22,6 +24,11 @@ public class PropertyParrotType extends PropertyType<ParrotType> {
 	@Override
 	public boolean isSupported(final NPCAble npc) {
 		return npc instanceof EntityParrot;
+	}
+
+	@Override
+	public boolean isSupported(NPCType type) {
+		return type == NPCTypes.PARROT;
 	}
 
 	@Override

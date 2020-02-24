@@ -2,7 +2,7 @@ package me.mrdaniel.npcs.menu.chat.npc;
 
 import com.google.common.collect.Lists;
 import me.mrdaniel.npcs.actions.ActionSet;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
@@ -68,7 +68,7 @@ public class ActionsChatMenu extends NPCChatMenu {
 			.onClick(TextActions.suggestCommand("/npc action add condition money <money>")).build()
 			).build();
 
-	public ActionsChatMenu(NPCAble npc) {
+	public ActionsChatMenu(INPCData npc) {
 		super(npc);
 	}
 
@@ -85,7 +85,7 @@ public class ActionsChatMenu extends NPCChatMenu {
 
 	@Override
 	public List<Text> getContents() {
-		ActionSet actions = this.npc.getNPCActions();
+		ActionSet actions = this.data.getNPCActions();
 		List<Text> lines = Lists.newArrayList();
 
 		lines.add(Text.of(TextColors.GOLD, "Actions: "));

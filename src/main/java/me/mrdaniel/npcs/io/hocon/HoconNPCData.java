@@ -9,8 +9,10 @@ import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.utils.Position;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 
+import javax.annotation.Nullable;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.UUID;
 
 public class HoconNPCData extends Config implements INPCData {
 
@@ -18,12 +20,15 @@ public class HoconNPCData extends Config implements INPCData {
     private final String fileName;
     private final ActionSet actions;
 
+    @Nullable private UUID npcUUID;
+
 	public HoconNPCData(Path path, String fileName, int id) {
         super(path.resolve(fileName));
 
         this.id = id;
         this.fileName = fileName;
         this.actions = new ActionSet();
+        this.npcUUID = null;
 
         super.getNode("id").setValue(this.id);
     }
@@ -34,6 +39,7 @@ public class HoconNPCData extends Config implements INPCData {
         this.id = super.getNode("id").getInt();
         this.fileName = fileName;
         this.actions = this.loadActions();
+        this.npcUUID = null;
     }
 
     private ActionSet loadActions() {
@@ -44,22 +50,21 @@ public class HoconNPCData extends Config implements INPCData {
             return new ActionSet();
         }
     }
-//    private void load() {
-//        this.getNode("current").getChildrenMap().forEach((uuid, node) -> this.current.put(UUID.fromString((String)uuid), node.getInt(0)));
-//        this.getNode("cooldowns").getChildrenMap().forEach((uuid, node) -> this.cooldowns.put(UUID.fromString((String)uuid), node.getLong(0)));
-//
-//        for (int i = 0; i < this.getNode("actions").getChildrenMap().size(); i++) {
-//            try {
-//                actions.add(Action.of(this.getNode("actions", String.valueOf(i))));
-//            } catch (final ActionException exc) {
-//                NPCs.getInstance().getLogger().error("Failed to read action {} for npc {}!", i, id, exc);
-//            }
-//        }
-//    }
 
     @Override
     public int getNPCId() {
         return this.id;
+    }
+
+    @Nullable
+    @Override
+    public UUID getNPCUUID() {
+        return this.npcUUID;
+    }
+
+    @Override
+    public void setNPCUUID(@Nullable UUID uuid) {
+	    this.npcUUID = uuid;
     }
 
     @Override

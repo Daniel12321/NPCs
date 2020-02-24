@@ -4,8 +4,6 @@ import com.flowpowered.math.vector.Vector3d;
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColors;
-import me.mrdaniel.npcs.catalogtypes.horsepattern.HorsePatterns;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
@@ -19,12 +17,10 @@ import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.io.INPCStore;
 import me.mrdaniel.npcs.io.StorageType;
 import me.mrdaniel.npcs.utils.Position;
-import net.minecraft.entity.EntityLiving;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.world.World;
 
 import javax.annotation.Nullable;
@@ -53,19 +49,18 @@ public class NPCManager {
     }
 
     public NPCAble create(Player p, NPCType type) throws NPCException {
-		if (new NPCCreateEvent(p, type).post()) {
-			throw new NPCException("Event was cancelled!");
-		}
-
 		INPCData data = this.npcStore.create(type);
+
+        if (Sponge.getEventManager().post(new NPCCreateEvent(p, data))) {
+            this.npcStore.remove(data);
+            throw new NPCException("Event was cancelled!");
+        }
+
 		this.npcs.put(data.getNPCId(), data);
 
         if (type == NPCTypes.HUMAN) {
             data.setNPCProperty(PropertyTypes.NAME, "Steve");
-        } else if (type == NPCTypes.HORSE) {
-		    data.setNPCProperty(PropertyTypes.HORSECOLOR, HorseColors.BROWN).setNPCProperty(PropertyTypes.HORSEPATTERN, HorsePatterns.NONE);
-		}
-
+        }
         data.setNPCPosition(new Position(p.getWorld().getName(), p.getLocation().getPosition(), p.getHeadRotation()));
 		data.setNPCProperty(PropertyTypes.TYPE, type)
                 .setNPCProperty(PropertyTypes.INTERACT, true)
@@ -79,7 +74,7 @@ public class NPCManager {
     }
 
     public NPCAble spawn(INPCData data) throws NPCException {
-        this.getNPC(data).ifPresent(npc -> ((EntityLiving)npc).setDead());
+        this.getNPC(data).ifPresent(npc -> ((Entity)npc).remove());
 
         Position pos = data.getNPCPosition();
         World world = pos.getWorld().orElseThrow(() -> new NPCException("Invalid world!"));
@@ -88,8 +83,9 @@ public class NPCManager {
 
         NPCAble npc = (NPCAble) ent;
         npc.setNPCData(data);
+        data.setNPCUUID(ent.getUniqueId());
 
-        ((net.minecraft.entity.Entity) ent).setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), pos.getYaw(), pos.getPitch());
+        ((net.minecraft.entity.Entity)ent).setPositionAndRotation(pos.getX(), pos.getY(), pos.getZ(), pos.getYaw(), pos.getPitch());
 
         world.spawnEntity(ent);
         return npc;
@@ -104,12 +100,12 @@ public class NPCManager {
     }
 
     public void remove(CommandSource src, INPCData data, @Nullable NPCAble npc) throws NPCException {
-        if (new NPCRemoveEvent(src, data).post()) {
+        if (Sponge.getEventManager().post(new NPCRemoveEvent(src, data, npc))) {
             throw new NPCException("Event was cancelled!");
         }
 
-        NPCs.getInstance().getSelectedManager().deselect(npc.getNPCData());
-        NPCs.getInstance().getActionManager().removeChoosing(npc);
+        NPCs.getInstance().getSelectedManager().deselect(data);
+        NPCs.getInstance().getActionManager().removeChoosing(data);
 
         this.npcStore.remove(data);
         this.npcs.remove(data.getNPCId());
@@ -117,7 +113,7 @@ public class NPCManager {
         if (npc != null) {
             ((Entity)npc).remove();
         } else {
-            src.sendMessage(Text.of(TextColors.RED, "Failed to delete NPC Entity!"));
+            data.getNPCPosition().getWorld().ifPresent(world -> world.loadChunk(data.getNPCPosition().getChunkPosition(), true));
         }
     }
 
@@ -131,12 +127,11 @@ public class NPCManager {
             return Optional.empty();
         }
 
-        world.loadChunk(data.getNPCPosition().getChunkPosition(), true);
-
-        return world.getEntities().stream()
-                .filter(ent -> ent instanceof NPCAble)
-                .map(ent -> (NPCAble)ent).filter(npc -> npc.getNPCData() != null && npc.getNPCData().getNPCId() == data.getNPCId())
-                .findFirst();
+        if (data.getNPCUUID() == null) {
+            return Optional.empty();
+        } else {
+            return world.getEntity(data.getNPCUUID()).map(ent -> (NPCAble)ent);
+        }
     }
 
     public List<INPCData> getNPCs(String worldName) {

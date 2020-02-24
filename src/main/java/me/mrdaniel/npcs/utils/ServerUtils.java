@@ -5,6 +5,7 @@ import com.google.gson.JsonParser;
 import me.mrdaniel.npcs.NPCs;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.cause.EventContext;
+import org.spongepowered.api.event.cause.EventContextKeys;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
@@ -16,11 +17,15 @@ import java.util.Optional;
 public class ServerUtils {
 
 	public static Cause getCause(final Object... causes) {
+		EventContext context = EventContext.builder().add(EventContextKeys.PLUGIN, NPCs.getInstance().getContainer()).build();
+
 		Cause.Builder b = Cause.builder();
 		for (Object cause : causes) {
-			b.append(cause);
+			if (cause != null) {
+				b.append(cause);
+			}
 		}
-		return b.build(EventContext.builder().build());
+		return b.build(context);
 	}
 
 //	public static Cause getSpawnCause(@Nonnull final Entity e, final NamedCause... causes) {

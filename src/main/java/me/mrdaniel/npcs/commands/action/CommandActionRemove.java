@@ -3,7 +3,9 @@ package me.mrdaniel.npcs.commands.action;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.events.NPCEditEvent;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.menu.chat.npc.ActionsChatMenu;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
@@ -15,22 +17,22 @@ import org.spongepowered.api.text.format.TextColors;
 public class CommandActionRemove extends NPCCommand {
 
 	public CommandActionRemove() {
-		super(ActionsChatMenu::new);
+		super(ActionsChatMenu::new, false);
 	}
 
 	@Override
-	public void execute(final Player p, final NPCAble npc, final CommandContext args) throws CommandException {
-		if (new NPCEditEvent(p, npc).post()) {
+	public void execute(Player p, INPCData data, NPCAble npc, CommandContext args) throws CommandException {
+		if (Sponge.getEventManager().post(new NPCEditEvent(p, data, npc))) {
 			throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
 		}
 
 		int id = args.<Integer>getOne("number").get();
-		if (id < 0 || id >= npc.getNPCData().getNPCActions().getAllActions().size()) {
+		if (id < 0 || id >= data.getNPCActions().getAllActions().size()) {
 			throw new CommandException(Text.of(TextColors.RED, "No Action with this number exists."));
 		}
 
-		npc.getNPCData().getNPCActions().removeAction(id);
-		npc.getNPCData().writeNPCActions().saveNPC();
+		data.getNPCActions().removeAction(id);
+		data.writeNPCActions().saveNPC();
 	}
 
 	public CommandSpec build() {

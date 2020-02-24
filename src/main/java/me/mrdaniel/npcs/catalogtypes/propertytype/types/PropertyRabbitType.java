@@ -1,6 +1,8 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
 import com.google.common.reflect.TypeToken;
+import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
+import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
@@ -22,6 +24,11 @@ public class PropertyRabbitType extends PropertyType<RabbitType> {
 	@Override
 	public boolean isSupported(final NPCAble npc) {
 		return npc instanceof EntityRabbit;
+	}
+
+	@Override
+	public boolean isSupported(NPCType type) {
+		return type == NPCTypes.RABBIT;
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype;
 
 import com.google.common.reflect.TypeToken;
+import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import org.spongepowered.api.CatalogType;
 import org.spongepowered.api.command.args.CommandElement;
@@ -45,6 +46,7 @@ public abstract class PropertyType<T> implements CatalogType {
 
 	public abstract TypeToken<T> getTypeToken();
 	public abstract boolean isSupported(NPCAble npc);
+	public abstract boolean isSupported(NPCType type);
 
 	public abstract void apply(NPCAble npc, T value);
 }

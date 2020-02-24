@@ -1,6 +1,7 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
 import com.google.common.reflect.TypeToken;
+import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import net.minecraft.entity.Entity;
@@ -20,6 +21,11 @@ public class PropertySilent extends PropertyType<Boolean> {
 
 	@Override
 	public boolean isSupported(final NPCAble npc) {
+		return true;
+	}
+
+	@Override
+	public boolean isSupported(NPCType type) {
 		return true;
 	}
 

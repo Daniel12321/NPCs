@@ -1,32 +1,31 @@
 package me.mrdaniel.npcs.events;
 
-import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.utils.ServerUtils;
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.event.Cancellable;
 import org.spongepowered.api.event.cause.Cause;
 import org.spongepowered.api.event.impl.AbstractEvent;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-public abstract class NPCEvent<T> extends AbstractEvent implements Cancellable {
+public abstract class NPCEvent extends AbstractEvent implements Cancellable {
 
 	private final CommandSource source;
-	private final T npc;
+	private final INPCData data;
+	@Nullable private final NPCAble npc;
 	private final Cause cause;
 
 	private boolean cancelled;
 
-	protected NPCEvent(CommandSource source, T npc) {
+	protected NPCEvent(CommandSource source, INPCData data, @Nullable NPCAble npc) {
 		this.source = source;
+		this.data = data;
 		this.npc = npc;
-		this.cause = ServerUtils.getCause(npc, source);
+		this.cause = ServerUtils.getCause(source, data, npc);
 
 		this.cancelled = false;
-	}
-
-	public boolean post() {
-		return NPCs.getInstance().getGame().getEventManager().post(this);
 	}
 
 	@Override
@@ -34,7 +33,12 @@ public abstract class NPCEvent<T> extends AbstractEvent implements Cancellable {
 		return source;
 	}
 
-	public T getNpc() {
+	public INPCData getData() {
+		return data;
+	}
+
+	@Nullable
+	public NPCAble getNpc() {
 		return npc;
 	}
 

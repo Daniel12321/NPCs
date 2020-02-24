@@ -3,7 +3,9 @@ package me.mrdaniel.npcs.commands.action;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.events.NPCEditEvent;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.menu.chat.npc.ActionsChatMenu;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
@@ -15,18 +17,18 @@ import org.spongepowered.api.text.format.TextColors;
 public class CommandActionRepeat extends NPCCommand {
 
 	public CommandActionRepeat() {
-		super(ActionsChatMenu::new);
+		super(ActionsChatMenu::new, false);
 	}
 
 	@Override
-	public void execute(Player p, NPCAble npc, CommandContext args) throws CommandException {
-		if (new NPCEditEvent(p, npc).post()) {
+	public void execute(Player p, INPCData data, NPCAble npc, CommandContext args) throws CommandException {
+		if (Sponge.getEventManager().post(new NPCEditEvent(p, data, npc))) {
 			throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
 		}
 
-		Boolean value = args.<Boolean>getOne("repeat").orElse(!npc.getNPCData().getNPCActions().isRepeatActions());
-		npc.getNPCData().getNPCActions().setRepeatActions(value);
-		npc.getNPCData().writeNPCActions().saveNPC();
+		Boolean value = args.<Boolean>getOne("repeat").orElse(!data.getNPCActions().isRepeatActions());
+		data.getNPCActions().setRepeatActions(value);
+		data.writeNPCActions().saveNPC();
 	}
 
 	public CommandSpec build() {

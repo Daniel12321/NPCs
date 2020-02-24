@@ -2,6 +2,8 @@ package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
 import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.career.Career;
+import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
+import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.interfaces.mixin.IMixinEntityVillager;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
@@ -24,6 +26,11 @@ public class PropertyCareer extends PropertyType<Career> {
 	@Override
 	public boolean isSupported(final NPCAble npc) {
 		return npc instanceof EntityVillager || npc instanceof EntityZombieVillager;
+	}
+
+	@Override
+	public boolean isSupported(NPCType type) {
+		return type == NPCTypes.VILLAGER || type == NPCTypes.ZOMBIE_VILLAGER;
 	}
 
 	@Override

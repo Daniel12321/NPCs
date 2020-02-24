@@ -26,6 +26,11 @@ public class PropertyNPCType extends PropertyType<NPCType> {
 	}
 
 	@Override
+	public boolean isSupported(NPCType type) {
+		return true;
+	}
+
+	@Override
 	public void apply(NPCAble npc, NPCType value) {
 		try {
 			NPCs.getInstance().getNPCManager().spawn(npc.getNPCData());
