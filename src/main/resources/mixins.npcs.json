@@ -8,6 +8,8 @@
     "server": [
         "MixinEntity",
         "MixinEntityLiving",
+        "MixinEntityMagmaCube",
+        "MixinEntitySlime",
         "MixinEntityVillager"
     ],
     "injectors": {

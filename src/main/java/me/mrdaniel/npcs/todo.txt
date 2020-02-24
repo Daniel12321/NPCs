@@ -1,8 +1,8 @@
 
 TODO:
+- Fix teleporing over longer distances (unloaded chunks), improve NPC spawning overall
 - Fix the horse mount movement bug
 - Fix squid being glitchy then pushed
-- Fix (magma)slime NPCs damaging players
 - Add a way to select villagers (InteractListener)
 - Improve action serialization
 - Check for more efficient ways to make NPCs look at players (MixinEntityLiving) (Possible AI tasks)
