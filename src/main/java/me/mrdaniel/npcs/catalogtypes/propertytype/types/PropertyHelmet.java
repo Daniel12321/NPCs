@@ -30,6 +30,6 @@ public class PropertyHelmet extends PropertyType<ItemStack> {
 
 	@Override
 	public void apply(NPCAble npc, ItemStack value) {
-		((ArmorEquipable) npc).setHelmet(value);
+		((ArmorEquipable)npc).setHelmet(value);
 	}
 }

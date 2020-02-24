@@ -30,6 +30,6 @@ public class PropertyChestplate extends PropertyType<ItemStack> {
 
 	@Override
 	public void apply(NPCAble npc, ItemStack value) {
-		((ArmorEquipable) npc).setChestplate(value);
+		((ArmorEquipable)npc).setChestplate(value);
 	}
 }

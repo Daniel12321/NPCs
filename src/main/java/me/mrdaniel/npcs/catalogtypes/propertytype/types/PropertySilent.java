@@ -31,6 +31,6 @@ public class PropertySilent extends PropertyType<Boolean> {
 
 	@Override
 	public void apply(NPCAble npc, Boolean value) {
-		((Entity) npc).setSilent(value);
+		((Entity)npc).setSilent(value);
 	}
 }

@@ -12,7 +12,7 @@ import me.mrdaniel.npcs.catalogtypes.actiontype.ActionType;
 import me.mrdaniel.npcs.catalogtypes.career.Career;
 import me.mrdaniel.npcs.catalogtypes.cattype.CatType;
 import me.mrdaniel.npcs.catalogtypes.conditiontype.ConditionType;
-import me.mrdaniel.npcs.catalogtypes.glowcolor.GlowColor;
+import me.mrdaniel.npcs.catalogtypes.color.ColorType;
 import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColor;
 import me.mrdaniel.npcs.catalogtypes.horsepattern.HorsePattern;
 import me.mrdaniel.npcs.catalogtypes.llamatype.LlamaType;
@@ -44,7 +44,7 @@ public class HoconNPCStore implements INPCStore {
     @Override
     public void setup() {
 		CatalogTypeSerializer.register(NPCType.class);
-		CatalogTypeSerializer.register(GlowColor.class);
+		CatalogTypeSerializer.register(ColorType.class);
 		CatalogTypeSerializer.register(Career.class);
 		CatalogTypeSerializer.register(CatType.class);
 		CatalogTypeSerializer.register(HorseColor.class);

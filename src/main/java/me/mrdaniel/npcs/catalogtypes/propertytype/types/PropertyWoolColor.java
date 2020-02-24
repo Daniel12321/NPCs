@@ -6,14 +6,14 @@ import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
-import net.minecraft.entity.passive.EntityWolf;
+import net.minecraft.entity.passive.EntitySheep;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.text.Text;
 
-public class PropertyCollarColor extends PropertyType<DyeColorType> {
+public class PropertyWoolColor extends PropertyType<DyeColorType> {
 
-	public PropertyCollarColor() {
-		super("CollarColor", "collarcolor", GenericArguments.catalogedElement(Text.of("collarcolor"), DyeColorType.class));
+	public PropertyWoolColor() {
+		super("WoolColor", "woolcolor", GenericArguments.catalogedElement(Text.of("woolcolor"), DyeColorType.class));
 	}
 
 	@Override
@@ -23,16 +23,16 @@ public class PropertyCollarColor extends PropertyType<DyeColorType> {
 
 	@Override
 	public boolean isSupported(final NPCAble npc) {
-		return npc instanceof EntityWolf;
+		return npc instanceof EntitySheep;
 	}
 
 	@Override
 	public boolean isSupported(NPCType type) {
-		return type == NPCTypes.WOLF;
+		return type == NPCTypes.SHEEP;
 	}
 
 	@Override
 	public void apply(NPCAble npc, DyeColorType value) {
-		((EntityWolf)npc).setCollarColor(value.getColor());
+		((EntitySheep)npc).setFleeceColor(value.getColor());
 	}
 }

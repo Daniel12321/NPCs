@@ -31,6 +31,6 @@ public class PropertyOffHand extends PropertyType<ItemStack> {
 
 	@Override
 	public void apply(NPCAble npc, ItemStack value) {
-		((ArmorEquipable) npc).setItemInHand(HandTypes.OFF_HAND, value);
+		((ArmorEquipable)npc).setItemInHand(HandTypes.OFF_HAND, value);
 	}
 }

@@ -32,6 +32,6 @@ public class PropertyHanging extends PropertyType<Boolean> {
 
 	@Override
 	public void apply(NPCAble npc, Boolean value) {
-		((EntityBat) npc).setIsBatHanging(value);
+		((EntityBat)npc).setIsBatHanging(value);
 	}
 }

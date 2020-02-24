@@ -2,18 +2,16 @@ package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
 import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
-import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.Entity;
 import org.spongepowered.api.command.args.GenericArguments;
-import org.spongepowered.api.entity.living.Human;
 import org.spongepowered.api.text.Text;
 
-public class PropertyNameVisible extends PropertyType<Boolean> {
+public class PropertyBurning extends PropertyType<Boolean> {
 
-	public PropertyNameVisible() {
-		super("NameVisible", "name-visible", GenericArguments.bool(Text.of("name-visible")));
+	public PropertyBurning() {
+		super("Burning", "burning", GenericArguments.bool(Text.of("burning")));
 	}
 
 	@Override
@@ -23,16 +21,17 @@ public class PropertyNameVisible extends PropertyType<Boolean> {
 
 	@Override
 	public boolean isSupported(final NPCAble npc) {
-		return !(npc instanceof Human);
+		return true;
 	}
 
 	@Override
 	public boolean isSupported(NPCType type) {
-		return type != NPCTypes.HUMAN;
+		return true;
 	}
 
+	// TODO: Check if this works
 	@Override
 	public void apply(NPCAble npc, Boolean value) {
-		((EntityLiving)npc).setAlwaysRenderNameTag(value);
+		((Entity)npc).setFire(-1);
 	}
 }

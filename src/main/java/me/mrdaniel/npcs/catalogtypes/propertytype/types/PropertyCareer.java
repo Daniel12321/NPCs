@@ -36,10 +36,10 @@ public class PropertyCareer extends PropertyType<Career> {
 	@Override
 	public void apply(NPCAble npc, Career value) {
 		if (npc instanceof EntityVillager) {
-			((EntityVillager) npc).setProfession(value.getProfessionId());
-			((IMixinEntityVillager) npc).setCareerId(value.getCareerId());
+			((EntityVillager)npc).setProfession(value.getProfessionId());
+			((IMixinEntityVillager)npc).setCareerId(value.getCareerId());
 		} else if (npc instanceof EntityZombieVillager) {
-			((EntityZombieVillager) npc).setProfession(value.getProfessionId());
+			((EntityZombieVillager)npc).setProfession(value.getProfessionId());
 		}
 	}
 }

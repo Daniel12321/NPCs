@@ -5,15 +5,14 @@ import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.passive.EntitySheep;
 import org.spongepowered.api.command.args.GenericArguments;
-import org.spongepowered.api.entity.living.Human;
 import org.spongepowered.api.text.Text;
 
-public class PropertyNameVisible extends PropertyType<Boolean> {
+public class PropertySheared extends PropertyType<Boolean> {
 
-	public PropertyNameVisible() {
-		super("NameVisible", "name-visible", GenericArguments.bool(Text.of("name-visible")));
+	public PropertySheared() {
+		super("Sheared", "sheared", GenericArguments.bool(Text.of("sheared")));
 	}
 
 	@Override
@@ -23,16 +22,16 @@ public class PropertyNameVisible extends PropertyType<Boolean> {
 
 	@Override
 	public boolean isSupported(final NPCAble npc) {
-		return !(npc instanceof Human);
+		return npc instanceof EntitySheep;
 	}
 
 	@Override
 	public boolean isSupported(NPCType type) {
-		return type != NPCTypes.HUMAN;
+		return type == NPCTypes.SHEEP;
 	}
 
 	@Override
 	public void apply(NPCAble npc, Boolean value) {
-		((EntityLiving)npc).setAlwaysRenderNameTag(value);
+		((EntitySheep)npc).setSheared(value);
 	}
 }

@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EntityMagmaCube.class)
-public class MixinEntityMagmaCube implements INPCMixin {
+public abstract class MixinEntityMagmaCube implements INPCMixin {
 
     @Inject(method = "canDamagePlayer", at = @At("RETURN"), cancellable = true)
     public void onCanDamagePlayer(CallbackInfoReturnable<Boolean> cir) {

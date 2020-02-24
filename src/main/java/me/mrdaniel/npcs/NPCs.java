@@ -9,10 +9,14 @@ import me.mrdaniel.npcs.catalogtypes.career.Career;
 import me.mrdaniel.npcs.catalogtypes.career.CareerRegistryModule;
 import me.mrdaniel.npcs.catalogtypes.cattype.CatType;
 import me.mrdaniel.npcs.catalogtypes.cattype.CatTypeRegistryModule;
+import me.mrdaniel.npcs.catalogtypes.color.ColorType;
+import me.mrdaniel.npcs.catalogtypes.color.ColorTypeRegistryModule;
 import me.mrdaniel.npcs.catalogtypes.conditiontype.ConditionType;
 import me.mrdaniel.npcs.catalogtypes.conditiontype.ConditionTypeRegistryModule;
-import me.mrdaniel.npcs.catalogtypes.glowcolor.GlowColor;
-import me.mrdaniel.npcs.catalogtypes.glowcolor.GlowColorRegistryModule;
+import me.mrdaniel.npcs.catalogtypes.dyecolor.DyeColorType;
+import me.mrdaniel.npcs.catalogtypes.dyecolor.DyeColorTypeRegistryModule;
+import me.mrdaniel.npcs.catalogtypes.horsearmor.HorseArmorType;
+import me.mrdaniel.npcs.catalogtypes.horsearmor.HorseArmorTypeRegistryModule;
 import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColor;
 import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColorRegistryModule;
 import me.mrdaniel.npcs.catalogtypes.horsepattern.HorsePattern;
@@ -101,9 +105,11 @@ public class NPCs {
 	@Listener
 	public void onPreInit(@Nullable GamePreInitializationEvent e) {
 		this.game.getRegistry().registerModule(NPCType.class, new NPCTypeRegistryModule());
-		this.game.getRegistry().registerModule(GlowColor.class, new GlowColorRegistryModule());
+		this.game.getRegistry().registerModule(ColorType.class, new ColorTypeRegistryModule());
+		this.game.getRegistry().registerModule(DyeColorType.class, new DyeColorTypeRegistryModule());
 		this.game.getRegistry().registerModule(Career.class, new CareerRegistryModule());
 		this.game.getRegistry().registerModule(CatType.class, new CatTypeRegistryModule());
+		this.game.getRegistry().registerModule(HorseArmorType.class, new HorseArmorTypeRegistryModule());
 		this.game.getRegistry().registerModule(HorseColor.class, new HorseColorRegistryModule());
 		this.game.getRegistry().registerModule(HorsePattern.class, new HorsePatternRegistryModule());
 		this.game.getRegistry().registerModule(LlamaType.class, new LlamaTypeRegistryModule());

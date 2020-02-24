@@ -36,11 +36,12 @@ public class PropertyBaby extends PropertyType<Boolean> {
 	@Override
 	public void apply(NPCAble npc, Boolean value) {
 		if (npc instanceof EntityZombie) {
-			((EntityZombie) npc).setChild(value);
+			((EntityZombie)npc).setChild(value);
 		} else {
-			((EntityAgeable) npc).setGrowingAge(value ? Integer.MIN_VALUE : 0);
+			((EntityAgeable)npc).setGrowingAge(value ? Integer.MIN_VALUE : 0);
 		}
 
+		// Fixes some entities (etc. horses) moving around when changing from baby to adult
 		Position pos = npc.getNPCPosition();
 		((Entity)npc).setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), pos.getYaw(), pos.getPitch());
 	}

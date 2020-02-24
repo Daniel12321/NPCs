@@ -31,6 +31,6 @@ public class PropertyMainHand extends PropertyType<ItemStack> {
 
 	@Override
 	public void apply(NPCAble npc, ItemStack value) {
-		((ArmorEquipable) npc).setItemInHand(HandTypes.MAIN_HAND, value);
+		((ArmorEquipable)npc).setItemInHand(HandTypes.MAIN_HAND, value);
 	}
 }

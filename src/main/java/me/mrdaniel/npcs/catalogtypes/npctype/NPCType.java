@@ -12,27 +12,21 @@ public class NPCType implements CatalogType {
 	private final EntityType entityType;
 	private final boolean ageable;
 	private final boolean armorEquipable;
-	private final boolean tameable;
 
 	NPCType(String name, String id, EntityType entityType) {
-		this(name, id, entityType, false, false, false);
+		this(name, id, entityType, false, false);
 	}
 
 	NPCType(String name, String id, EntityType entityType, boolean ageable) {
-		this(name, id, entityType, ageable, false, false);
+		this(name, id, entityType, ageable, false);
 	}
 
 	NPCType(String name, String id, EntityType entityType, boolean ageable, boolean armorEquipable) {
-		this(name, id, entityType, ageable, armorEquipable, false);
-	}
-
-	NPCType(String name, String id, EntityType entityType, boolean ageable, boolean armorEquipable, boolean tameable) {
 		this.name = name;
 		this.id = id;
 		this.entityType = entityType;
 		this.armorEquipable = armorEquipable;
 		this.ageable = ageable;
-		this.tameable = tameable;
 	}
 
     @Override
@@ -55,9 +49,5 @@ public class NPCType implements CatalogType {
 
 	public boolean isArmorEquipable() {
 		return armorEquipable;
-	}
-
-	public boolean isTameable() {
-		return tameable;
 	}
 }

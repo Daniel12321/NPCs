@@ -3,7 +3,7 @@ package me.mrdaniel.npcs.menu.chat.npc;
 import com.google.common.collect.Lists;
 import me.mrdaniel.npcs.catalogtypes.career.Careers;
 import me.mrdaniel.npcs.catalogtypes.cattype.CatTypes;
-import me.mrdaniel.npcs.catalogtypes.glowcolor.GlowColors;
+import me.mrdaniel.npcs.catalogtypes.color.ColorTypes;
 import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColors;
 import me.mrdaniel.npcs.catalogtypes.horsepattern.HorsePatterns;
 import me.mrdaniel.npcs.catalogtypes.llamatype.LlamaTypes;
@@ -71,7 +71,7 @@ public class PropertiesChatMenu extends NPCChatMenu {
         lines.add(TextUtils.getToggleText("Silent", "/npc silent", data.getNPCProperty(PropertyTypes.SILENT).orElse(false)));
         lines.add(TextUtils.getToggleText("Interact", "/npc interact", data.getNPCProperty(PropertyTypes.INTERACT).orElse(true)));
         lines.add(TextUtils.getToggleText("Glowing", "/npc glowing", data.getNPCProperty(PropertyTypes.GLOWING).orElse(false)));
-        lines.add(TextUtils.getOptionsText("GlowColor", "/npc glowcolor <color>", data.getNPCProperty(PropertyTypes.GLOWCOLOR).orElse(GlowColors.WHITE).getName()));
+        lines.add(TextUtils.getOptionsText("GlowColor", "/npc glowcolor <color>", data.getNPCProperty(PropertyTypes.GLOWCOLOR).orElse(ColorTypes.WHITE).getName()));
         if (PropertyTypes.BABY.isSupported(type)) { lines.add(TextUtils.getToggleText("Baby", "/npc baby", data.getNPCProperty(PropertyTypes.BABY).orElse(false))); }
         if (PropertyTypes.CHARGED.isSupported(type)) { lines.add(TextUtils.getToggleText("Charged", "/npc charged", data.getNPCProperty(PropertyTypes.CHARGED).orElse(false))); }
         if (PropertyTypes.ANGRY.isSupported(type)) { lines.add(TextUtils.getToggleText("Angry", "/npc angry", data.getNPCProperty(PropertyTypes.ANGRY).orElse(false))); }

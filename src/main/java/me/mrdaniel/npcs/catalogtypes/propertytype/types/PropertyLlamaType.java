@@ -33,6 +33,6 @@ public class PropertyLlamaType extends PropertyType<LlamaType> {
 
 	@Override
 	public void apply(NPCAble npc, LlamaType value) {
-		((EntityLlama) npc).setVariant(value.getNbtId());
+		((EntityLlama)npc).setVariant(value.getNbtId());
 	}
 }

@@ -35,6 +35,6 @@ public class PropertyHorsePattern extends PropertyType<HorsePattern> {
 
 	@Override
 	public void apply(NPCAble npc, HorsePattern value) {
-		((EntityHorse) npc).setHorseVariant(value.getNbtId() + npc.getNPCProperty(PropertyTypes.HORSECOLOR).orElse(HorseColors.BROWN).getNbtId());
+		((EntityHorse)npc).setHorseVariant(value.getNbtId() + npc.getNPCProperty(PropertyTypes.HORSECOLOR).orElse(HorseColors.BROWN).getNbtId());
 	}
 }

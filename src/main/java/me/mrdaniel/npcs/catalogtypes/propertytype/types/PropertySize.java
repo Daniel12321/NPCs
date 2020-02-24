@@ -34,6 +34,6 @@ public class PropertySize extends PropertyType<Integer> {
 
 	@Override
 	public void apply(NPCAble npc, Integer value) {
-		((Living) npc).offer(Keys.SLIME_SIZE, value);
+		((Living)npc).offer(Keys.SLIME_SIZE, value);
 	}
 }
