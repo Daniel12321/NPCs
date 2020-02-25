@@ -57,7 +57,6 @@ public class PropertiesChatMenu extends NPCChatMenu {
         return BUTTONS;
     }
 
-    // TODO: Update
     @Override
     public List<Text> getContents() {
         Position pos = data.getPosition();

@@ -67,7 +67,6 @@ public final class PropertyTypes {
 	public static final PropertyType<ItemStack> MAINHAND = new PropertyMainHand();
 	public static final PropertyType<ItemStack> OFFHAND = new PropertyOffHand();
 
-	// TODO: Update
 	public static final List<PropertyType> ALL = Lists.newArrayList(
 			TYPE, NAME, NAME_VISIBLE, SKIN_UUID, SKIN, LOOKING, INTERACT, SILENT, GLOWING,
 			GLOWCOLOR, BABY, CHARGED, ANGRY, SIZE, SITTING, SADDLE, HANGING, PUMPKIN,

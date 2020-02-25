@@ -26,7 +26,7 @@ public abstract class MixinEntityShulker extends EntityGolem implements IMixinEn
     }
 
     @Override
-    public void setPeek(boolean value) { // TODO: Check if this works
+    public void setPeek(boolean value) {
         this.dataManager.set(PEEK_TICK, (value ? Byte.MAX_VALUE : 0));
     }
 }

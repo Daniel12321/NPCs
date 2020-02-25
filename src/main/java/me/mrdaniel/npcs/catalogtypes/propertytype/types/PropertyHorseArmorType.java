@@ -33,7 +33,7 @@ public class PropertyHorseArmorType extends PropertyType<HorseArmorType> {
 	}
 
 	@Override
-	public void apply(NPCAble npc, HorseArmorType value) { // TODO: Check if this works
+	public void apply(NPCAble npc, HorseArmorType value) {
 		ItemStack is = value.getType() == null ? null : ItemStack.builder().itemType(value.getType()).quantity(1).build();
 		((EntityHorse)npc).setHorseArmorStack((net.minecraft.item.ItemStack)(Object)is);
 	}

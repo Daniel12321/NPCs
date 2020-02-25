@@ -33,7 +33,6 @@ public class CommandNPC extends PlayerCommand {
 		}
 	}
 
-	// TODO: Update
 	public CommandSpec build() {
 		return CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Main Command"))
 				.executor(this)

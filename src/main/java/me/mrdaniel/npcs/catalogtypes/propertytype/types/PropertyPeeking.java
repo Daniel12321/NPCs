@@ -8,8 +8,6 @@ import me.mrdaniel.npcs.interfaces.mixin.IMixinEntityShulker;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import net.minecraft.entity.monster.EntityShulker;
 import org.spongepowered.api.command.args.GenericArguments;
-import org.spongepowered.api.data.key.Keys;
-import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.text.Text;
 
 public class PropertyPeeking extends PropertyType<Boolean> {
@@ -34,7 +32,7 @@ public class PropertyPeeking extends PropertyType<Boolean> {
 	}
 
 	@Override
-	public void apply(NPCAble npc, Boolean value) { // TODO: Check if this works
+	public void apply(NPCAble npc, Boolean value) {
 		((IMixinEntityShulker)npc).setPeek(value);
 	}
 }
