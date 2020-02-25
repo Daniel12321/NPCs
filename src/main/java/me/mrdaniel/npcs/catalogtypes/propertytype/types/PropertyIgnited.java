@@ -8,7 +8,7 @@ import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import net.minecraft.entity.monster.EntityCreeper;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.data.key.Keys;
-import org.spongepowered.api.entity.living.Living;
+import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.monster.Creeper;
 import org.spongepowered.api.text.Text;
 
@@ -34,7 +34,8 @@ public class PropertyIgnited extends PropertyType<Boolean> {
 	}
 
 	@Override
-	public void apply(NPCAble npc, Boolean value) {
-		((EntityCreeper)npc).ignite(); // TODO: Check if this works
+	public void apply(NPCAble npc, Boolean value) { // TODO: Check if this works
+		((Entity)npc).offer(Keys.FUSE_DURATION, Integer.MAX_VALUE);
+		((EntityCreeper)npc).ignite();
 	}
 }

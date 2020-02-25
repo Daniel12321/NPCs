@@ -37,7 +37,7 @@ public class PropertyGlowColor extends PropertyType<ColorType> {
 
 	@Override
 	public void apply(NPCAble npc, ColorType value) {
-		if (npc.getNPCProperty(PropertyTypes.GLOWING).orElse(false)) {
+		if (npc.getData().getProperty(PropertyTypes.GLOWING).orElse(false)) {
 			EntityLiving el = (EntityLiving) npc;
 
 			String teamName = "NPC_" + value.getName();

@@ -41,9 +41,9 @@ public class ActionCooldown extends Action {
 
 	@Override
 	public void execute(Player p, INPCData data, ActionResult result) {
-		Optional<Long> end = data.getNPCActions().getCooldown(p.getUniqueId());
+		Optional<Long> end = data.getActions().getCooldown(p.getUniqueId());
 		if (end.isPresent() && end.get() > System.currentTimeMillis()) {
-			p.sendMessage(NPCs.getInstance().getPlaceholderManager().formatNPCMessage(p, this.message, data.getNPCProperty(PropertyTypes.NAME).orElse("NPC")));
+			p.sendMessage(NPCs.getInstance().getPlaceholderManager().formatNPCMessage(p, this.message, data.getProperty(PropertyTypes.NAME).orElse("NPC")));
 			result.setPerformNextAction(false);
 		} else {
 			result.setNextAction(result.getCurrentAction() + 1);

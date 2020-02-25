@@ -35,10 +35,11 @@ public final class PropertyTypes {
 
 	public static final PropertyType<Boolean> ANGRY = new PropertyAngry();
 	public static final PropertyType<Boolean> BABY = new PropertyBaby();
-	public static final PropertyType<Boolean> CHEST = new PropertyChest();
 	public static final PropertyType<Boolean> CHARGED = new PropertyCharged();
+	public static final PropertyType<Boolean> CHEST = new PropertyChest();
 	public static final PropertyType<Boolean> HANGING = new PropertyHanging();
 	public static final PropertyType<Boolean> IGNITED = new PropertyIgnited();
+	public static final PropertyType<Boolean> PEEKING = new PropertyPeeking();
 	public static final PropertyType<Boolean> PUMPKIN = new PropertyPumpkin();
 	public static final PropertyType<Boolean> SCREAMING = new PropertyScreaming();
 	public static final PropertyType<Boolean> SHEARED = new PropertySheared();
@@ -66,6 +67,7 @@ public final class PropertyTypes {
 	public static final PropertyType<ItemStack> MAINHAND = new PropertyMainHand();
 	public static final PropertyType<ItemStack> OFFHAND = new PropertyOffHand();
 
+	// TODO: Update
 	public static final List<PropertyType> ALL = Lists.newArrayList(
 			TYPE, NAME, NAME_VISIBLE, SKIN_UUID, SKIN, LOOKING, INTERACT, SILENT, GLOWING,
 			GLOWCOLOR, BABY, CHARGED, ANGRY, SIZE, SITTING, SADDLE, HANGING, PUMPKIN,
@@ -73,7 +75,7 @@ public final class PropertyTypes {
 			HELMET, CHESTPLATE, LEGGINGS, BOOTS, MAINHAND, OFFHAND);
 	public static final List<PropertyType> NPC_INIT = Lists.newArrayList(ALL);
 	public static final List<PropertyType> NPC_RELOAD = Lists.newArrayList();
-	public static final List<PropertyType<ItemStack>> ARMOR = Lists.newArrayList(HELMET, CHESTPLATE, LEGGINGS, BOOTS, MAINHAND, OFFHAND);
+	public static final List<PropertyType<ItemStack>> EQUIPMENT = Lists.newArrayList(HELMET, CHESTPLATE, LEGGINGS, BOOTS, MAINHAND, OFFHAND);
 
 	static {
 		NPC_INIT.remove(TYPE);

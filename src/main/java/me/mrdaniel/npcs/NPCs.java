@@ -33,8 +33,8 @@ import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitType;
 import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitTypeRegistryModule;
 import me.mrdaniel.npcs.commands.main.CommandNPC;
 import me.mrdaniel.npcs.data.NPCKeys;
+import me.mrdaniel.npcs.data.npc.NPCData;
 import me.mrdaniel.npcs.data.npc.NPCDataBuilder;
-import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.io.Config;
 import me.mrdaniel.npcs.listeners.EntityListener;
 import me.mrdaniel.npcs.listeners.InteractListener;
@@ -42,7 +42,7 @@ import me.mrdaniel.npcs.managers.ActionManager;
 import me.mrdaniel.npcs.managers.NPCManager;
 import me.mrdaniel.npcs.managers.PlaceholderManager;
 import me.mrdaniel.npcs.managers.SelectedManager;
-import me.mrdaniel.npcs.utils.ServerUtils;
+import me.mrdaniel.npcs.utils.LatestVersionSupplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.api.Game;
@@ -139,7 +139,7 @@ public class NPCs {
 
 		if (this.config.getNode("update_message").getBoolean(true)) {
 			Task.builder().async().execute(() -> {
-				ServerUtils.getLatestVersion().ifPresent(v -> {
+				new LatestVersionSupplier().get().ifPresent(v -> {
 					Task.builder().execute(() -> {
 						if (!v.equals("v" + NPCs.VERSION)) {
 							this.logger.info("A new version (" + v + ") of NPCs is available!");
@@ -167,16 +167,11 @@ public class NPCs {
 	@Listener
 	public void onReload(@Nullable GameReloadEvent e) {
 		this.onStopping(null);
-
-		this.game.getServer().getWorlds().forEach(world -> this.npcManager.getNPCs(world.getName()).forEach(data -> {
-			try {
-				this.npcManager.spawn(data);
-			} catch (NPCException exc) {
-				this.logger.error("Failed to respawn NPC " + data.getNPCId() + ": ", exc);
-			}
-		}));
-
 		this.onInit(null);
+
+		this.game.getServer().getWorlds().forEach(world -> world.getEntities().forEach(ent -> ent.get(NPCData.class).ifPresent(data -> {
+			this.npcManager.onNPCSpawn(ent, data.getId());
+		})));
 	}
 
 	@Listener

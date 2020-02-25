@@ -31,8 +31,8 @@ public abstract class CommandActionAdd extends NPCCommand {
 			throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
 		}
 
-		data.getNPCActions().addAction(this.create(args));
-		data.writeNPCActions().saveNPC();
+		data.getActions().addAction(this.create(args));
+		data.writeActions().save();
 	}
 
 	public abstract Action create(CommandContext args);

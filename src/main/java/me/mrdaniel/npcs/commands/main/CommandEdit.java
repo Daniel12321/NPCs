@@ -30,7 +30,7 @@ public class CommandEdit<T> extends NPCCommand {
 
 	@Override
 	public void execute(Player p, INPCData data, @Nullable NPCAble npc, CommandContext args) throws CommandException {
-		if (!this.option.isSupported(data.getNPCProperty(PropertyTypes.TYPE).get())) {
+		if (!this.option.isSupported(data.getProperty(PropertyTypes.TYPE).get())) {
 			throw new CommandException(Text.of(TextColors.RED, "That NPC does not support that option!"));
 		}
 		if (Sponge.getEventManager().post(new NPCEditEvent(p, data, npc))) {
@@ -38,10 +38,12 @@ public class CommandEdit<T> extends NPCCommand {
 		}
 
 		// TODO: Check if it needs to refresh the NPC when changing NPC Data while unloaded
-		// If the npc is present, set the value to the NPC. Else set the value to the NPC Data
-		(npc != null ? npc : data)
-				.setNPCProperty(this.option, args.<T>getOne(this.option.getId()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "Invalid value!"))))
-				.saveNPC();
+		T value = args.<T>getOne(this.option.getId()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "Invalid value!")));
+		if (npc == null) {
+			data.setProperty(this.option, value).save();
+		} else {
+			npc.setProperty(this.option, value).save();
+		}
 	}
 
 	public static <T> CommandSpec build(Function<INPCData, NPCChatMenu> page, PropertyType<T> option) {

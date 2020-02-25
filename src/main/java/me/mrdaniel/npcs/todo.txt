@@ -11,7 +11,7 @@ TODO:
 
 
 
-!- Add burning property
+!- Add burning property FIX
 - Add size property (Keys#BASE_SIZE, Keys#HEIGHT, Keys#SCALE)
 - Add InLove property (hearts effect)
 
@@ -21,13 +21,13 @@ TODO:
 !- Add Horse Armor property
 
 - Add ZombieVillager property: Shaking (might need to set the tick so it doesnt turn)
-!- Add Worf property: CollarColor
-!- Add Creeper property: Ignited (might need to set the fuse as well)
+!- Add Worf properties: CollarColor, Angry FIX
+!- Add Creeper property: Ignited (might need to set the fuse as well) FIX
 !- Add Enderman property: CarriedBlock
 - Add Evoker property: SpellTicks (casting spell)
 !- Add Sheep properties: Color, Sheared
-- Add Shulker properties: !Color, AttachFace, Peek
-!- Add Wither property: Invulnerable
+- Add Shulker properties: !Color, AttachFace, !Peek FIX
+!- Add Wither property: Invulnerable FIX
 !- Add enderman property: Screaming
 
 

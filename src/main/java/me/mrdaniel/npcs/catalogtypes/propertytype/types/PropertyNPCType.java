@@ -33,7 +33,7 @@ public class PropertyNPCType extends PropertyType<NPCType> {
 	@Override
 	public void apply(NPCAble npc, NPCType value) {
 		try {
-			NPCs.getInstance().getNPCManager().spawn(npc.getNPCData());
+			NPCs.getInstance().getNPCManager().spawn(npc.getData());
 		} catch (NPCException exc) {
 			NPCs.getInstance().getLogger().error("Failed to respawn NPC after type change: ", exc);
 		}

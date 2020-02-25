@@ -38,7 +38,7 @@ public class PropertySkin extends PropertyType<String> {
 		NPCs plugin = NPCs.getInstance();
 		Task.builder().async().execute(() -> {
 			NPCs.getInstance().getGame().getServer().getGameProfileManager().get(value).thenAccept(gp -> {
-				Task.builder().execute(() -> npc.setNPCProperty(PropertyTypes.SKIN_UUID, gp.getUniqueId())).submit(plugin);
+				Task.builder().execute(() -> npc.setProperty(PropertyTypes.SKIN_UUID, gp.getUniqueId())).submit(plugin);
 			});
 		})
 		.submit(plugin);

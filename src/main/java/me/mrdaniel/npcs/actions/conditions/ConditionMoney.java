@@ -3,7 +3,7 @@ package me.mrdaniel.npcs.actions.conditions;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.actions.Condition;
 import me.mrdaniel.npcs.catalogtypes.conditiontype.ConditionTypes;
-import me.mrdaniel.npcs.utils.ServerUtils;
+import me.mrdaniel.npcs.utils.CauseUtils;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.living.player.Player;
@@ -43,7 +43,7 @@ public class ConditionMoney extends Condition {
 
 	@Override
 	public void take(Player p) {
-		ECONOMY.getOrCreateAccount(p.getUniqueId()).get().withdraw(this.currency, new BigDecimal(this.amount), ServerUtils.getCause(NPCs.getInstance().getContainer()));
+		ECONOMY.getOrCreateAccount(p.getUniqueId()).get().withdraw(this.currency, new BigDecimal(this.amount), CauseUtils.getCause(NPCs.getInstance().getContainer()));
 	}
 
 	@Override

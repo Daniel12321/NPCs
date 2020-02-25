@@ -32,6 +32,6 @@ public class PropertyBurning extends PropertyType<Boolean> {
 	// TODO: Check if this works
 	@Override
 	public void apply(NPCAble npc, Boolean value) {
-		((Entity)npc).setFire(-1);
+		((Entity)npc).setFire(Integer.MAX_VALUE);
 	}
 }

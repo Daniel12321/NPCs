@@ -31,7 +31,7 @@ public class NPCTypes {
 	public static final NPCType MAGMA_CUBE = new NPCType("MagmaCube", "magma_cube", EntityTypes.MAGMA_CUBE);
 	public static final NPCType MULE = new NPCType("Mule", "mule", EntityTypes.MULE, true);
 	public static final NPCType MUSHROOM_COW = new NPCType("MushroomCow", "mushroom_cow", EntityTypes.MUSHROOM_COW, true);
-	public static final NPCType OCELOT = new NPCType("Ocelot", "ocelot", EntityTypes.OCELOT, true, false, true);
+	public static final NPCType OCELOT = new NPCType("Ocelot", "ocelot", EntityTypes.OCELOT, true, false);
 	public static final NPCType PARROT = new NPCType("Parrot", "parrot", EntityTypes.PARROT);
 	public static final NPCType PIG = new NPCType("Pig", "pig", EntityTypes.PIG, true);
 	public static final NPCType PIG_ZOMBIE = new NPCType("PigZombie", "pig_zombie", EntityTypes.PIG_ZOMBIE, true, true);
@@ -53,7 +53,7 @@ public class NPCTypes {
 	public static final NPCType WITCH = new NPCType("Witch", "witch", EntityTypes.WITCH);
 	public static final NPCType WITHER = new NPCType("Wither", "wither", EntityTypes.WITHER);
 	public static final NPCType WITHER_SKELETON = new NPCType("WitherSkeleton", "wither_skeleton", EntityTypes.WITHER_SKELETON, false, true);
-	public static final NPCType WOLF = new NPCType("Wolf", "wolf", EntityTypes.WOLF, true, false, true);
+	public static final NPCType WOLF = new NPCType("Wolf", "wolf", EntityTypes.WOLF, true, false);
 	public static final NPCType ZOMBIE = new NPCType("Zombie", "zombie", EntityTypes.ZOMBIE, true, true);
 	public static final NPCType ZOMBIE_HORSE = new NPCType("ZombieHorse", "zombie_horse", EntityTypes.ZOMBIE_HORSE, true);
 	public static final NPCType ZOMBIE_VILLAGER = new NPCType("ZombieVillager", "zombie_villager", EntityTypes.ZOMBIE_VILLAGER, true, true);

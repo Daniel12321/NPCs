@@ -1,8 +1,5 @@
 package me.mrdaniel.npcs.menu.chat.npc;
 
-import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
-import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
-import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.menu.chat.FullChatMenu;
 import org.spongepowered.api.text.Text;
@@ -18,18 +15,11 @@ public abstract class NPCChatMenu implements FullChatMenu {
 
     @Override
     public Text getFooter() {
-        Text.Builder b = Text.builder().append(new PropertiesChatMenu(this.data).getPropertiesButton());
+        Text bar = Text.of(new PropertiesChatMenu(this.data).getPropertiesButton(), new ActionsChatMenu(this.data).getActionsButton());
 
-        NPCType type = this.data.getNPCProperty(PropertyTypes.TYPE).get();
-        if (PropertyTypes.HELMET.isSupported(type)) {
-            b.append(new EquipmentChatMenu(this.data).getEquipmentButton());
-        }
+        Text spacing = Text.of(TextColors.YELLOW, getBar((58 - bar.toPlain().length()) / 2));
 
-        b.append(new ActionsChatMenu(this.data).getActionsButton());
-
-        Text bar = Text.of(TextColors.YELLOW, getBar((58 - b.build().toPlain().length()) / 2));
-
-        return Text.builder().append(bar, b.build(), bar).build();
+        return Text.builder().append(spacing, bar, spacing).build();
     }
 
     private static String getBar(int times) {

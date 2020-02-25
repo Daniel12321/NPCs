@@ -85,7 +85,7 @@ public class ActionsChatMenu extends NPCChatMenu {
 
 	@Override
 	public List<Text> getContents() {
-		ActionSet actions = this.data.getNPCActions();
+		ActionSet actions = this.data.getActions();
 		List<Text> lines = Lists.newArrayList();
 
 		lines.add(Text.of(TextColors.GOLD, "Actions: "));
@@ -99,11 +99,11 @@ public class ActionsChatMenu extends NPCChatMenu {
 			}
 		}
 
-		lines.add(Text.EMPTY);
+		lines.add(Text.of(" "));
 		lines.add(ADD);
 		lines.add(ADD_COMMAND);
 		lines.add(ADD_CONDITION);
-		lines.add(Text.EMPTY);
+		lines.add(Text.of(" "));
 		lines.add(TextUtils.getToggleText("Repeat", "/npc action repeat", actions.isRepeatActions()));
 
 		return lines;
@@ -134,6 +134,6 @@ public class ActionsChatMenu extends NPCChatMenu {
 	}
 
 	public Text getActionsButton() {
-		return this.getButton(TextUtils.getButton("Actions", this::send));
+		return super.getButton(TextUtils.getButton("Actions", this::send));
 	}
 }

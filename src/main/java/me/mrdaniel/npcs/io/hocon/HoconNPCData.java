@@ -20,15 +20,15 @@ public class HoconNPCData extends Config implements INPCData {
     private final String fileName;
     private final ActionSet actions;
 
-    @Nullable private UUID npcUUID;
+    @Nullable private UUID uuid;
 
-	public HoconNPCData(Path path, String fileName, int id) {
+    public HoconNPCData(Path path, String fileName, int id) {
         super(path.resolve(fileName));
 
         this.id = id;
         this.fileName = fileName;
         this.actions = new ActionSet();
-        this.npcUUID = null;
+        this.uuid = null;
 
         super.getNode("id").setValue(this.id);
     }
@@ -39,7 +39,9 @@ public class HoconNPCData extends Config implements INPCData {
         this.id = super.getNode("id").getInt();
         this.fileName = fileName;
         this.actions = this.loadActions();
-        this.npcUUID = null;
+
+        String uuid = super.getNode("uuid").getString(null);
+        this.uuid = uuid == null ? null : UUID.fromString(uuid);
     }
 
     private ActionSet loadActions() {
@@ -52,23 +54,24 @@ public class HoconNPCData extends Config implements INPCData {
     }
 
     @Override
-    public int getNPCId() {
+    public int getId() {
         return this.id;
     }
 
     @Nullable
     @Override
-    public UUID getNPCUUID() {
-        return this.npcUUID;
+    public UUID getUniqueId() {
+	    return this.uuid;
     }
 
     @Override
-    public void setNPCUUID(@Nullable UUID uuid) {
-	    this.npcUUID = uuid;
+    public void setUniqueId(@Nullable UUID uuid) {
+	    this.uuid = uuid;
+	    super.getNode("uuid").setValue(uuid == null ? null : uuid.toString());
     }
 
     @Override
-    public Position getNPCPosition() {
+    public Position getPosition() {
         return new Position(
                 super.getNode("position", "world").getString("world"),
                 super.getNode("position", "x").getDouble(0),
@@ -80,7 +83,7 @@ public class HoconNPCData extends Config implements INPCData {
     }
 
     @Override
-    public INPCData setNPCPosition(Position value) {
+    public INPCData setPosition(Position value) {
         super.getNode("position", "world").setValue(value.getWorldName());
         super.getNode("position", "x").setValue(value.getX());
         super.getNode("position", "y").setValue(value.getY());
@@ -91,7 +94,7 @@ public class HoconNPCData extends Config implements INPCData {
     }
 
     @Override
-    public <T> Optional<T> getNPCProperty(PropertyType<T> property) {
+    public <T> Optional<T> getProperty(PropertyType<T> property) {
         try {
             return Optional.ofNullable(super.getNode(property.getHoconPath()).getValue(property.getTypeToken()));
         } catch (ObjectMappingException exc) {
@@ -100,7 +103,7 @@ public class HoconNPCData extends Config implements INPCData {
     }
 
     @Override
-    public <T> INPCData setNPCProperty(PropertyType<T> property, T value) {
+    public <T> INPCData setProperty(PropertyType<T> property, T value) {
         try {
             super.getNode(property.getHoconPath()).setValue(property.getTypeToken(), value);
         } catch (ObjectMappingException exc) {
@@ -111,12 +114,12 @@ public class HoconNPCData extends Config implements INPCData {
     }
 
     @Override
-    public ActionSet getNPCActions() {
+    public ActionSet getActions() {
         return this.actions;
     }
 
     @Override
-    public INPCData writeNPCActions() {
+    public INPCData writeActions() {
         try {
             super.getNode("actions").setValue(TypeToken.of(ActionSet.class), this.actions);
         } catch (ObjectMappingException exc) {

@@ -25,9 +25,9 @@ public class CommandCopy extends NPCFileCommand {
 	@Override
 	public void execute(Player p, INPCData data, CommandContext args) throws CommandException {
 		try {
-			NPCAble copy = NPCs.getInstance().getNPCManager().create(p, data.getNPCProperty(PropertyTypes.TYPE).orElse(NPCTypes.HUMAN));
-			PropertyTypes.NPC_INIT.forEach(prop -> data.getNPCProperty(prop).ifPresent(value -> copy.setNPCProperty(prop, value)));
-			data.getNPCActions().getAllActions().forEach(action -> copy.getNPCActions().addAction(action));
+			NPCAble copy = NPCs.getInstance().getNPCManager().create(p, data.getProperty(PropertyTypes.TYPE).orElse(NPCTypes.HUMAN));
+			PropertyTypes.NPC_INIT.forEach(prop -> data.getProperty(prop).ifPresent(value -> copy.setProperty(prop, value)));
+			data.getActions().getAllActions().forEach(action -> copy.getData().getActions().addAction(action));
 		} catch (final NPCException exc) {
 			throw new CommandException(Text.of(TextColors.RED, "Failed to copy NPC: ", exc.getMessage()));
 		}

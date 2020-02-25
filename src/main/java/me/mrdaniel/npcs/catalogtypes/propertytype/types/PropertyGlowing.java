@@ -35,7 +35,7 @@ public class PropertyGlowing extends PropertyType<Boolean> {
 		((Entity)npc).setGlowing(value);
 
 		if (value) {
-			npc.getNPCProperty(PropertyTypes.GLOWCOLOR).ifPresent(color -> PropertyTypes.GLOWCOLOR.apply(npc, color));
+			npc.getData().getProperty(PropertyTypes.GLOWCOLOR).ifPresent(color -> PropertyTypes.GLOWCOLOR.apply(npc, color));
 		}
 	}
 }

@@ -4,15 +4,18 @@ import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
+import me.mrdaniel.npcs.interfaces.mixin.IMixinEntityShulker;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
-import net.minecraft.entity.boss.EntityWither;
+import net.minecraft.entity.monster.EntityShulker;
 import org.spongepowered.api.command.args.GenericArguments;
+import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.text.Text;
 
-public class PropertyWitherInvulnerable extends PropertyType<Boolean> {
+public class PropertyPeeking extends PropertyType<Boolean> {
 
-	public PropertyWitherInvulnerable() {
-		super("Invulnerable", "invulnerable", GenericArguments.bool(Text.of("invulnerable")));
+	public PropertyPeeking() {
+		super("Peeking", "peeking", GenericArguments.bool(Text.of("peeking")));
 	}
 
 	@Override
@@ -22,16 +25,16 @@ public class PropertyWitherInvulnerable extends PropertyType<Boolean> {
 
 	@Override
 	public boolean isSupported(final NPCAble npc) {
-		return npc instanceof EntityWither;
+		return npc instanceof EntityShulker;
 	}
 
 	@Override
 	public boolean isSupported(NPCType type) {
-		return type == NPCTypes.WITHER;
+		return type == NPCTypes.SHULKER;
 	}
 
 	@Override
-	public void apply(NPCAble npc, Boolean value) {	// TODO: Check if this works
-		((EntityWither)npc).setInvulTime(Integer.MAX_VALUE);
+	public void apply(NPCAble npc, Boolean value) { // TODO: Check if this works
+		((IMixinEntityShulker)npc).setPeek(value);
 	}
 }

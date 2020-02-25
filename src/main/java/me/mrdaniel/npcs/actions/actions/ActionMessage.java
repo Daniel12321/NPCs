@@ -35,7 +35,7 @@ public class ActionMessage extends Action {
 
 	@Override
 	public void execute(Player p, INPCData data, ActionResult result) {
-		p.sendMessage(NPCs.getInstance().getPlaceholderManager().formatNPCMessage(p, this.message, data.getNPCProperty(PropertyTypes.NAME).orElse("")));
+		p.sendMessage(NPCs.getInstance().getPlaceholderManager().formatNPCMessage(p, this.message, data.getProperty(PropertyTypes.NAME).orElse("")));
 		result.setNextAction(result.getCurrentAction()+1);
 	}
 

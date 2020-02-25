@@ -4,14 +4,16 @@ import org.spongepowered.api.CatalogType;
 import org.spongepowered.api.item.ItemType;
 import org.spongepowered.api.util.annotation.CatalogedBy;
 
+import javax.annotation.Nullable;
+
 @CatalogedBy(HorseArmorTypes.class)
 public class HorseArmorType implements CatalogType {
 
 	private final String name;
 	private final String id;
-	private final ItemType type;
+	@Nullable private final ItemType type;
 
-	HorseArmorType(String name, String id, ItemType type) {
+	HorseArmorType(String name, String id, @Nullable ItemType type) {
 		this.name = name;
 		this.id = id;
 		this.type = type;
@@ -27,6 +29,7 @@ public class HorseArmorType implements CatalogType {
 		return id;
 	}
 
+	@Nullable
 	public ItemType getType() {
 		return type;
 	}

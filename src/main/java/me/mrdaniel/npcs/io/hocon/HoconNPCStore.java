@@ -11,8 +11,8 @@ import me.mrdaniel.npcs.actions.conditions.ConditionTypeSerializer;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionType;
 import me.mrdaniel.npcs.catalogtypes.career.Career;
 import me.mrdaniel.npcs.catalogtypes.cattype.CatType;
-import me.mrdaniel.npcs.catalogtypes.conditiontype.ConditionType;
 import me.mrdaniel.npcs.catalogtypes.color.ColorType;
+import me.mrdaniel.npcs.catalogtypes.conditiontype.ConditionType;
 import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColor;
 import me.mrdaniel.npcs.catalogtypes.horsepattern.HorsePattern;
 import me.mrdaniel.npcs.catalogtypes.llamatype.LlamaType;
@@ -20,7 +20,6 @@ import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.parrottype.ParrotType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitType;
-import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.io.INPCStore;
 import me.mrdaniel.npcs.managers.NPCManager;
@@ -72,22 +71,22 @@ public class HoconNPCStore implements INPCStore {
 
 		for (String name : this.storageDir.toFile().list()) {
 			INPCData data = new HoconNPCData(this.storageDir, name);
-		    npcs.put(data.getNPCId(), data);
+		    npcs.put(data.getId(), data);
 		}
     }
 
 	@Override
-	public INPCData create(NPCType type) throws NPCException {
+	public INPCData create(NPCType type) {
 		int nextId = this.manager.getNextID();
 		return new HoconNPCData(this.storageDir, "npc_" + nextId + ".conf", nextId);
 	}
 
 	@Override
-	public void remove(INPCData data) throws NPCException {
+	public void remove(INPCData data) {
         try {
             Files.deleteIfExists(this.storageDir.resolve(((HoconNPCData)data).getFileName()));
         } catch (final IOException exc) {
-            NPCs.getInstance().getLogger().error("Failed to delete npc data for npc {}: {}", data.getNPCId(), exc.getMessage(), exc);
+            NPCs.getInstance().getLogger().error("Failed to delete npc data for npc {}: {}", data.getId(), exc.getMessage(), exc);
         }
 	}
 }

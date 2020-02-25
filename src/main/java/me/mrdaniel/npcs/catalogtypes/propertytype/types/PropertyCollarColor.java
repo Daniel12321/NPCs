@@ -33,6 +33,7 @@ public class PropertyCollarColor extends PropertyType<DyeColorType> {
 
 	@Override
 	public void apply(NPCAble npc, DyeColorType value) {
+		((EntityWolf)npc).setTamed(true);
 		((EntityWolf)npc).setCollarColor(value.getColor());
 	}
 }

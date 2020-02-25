@@ -9,8 +9,6 @@ import me.mrdaniel.npcs.commands.action.CommandActionRepeat;
 import me.mrdaniel.npcs.commands.action.CommandActionSwap;
 import me.mrdaniel.npcs.commands.action.condition.CommandActionAddCondition;
 import me.mrdaniel.npcs.commands.action.edit.*;
-import me.mrdaniel.npcs.commands.equipment.CommandEditEquipment;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.menu.chat.info.InfoMenu;
 import me.mrdaniel.npcs.menu.chat.npc.PropertiesChatMenu;
@@ -22,22 +20,20 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import java.util.Optional;
-
 public class CommandNPC extends PlayerCommand {
 
 	@Override
 	public void execute(Player p, CommandContext args) throws CommandException {
-		Optional<INPCData> selected = NPCs.getInstance().getSelectedManager().get(p.getUniqueId());
+		INPCData selected = NPCs.getInstance().getSelectedManager().get(p.getUniqueId()).orElse(null);
 
-		if (selected.isPresent()) {
-			NPCAble npc = NPCs.getInstance().getNPCManager().getNPC(selected.get()).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "NPC is not spawned in!")));
-			new PropertiesChatMenu(npc).send(p);
+		if (selected != null) {
+			new PropertiesChatMenu(selected).send(p);
 		} else {
 			new InfoMenu().send(p);
 		}
 	}
 
+	// TODO: Update
 	public CommandSpec build() {
 		return CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Main Command"))
 				.executor(this)
@@ -58,18 +54,30 @@ public class CommandNPC extends PlayerCommand {
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SKIN_UUID), "skinuuid", "skin-uuid")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.LOOKING), "looking")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.INTERACT), "interact")
-				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.GLOWING), "glowing", "glow")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SILENT), "silent")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.BURNING), "burning", "burn")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.GLOWING), "glowing", "glow")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.GLOWCOLOR), "glowcolor")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.ANGRY), "angry")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.BABY), "baby")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.CHARGED), "charged")
-				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.ANGRY), "angry")
-				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SIZE), "size")
-				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SITTING), "sitting", "sit")
-				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SADDLE), "saddle")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.CHEST), "chest")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.HANGING), "hanging", "hang")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.IGNITED), "ignited", "lit")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.PEEKING), "peek", "peeking")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.PUMPKIN), "pumpkin")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SCREAMING), "screaming")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SHEARED), "sheared")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SITTING), "sitting", "sit")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SADDLE), "saddle", "saddled")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.WITHER_INVULNERABLE), "witherinvulnerable")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SIZE), "size")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.CARRIES), "carries")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.CAREER), "career")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.COLLARCOLOR), "collarcolor")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.WOOLCOLOR), "woolcolor")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SHULKERCOLOR), "shulkercolor")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.HORSEARMOR), "horsearmor")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.HORSEPATTERN), "horsepattern")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.HORSECOLOR), "horsecolor")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.LLAMATYPE), "llamatype")

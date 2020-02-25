@@ -38,7 +38,7 @@ public class PropertyName extends PropertyType<String> {
 
 		// Fixes human NPCs losing some of their properties when changing their name
 		if (npc instanceof Human) {
-			npc.refreshNPC();
+			npc.refresh();
 		}
 	}
 }

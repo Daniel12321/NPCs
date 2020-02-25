@@ -23,29 +23,29 @@ import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.world.World;
 
-import javax.annotation.Nullable;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class NPCManager {
 
-    private final Map<Integer, INPCData> npcs;
+    private final Map<Integer, INPCData> data;
     private INPCStore npcStore;
 
     @Inject
     public NPCManager() {
-        this.npcs = Maps.newHashMap();
+        this.data = Maps.newHashMap();
         this.npcStore = null;
     }
 
     public void load(Config config, Path configDir) {
         this.npcStore = StorageType.of(config.getNode("storage", "storage_type").getString()).orElse(StorageType.HOCON).createNPCStore(this, configDir);
         this.npcStore.setup();
-        this.npcs.clear();
-        this.npcStore.load(this.npcs);
+        this.data.clear();
+        this.npcStore.load(this.data);
     }
 
     public NPCAble create(Player p, NPCType type) throws NPCException {
@@ -56,19 +56,19 @@ public class NPCManager {
             throw new NPCException("Event was cancelled!");
         }
 
-		this.npcs.put(data.getNPCId(), data);
+		this.data.put(data.getId(), data);
 
         if (type == NPCTypes.HUMAN) {
-            data.setNPCProperty(PropertyTypes.NAME, "Steve");
+            data.setProperty(PropertyTypes.NAME, "Steve");
         }
-        data.setNPCPosition(new Position(p.getWorld().getName(), p.getLocation().getPosition(), p.getHeadRotation()));
-		data.setNPCProperty(PropertyTypes.TYPE, type)
-                .setNPCProperty(PropertyTypes.INTERACT, true)
-                .setNPCProperty(PropertyTypes.LOOKING, false)
-                .saveNPC();
+        data.setPosition(new Position(p.getWorld().getName(), p.getLocation().getPosition(), p.getHeadRotation()));
+		data.setProperty(PropertyTypes.TYPE, type)
+                .setProperty(PropertyTypes.INTERACT, true)
+                .setProperty(PropertyTypes.LOOKING, false)
+                .save();
 
 		NPCAble npc = this.spawn(data);
-		NPCs.getInstance().getSelectedManager().select(p, npc);
+		NPCs.getInstance().getSelectedManager().select(p, data);
 
 		return npc;
     }
@@ -76,16 +76,14 @@ public class NPCManager {
     public NPCAble spawn(INPCData data) throws NPCException {
         this.getNPC(data).ifPresent(npc -> ((Entity)npc).remove());
 
-        Position pos = data.getNPCPosition();
+        Position pos = data.getPosition();
         World world = pos.getWorld().orElseThrow(() -> new NPCException("Invalid world!"));
-        Entity ent = world.createEntity(data.getNPCProperty(PropertyTypes.TYPE).orElseThrow(() -> new NPCException("Could not find EntityType for NPC!")).getEntityType(), new Vector3d(0, 0, 0));
-        ent.offer(new NPCData(data.getNPCId()));
+        Entity ent = world.createEntity(data.getProperty(PropertyTypes.TYPE).orElseThrow(() -> new NPCException("Could not find EntityType for NPC!")).getEntityType(), new Vector3d(0, 0, 0));
+        ent.offer(new NPCData(data.getId()));
 
         NPCAble npc = (NPCAble) ent;
-        npc.setNPCData(data);
-        data.setNPCUUID(ent.getUniqueId());
-
-        ((net.minecraft.entity.Entity)ent).setPositionAndRotation(pos.getX(), pos.getY(), pos.getZ(), pos.getYaw(), pos.getPitch());
+        npc.setData(data);
+        data.setUniqueId(ent.getUniqueId());
 
         world.spawnEntity(ent);
         return npc;
@@ -96,10 +94,8 @@ public class NPCManager {
     }
 
     public void remove(CommandSource src, INPCData data) throws NPCException {
-        this.remove(src, data, this.getNPC(data).orElse(null));
-    }
+        NPCAble npc = this.getNPC(data).orElse(null);
 
-    public void remove(CommandSource src, INPCData data, @Nullable NPCAble npc) throws NPCException {
         if (Sponge.getEventManager().post(new NPCRemoveEvent(src, data, npc))) {
             throw new NPCException("Event was cancelled!");
         }
@@ -108,40 +104,53 @@ public class NPCManager {
         NPCs.getInstance().getActionManager().removeChoosing(data);
 
         this.npcStore.remove(data);
-        this.npcs.remove(data.getNPCId());
+        this.data.remove(data.getId());
 
         if (npc != null) {
             ((Entity)npc).remove();
         } else {
-            data.getNPCPosition().getWorld().ifPresent(world -> world.loadChunk(data.getNPCPosition().getChunkPosition(), true));
+            data.getPosition().getWorld().ifPresent(world -> world.loadChunk(data.getPosition().getChunkPosition(), true));
         }
     }
 
     public Optional<INPCData> getData(int id) {
-        return Optional.ofNullable(this.npcs.get(id));
+        return Optional.ofNullable(this.data.get(id));
+    }
+
+    public List<INPCData> getData(String worldName) {
+        return this.data.values().stream().filter(data -> worldName.equals(data.getPosition().getWorldName())).collect(Collectors.toList());
     }
 
     public Optional<NPCAble> getNPC(INPCData data) {
-        World world = data.getNPCPosition().getWorld().orElse(null);
-        if (world == null) {
+        UUID uuid = data.getUniqueId();
+        World world = data.getPosition().getWorld().orElse(null);
+
+        if (uuid == null || world == null) {
             return Optional.empty();
         }
 
-        if (data.getNPCUUID() == null) {
-            return Optional.empty();
-        } else {
-            return world.getEntity(data.getNPCUUID()).map(ent -> (NPCAble)ent);
-        }
+        return world.getEntity(uuid).map(ent -> ((NPCAble)ent));
     }
 
-    public List<INPCData> getNPCs(String worldName) {
-        return this.npcs.values().stream().filter(data -> worldName.equals(data.getNPCPosition().getWorldName())).collect(Collectors.toList());
+    public void onNPCSpawn(Entity ent, int id) {
+        INPCData data = NPCs.getInstance().getNPCManager().getData(id).orElse(null);
+
+        if (data == null) {
+            ent.remove();
+        } else if (data.getUniqueId() == null) {
+            data.setUniqueId(ent.getUniqueId());
+            ((NPCAble)ent).setData(data);
+        } else if (data.getUniqueId().equals(ent.getUniqueId())) {
+            ((NPCAble)ent).setData(data);
+        } else {
+            ent.remove();
+        }
     }
 
     public int getNextID() {
         int id = 1;
 
-        while (this.npcs.containsKey(id)) {
+        while (this.data.containsKey(id)) {
             id++;
         }
         return id;

@@ -22,7 +22,7 @@ public class CommandGoto extends NPCFileCommand {
 
 	@Override
 	public void execute(Player p, INPCData data, CommandContext args) throws CommandException {
-		Position pos = data.getNPCPosition();
+		Position pos = data.getPosition();
 		World world = pos.getWorld().orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "Failed to find world '", pos.getWorldName(), "'")));
 		p.setLocation(new Location<>(world, pos.getX(), pos.getY(), pos.getZ()));
 	}

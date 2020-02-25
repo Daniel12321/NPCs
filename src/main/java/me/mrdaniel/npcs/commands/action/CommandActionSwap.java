@@ -28,7 +28,7 @@ public class CommandActionSwap extends NPCCommand {
 			throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
 		}
 
-		ActionSet actions = data.getNPCActions();
+		ActionSet actions = data.getActions();
 		int first = args.<Integer>getOne("first").get();
 		int second = args.<Integer>getOne("second").get();
 		int size = actions.getAllActions().size();
@@ -41,7 +41,7 @@ public class CommandActionSwap extends NPCCommand {
 		Action secondAction = actions.getAction(second);
 		actions.setAction(first, secondAction);
 		actions.setAction(second, firstAction);
-		data.writeNPCActions().saveNPC();
+		data.writeActions().save();
 	}
 
 	public CommandSpec build() {

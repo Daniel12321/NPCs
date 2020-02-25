@@ -42,7 +42,7 @@ public class PropertyBaby extends PropertyType<Boolean> {
 		}
 
 		// Fixes some entities (etc. horses) moving around when changing from baby to adult
-		Position pos = npc.getNPCPosition();
+		Position pos = npc.getData().getPosition();
 		((Entity)npc).setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), pos.getYaw(), pos.getPitch());
 	}
 }
