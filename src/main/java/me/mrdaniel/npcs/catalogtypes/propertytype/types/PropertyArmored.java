@@ -9,10 +9,10 @@ import net.minecraft.entity.boss.EntityWither;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.text.Text;
 
-public class PropertyWitherInvulnerable extends PropertyType<Boolean> {
+public class PropertyArmored extends PropertyType<Boolean> {
 
-	public PropertyWitherInvulnerable() {
-		super("Invulnerable", "invulnerable", GenericArguments.bool(Text.of("invulnerable")));
+	public PropertyArmored() {
+		super("Armored", "armored", GenericArguments.bool(Text.of("armored")));
 	}
 
 	@Override
@@ -31,7 +31,9 @@ public class PropertyWitherInvulnerable extends PropertyType<Boolean> {
 	}
 
 	@Override
-	public void apply(NPCAble npc, Boolean value) {	// TODO: Check if this works
-		((EntityWither)npc).setInvulTime(Integer.MAX_VALUE);
+	public void apply(NPCAble npc, Boolean value) {
+		EntityWither wither = (EntityWither) npc;
+
+		wither.setHealth(value ?  wither.getMaxHealth() / 3.0f : wither.getMaxHealth());
 	}
 }

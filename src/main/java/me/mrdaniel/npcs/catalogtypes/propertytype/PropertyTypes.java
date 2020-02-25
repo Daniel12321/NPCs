@@ -34,18 +34,18 @@ public final class PropertyTypes {
 	public static final PropertyType<ColorType> GLOWCOLOR = new PropertyGlowColor();
 
 	public static final PropertyType<Boolean> ANGRY = new PropertyAngry();
+	public static final PropertyType<Boolean> ARMORED = new PropertyArmored();
 	public static final PropertyType<Boolean> BABY = new PropertyBaby();
 	public static final PropertyType<Boolean> CHARGED = new PropertyCharged();
 	public static final PropertyType<Boolean> CHEST = new PropertyChest();
+	public static final PropertyType<Boolean> EATING = new PropertyEating();
 	public static final PropertyType<Boolean> HANGING = new PropertyHanging();
-	public static final PropertyType<Boolean> IGNITED = new PropertyIgnited();
 	public static final PropertyType<Boolean> PEEKING = new PropertyPeeking();
 	public static final PropertyType<Boolean> PUMPKIN = new PropertyPumpkin();
 	public static final PropertyType<Boolean> SCREAMING = new PropertyScreaming();
 	public static final PropertyType<Boolean> SHEARED = new PropertySheared();
 	public static final PropertyType<Boolean> SITTING = new PropertySitting();
 	public static final PropertyType<Boolean> SADDLE = new PropertySaddle();
-	public static final PropertyType<Boolean> WITHER_INVULNERABLE = new PropertyWitherInvulnerable();
 	public static final PropertyType<Integer> SIZE = new PropertySize();
 	public static final PropertyType<BlockType> CARRIES = new PropertyCarries();
 	public static final PropertyType<Career> CAREER = new PropertyCareer();

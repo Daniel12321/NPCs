@@ -5,17 +5,14 @@ import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
-import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.passive.AbstractHorse;
 import org.spongepowered.api.command.args.GenericArguments;
-import org.spongepowered.api.data.key.Keys;
-import org.spongepowered.api.entity.Entity;
-import org.spongepowered.api.entity.living.monster.Creeper;
 import org.spongepowered.api.text.Text;
 
-public class PropertyIgnited extends PropertyType<Boolean> {
+public class PropertyEating extends PropertyType<Boolean> {
 
-	public PropertyIgnited() {
-		super("Ignited", "ignited", GenericArguments.bool(Text.of("ignited")));
+	public PropertyEating() {
+		super("Eating", "eating", GenericArguments.bool(Text.of("eating")));
 	}
 
 	@Override
@@ -25,17 +22,21 @@ public class PropertyIgnited extends PropertyType<Boolean> {
 
 	@Override
 	public boolean isSupported(final NPCAble npc) {
-		return npc instanceof Creeper;
+		return npc instanceof AbstractHorse;
 	}
 
 	@Override
 	public boolean isSupported(NPCType type) {
-		return type == NPCTypes.CREEPER;
+		return type == NPCTypes.HORSE
+				|| type == NPCTypes.MULE
+				|| type == NPCTypes.DONKEY
+				|| type == NPCTypes.LLAMA
+				|| type == NPCTypes.SKELETON_HORSE
+				|| type == NPCTypes.ZOMBIE_HORSE;
 	}
 
 	@Override
-	public void apply(NPCAble npc, Boolean value) { // TODO: Check if this works
-		((Entity)npc).offer(Keys.FUSE_DURATION, Integer.MAX_VALUE);
-		((EntityCreeper)npc).ignite();
+	public void apply(NPCAble npc, Boolean value) {
+		((AbstractHorse)npc).setEatingHaystack(value);
 	}
 }

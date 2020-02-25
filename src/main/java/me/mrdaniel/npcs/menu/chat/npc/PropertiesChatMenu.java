@@ -17,6 +17,7 @@ import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitTypes;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.utils.Position;
 import me.mrdaniel.npcs.utils.TextUtils;
+import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
@@ -80,19 +81,20 @@ public class PropertiesChatMenu extends NPCChatMenu {
         lines.add(this.getOptionsText("GlowColor", "/npc glowcolor <color>", data.getProperty(PropertyTypes.GLOWCOLOR).orElse(ColorTypes.WHITE).getName()));
 
         if (PropertyTypes.ANGRY.isSupported(type)) { lines.add(TextUtils.getToggleText("Angry", "/npc angry", data.getProperty(PropertyTypes.ANGRY).orElse(false))); }
+        if (PropertyTypes.ARMORED.isSupported(type)) { lines.add(TextUtils.getToggleText("Armored", "/npc armored", data.getProperty(PropertyTypes.ARMORED).orElse(false))); }
         if (PropertyTypes.BABY.isSupported(type)) { lines.add(TextUtils.getToggleText("Baby", "/npc baby", data.getProperty(PropertyTypes.BABY).orElse(false))); }
         if (PropertyTypes.CHARGED.isSupported(type)) { lines.add(TextUtils.getToggleText("Charged", "/npc charged", data.getProperty(PropertyTypes.CHARGED).orElse(false))); }
         if (PropertyTypes.CHEST.isSupported(type)) { lines.add(TextUtils.getToggleText("Chest", "/npc chest", data.getProperty(PropertyTypes.CHEST).orElse(false))); }
+        if (PropertyTypes.EATING.isSupported(type)) { lines.add(TextUtils.getToggleText("Eating", "/npc eating", data.getProperty(PropertyTypes.EATING).orElse(false))); }
         if (PropertyTypes.HANGING.isSupported(type)) { lines.add(TextUtils.getToggleText("Hanging", "/npc hanging", data.getProperty(PropertyTypes.HANGING).orElse(true))); }
-        if (PropertyTypes.IGNITED.isSupported(type)) { lines.add(TextUtils.getToggleText("Ignited", "/npc ignited", data.getProperty(PropertyTypes.IGNITED).orElse(false))); }
         if (PropertyTypes.PEEKING.isSupported(type)) { lines.add(TextUtils.getToggleText("Peeking", "/npc peeking", data.getProperty(PropertyTypes.PEEKING).orElse(false))); }
         if (PropertyTypes.PUMPKIN.isSupported(type)) { lines.add(TextUtils.getToggleText("Pumpkin", "/npc pumpkin", data.getProperty(PropertyTypes.PUMPKIN).orElse(true))); }
         if (PropertyTypes.SCREAMING.isSupported(type)) { lines.add(TextUtils.getToggleText("Screaming", "/npc screaming", data.getProperty(PropertyTypes.SCREAMING).orElse(false))); }
         if (PropertyTypes.SHEARED.isSupported(type)) { lines.add(TextUtils.getToggleText("Sheared", "/npc sheared", data.getProperty(PropertyTypes.SHEARED).orElse(false))); }
         if (PropertyTypes.SITTING.isSupported(type)) { lines.add(TextUtils.getToggleText("Sitting", "/npc sitting", data.getProperty(PropertyTypes.SITTING).orElse(false))); }
         if (PropertyTypes.SADDLE.isSupported(type)) { lines.add(TextUtils.getToggleText("Saddle", "/npc saddle", data.getProperty(PropertyTypes.SADDLE).orElse(false))); }
-        if (PropertyTypes.WITHER_INVULNERABLE.isSupported(type)) { lines.add(TextUtils.getToggleText("WitherInvulnerable", "/npc witherinvulnerable", data.getProperty(PropertyTypes.WITHER_INVULNERABLE).orElse(false))); }
         if (PropertyTypes.SIZE.isSupported(type)) { lines.add(this.getOptionsText("Size", "/npc size <size>", Integer.toString(data.getProperty(PropertyTypes.SIZE).orElse(1)))); }
+        if (PropertyTypes.CARRIES.isSupported(type)) { lines.add(this.getOptionsText("Carries", "/npc carries <blocktype>", data.getProperty(PropertyTypes.CARRIES).orElse(BlockTypes.AIR).getName())); }
         if (PropertyTypes.CAREER.isSupported(type)) { lines.add(this.getOptionsText("Career", "/npc career <career>", data.getProperty(PropertyTypes.CAREER).orElse(Careers.SHEPHERD).getName())); }
         if (PropertyTypes.COLLARCOLOR.isSupported(type)) { lines.add(this.getOptionsText("CollarColor", "/npc collarcolor <color>", data.getProperty(PropertyTypes.COLLARCOLOR).orElse(DyeColorTypes.WHITE).getName())); }
         if (PropertyTypes.WOOLCOLOR.isSupported(type)) { lines.add(this.getOptionsText("WoolColor", "/npc woolcolor <color>", data.getProperty(PropertyTypes.WOOLCOLOR).orElse(DyeColorTypes.WHITE).getName())); }

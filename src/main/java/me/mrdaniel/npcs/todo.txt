@@ -4,7 +4,6 @@ TODO:
 - Fix squid being glitchy then pushed
 - Add a way to select villagers (InteractListener)
 - Check for more efficient ways to make NPCs look at players (MixinEntityLiving) (Possible AI tasks)
-- Check for more efficient ways to find NPC entities (NPCManager#getNPC)
 - Choose between current (SelectedManager) or custom data for selecting NPCs
 - Remove all unsupported data when changing an NPCs type
 - Disable zombie_villager turning
@@ -15,19 +14,20 @@ TODO:
 - Add size property (Keys#BASE_SIZE, Keys#HEIGHT, Keys#SCALE)
 - Add InLove property (hearts effect)
 
-- Add EatingHaystack property (Horse, Llama, Donkey, Mule, SkeletonHorse, ZombieHorse)
-!- Add Saddle property (Horse, Donkey, Mule, SkeletonHorse, ZombieHorse)
+!- Add EatingHaystack property (Horse, Donkey, Mule, Llama, SkeletonHorse, ZombieHorse)
+!- Add Saddle property (Pig, Horse, Donkey, Mule, Llama, SkeletonHorse, ZombieHorse)
 !- Add Chest property (Llama, Donkey, Mule)
 !- Add Horse Armor property
 
 - Add ZombieVillager property: Shaking (might need to set the tick so it doesnt turn)
 !- Add Worf properties: CollarColor, Angry FIX
-!- Add Creeper property: Ignited (might need to set the fuse as well) FIX
 !- Add Enderman property: CarriedBlock
 - Add Evoker property: SpellTicks (casting spell)
 !- Add Sheep properties: Color, Sheared
-- Add Shulker properties: !Color, AttachFace, !Peek FIX
-!- Add Wither property: Invulnerable FIX
+- Add Shulker properties: !Color, AttachFace, !Peek FIX???
+!- Add Wither property: Armored
 !- Add enderman property: Screaming
+
+
 
 
