@@ -30,6 +30,6 @@ public class PropertyLeggings extends PropertyType<ItemStack> {
 
 	@Override
 	public void apply(NPCAble npc, ItemStack value) {
-		((ArmorEquipable) npc).setLeggings(value);
+		((ArmorEquipable)npc).setLeggings(value);
 	}
 }

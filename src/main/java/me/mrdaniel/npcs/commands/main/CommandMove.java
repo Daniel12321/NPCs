@@ -22,12 +22,17 @@ public class CommandMove extends NPCCommand {
 
 	@Override
 	public void execute(Player p, INPCData data, NPCAble npc, CommandContext args) throws CommandException {
-		data.setNPCPosition(new Position(p.getWorld().getName(), p.getLocation().getPosition(), p.getHeadRotation())).saveNPC();
+		Position pos = new Position(p.getWorld().getName(), p.getLocation().getPosition(), p.getHeadRotation());
 
-		try {
-			NPCs.getInstance().getNPCManager().spawn(data);
-		} catch (NPCException exc) {
-			throw new CommandException(Text.of(TextColors.RED, "Failed to respawn NPC: ", exc.getMessage()));
+		if (npc != null) {
+			npc.setPosition(pos).save();
+		} else {
+			data.setPosition(pos).save();
+			try {
+				NPCs.getInstance().getNPCManager().spawn(data);
+			} catch (NPCException exc) {
+				throw new CommandException(Text.of(TextColors.RED, "Failed to respawn NPC: ", exc.getMessage()), exc);
+			}
 		}
 	}
 

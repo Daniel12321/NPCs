@@ -34,6 +34,6 @@ public class PropertyCharged extends PropertyType<Boolean> {
 
 	@Override
 	public void apply(NPCAble npc, Boolean value) {
-		((Living) npc).offer(Keys.CREEPER_CHARGED, value);
+		((Living)npc).offer(Keys.CREEPER_CHARGED, value);
 	}
 }

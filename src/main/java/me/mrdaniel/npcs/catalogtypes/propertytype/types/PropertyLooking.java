@@ -30,6 +30,6 @@ public class PropertyLooking extends PropertyType<Boolean> {
 
 	@Override
 	public void apply(NPCAble npc, Boolean value) {
-		npc.setNPCLooking(value);
+		npc.setLooking(value);
 	}
 }

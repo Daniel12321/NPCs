@@ -9,10 +9,14 @@ import me.mrdaniel.npcs.catalogtypes.career.Career;
 import me.mrdaniel.npcs.catalogtypes.career.CareerRegistryModule;
 import me.mrdaniel.npcs.catalogtypes.cattype.CatType;
 import me.mrdaniel.npcs.catalogtypes.cattype.CatTypeRegistryModule;
+import me.mrdaniel.npcs.catalogtypes.color.ColorType;
+import me.mrdaniel.npcs.catalogtypes.color.ColorTypeRegistryModule;
 import me.mrdaniel.npcs.catalogtypes.conditiontype.ConditionType;
 import me.mrdaniel.npcs.catalogtypes.conditiontype.ConditionTypeRegistryModule;
-import me.mrdaniel.npcs.catalogtypes.glowcolor.GlowColor;
-import me.mrdaniel.npcs.catalogtypes.glowcolor.GlowColorRegistryModule;
+import me.mrdaniel.npcs.catalogtypes.dyecolor.DyeColorType;
+import me.mrdaniel.npcs.catalogtypes.dyecolor.DyeColorTypeRegistryModule;
+import me.mrdaniel.npcs.catalogtypes.horsearmor.HorseArmorType;
+import me.mrdaniel.npcs.catalogtypes.horsearmor.HorseArmorTypeRegistryModule;
 import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColor;
 import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColorRegistryModule;
 import me.mrdaniel.npcs.catalogtypes.horsepattern.HorsePattern;
@@ -29,8 +33,8 @@ import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitType;
 import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitTypeRegistryModule;
 import me.mrdaniel.npcs.commands.main.CommandNPC;
 import me.mrdaniel.npcs.data.NPCKeys;
+import me.mrdaniel.npcs.data.npc.NPCData;
 import me.mrdaniel.npcs.data.npc.NPCDataBuilder;
-import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.io.Config;
 import me.mrdaniel.npcs.listeners.EntityListener;
 import me.mrdaniel.npcs.listeners.InteractListener;
@@ -38,7 +42,7 @@ import me.mrdaniel.npcs.managers.ActionManager;
 import me.mrdaniel.npcs.managers.NPCManager;
 import me.mrdaniel.npcs.managers.PlaceholderManager;
 import me.mrdaniel.npcs.managers.SelectedManager;
-import me.mrdaniel.npcs.utils.ServerUtils;
+import me.mrdaniel.npcs.utils.LatestVersionSupplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.api.Game;
@@ -101,9 +105,11 @@ public class NPCs {
 	@Listener
 	public void onPreInit(@Nullable GamePreInitializationEvent e) {
 		this.game.getRegistry().registerModule(NPCType.class, new NPCTypeRegistryModule());
-		this.game.getRegistry().registerModule(GlowColor.class, new GlowColorRegistryModule());
+		this.game.getRegistry().registerModule(ColorType.class, new ColorTypeRegistryModule());
+		this.game.getRegistry().registerModule(DyeColorType.class, new DyeColorTypeRegistryModule());
 		this.game.getRegistry().registerModule(Career.class, new CareerRegistryModule());
 		this.game.getRegistry().registerModule(CatType.class, new CatTypeRegistryModule());
+		this.game.getRegistry().registerModule(HorseArmorType.class, new HorseArmorTypeRegistryModule());
 		this.game.getRegistry().registerModule(HorseColor.class, new HorseColorRegistryModule());
 		this.game.getRegistry().registerModule(HorsePattern.class, new HorsePatternRegistryModule());
 		this.game.getRegistry().registerModule(LlamaType.class, new LlamaTypeRegistryModule());
@@ -133,7 +139,7 @@ public class NPCs {
 
 		if (this.config.getNode("update_message").getBoolean(true)) {
 			Task.builder().async().execute(() -> {
-				ServerUtils.getLatestVersion().ifPresent(v -> {
+				new LatestVersionSupplier().get().ifPresent(v -> {
 					Task.builder().execute(() -> {
 						if (!v.equals("v" + NPCs.VERSION)) {
 							this.logger.info("A new version (" + v + ") of NPCs is available!");
@@ -161,16 +167,11 @@ public class NPCs {
 	@Listener
 	public void onReload(@Nullable GameReloadEvent e) {
 		this.onStopping(null);
-
-		this.game.getServer().getWorlds().forEach(world -> this.npcManager.getNPCs(world.getName()).forEach(data -> {
-			try {
-				this.npcManager.spawn(data);
-			} catch (NPCException exc) {
-				this.logger.error("Failed to respawn NPC " + data.getNPCId() + ": ", exc);
-			}
-		}));
-
 		this.onInit(null);
+
+		this.game.getServer().getWorlds().forEach(world -> world.getEntities().forEach(ent -> ent.get(NPCData.class).ifPresent(data -> {
+			this.npcManager.onNPCSpawn(ent, data.getId());
+		})));
 	}
 
 	@Listener

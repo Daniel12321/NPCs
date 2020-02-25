@@ -2,7 +2,6 @@ package me.mrdaniel.npcs.mixin;
 
 import com.flowpowered.math.vector.Vector3d;
 import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.actions.ActionSet;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
@@ -22,8 +21,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 @Mixin(value = EntityLiving.class, priority = 10)
 public abstract class MixinEntityLiving extends EntityLivingBase implements NPCAble {
@@ -44,20 +41,20 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 
 	@Nullable
 	@Override
-	public INPCData getNPCData() {
+	public INPCData getData() {
 		return this.data;
 	}
 
 	@Override
-	public void setNPCData(INPCData data) {
+	public void setData(INPCData data) {
 		this.data = data;
 
 		this.setup(PropertyTypes.NPC_INIT);
 	}
 
 	@Override
-	public void refreshNPC() {
-		PropertyTypes.ARMOR.forEach(prop -> prop.apply(this, null));
+	public void refresh() {
+		PropertyTypes.EQUIPMENT.forEach(prop -> prop.apply(this, null));
 
 		Task.builder().delayTicks(5).execute(() -> this.setup(PropertyTypes.NPC_RELOAD)).submit(NPCs.getInstance());
 	}
@@ -66,84 +63,41 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 		this.enablePersistence();
 		this.setCanPickUpLoot(false);
 		this.setNoAI(true);
-		super.setDropItemsWhenDead(false);
-		super.setEntityInvulnerable(true);
-		super.setNoGravity(true);
+		this.setDropItemsWhenDead(false);
+		this.setEntityInvulnerable(true);
+		this.setNoGravity(true);
+
+		Position pos = this.data.getPosition();
+		this.setPositionAndRotation(pos.getX(), pos.getY(), pos.getZ(), pos.getYaw(), pos.getPitch());
 
 		properties.stream()
 				.filter(prop -> prop.isSupported(this))
-				.forEach(prop -> this.data.getNPCProperty(prop)
+				.forEach(prop -> this.data.getProperty(prop)
 						.ifPresent(value -> prop.apply(this, value)));
 	}
 
 	@Override
-	public void setNPCLooking(boolean value) {
+	public void setLooking(boolean value) {
 		this.looking = value;
 	}
 
 	@Override
-	public boolean isNPCLooking() {
-		return this.looking;
+	public INPCData setPosition(Position value) {
+		this.setPositionAndRotation(value.getX(), value.getY(), value.getZ(), value.getYaw(), value.getPitch());
+		return this.data.setPosition(value);
 	}
 
 	@Override
-	public int getNPCId() {
-		return this.data.getNPCId();
-	}
-
-	@Nullable
-	@Override
-	public UUID getNPCUUID() {
-		return this.data.getNPCUUID();
-	}
-
-	@Override
-	public void setNPCUUID(@Nullable UUID uuid) {
-		this.data.setNPCUUID(uuid);
-	}
-
-	@Override
-	public Position getNPCPosition() {
-		return this.data.getNPCPosition();
-	}
-
-	@Override
-	public INPCData setNPCPosition(Position value) {
-		super.setPositionAndRotation(value.getX(), value.getY(), value.getZ(), value.getYaw(), value.getPitch());
-		return this.data.setNPCPosition(value);
-	}
-
-	@Override
-	public <T> Optional<T> getNPCProperty(PropertyType<T> property) {
-		return this.data.getNPCProperty(property);
-	}
-
-	@Override
-	public <T> INPCData setNPCProperty(PropertyType<T> property, T value) {
-		this.data.setNPCProperty(property, value);
+	public <T> INPCData setProperty(PropertyType<T> property, T value) {
+		this.data.setProperty(property, value);
 		property.apply(this, value);
 		return this.data;
-	}
-
-	@Override
-	public ActionSet getNPCActions() {
-		return this.data.getNPCActions();
-	}
-
-	@Override
-	public INPCData writeNPCActions() {
-		return this.data.writeNPCActions();
-	}
-
-	@Override
-	public void saveNPC() {
-		this.data.saveNPC();
 	}
 
 	@Inject(method = "onEntityUpdate", at = @At("RETURN"))
 	public void onOnEntityUpdate(CallbackInfo ci) {
 		if (this.data != null && this.looking) {
-			super.world.getEntities(EntityPlayer.class, p -> p.getDistanceToEntity(this) < 20.0 && p.getUniqueID() != super.entityUniqueID)
+			this.world.getEntities(EntityPlayer.class, p -> p.getDistanceToEntity(this) < 20.0 && p.getUniqueID() != this.entityUniqueID)
 					.stream()
 					.reduce((p1, p2) -> p1.getDistanceToEntity(this) < p2.getDistanceToEntity(this) ? p1 : p2)
 					.ifPresent(p -> ((Living)this).lookAt(new Vector3d(p.posX, p.posY + p.getEyeHeight(), p.posZ)));

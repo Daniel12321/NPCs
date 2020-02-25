@@ -32,6 +32,6 @@ public class PropertyAngry extends PropertyType<Boolean> {
 
 	@Override
 	public void apply(NPCAble npc, Boolean value) {
-		((EntityWolf) npc).setAngry(value);
+		((EntityWolf)npc).setAngry(value);
 	}
 }

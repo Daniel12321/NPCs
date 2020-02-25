@@ -34,11 +34,11 @@ public class PropertyName extends PropertyType<String> {
 
 	@Override
 	public void apply(NPCAble npc, String value) {
-		((Living) npc).offer(Keys.DISPLAY_NAME, TextUtils.toText(value));
+		((Living)npc).offer(Keys.DISPLAY_NAME, TextUtils.toText(value));
 
 		// Fixes human NPCs losing some of their properties when changing their name
 		if (npc instanceof Human) {
-			npc.refreshNPC();
+			npc.refresh();
 		}
 	}
 }

@@ -1,7 +1,7 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
 import com.google.common.reflect.TypeToken;
-import me.mrdaniel.npcs.catalogtypes.glowcolor.GlowColor;
+import me.mrdaniel.npcs.catalogtypes.color.ColorType;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
@@ -14,15 +14,15 @@ import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.entity.living.Human;
 import org.spongepowered.api.text.Text;
 
-public class PropertyGlowColor extends PropertyType<GlowColor> {
+public class PropertyGlowColor extends PropertyType<ColorType> {
 
 	public PropertyGlowColor() {
-		super("GlowColor", "glowcolor", new Object[]{"glow", "color"}, GenericArguments.catalogedElement(Text.of("glowcolor"), GlowColor.class));
+		super("GlowColor", "glowcolor", new Object[]{"glow", "color"}, GenericArguments.catalogedElement(Text.of("glowcolor"), ColorType.class));
 	}
 
 	@Override
-	public TypeToken<GlowColor> getTypeToken() {
-		return TypeToken.of(GlowColor.class);
+	public TypeToken<ColorType> getTypeToken() {
+		return TypeToken.of(ColorType.class);
 	}
 
 	@Override
@@ -36,8 +36,8 @@ public class PropertyGlowColor extends PropertyType<GlowColor> {
 	}
 
 	@Override
-	public void apply(NPCAble npc, GlowColor value) {
-		if (npc.getNPCProperty(PropertyTypes.GLOWING).orElse(false)) {
+	public void apply(NPCAble npc, ColorType value) {
+		if (npc.getData().getProperty(PropertyTypes.GLOWING).orElse(false)) {
 			EntityLiving el = (EntityLiving) npc;
 
 			String teamName = "NPC_" + value.getName();

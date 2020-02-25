@@ -10,21 +10,21 @@ import java.util.UUID;
 
 public interface INPCData {
 
-    int getNPCId();
+    int getId();
 
-    @Nullable UUID getNPCUUID();
-    void setNPCUUID(@Nullable UUID uuid);
+    @Nullable UUID getUniqueId();
+    void setUniqueId(@Nullable UUID uuid);
 
-    Position getNPCPosition();
-    INPCData setNPCPosition(Position value);
+    Position getPosition();
+    INPCData setPosition(Position value);
 
-    <T> Optional<T> getNPCProperty(PropertyType<T> property);
-    <T> INPCData setNPCProperty(PropertyType<T> property, T value);
+    <T> Optional<T> getProperty(PropertyType<T> property);
+    <T> INPCData setProperty(PropertyType<T> property, T value);
 
-    ActionSet getNPCActions();
-    INPCData writeNPCActions();
+    ActionSet getActions();
+    INPCData writeActions();
 
-    void saveNPC();
+    void save();
 }
 
 

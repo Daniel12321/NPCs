@@ -1,7 +1,6 @@
 package me.mrdaniel.npcs.utils;
 
 import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
@@ -24,18 +23,10 @@ public class TextUtils {
 	}
 
 	public static Text getToggleText(String name, String cmd, boolean value) {
-		return Text.builder().append(Text.of(TextColors.GOLD, name, ": "), 
+		return Text.builder().append(Text.of(TextColors.GOLD, name, ": "),
 				Text.builder().append(Text.of(value ? TextColors.DARK_GREEN : TextColors.RED, value ? "Enabled" : "Disabled"))
 				.onHover(TextActions.showText(Text.of(value ? TextColors.RED : TextColors.DARK_GREEN, value ? "Disable" : "Enable")))
 				.onClick(TextActions.runCommand(cmd + " " + !value)).build())
-				.build();
-	}
-
-	public static Text getOptionsText(String name, String cmd, String value) {
-		return Text.builder()
-				.append(Text.of(TextColors.GOLD, name, ": ", TextColors.AQUA, value))
-				.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Change")))
-				.onClick(TextActions.suggestCommand(cmd))
 				.build();
 	}
 

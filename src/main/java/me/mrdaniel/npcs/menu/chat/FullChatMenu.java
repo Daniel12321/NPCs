@@ -15,10 +15,9 @@ public interface FullChatMenu extends ChatMenu {
         List<Text> contents = this.getContents();
         Text footer = this.getFooter();
 
-        // Ensures that every page is full
         int sizeGoal = 18 - (header == null ? 0 : 1) - (footer == null ? 0 : 1);
         while (contents.size() % sizeGoal != 0) {
-            contents.add(Text.EMPTY);
+            contents.add(Text.of(" "));
         }
 
         PaginationList.builder()

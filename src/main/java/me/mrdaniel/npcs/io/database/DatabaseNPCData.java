@@ -12,49 +12,53 @@ import java.util.UUID;
 public class DatabaseNPCData implements INPCData {
 
     @Override
-    public int getNPCId() {
+    public int getId() {
         return 0;
     }
 
     @Nullable
     @Override
-    public UUID getNPCUUID() {
+    public UUID getUniqueId() {
         return null;
     }
 
     @Override
-    public void setNPCUUID(@Nullable UUID uuid) {}
+    public void setUniqueId(@Nullable UUID uuid) {
+
+    }
 
     @Override
-    public Position getNPCPosition() {
+    public Position getPosition() {
         return new Position("world", 0, 0, 0, 0, 0);
     }
 
     @Override
-    public INPCData setNPCPosition(Position value) {
+    public INPCData setPosition(Position value) {
         return this;
     }
 
     @Override
-    public <T> Optional<T> getNPCProperty(PropertyType<T> property) {
+    public <T> Optional<T> getProperty(PropertyType<T> property) {
         return Optional.empty();
     }
 
     @Override
-    public <T> INPCData setNPCProperty(PropertyType<T> property, T value) {
+    public <T> INPCData setProperty(PropertyType<T> property, T value) {
         return this;
     }
 
     @Override
-    public ActionSet getNPCActions() {
+    public ActionSet getActions() {
         return new ActionSet();
     }
 
     @Override
-    public INPCData writeNPCActions() {
+    public INPCData writeActions() {
         return this;
     }
 
     @Override
-    public void saveNPC() {}
+    public void save() {
+
+    }
 }

@@ -30,6 +30,6 @@ public class PropertyBoots extends PropertyType<ItemStack> {
 
 	@Override
 	public void apply(NPCAble npc, ItemStack value) {
-		((ArmorEquipable) npc).setBoots(value);
+		((ArmorEquipable)npc).setBoots(value);
 	}
 }

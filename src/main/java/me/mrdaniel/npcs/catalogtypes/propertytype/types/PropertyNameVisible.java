@@ -33,6 +33,6 @@ public class PropertyNameVisible extends PropertyType<Boolean> {
 
 	@Override
 	public void apply(NPCAble npc, Boolean value) {
-		((EntityLiving) npc).setAlwaysRenderNameTag(value);
+		((EntityLiving)npc).setAlwaysRenderNameTag(value);
 	}
 }

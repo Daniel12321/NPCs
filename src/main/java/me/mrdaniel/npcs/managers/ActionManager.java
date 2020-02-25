@@ -33,27 +33,27 @@ public class ActionManager {
 			throw new NPCException("You can't execute old choices!");
 		}
 
-		ActionSet actions = data.getNPCActions();
+		ActionSet actions = data.getActions();
 		actions.setCurrent(uuid, next);
-		data.writeNPCActions().saveNPC();
+		data.writeActions().save();
 		this.execute(uuid, data);
 	}
 
 	public void execute(UUID uuid, INPCData data) throws NPCException {
 		if (this.waiting.contains(uuid)) {
 			return;
-		} else if (data.getNPCActions().getAllActions().size() == 0) {
+		} else if (data.getActions().getAllActions().size() == 0) {
 			return;
 		}
 
-		ActionSet actions = data.getNPCActions();
+		ActionSet actions = data.getActions();
 		Player p = NPCs.getInstance().getGame().getServer().getPlayer(uuid).orElseThrow(() -> new NPCException("Player not found!"));
 		int next = actions.getCurrent(uuid).orElse(0);
 
 		if (next >= actions.getAllActions().size()) {
 			if (actions.isRepeatActions()) {
 				actions.setCurrent(uuid, 0);
-				data.writeNPCActions().saveNPC();
+				data.writeActions().save();
 			}
 			return;
 		}
@@ -66,7 +66,7 @@ public class ActionManager {
 			Task.builder().delayTicks(result.getWaitTicks()).execute(() -> {
 				this.waiting.remove(uuid);
 				actions.setCurrent(uuid, result.getNextAction());
-				data.writeNPCActions().saveNPC();
+				data.writeActions().save();
 				if (result.getPerformNextAction()) {
 					try {
 						this.execute(uuid, data);
@@ -76,7 +76,7 @@ public class ActionManager {
 		}
 		else {
 			actions.setCurrent(uuid, result.getNextAction());
-			data.writeNPCActions().saveNPC();
+			data.writeActions().save();
 			if (result.getPerformNextAction()) {
 				this.execute(uuid, data);
 			}

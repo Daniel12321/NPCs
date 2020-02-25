@@ -32,6 +32,6 @@ public class PropertyPumpkin extends PropertyType<Boolean> {
 
 	@Override
 	public void apply(NPCAble npc, Boolean value) {
-		((EntitySnowman) npc).setPumpkinEquipped(value);
+		((EntitySnowman)npc).setPumpkinEquipped(value);
 	}
 }

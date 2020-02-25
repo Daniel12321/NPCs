@@ -33,6 +33,6 @@ public class PropertyCatType extends PropertyType<CatType> {
 
 	@Override
 	public void apply(NPCAble npc, CatType value) {
-		((EntityOcelot) npc).setTameSkin(value.getNbtId());
+		((EntityOcelot)npc).setTameSkin(value.getNbtId());
 	}
 }

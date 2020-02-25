@@ -34,7 +34,7 @@ public class ListMenu implements ChatMenu {
         List<Text> lines = Lists.newArrayList();
 
         Sponge.getServer().getWorlds().forEach(world -> {
-            NPCs.getInstance().getNPCManager().getNPCs(world.getName()).forEach(data -> lines.add(getNPCText(data)));
+            NPCs.getInstance().getNPCManager().getData(world.getName()).forEach(data -> lines.add(getNPCText(data)));
         });
 
         return lines;
@@ -47,13 +47,13 @@ public class ListMenu implements ChatMenu {
     }
 
     private Text getNPCText(INPCData data) {
-        Position pos = data.getNPCPosition();
+        Position pos = data.getPosition();
 
         Text.Builder b = Text.builder()
-                .append(Text.of(TextColors.BLUE, data.getNPCId(), ": "))
+                .append(Text.of(TextColors.BLUE, data.getId(), ": "))
                 .append(Text.of(TextColors.GOLD, "Loc=", TextColors.RED, pos.getWorldName(), ",", (int)pos.getX(), ",", (int)pos.getY(), ",", (int)pos.getZ()))
-                .append(Text.of(TextColors.GOLD, " Type=", TextColors.RED, data.getNPCProperty(PropertyTypes.TYPE).get().getName()));
-        data.getNPCProperty(PropertyTypes.NAME).ifPresent(name -> b.append(Text.of(TextColors.GOLD, " Name=", TextColors.RED), TextUtils.toText(name)));
+                .append(Text.of(TextColors.GOLD, " Type=", TextColors.RED, data.getProperty(PropertyTypes.TYPE).get().getName()));
+        data.getProperty(PropertyTypes.NAME).ifPresent(name -> b.append(Text.of(TextColors.GOLD, " Name=", TextColors.RED), TextUtils.toText(name)));
 
         return b.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Select")))
                 .onClick(TextActions.executeCallback(src -> NPCs.getInstance().getSelectedManager().select((Player) src, data)))

@@ -33,6 +33,6 @@ public class PropertyRabbitType extends PropertyType<RabbitType> {
 
 	@Override
 	public void apply(NPCAble npc, RabbitType value) {
-		((EntityRabbit) npc).setRabbitType(value.getNbtId());
+		((EntityRabbit)npc).setRabbitType(value.getNbtId());
 	}
 }

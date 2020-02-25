@@ -33,6 +33,6 @@ public class PropertyParrotType extends PropertyType<ParrotType> {
 
 	@Override
 	public void apply(NPCAble npc, ParrotType value) {
-		((EntityParrot) npc).setVariant(value.getNbtId());
+		((EntityParrot)npc).setVariant(value.getNbtId());
 	}
 }

@@ -1,16 +1,19 @@
 package me.mrdaniel.npcs.interfaces.mixin;
 
+import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.io.INPCData;
+import me.mrdaniel.npcs.utils.Position;
 
 import javax.annotation.Nullable;
 
-public interface NPCAble extends INPCData {
+public interface NPCAble {
 
 	@Nullable
-    INPCData getNPCData();
-	void setNPCData(INPCData data);
-	void refreshNPC();
+    INPCData getData();
+	void setData(INPCData data);
+	void refresh();
 
-	void setNPCLooking(boolean value);
-	boolean isNPCLooking();
+	<T> INPCData setProperty(PropertyType<T> property, T value);
+	INPCData setPosition(Position value);
+	void setLooking(boolean value);
 }

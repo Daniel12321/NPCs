@@ -1,7 +1,6 @@
 package me.mrdaniel.npcs.commands;
 
 import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.menu.chat.npc.NPCChatMenu;
 import org.spongepowered.api.command.CommandException;
@@ -31,8 +30,7 @@ public abstract class NPCFileCommand extends PlayerCommand {
 			this.execute(p, file, args);
 		} else if (selected != null) {
 			this.execute(p, selected, args);
-			NPCAble npc = NPCs.getInstance().getNPCManager().getNPC(selected).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "NPC is not spawned in!")));
-			this.menu.apply(npc).send(p);
+			this.menu.apply(selected).send(p);
 		}  else {
 			throw new CommandException(Text.of(TextColors.RED, "You don't have an NPC selected!"));
 		}
