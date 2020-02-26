@@ -50,7 +50,7 @@ public class InteractListener {
 		if (npc.getData() == null) {
 			return false;
 		} else if (p.get(Keys.IS_SNEAKING).orElse(false) && p.hasPermission("npc.edit.select")) {
-			if (Sponge.getEventManager().post(new NPCSelectEvent(p, npc.getData(), npc))) {
+			if (!Sponge.getEventManager().post(new NPCSelectEvent(p, npc.getData(), npc))) {
 				NPCs.getInstance().getSelectedManager().select(p, npc.getData());
 			}
 			return true;

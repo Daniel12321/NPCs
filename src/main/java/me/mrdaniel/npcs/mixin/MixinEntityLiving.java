@@ -1,6 +1,7 @@
 package me.mrdaniel.npcs.mixin;
 
 import com.flowpowered.math.vector.Vector3d;
+import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
@@ -11,6 +12,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import org.spongepowered.api.entity.living.Living;
+import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,7 +20,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 @Mixin(value = EntityLiving.class, priority = 10)
 public abstract class MixinEntityLiving extends EntityLivingBase implements NPCAble {
@@ -47,10 +48,6 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 	public void setData(INPCData data) {
 		this.data = data;
 
-		this.setup(PropertyTypes.NPC_INIT);
-	}
-
-	private void setup(List<PropertyType> properties) {
 		this.enablePersistence();
 		this.setCanPickUpLoot(false);
 		this.setNoAI(true);
@@ -61,10 +58,19 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 		Position pos = this.data.getPosition();
 		this.setPositionAndRotation(pos.getX(), pos.getY(), pos.getZ(), pos.getYaw(), pos.getPitch());
 
-		properties.stream()
+		PropertyTypes.NPC_INIT.stream()
 				.filter(prop -> prop.isSupported(this))
 				.forEach(prop -> this.data.getProperty(prop)
 						.ifPresent(value -> prop.apply(this, value)));
+	}
+
+	@Override
+	public void refreshEquipment() {
+		PropertyTypes.EQUIPMENT.forEach(prop -> prop.apply(this, null));
+
+		Task.builder().delayTicks(5).execute(() -> {
+			PropertyTypes.EQUIPMENT.forEach(prop -> this.data.getProperty(prop).ifPresent(is -> prop.apply(this, is)));
+		}).submit(NPCs.getInstance());
 	}
 
 	@Override

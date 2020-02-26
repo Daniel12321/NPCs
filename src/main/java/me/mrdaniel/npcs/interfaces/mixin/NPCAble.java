@@ -12,6 +12,8 @@ public interface NPCAble {
     INPCData getData();
 	void setData(INPCData data);
 
+	void refreshEquipment();
+
 	<T> INPCData setProperty(PropertyType<T> property, T value);
 	INPCData setPosition(Position value);
 	void setLooking(boolean value);
