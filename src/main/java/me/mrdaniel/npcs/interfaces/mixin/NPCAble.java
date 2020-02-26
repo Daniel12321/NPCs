@@ -11,7 +11,6 @@ public interface NPCAble {
 	@Nullable
     INPCData getData();
 	void setData(INPCData data);
-	void refresh();
 
 	<T> INPCData setProperty(PropertyType<T> property, T value);
 	INPCData setPosition(Position value);

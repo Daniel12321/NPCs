@@ -89,10 +89,6 @@ public class NPCManager {
         return npc;
     }
 
-    public void remove(CommandSource src, int id) throws NPCException {
-        this.remove(src, this.getData(id).orElseThrow(() -> new NPCException("No NPC with that ID exists!")));
-    }
-
     public void remove(CommandSource src, INPCData data) throws NPCException {
         NPCAble npc = this.getNPC(data).orElse(null);
 

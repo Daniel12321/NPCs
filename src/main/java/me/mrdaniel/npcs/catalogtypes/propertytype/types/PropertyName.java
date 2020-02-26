@@ -4,11 +4,7 @@ import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
-import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.command.args.GenericArguments;
-import org.spongepowered.api.data.key.Keys;
-import org.spongepowered.api.entity.living.Human;
-import org.spongepowered.api.entity.living.Living;
 import org.spongepowered.api.text.Text;
 
 public class PropertyName extends PropertyType<String> {
@@ -34,11 +30,17 @@ public class PropertyName extends PropertyType<String> {
 
 	@Override
 	public void apply(NPCAble npc, String value) {
-		((Living)npc).offer(Keys.DISPLAY_NAME, TextUtils.toText(value));
 
+		// TODO: Check if this works
+		// Reruns the NPC setup
+		// No need to apply the value to the NPC directly, as it is reapplied during the setup
 		// Fixes human NPCs losing some of their properties when changing their name
-		if (npc instanceof Human) {
-			npc.refresh();
-		}
+		npc.setData(npc.getData());
+
+
+//		((Living)npc).offer(Keys.DISPLAY_NAME, TextUtils.toText(value));
+//		if (npc instanceof Human) {
+//			npc.refresh();
+//		}
 	}
 }

@@ -5,7 +5,6 @@ import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
-import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.Human;
 
 import java.util.UUID;
@@ -33,9 +32,15 @@ public class PropertySkinUUID extends PropertyType<UUID> {
 
 	@Override
 	public void apply(NPCAble npc, UUID value) {
-		((Human) npc).offer(Keys.SKIN_UNIQUE_ID, value);
 
+		// TODO: Check if this works
+		// Reruns the NPC setup
+		// No need to apply the value to the NPC directly, as it is reapplied during the setup
 		// Fixes human NPCs losing some of their properties when changing their skin
-		npc.refresh();
+		npc.setData(npc.getData());
+
+
+//		((Human) npc).offer(Keys.SKIN_UNIQUE_ID, value);
+//		npc.refresh();
 	}
 }

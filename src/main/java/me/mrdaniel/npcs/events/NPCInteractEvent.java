@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 
 public class NPCInteractEvent extends NPCEvent {
 
-	// TODO: Post
 	public NPCInteractEvent(CommandSource source, INPCData data, @Nullable NPCAble npc) {
 		super(source, data, npc);
 	}

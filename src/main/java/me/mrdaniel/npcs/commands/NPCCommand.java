@@ -3,7 +3,7 @@ package me.mrdaniel.npcs.commands;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.menu.chat.npc.NPCChatMenu;
+import me.mrdaniel.npcs.menu.chat.ChatMenu;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.CommandElement;
@@ -21,7 +21,7 @@ public abstract class NPCCommand extends NPCFileCommand {
 
 	private final boolean required;
 
-	public NPCCommand(Function<INPCData, NPCChatMenu> menu, boolean required) {
+	public NPCCommand(Function<INPCData, ChatMenu> menu, boolean required) {
 		super(menu);
 
 		this.required = required;

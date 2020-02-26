@@ -1,7 +1,6 @@
 package me.mrdaniel.npcs.mixin;
 
 import com.flowpowered.math.vector.Vector3d;
-import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
@@ -12,7 +11,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import org.spongepowered.api.entity.living.Living;
-import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -50,13 +48,6 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 		this.data = data;
 
 		this.setup(PropertyTypes.NPC_INIT);
-	}
-
-	@Override
-	public void refresh() {
-		PropertyTypes.EQUIPMENT.forEach(prop -> prop.apply(this, null));
-
-		Task.builder().delayTicks(5).execute(() -> this.setup(PropertyTypes.NPC_RELOAD)).submit(NPCs.getInstance());
 	}
 
 	private void setup(List<PropertyType> properties) {

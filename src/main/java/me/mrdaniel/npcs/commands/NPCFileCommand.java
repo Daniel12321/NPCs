@@ -2,7 +2,7 @@ package me.mrdaniel.npcs.commands;
 
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.menu.chat.npc.NPCChatMenu;
+import me.mrdaniel.npcs.menu.chat.ChatMenu;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.entity.living.player.Player;
@@ -14,9 +14,9 @@ import java.util.function.Function;
 
 public abstract class NPCFileCommand extends PlayerCommand {
 
-	private final Function<INPCData, NPCChatMenu> menu;
+	private final Function<INPCData, ChatMenu> menu;
 
-	public NPCFileCommand(Function<INPCData, NPCChatMenu> menu) {
+	public NPCFileCommand(Function<INPCData, ChatMenu> menu) {
 		this.menu = menu;
 	}
 
