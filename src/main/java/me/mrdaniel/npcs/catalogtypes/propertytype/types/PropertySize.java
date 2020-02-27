@@ -4,7 +4,7 @@ import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.living.Living;
@@ -29,7 +29,7 @@ public class PropertySize extends PropertyType<Integer> {
 
 	@Override
 	public boolean isSupported(NPCType type) {
-		return type == NPCTypes.SLIME;
+		return type == NPCTypes.SLIME || type == NPCTypes.MAGMA_CUBE;
 	}
 
 	@Override

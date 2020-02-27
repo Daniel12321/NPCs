@@ -2,6 +2,7 @@ package me.mrdaniel.npcs;
 
 import com.google.inject.Inject;
 import me.mrdaniel.npcs.actions.conditions.ConditionMoney;
+import me.mrdaniel.npcs.ai.AITaskStayInPosition;
 import me.mrdaniel.npcs.bstats.MetricsLite;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionType;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypeRegistryModule;
@@ -119,6 +120,8 @@ public class NPCs {
 		this.game.getRegistry().registerModule(ActionType.class, new ActionTypeRegistryModule());
 		this.game.getRegistry().registerModule(ConditionType.class, new ConditionTypeRegistryModule());
 		this.game.getRegistry().registerModule(PropertyType.class, new PropertyTypeRegistryModule());
+
+		AITaskStayInPosition.register();
 
 		NPCKeys.init();
 		NPCDataBuilder.register();

@@ -2,7 +2,7 @@ package me.mrdaniel.npcs.catalogtypes.propertytype;
 
 import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import org.spongepowered.api.CatalogType;
 import org.spongepowered.api.command.args.CommandElement;
 import org.spongepowered.api.util.annotation.CatalogedBy;

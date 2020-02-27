@@ -1,23 +1,21 @@
-package me.mrdaniel.npcs.mixin;
+package me.mrdaniel.npcs.mixin.mixin;
 
-import com.flowpowered.math.vector.Vector3d;
 import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.ai.AITaskStayInPosition;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.INPCData;
+import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import me.mrdaniel.npcs.utils.Position;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import org.spongepowered.api.entity.living.Living;
+import org.spongepowered.api.entity.ai.Goal;
+import org.spongepowered.api.entity.ai.GoalTypes;
+import org.spongepowered.api.entity.living.Agent;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nullable;
 
@@ -25,13 +23,11 @@ import javax.annotation.Nullable;
 public abstract class MixinEntityLiving extends EntityLivingBase implements NPCAble {
 
 	private INPCData data;
-	private boolean looking;
 
 	public MixinEntityLiving(World worldIn) {
 		super(worldIn);
 
 		this.data = null;
-		this.looking = false;
 	}
 
 	@Shadow public abstract void enablePersistence();
@@ -50,10 +46,10 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 
 		this.enablePersistence();
 		this.setCanPickUpLoot(false);
-		this.setNoAI(true);
+		this.setNoAI(false);
 		this.setDropItemsWhenDead(false);
 		this.setEntityInvulnerable(true);
-		this.setNoGravity(true);
+		this.setNoGravity(false);
 
 		Position pos = this.data.getPosition();
 		this.setPositionAndRotation(pos.getX(), pos.getY(), pos.getZ(), pos.getYaw(), pos.getPitch());
@@ -62,6 +58,14 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 				.filter(prop -> prop.isSupported(this))
 				.forEach(prop -> this.data.getProperty(prop)
 						.ifPresent(value -> prop.apply(this, value)));
+
+		Agent agent = (Agent) this;
+		agent.setTarget(null);
+		agent.getGoal(GoalTypes.TARGET).ifPresent(Goal::clear);
+		agent.getGoal(GoalTypes.NORMAL).ifPresent(goal -> {
+			goal.clear();
+			goal.addTask(1, new AITaskStayInPosition());
+		});
 	}
 
 	@Override
@@ -75,7 +79,14 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 
 	@Override
 	public void setLooking(boolean value) {
-		this.looking = value;
+		Agent agent = (Agent) this;
+
+//		agent.getGoal(GoalTypes.NORMAL).ifPresent(goal -> {
+//			goal.removeTasks(AITaskTypes.WATCH_CLOSEST);
+//			if (value) {
+//				goal.addTask(10, WatchClosestAITask.builder().chance(1).maxDistance(25).watch(Player.class).build(agent));
+//			}
+//		});
 	}
 
 	@Override
@@ -89,15 +100,5 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 		this.data.setProperty(property, value);
 		property.apply(this, value);
 		return this.data;
-	}
-
-	@Inject(method = "onEntityUpdate", at = @At("RETURN"))
-	public void onOnEntityUpdate(CallbackInfo ci) {
-		if (this.data != null && this.looking) {
-			this.world.getEntities(EntityPlayer.class, p -> p.getDistanceToEntity(this) < 20.0 && p.getUniqueID() != this.entityUniqueID)
-					.stream()
-					.reduce((p1, p2) -> p1.getDistanceToEntity(this) < p2.getDistanceToEntity(this) ? p1 : p2)
-					.ifPresent(p -> ((Living)this).lookAt(new Vector3d(p.posX, p.posY + p.getEyeHeight(), p.posZ)));
-		}
 	}
 }

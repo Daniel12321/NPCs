@@ -1,6 +1,6 @@
-package me.mrdaniel.npcs.mixin;
+package me.mrdaniel.npcs.mixin.mixin;
 
-import me.mrdaniel.npcs.interfaces.mixin.IMixinEntityVillager;
+import me.mrdaniel.npcs.mixin.interfaces.IMixinEntityVillager;
 import net.minecraft.entity.passive.EntityVillager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

@@ -1,7 +1,7 @@
 package me.mrdaniel.npcs.commands;
 
 import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.menu.chat.ChatMenu;
 import org.spongepowered.api.command.CommandException;

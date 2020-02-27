@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.interfaces.mixin;
+package me.mrdaniel.npcs.mixin.interfaces;
 
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.io.INPCData;

@@ -5,7 +5,7 @@ import me.mrdaniel.npcs.catalogtypes.color.ColorType;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Scoreboard;

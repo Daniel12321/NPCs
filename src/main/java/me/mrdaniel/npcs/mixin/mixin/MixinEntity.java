@@ -1,6 +1,6 @@
-package me.mrdaniel.npcs.mixin;
+package me.mrdaniel.npcs.mixin.mixin;
 
-import me.mrdaniel.npcs.interfaces.mixin.INPCMixin;
+import me.mrdaniel.npcs.mixin.interfaces.INPCMixin;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.DamageSource;
 import org.spongepowered.asm.mixin.Mixin;

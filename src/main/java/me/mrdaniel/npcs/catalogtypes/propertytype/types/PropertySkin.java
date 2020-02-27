@@ -6,7 +6,7 @@ import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.entity.living.Human;
 import org.spongepowered.api.scheduler.Task;

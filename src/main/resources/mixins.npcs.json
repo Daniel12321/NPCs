@@ -1,17 +1,17 @@
 {
     "required": true,
     "minVersion": "0.5.17",
-    "package": "me.mrdaniel.npcs.mixin",
+    "package": "me.mrdaniel.npcs.mixin.mixin",
     "refmap": "mixins.npcs.refmap.json",
     "target": "@env(DEFAULT)",
     "compatibilityLevel": "JAVA_8",
     "server": [
-        "MixinEntity",
-        "MixinEntityLiving",
-        "MixinEntityMagmaCube",
-        "MixinEntityShulker",
-        "MixinEntitySlime",
-        "MixinEntityVillager"
+      "MixinEntity",
+      "MixinEntityLiving",
+      "MixinEntityMagmaCube",
+      "MixinEntityShulker",
+      "MixinEntitySlime",
+      "MixinEntityVillager"
     ],
     "injectors": {
         "defaultRequire": 1

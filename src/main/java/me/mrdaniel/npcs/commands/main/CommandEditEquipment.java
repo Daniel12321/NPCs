@@ -4,7 +4,7 @@ import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.events.NPCEditEvent;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.menu.chat.npc.PropertiesChatMenu;
 import org.spongepowered.api.Sponge;

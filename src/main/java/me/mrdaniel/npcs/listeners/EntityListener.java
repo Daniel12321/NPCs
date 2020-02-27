@@ -2,7 +2,7 @@ package me.mrdaniel.npcs.listeners;
 
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.data.npc.NPCData;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.entity.DestructEntityEvent;
 import org.spongepowered.api.event.entity.SpawnEntityEvent;

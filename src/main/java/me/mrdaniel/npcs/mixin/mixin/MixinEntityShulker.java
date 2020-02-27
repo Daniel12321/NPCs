@@ -1,6 +1,6 @@
-package me.mrdaniel.npcs.mixin;
+package me.mrdaniel.npcs.mixin.mixin;
 
-import me.mrdaniel.npcs.interfaces.mixin.IMixinEntityShulker;
+import me.mrdaniel.npcs.mixin.interfaces.IMixinEntityShulker;
 import net.minecraft.entity.monster.EntityGolem;
 import net.minecraft.entity.monster.EntityShulker;
 import net.minecraft.item.EnumDyeColor;

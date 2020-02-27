@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.interfaces.mixin;
+package me.mrdaniel.npcs.mixin.interfaces;
 
 import net.minecraft.item.EnumDyeColor;
 
