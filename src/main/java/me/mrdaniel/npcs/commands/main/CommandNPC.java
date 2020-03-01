@@ -11,6 +11,7 @@ import me.mrdaniel.npcs.commands.action.condition.CommandActionAddCondition;
 import me.mrdaniel.npcs.commands.action.edit.*;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.menu.chat.info.InfoMenu;
+import me.mrdaniel.npcs.menu.chat.npc.AIChatMenu;
 import me.mrdaniel.npcs.menu.chat.npc.PropertiesChatMenu;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
@@ -51,7 +52,6 @@ public class CommandNPC extends PlayerCommand {
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.NAME_VISIBLE), "namevisible", "name-visible")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SKIN), "skin", "skinname", "skin-name")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SKIN_UUID), "skinuuid", "skin-uuid")
-				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.LOOKING), "looking")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.INTERACT), "interact")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SILENT), "silent")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.BURNING), "burning", "burn")
@@ -83,6 +83,8 @@ public class CommandNPC extends PlayerCommand {
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.CATTYPE), "cattype")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.RABBITTYPE), "rabbittype")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.PARROTTYPE), "parrottype")
+				.child(CommandEdit.build(AIChatMenu::new, PropertyTypes.LOOKING), "looking")
+				.child(CommandEdit.build(AIChatMenu::new, PropertyTypes.AITYPE), "aitype")
 				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPC | Helmet"))
 						.child(new CommandEditEquipment(PropertyTypes.HELMET, false).build(), "give")
 						.child(new CommandEditEquipment(PropertyTypes.HELMET, true).build(), "remove")

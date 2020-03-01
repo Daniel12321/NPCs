@@ -1,6 +1,7 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype;
 
 import com.google.common.collect.Lists;
+import me.mrdaniel.npcs.catalogtypes.aitype.AIType;
 import me.mrdaniel.npcs.catalogtypes.career.Career;
 import me.mrdaniel.npcs.catalogtypes.cattype.CatType;
 import me.mrdaniel.npcs.catalogtypes.color.ColorType;
@@ -26,7 +27,6 @@ public final class PropertyTypes {
 	public static final PropertyType<Boolean> NAME_VISIBLE = new PropertyNameVisible();
 	public static final PropertyType<UUID> SKIN_UUID = new PropertySkinUUID();
 	public static final PropertyType<String> SKIN = new PropertySkin();
-	public static final PropertyType<Boolean> LOOKING = new PropertyLooking();
 	public static final PropertyType<Boolean> INTERACT = new PropertyInteract();
 	public static final PropertyType<Boolean> SILENT = new PropertySilent();
 	public static final PropertyType<Boolean> BURNING = new PropertyBurning();
@@ -67,11 +67,15 @@ public final class PropertyTypes {
 	public static final PropertyType<ItemStack> MAINHAND = new PropertyMainHand();
 	public static final PropertyType<ItemStack> OFFHAND = new PropertyOffHand();
 
+	public static final PropertyType<Boolean> LOOKING = new PropertyLooking();
+	public static final PropertyType<AIType> AITYPE = new PropertyAIType();
+
 	public static final List<PropertyType> ALL = Lists.newArrayList(
-			TYPE, NAME, NAME_VISIBLE, SKIN_UUID, SKIN, LOOKING, INTERACT, SILENT, GLOWING,
-			GLOWCOLOR, BABY, CHARGED, ANGRY, SIZE, SITTING, SADDLE, HANGING, PUMPKIN,
-			CAREER, HORSEPATTERN, HORSECOLOR, LLAMATYPE, CATTYPE, RABBITTYPE, PARROTTYPE,
-			HELMET, CHESTPLATE, LEGGINGS, BOOTS, MAINHAND, OFFHAND);
+			TYPE, NAME, NAME_VISIBLE, SKIN_UUID, SKIN, INTERACT, SILENT, GLOWING,
+			GLOWCOLOR, BABY, CHARGED, ANGRY, SIZE, SITTING, SADDLE, HANGING,
+			PUMPKIN, CAREER, HORSEPATTERN, HORSECOLOR, LLAMATYPE, CATTYPE, RABBITTYPE, PARROTTYPE,
+			HELMET, CHESTPLATE, LEGGINGS, BOOTS, MAINHAND, OFFHAND,
+			LOOKING, AITYPE);
 	public static final List<PropertyType> NPC_INIT = Lists.newArrayList(ALL);
 	public static final List<PropertyType<ItemStack>> EQUIPMENT = Lists.newArrayList(HELMET, CHESTPLATE, LEGGINGS, BOOTS, MAINHAND, OFFHAND);
 

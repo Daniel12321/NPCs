@@ -7,7 +7,8 @@ TODO:
 - Choose between current (SelectedManager) or custom data for selecting NPCs
 - Remove all unsupported data when changing an NPCs type
 - Disable zombie_villager turning
-
+- Add the ability to make NPCs immovable (e.g. Slimes)
+- Fix NPC yaw/pitch issues
 
 
 !- Add burning property FIX

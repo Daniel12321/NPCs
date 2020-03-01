@@ -2,10 +2,14 @@ package me.mrdaniel.npcs;
 
 import com.google.inject.Inject;
 import me.mrdaniel.npcs.actions.conditions.ConditionMoney;
+import me.mrdaniel.npcs.ai.AITaskGuardPatrol;
+import me.mrdaniel.npcs.ai.AITaskGuardRandom;
 import me.mrdaniel.npcs.ai.AITaskStayInPosition;
 import me.mrdaniel.npcs.bstats.MetricsLite;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionType;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypeRegistryModule;
+import me.mrdaniel.npcs.catalogtypes.aitype.AIType;
+import me.mrdaniel.npcs.catalogtypes.aitype.AITypeRegistryModule;
 import me.mrdaniel.npcs.catalogtypes.career.Career;
 import me.mrdaniel.npcs.catalogtypes.career.CareerRegistryModule;
 import me.mrdaniel.npcs.catalogtypes.cattype.CatType;
@@ -116,12 +120,16 @@ public class NPCs {
 		this.game.getRegistry().registerModule(LlamaType.class, new LlamaTypeRegistryModule());
 		this.game.getRegistry().registerModule(ParrotType.class, new ParrotTypeRegistryModule());
 		this.game.getRegistry().registerModule(RabbitType.class, new RabbitTypeRegistryModule());
+		this.game.getRegistry().registerModule(AIType.class, new AITypeRegistryModule());
 
 		this.game.getRegistry().registerModule(ActionType.class, new ActionTypeRegistryModule());
 		this.game.getRegistry().registerModule(ConditionType.class, new ConditionTypeRegistryModule());
 		this.game.getRegistry().registerModule(PropertyType.class, new PropertyTypeRegistryModule());
 
 		AITaskStayInPosition.register();
+//		AITaskStayInArea.register();
+		AITaskGuardRandom.register();
+		AITaskGuardPatrol.register();
 
 		NPCKeys.init();
 		NPCDataBuilder.register();

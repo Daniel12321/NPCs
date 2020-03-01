@@ -12,7 +12,6 @@ import me.mrdaniel.npcs.catalogtypes.llamatype.LlamaTypes;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.catalogtypes.parrottype.ParrotTypes;
-import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitTypes;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.utils.Position;
@@ -25,6 +24,10 @@ import org.spongepowered.api.text.format.TextColors;
 
 import java.util.List;
 import java.util.Optional;
+
+import static me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes.*;
+import static me.mrdaniel.npcs.utils.TextUtils.getOptionsText;
+import static me.mrdaniel.npcs.utils.TextUtils.getToggleText;
 
 public class PropertiesChatMenu extends NPCChatMenu {
 
@@ -60,77 +63,69 @@ public class PropertiesChatMenu extends NPCChatMenu {
     @Override
     public List<Text> getContents() {
         Position pos = data.getPosition();
-        NPCType type = data.getProperty(PropertyTypes.TYPE).get();
+        NPCType type = data.getProperty(TYPE).get();
         List<Text> lines = Lists.newArrayList();
 
         lines.add(Text.of(" "));
         lines.add(Text.of(TextColors.GOLD, "NPC ID: ", TextColors.RED, data.getId()));
         lines.add(Text.of(TextColors.GOLD, "Location: ", TextColors.RED, pos.getWorldName(), " ", (int)pos.getX(), " ", (int)pos.getY(), " ", (int)pos.getZ()));
-        lines.add(this.getOptionsText("Type", "/npc type <type>", data.getProperty(PropertyTypes.TYPE).orElse(NPCTypes.HUMAN).getName()));
+        lines.add(getOptionsText("Type", "/npc type <type>", data.getProperty(TYPE).orElse(NPCTypes.HUMAN).getName()));
         lines.add(Text.of(" "));
-        if (PropertyTypes.SKIN_UUID.isSupported(type)) { lines.add(Text.builder().append(Text.of(TextColors.GOLD, "Skin: ", TextColors.AQUA, data.getProperty(PropertyTypes.SKIN).orElse("None"))).onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Change"))).onClick(TextActions.suggestCommand("/npc skin <name>")).build()); }
-        lines.add(Text.builder().append(Text.of(TextColors.GOLD, "Name: ", TextColors.AQUA)).append(TextUtils.toText(data.getProperty(PropertyTypes.NAME).orElse("None"))).onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Change"))).onClick(TextActions.suggestCommand("/npc name <name>")).build());
-        if (PropertyTypes.NAME_VISIBLE.isSupported(type)) { lines.add(TextUtils.getToggleText("Name Always Visible", "/npc namevisible", data.getProperty(PropertyTypes.NAME_VISIBLE).orElse(false))); }
+        if (SKIN_UUID.isSupported(type)) { lines.add(Text.builder().append(Text.of(TextColors.GOLD, "Skin: ", TextColors.AQUA, data.getProperty(SKIN).orElse("None"))).onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Change"))).onClick(TextActions.suggestCommand("/npc skin <name>")).build()); }
+        lines.add(Text.builder().append(Text.of(TextColors.GOLD, "Name: ", TextColors.AQUA)).append(TextUtils.toText(data.getProperty(NAME).orElse("None"))).onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Change"))).onClick(TextActions.suggestCommand("/npc name <name>")).build());
+        if (NAME_VISIBLE.isSupported(type)) { lines.add(getToggleText("Name Always Visible", "/npc namevisible", data.getProperty(NAME_VISIBLE).orElse(false))); }
         lines.add(Text.of(" "));
-        lines.add(TextUtils.getToggleText("Looking", "/npc looking", data.getProperty(PropertyTypes.LOOKING).orElse(false)));
-        lines.add(TextUtils.getToggleText("Silent", "/npc silent", data.getProperty(PropertyTypes.SILENT).orElse(false)));
-        lines.add(TextUtils.getToggleText("Interact", "/npc interact", data.getProperty(PropertyTypes.INTERACT).orElse(true)));
-        lines.add(TextUtils.getToggleText("Burning", "/npc burning", data.getProperty(PropertyTypes.BURNING).orElse(false)));
-        lines.add(TextUtils.getToggleText("Glowing", "/npc glowing", data.getProperty(PropertyTypes.GLOWING).orElse(false)));
-        lines.add(this.getOptionsText("GlowColor", "/npc glowcolor <color>", data.getProperty(PropertyTypes.GLOWCOLOR).orElse(ColorTypes.WHITE).getName()));
+        lines.add(getToggleText("Silent", "/npc silent", data.getProperty(SILENT).orElse(false)));
+        lines.add(getToggleText("Interact", "/npc interact", data.getProperty(INTERACT).orElse(true)));
+        lines.add(getToggleText("Burning", "/npc burning", data.getProperty(BURNING).orElse(false)));
+        lines.add(getToggleText("Glowing", "/npc glowing", data.getProperty(GLOWING).orElse(false)));
+        lines.add(getOptionsText("GlowColor", "/npc glowcolor <color>", data.getProperty(GLOWCOLOR).orElse(ColorTypes.WHITE).getName()));
 
-        if (PropertyTypes.ANGRY.isSupported(type)) { lines.add(TextUtils.getToggleText("Angry", "/npc angry", data.getProperty(PropertyTypes.ANGRY).orElse(false))); }
-        if (PropertyTypes.ARMORED.isSupported(type)) { lines.add(TextUtils.getToggleText("Armored", "/npc armored", data.getProperty(PropertyTypes.ARMORED).orElse(false))); }
-        if (PropertyTypes.BABY.isSupported(type)) { lines.add(TextUtils.getToggleText("Baby", "/npc baby", data.getProperty(PropertyTypes.BABY).orElse(false))); }
-        if (PropertyTypes.CHARGED.isSupported(type)) { lines.add(TextUtils.getToggleText("Charged", "/npc charged", data.getProperty(PropertyTypes.CHARGED).orElse(false))); }
-        if (PropertyTypes.CHEST.isSupported(type)) { lines.add(TextUtils.getToggleText("Chest", "/npc chest", data.getProperty(PropertyTypes.CHEST).orElse(false))); }
-        if (PropertyTypes.EATING.isSupported(type)) { lines.add(TextUtils.getToggleText("Eating", "/npc eating", data.getProperty(PropertyTypes.EATING).orElse(false))); }
-        if (PropertyTypes.HANGING.isSupported(type)) { lines.add(TextUtils.getToggleText("Hanging", "/npc hanging", data.getProperty(PropertyTypes.HANGING).orElse(true))); }
-        if (PropertyTypes.PEEKING.isSupported(type)) { lines.add(TextUtils.getToggleText("Peeking", "/npc peeking", data.getProperty(PropertyTypes.PEEKING).orElse(false))); }
-        if (PropertyTypes.PUMPKIN.isSupported(type)) { lines.add(TextUtils.getToggleText("Pumpkin", "/npc pumpkin", data.getProperty(PropertyTypes.PUMPKIN).orElse(true))); }
-        if (PropertyTypes.SCREAMING.isSupported(type)) { lines.add(TextUtils.getToggleText("Screaming", "/npc screaming", data.getProperty(PropertyTypes.SCREAMING).orElse(false))); }
-        if (PropertyTypes.SHEARED.isSupported(type)) { lines.add(TextUtils.getToggleText("Sheared", "/npc sheared", data.getProperty(PropertyTypes.SHEARED).orElse(false))); }
-        if (PropertyTypes.SITTING.isSupported(type)) { lines.add(TextUtils.getToggleText("Sitting", "/npc sitting", data.getProperty(PropertyTypes.SITTING).orElse(false))); }
-        if (PropertyTypes.SADDLE.isSupported(type)) { lines.add(TextUtils.getToggleText("Saddle", "/npc saddle", data.getProperty(PropertyTypes.SADDLE).orElse(false))); }
-        if (PropertyTypes.SIZE.isSupported(type)) { lines.add(this.getOptionsText("Size", "/npc size <size>", Integer.toString(data.getProperty(PropertyTypes.SIZE).orElse(1)))); }
-        if (PropertyTypes.CARRIES.isSupported(type)) { lines.add(this.getOptionsText("Carries", "/npc carries <blocktype>", data.getProperty(PropertyTypes.CARRIES).orElse(BlockTypes.AIR).getName())); }
-        if (PropertyTypes.CAREER.isSupported(type)) { lines.add(this.getOptionsText("Career", "/npc career <career>", data.getProperty(PropertyTypes.CAREER).orElse(Careers.SHEPHERD).getName())); }
-        if (PropertyTypes.COLLARCOLOR.isSupported(type)) { lines.add(this.getOptionsText("CollarColor", "/npc collarcolor <color>", data.getProperty(PropertyTypes.COLLARCOLOR).orElse(DyeColorTypes.WHITE).getName())); }
-        if (PropertyTypes.WOOLCOLOR.isSupported(type)) { lines.add(this.getOptionsText("WoolColor", "/npc woolcolor <color>", data.getProperty(PropertyTypes.WOOLCOLOR).orElse(DyeColorTypes.WHITE).getName())); }
-        if (PropertyTypes.SHULKERCOLOR.isSupported(type)) { lines.add(this.getOptionsText("ShulkerColor", "/npc shulkercolor <color>", data.getProperty(PropertyTypes.SHULKERCOLOR).orElse(DyeColorTypes.PURPLE).getName())); }
-        if (PropertyTypes.HORSEARMOR.isSupported(type)) { lines.add(this.getOptionsText("HorseArmor", "/npc horsearmor <armor>", data.getProperty(PropertyTypes.HORSEARMOR).orElse(HorseArmorTypes.NONE).getName())); }
-        if (PropertyTypes.HORSEPATTERN.isSupported(type)) { lines.add(this.getOptionsText("HorsePattern", "/npc horsepattern <pattern>", data.getProperty(PropertyTypes.HORSEPATTERN).orElse(HorsePatterns.NONE).getName())); }
-        if (PropertyTypes.HORSECOLOR.isSupported(type)) { lines.add(this.getOptionsText("HorseColor", "/npc horsecolor <color>", data.getProperty(PropertyTypes.HORSECOLOR).orElse(HorseColors.WHITE).getName())); }
-        if (PropertyTypes.LLAMATYPE.isSupported(type)) { lines.add(this.getOptionsText("LlamaType", "/npc llamatype <type>", data.getProperty(PropertyTypes.LLAMATYPE).orElse(LlamaTypes.WHITE).getName())); }
-        if (PropertyTypes.CATTYPE.isSupported(type)) { lines.add(this.getOptionsText("CatType", "/npc cattype <type>", data.getProperty(PropertyTypes.CATTYPE).orElse(CatTypes.WILD).getName())); }
-        if (PropertyTypes.RABBITTYPE.isSupported(type)) { lines.add(this.getOptionsText("RabbitType", "/npc rabbittype <type>", data.getProperty(PropertyTypes.RABBITTYPE).orElse(RabbitTypes.BROWN).getName())); }
-        if (PropertyTypes.PARROTTYPE.isSupported(type)) { lines.add(this.getOptionsText("ParrotType", "/npc parrottype <type>", data.getProperty(PropertyTypes.PARROTTYPE).orElse(ParrotTypes.RED).getName())); }
+        if (ANGRY.isSupported(type)) { lines.add(getToggleText("Angry", "/npc angry", data.getProperty(ANGRY).orElse(false))); }
+        if (ARMORED.isSupported(type)) { lines.add(getToggleText("Armored", "/npc armored", data.getProperty(ARMORED).orElse(false))); }
+        if (BABY.isSupported(type)) { lines.add(getToggleText("Baby", "/npc baby", data.getProperty(BABY).orElse(false))); }
+        if (CHARGED.isSupported(type)) { lines.add(getToggleText("Charged", "/npc charged", data.getProperty(CHARGED).orElse(false))); }
+        if (CHEST.isSupported(type)) { lines.add(getToggleText("Chest", "/npc chest", data.getProperty(CHEST).orElse(false))); }
+        if (EATING.isSupported(type)) { lines.add(getToggleText("Eating", "/npc eating", data.getProperty(EATING).orElse(false))); }
+        if (HANGING.isSupported(type)) { lines.add(getToggleText("Hanging", "/npc hanging", data.getProperty(HANGING).orElse(true))); }
+        if (PEEKING.isSupported(type)) { lines.add(getToggleText("Peeking", "/npc peeking", data.getProperty(PEEKING).orElse(false))); }
+        if (PUMPKIN.isSupported(type)) { lines.add(getToggleText("Pumpkin", "/npc pumpkin", data.getProperty(PUMPKIN).orElse(true))); }
+        if (SCREAMING.isSupported(type)) { lines.add(getToggleText("Screaming", "/npc screaming", data.getProperty(SCREAMING).orElse(false))); }
+        if (SHEARED.isSupported(type)) { lines.add(getToggleText("Sheared", "/npc sheared", data.getProperty(SHEARED).orElse(false))); }
+        if (SITTING.isSupported(type)) { lines.add(getToggleText("Sitting", "/npc sitting", data.getProperty(SITTING).orElse(false))); }
+        if (SADDLE.isSupported(type)) { lines.add(getToggleText("Saddle", "/npc saddle", data.getProperty(SADDLE).orElse(false))); }
+        if (SIZE.isSupported(type)) { lines.add(getOptionsText("Size", "/npc size <size>", Integer.toString(data.getProperty(SIZE).orElse(1)))); }
+        if (CARRIES.isSupported(type)) { lines.add(getOptionsText("Carries", "/npc carries <blocktype>", data.getProperty(CARRIES).orElse(BlockTypes.AIR).getName())); }
+        if (CAREER.isSupported(type)) { lines.add(getOptionsText("Career", "/npc career <career>", data.getProperty(CAREER).orElse(Careers.SHEPHERD).getName())); }
+        if (COLLARCOLOR.isSupported(type)) { lines.add(getOptionsText("CollarColor", "/npc collarcolor <color>", data.getProperty(COLLARCOLOR).orElse(DyeColorTypes.WHITE).getName())); }
+        if (WOOLCOLOR.isSupported(type)) { lines.add(getOptionsText("WoolColor", "/npc woolcolor <color>", data.getProperty(WOOLCOLOR).orElse(DyeColorTypes.WHITE).getName())); }
+        if (SHULKERCOLOR.isSupported(type)) { lines.add(getOptionsText("ShulkerColor", "/npc shulkercolor <color>", data.getProperty(SHULKERCOLOR).orElse(DyeColorTypes.PURPLE).getName())); }
+        if (HORSEARMOR.isSupported(type)) { lines.add(getOptionsText("HorseArmor", "/npc horsearmor <armor>", data.getProperty(HORSEARMOR).orElse(HorseArmorTypes.NONE).getName())); }
+        if (HORSEPATTERN.isSupported(type)) { lines.add(getOptionsText("HorsePattern", "/npc horsepattern <pattern>", data.getProperty(HORSEPATTERN).orElse(HorsePatterns.NONE).getName())); }
+        if (HORSECOLOR.isSupported(type)) { lines.add(getOptionsText("HorseColor", "/npc horsecolor <color>", data.getProperty(HORSECOLOR).orElse(HorseColors.WHITE).getName())); }
+        if (LLAMATYPE.isSupported(type)) { lines.add(getOptionsText("LlamaType", "/npc llamatype <type>", data.getProperty(LLAMATYPE).orElse(LlamaTypes.WHITE).getName())); }
+        if (CATTYPE.isSupported(type)) { lines.add(getOptionsText("CatType", "/npc cattype <type>", data.getProperty(CATTYPE).orElse(CatTypes.WILD).getName())); }
+        if (RABBITTYPE.isSupported(type)) { lines.add(getOptionsText("RabbitType", "/npc rabbittype <type>", data.getProperty(RABBITTYPE).orElse(RabbitTypes.BROWN).getName())); }
+        if (PARROTTYPE.isSupported(type)) { lines.add(getOptionsText("ParrotType", "/npc parrottype <type>", data.getProperty(PARROTTYPE).orElse(ParrotTypes.RED).getName())); }
 
         if (type.isArmorEquipable()) {
             lines.add(Text.of(" "));
-            lines.add(getArmorText("Helmet", this.data.getProperty(PropertyTypes.HELMET)));
-            lines.add(getArmorText("Chestplate", this.data.getProperty(PropertyTypes.CHESTPLATE)));
-            lines.add(getArmorText("Leggings", this.data.getProperty(PropertyTypes.LEGGINGS)));
-            lines.add(getArmorText("Boots", this.data.getProperty(PropertyTypes.BOOTS)));
+            lines.add(getArmorText("Helmet", this.data.getProperty(HELMET)));
+            lines.add(getArmorText("Chestplate", this.data.getProperty(CHESTPLATE)));
+            lines.add(getArmorText("Leggings", this.data.getProperty(LEGGINGS)));
+            lines.add(getArmorText("Boots", this.data.getProperty(BOOTS)));
             lines.add(Text.of(" "));
-            lines.add(getArmorText("MainHand", this.data.getProperty(PropertyTypes.MAINHAND)));
-            lines.add(getArmorText("OffHand", this.data.getProperty(PropertyTypes.OFFHAND)));
+            lines.add(getArmorText("MainHand", this.data.getProperty(MAINHAND)));
+            lines.add(getArmorText("OffHand", this.data.getProperty(OFFHAND)));
         }
 
         return lines;
     }
 
-    public Text getPropertiesButton() {
+    @Override
+    protected Text getMenuButton() {
         return super.getButton(TextUtils.getButton("Properties", this::send));
     }
-
-    private Text getOptionsText(String name, String cmd, String value) {
-		return Text.builder()
-				.append(Text.of(TextColors.GOLD, name, ": ", TextColors.AQUA, value))
-				.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Change")))
-				.onClick(TextActions.suggestCommand(cmd))
-				.build();
-	}
 
     private Text getArmorText(String name, Optional<ItemStack> item) {
         boolean hasItem = item.isPresent() && !item.get().isEmpty();

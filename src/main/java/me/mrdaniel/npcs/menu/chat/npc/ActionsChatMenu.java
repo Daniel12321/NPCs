@@ -109,6 +109,11 @@ public class ActionsChatMenu extends NPCChatMenu {
 		return lines;
 	}
 
+	@Override
+	protected Text getMenuButton() {
+		return super.getButton(TextUtils.getButton("Actions", this::send));
+	}
+
 	private Text getRemoveText(int index) {
 		return Text.builder()
 				.append(Text.of(TextColors.RED, "[x]"))
@@ -131,9 +136,5 @@ public class ActionsChatMenu extends NPCChatMenu {
 				.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Move Down")))
 				.onClick(TextActions.runCommand("/npc action swap " + index + " " + (index + 1)))
 				.build();
-	}
-
-	public Text getActionsButton() {
-		return super.getButton(TextUtils.getButton("Actions", this::send));
 	}
 }

@@ -11,10 +11,10 @@ public interface NPCAble {
 	@Nullable
     INPCData getData();
 	void setData(INPCData data);
-
 	void refreshEquipment();
+	void refreshAI();
 
 	<T> INPCData setProperty(PropertyType<T> property, T value);
 	INPCData setPosition(Position value);
-	void setLooking(boolean value);
+//	void setLooking(boolean value);
 }

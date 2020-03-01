@@ -10,7 +10,7 @@ import org.spongepowered.api.text.Text;
 public class PropertyLooking extends PropertyType<Boolean> {
 
 	public PropertyLooking() {
-		super("Looking", "looking", GenericArguments.bool(Text.of("looking")));
+		super("Looking", "looking", new Object[]{"ai", "looking"}, GenericArguments.bool(Text.of("looking")));
 	}
 
 	@Override
@@ -30,6 +30,6 @@ public class PropertyLooking extends PropertyType<Boolean> {
 
 	@Override
 	public void apply(NPCAble npc, Boolean value) {
-		npc.setLooking(value);
+		npc.refreshAI();
 	}
 }
