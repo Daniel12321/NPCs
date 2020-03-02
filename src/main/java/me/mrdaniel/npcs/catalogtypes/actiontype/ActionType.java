@@ -30,7 +30,7 @@ public class ActionType implements CatalogType {
 		return id;
 	}
 
-	public Function<ConfigurationNode, Action> getAction() {
+	public Function<ConfigurationNode, Action> deserializer() {
 		return action;
 	}
 }

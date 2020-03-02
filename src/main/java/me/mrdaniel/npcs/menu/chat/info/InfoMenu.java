@@ -29,7 +29,7 @@ public class InfoMenu implements ChatMenu {
         lines.add(Text.of(TextColors.YELLOW, "---------------=====[ ", TextColors.RED, "NPC Info", TextColors.YELLOW, " ]=====---------------"));
         lines.add(Text.of(TextColors.AQUA, "You currently have not selected an NPC."));
         lines.add(Text.of(TextColors.AQUA, "You can select an NPC by shift right clicking it."));
-        lines.add(Text.of(TextColors.AQUA, "You can see a list of NPC's by running: ", TextColors.YELLOW, "/npc list"));
+        lines.add(Text.of(TextColors.AQUA, "You can see a list deserialize NPC's by running: ", TextColors.YELLOW, "/npc list"));
         lines.add(Text.of(TextColors.AQUA, "You can create an NPC by running: ", TextColors.YELLOW, "/npc create ", TextColors.GOLD, "[entitytype]"));
         lines.add(Text.of(TextColors.YELLOW, "--------------------------------------------------"));
 

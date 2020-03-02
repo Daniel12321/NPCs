@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import me.mrdaniel.npcs.actions.conditions.ConditionMoney;
 import me.mrdaniel.npcs.ai.AITaskGuardPatrol;
 import me.mrdaniel.npcs.ai.AITaskGuardRandom;
-import me.mrdaniel.npcs.ai.AITaskStayInPosition;
+import me.mrdaniel.npcs.ai.AITaskStay;
 import me.mrdaniel.npcs.bstats.MetricsLite;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionType;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypeRegistryModule;
@@ -126,7 +126,7 @@ public class NPCs {
 		this.game.getRegistry().registerModule(ConditionType.class, new ConditionTypeRegistryModule());
 		this.game.getRegistry().registerModule(PropertyType.class, new PropertyTypeRegistryModule());
 
-		AITaskStayInPosition.register();
+		AITaskStay.register();
 //		AITaskStayInArea.register();
 		AITaskGuardRandom.register();
 		AITaskGuardPatrol.register();
@@ -153,7 +153,7 @@ public class NPCs {
 				new LatestVersionSupplier().get().ifPresent(v -> {
 					Task.builder().execute(() -> {
 						if (!v.equals("v" + NPCs.VERSION)) {
-							this.logger.info("A new version (" + v + ") of NPCs is available!");
+							this.logger.info("A new version (" + v + ") deserialize NPCs is available!");
 							this.logger.info("It can be downloaded from https://github.com/Daniel12321/NPCs/releases");
 						}
 					}).submit(this);

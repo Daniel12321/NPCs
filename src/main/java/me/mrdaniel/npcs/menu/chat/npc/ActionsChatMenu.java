@@ -2,6 +2,7 @@ package me.mrdaniel.npcs.menu.chat.npc;
 
 import com.google.common.collect.Lists;
 import me.mrdaniel.npcs.actions.ActionSet;
+import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.text.Text;
@@ -85,7 +86,7 @@ public class ActionsChatMenu extends NPCChatMenu {
 
 	@Override
 	public List<Text> getContents() {
-		ActionSet actions = this.data.getActions();
+		ActionSet actions = data.getProperty(PropertyTypes.ACTION_SET).orElse(new ActionSet());
 		List<Text> lines = Lists.newArrayList();
 
 		lines.add(Text.of(TextColors.GOLD, "Actions: "));

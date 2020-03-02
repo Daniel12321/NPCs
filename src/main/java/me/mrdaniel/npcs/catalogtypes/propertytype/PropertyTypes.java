@@ -1,7 +1,8 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype;
 
 import com.google.common.collect.Lists;
-import me.mrdaniel.npcs.catalogtypes.aitype.AIType;
+import me.mrdaniel.npcs.actions.ActionSet;
+import me.mrdaniel.npcs.ai.pattern.AbstractAIPattern;
 import me.mrdaniel.npcs.catalogtypes.career.Career;
 import me.mrdaniel.npcs.catalogtypes.cattype.CatType;
 import me.mrdaniel.npcs.catalogtypes.color.ColorType;
@@ -68,14 +69,16 @@ public final class PropertyTypes {
 	public static final PropertyType<ItemStack> OFFHAND = new PropertyOffHand();
 
 	public static final PropertyType<Boolean> LOOKING = new PropertyLooking();
-	public static final PropertyType<AIType> AITYPE = new PropertyAIType();
+	public static final PropertyType<AbstractAIPattern> AI_PATTERN = new PropertyAIPattern();
+
+	public static final PropertyType<ActionSet> ACTION_SET = new PropertyActionSet();
 
 	public static final List<PropertyType> ALL = Lists.newArrayList(
 			TYPE, NAME, NAME_VISIBLE, SKIN_UUID, SKIN, INTERACT, SILENT, GLOWING,
 			GLOWCOLOR, BABY, CHARGED, ANGRY, SIZE, SITTING, SADDLE, HANGING,
 			PUMPKIN, CAREER, HORSEPATTERN, HORSECOLOR, LLAMATYPE, CATTYPE, RABBITTYPE, PARROTTYPE,
 			HELMET, CHESTPLATE, LEGGINGS, BOOTS, MAINHAND, OFFHAND,
-			LOOKING, AITYPE);
+			LOOKING, AI_PATTERN, ACTION_SET);
 	public static final List<PropertyType> NPC_INIT = Lists.newArrayList(ALL);
 	public static final List<PropertyType<ItemStack>> EQUIPMENT = Lists.newArrayList(HELMET, CHESTPLATE, LEGGINGS, BOOTS, MAINHAND, OFFHAND);
 

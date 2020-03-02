@@ -1,6 +1,5 @@
 package me.mrdaniel.npcs.io.database;
 
-import me.mrdaniel.npcs.actions.ActionSet;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.utils.Position;
@@ -44,16 +43,6 @@ public class DatabaseNPCData implements INPCData {
 
     @Override
     public <T> INPCData setProperty(PropertyType<T> property, T value) {
-        return this;
-    }
-
-    @Override
-    public ActionSet getActions() {
-        return new ActionSet();
-    }
-
-    @Override
-    public INPCData writeActions() {
         return this;
     }
 

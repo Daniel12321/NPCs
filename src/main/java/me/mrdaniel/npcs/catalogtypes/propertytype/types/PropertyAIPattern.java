@@ -1,24 +1,22 @@
 package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 
 import com.google.common.reflect.TypeToken;
-import me.mrdaniel.npcs.catalogtypes.aitype.AIType;
+import me.mrdaniel.npcs.ai.pattern.AbstractAIPattern;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
-import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.entity.living.monster.Slime;
-import org.spongepowered.api.text.Text;
 
-public class PropertyAIType extends PropertyType<AIType> {
+public class PropertyAIPattern extends PropertyType<AbstractAIPattern> {
 
-    public PropertyAIType() {
-        super("Ai Type", "aitype", new Object[]{"ai", "type"}, GenericArguments.catalogedElement(Text.of("aitype"), AIType.class));
+    public PropertyAIPattern() {
+        super("Ai Pattern", "aipattern", new Object[]{"ai"});
     }
 
     @Override
-    public TypeToken<AIType> getTypeToken() {
-        return TypeToken.of(AIType.class);
+    public TypeToken<AbstractAIPattern> getTypeToken() {
+        return TypeToken.of(AbstractAIPattern.class);
     }
 
     @Override
@@ -32,7 +30,7 @@ public class PropertyAIType extends PropertyType<AIType> {
     }
 
     @Override
-    public void apply(NPCAble npc, AIType value) {
+    public void apply(NPCAble npc, AbstractAIPattern value) {
         npc.refreshAI();
     }
 }

@@ -84,7 +84,6 @@ public class CommandNPC extends PlayerCommand {
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.RABBITTYPE), "rabbittype")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.PARROTTYPE), "parrottype")
 				.child(CommandEdit.build(AIChatMenu::new, PropertyTypes.LOOKING), "looking")
-				.child(CommandEdit.build(AIChatMenu::new, PropertyTypes.AITYPE), "aitype")
 				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPC | Helmet"))
 						.child(new CommandEditEquipment(PropertyTypes.HELMET, false).build(), "give")
 						.child(new CommandEditEquipment(PropertyTypes.HELMET, true).build(), "remove")

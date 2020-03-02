@@ -36,7 +36,7 @@ public class PropertyName extends PropertyType<String> {
 	public void apply(NPCAble npc, String value) {
 		((Living)npc).offer(Keys.DISPLAY_NAME, TextUtils.toText(value));
 
-		// Fixes human NPCs losing some of their properties when changing their skin
+		// Fixes human NPCs losing some deserialize their properties when changing their skin
 		if (npc instanceof Human) {
 			npc.refreshEquipment();
 		}

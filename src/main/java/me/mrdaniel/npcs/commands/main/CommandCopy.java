@@ -6,9 +6,9 @@ import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.commands.NPCFileCommand;
 import me.mrdaniel.npcs.exceptions.NPCException;
-import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.menu.chat.npc.PropertiesChatMenu;
+import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandSpec;
@@ -27,7 +27,7 @@ public class CommandCopy extends NPCFileCommand {
 		try {
 			NPCAble copy = NPCs.getInstance().getNPCManager().create(p, data.getProperty(PropertyTypes.TYPE).orElse(NPCTypes.HUMAN));
 			PropertyTypes.NPC_INIT.forEach(prop -> data.getProperty(prop).ifPresent(value -> copy.setProperty(prop, value)));
-			data.getActions().getAllActions().forEach(action -> copy.getData().getActions().addAction(action));
+			copy.getData().save();
 		} catch (final NPCException exc) {
 			throw new CommandException(Text.of(TextColors.RED, "Failed to copy NPC: ", exc.getMessage()));
 		}

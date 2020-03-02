@@ -4,6 +4,7 @@ import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.conditiontype.ConditionType;
 import me.mrdaniel.npcs.exceptions.ConditionException;
 import ninja.leaping.configurate.ConfigurationNode;
+import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 
@@ -27,7 +28,7 @@ public abstract class Condition {
 	public abstract void serializeValue(ConfigurationNode value);
 
 	@Nullable
-	public static Condition of(ConfigurationNode node) throws ConditionException {
-		return NPCs.getInstance().getGame().getRegistry().getType(ConditionType.class, node.getNode("Type").getString("")).orElseThrow(() -> new ConditionException("Invalid ConditionType!")).getCondition().apply(node);
+	public static Condition of(ConfigurationNode node) throws ObjectMappingException {
+		return NPCs.getInstance().getGame().getRegistry().getType(ConditionType.class, node.getNode("Type").getString("")).orElseThrow(() -> new ObjectMappingException("Invalid ConditionType!")).getCondition().apply(node);
 	}
 }

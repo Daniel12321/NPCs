@@ -1,9 +1,9 @@
 package me.mrdaniel.npcs.mixin.mixin;
 
 import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.catalogtypes.aitype.AIType;
-import me.mrdaniel.npcs.catalogtypes.aitype.AITypes;
-import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
+import me.mrdaniel.npcs.ai.pattern.AIPatternStay;
+import me.mrdaniel.npcs.ai.pattern.AIPatternWander;
+import me.mrdaniel.npcs.ai.pattern.AbstractAIPattern;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.io.INPCData;
@@ -62,11 +62,6 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 		Position pos = this.data.getPosition();
 		this.setPositionAndRotation(pos.getX(), pos.getY(), pos.getZ(), pos.getYaw(), pos.getPitch());
 
-		// TODO: Improve
-		if ((Object)this instanceof EntityCreature) {
-			((EntityCreature)(Object)this).setHomePosAndDistance(new BlockPos(pos.getX(), pos.getY(), pos.getZ()), 5);
-		}
-
 		PropertyTypes.NPC_INIT.stream()
 				.filter(prop -> prop.isSupported(this))
 				.forEach(prop -> this.data.getProperty(prop)
@@ -86,48 +81,23 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 
 	@Override
 	public void refreshAI() {
-		NPCType type = this.data.getProperty(PropertyTypes.TYPE).get();
-		AIType aiType = this.data.getProperty(PropertyTypes.AITYPE).orElse(AITypes.STAY);
+        AbstractAIPattern aiPattern = this.data.getProperty(PropertyTypes.AI_PATTERN).orElse(new AIPatternStay());
 		Agent agent = (Agent) this;
 
-		agent.setTarget(null);
+        if (aiPattern instanceof AIPatternWander) { // TODO: Improve
+            Position pos = this.data.getPosition();
+            ((EntityCreature)(Object)this).setHomePosAndDistance(new BlockPos(pos.getX(), pos.getY(), pos.getZ()), ((AIPatternWander)aiPattern).getDistance());
+        }
+
+        agent.setTarget(null);
 		agent.getGoal(GoalTypes.TARGET).ifPresent(Goal::clear);
 		agent.getGoal(GoalTypes.NORMAL).ifPresent(goal -> {
 			goal.clear();
-
-			goal.addTask(1, aiType.createAITask((Creature)this, type));
+			goal.addTask(1, aiPattern.createAITask((Creature)this, this.data.getProperty(PropertyTypes.TYPE).get()));
 
 			if (this.data.getProperty(PropertyTypes.LOOKING).orElse(false)) {
 				goal.addTask(10, WatchClosestAITask.builder().chance(1).maxDistance(25).watch(Player.class).build(agent));
 			}
-
-			// TODO: Remove
-//			if (type == NPCTypes.SKELETON) {
-//				List<Position> targets = Lists.newArrayList(
-//						new Position("world", -40.5, 63.0, 330.5, 0, 0),
-//						new Position("world", -30.5, 63.0, 330.5, 0, 0),
-//						new Position("world", -30.5, 63.0, 320.5, 0, 0),
-//						new Position("world", -40.5, 63.0, 320.5, 0, 0)
-//				);
-//				goal.addTask(1, new AITaskGuardRandom(targets, type.getMovementSpeed()));
-//			}
-//			else if (type == NPCTypes.ZOMBIE) {
-//				List<Position> targets = Lists.newArrayList(
-//						new Position("world", -40.5, 63.0, 330.5, 0, 0),
-//						new Position("world", -30.5, 63.0, 330.5, 0, 0),
-//						new Position("world", -30.5, 63.0, 320.5, 0, 0),
-//						new Position("world", -40.5, 63.0, 320.5, 0, 0)
-//				);
-//				goal.addTask(1, new AITaskPatrol(targets, type.getMovementSpeed()));
-//			}
-//			else if (type == NPCTypes.CREEPER) {
-//				Position pos = this.data.getPosition();
-//				((EntityCreature)(Object)this).setHomePosAndDistance(new BlockPos(pos.getX(), pos.getY(), pos.getZ()), 5);
-//				goal.addTask(1, WanderAITask.builder().speed(type.getMovementSpeed()).executionChance(50).build((Creature)this));
-//			}
-//			else {
-//				goal.addTask(1, new AITaskStayInPosition(type.getMovementSpeed()));
-//			}
 		});
 	}
 

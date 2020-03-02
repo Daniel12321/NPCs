@@ -1,10 +1,12 @@
 package me.mrdaniel.npcs.commands.action;
 
+import me.mrdaniel.npcs.actions.ActionSet;
+import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.events.NPCEditEvent;
-import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.menu.chat.npc.ActionsChatMenu;
+import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
@@ -26,9 +28,11 @@ public class CommandActionRepeat extends NPCCommand {
 			throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
 		}
 
-		Boolean value = args.<Boolean>getOne("repeat").orElse(!data.getActions().isRepeatActions());
-		data.getActions().setRepeatActions(value);
-		data.writeActions().save();
+		ActionSet actions = data.getProperty(PropertyTypes.ACTION_SET).orElse(new ActionSet());
+		Boolean value = args.<Boolean>getOne("repeat").orElse(!actions.isRepeatActions());
+		actions.setRepeatActions(value);
+		data.setProperty(PropertyTypes.ACTION_SET, actions);
+		data.save();
 	}
 
 	public CommandSpec build() {

@@ -5,7 +5,6 @@ import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.actions.Action;
 import me.mrdaniel.npcs.actions.Condition;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
-import me.mrdaniel.npcs.exceptions.ConditionException;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.managers.ActionResult;
 import me.mrdaniel.npcs.utils.TextUtils;
@@ -31,7 +30,7 @@ public class ActionCondition extends Action {
 		Condition condition = null;
 		try {
 			condition = Condition.of(node.getNode("Condition"));
-		} catch (final ConditionException exc) {
+		} catch (final ObjectMappingException exc) {
 			exc.printStackTrace();
 		} finally {
 			this.condition = condition;

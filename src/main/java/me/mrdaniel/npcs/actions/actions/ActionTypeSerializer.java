@@ -12,7 +12,7 @@ public class ActionTypeSerializer implements TypeSerializer<Action> {
     @Nullable
     @Override
     public Action deserialize(TypeToken<?> type, ConfigurationNode value) throws ObjectMappingException {
-        return Action.of(value).orElse(null);
+        return Action.deserialize(value).orElse(null);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package me.mrdaniel.npcs.io;
 
-import me.mrdaniel.npcs.actions.ActionSet;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.utils.Position;
 
@@ -20,9 +19,6 @@ public interface INPCData {
 
     <T> Optional<T> getProperty(PropertyType<T> property);
     <T> INPCData setProperty(PropertyType<T> property, T value);
-
-    ActionSet getActions();
-    INPCData writeActions();
 
     void save();
 }

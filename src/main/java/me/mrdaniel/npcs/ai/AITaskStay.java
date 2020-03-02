@@ -13,7 +13,7 @@ import org.spongepowered.api.entity.living.Agent;
 
 import javax.annotation.Nullable;
 
-public class AITaskStayInPosition extends AbstractAITask<Agent> implements INPCAITask {
+public class AITaskStay extends AbstractAITask<Agent> implements INPCAITask {
 
     private static final int MUTEX_FLAG_MOVE = 1;
     private static final double START_DISTANCE_SQUARED = 0.8 * 0.8;
@@ -24,10 +24,10 @@ public class AITaskStayInPosition extends AbstractAITask<Agent> implements INPCA
     @Nullable private Position target;
 
     /**
-     * Creates a new {@link AITaskStayInPosition} with the provided
+     * Creates a new {@link AITaskStay} with the provided
      * {@link AITask}.
      */
-    public AITaskStayInPosition(double movementSpeed) {
+    public AITaskStay(double movementSpeed) {
         super(AITaskTypes.WANDER);
 
         this.movementSpeed = movementSpeed;
@@ -86,6 +86,6 @@ public class AITaskStayInPosition extends AbstractAITask<Agent> implements INPCA
     }
 
     public static void register() {
-        Sponge.getRegistry().registerAITaskType(NPCs.getInstance(), "stay-in-position", "Stay In Position", AITaskStayInPosition.class);
+        Sponge.getRegistry().registerAITaskType(NPCs.getInstance(), "stay", "Stay", AITaskStay.class);
     }
 }

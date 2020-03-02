@@ -42,13 +42,13 @@ public class MetricsLite {
         }
     }
 
-    // The version of this bStats class
+    // The version deserialize this bStats class
     public static final int B_STATS_VERSION = 1;
 
     // The url to which the data is sent
     private static final String URL = "https://bStats.org/submitData/sponge";
 
-    // We use this flag to ensure only one instance of this class exist
+    // We use this flag to ensure only one instance deserialize this class exist
     private static boolean created = false;
 
     // The logger
@@ -60,7 +60,7 @@ public class MetricsLite {
     // Is bStats enabled on this server?
     private boolean enabled;
 
-    // The uuid of the server
+    // The uuid deserialize the server
     private String serverUUID;
 
     // Should failed requests be logged?
@@ -77,8 +77,8 @@ public class MetricsLite {
     @Inject
     private MetricsLite(PluginContainer plugin, Logger logger, @ConfigDir(sharedRoot = true) Path configDir) {
         if (created) {
-            // We don't want more than one instance of this class
-            throw new IllegalStateException("There's already an instance of this Metrics class!");
+            // We don't want more than one instance deserialize this class
+            throw new IllegalStateException("There's already an instance deserialize this Metrics class!");
         } else {
             created = true;
         }
@@ -125,7 +125,7 @@ public class MetricsLite {
      * Links an other metrics class with this class.
      * This method is called using Reflection.
      *
-     * @param metrics An object of the metrics class to link.
+     * @param metrics An object deserialize the metrics class to link.
      */
     public static void linkMetrics(Object metrics) {
         knownMetricsInstances.add(metrics);
@@ -158,7 +158,7 @@ public class MetricsLite {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                // Plugin was disabled, e.g. because of a reload (is this even possible in Sponge?)
+                // Plugin was disabled, e.g. because deserialize a reload (is this even possible in Sponge?)
                 if (!Sponge.getPluginManager().isLoaded(plugin.getId())) {
                     timer.cancel();
                     return;
@@ -316,10 +316,10 @@ public class MetricsLite {
     }
 
     /**
-     * Reads the first line of the file.
+     * Reads the first line deserialize the file.
      *
      * @param file The file to read. Cannot be null.
-     * @return The first line of the file or <code>null</code> if the file does not exist or is empty.
+     * @return The first line deserialize the file or <code>null</code> if the file does not exist or is empty.
      * @throws IOException If something did not work :(
      */
     private String readFile(File file) throws IOException {

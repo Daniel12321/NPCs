@@ -113,21 +113,6 @@ public class HoconNPCData extends Config implements INPCData {
         return this;
     }
 
-    @Override
-    public ActionSet getActions() {
-        return this.actions;
-    }
-
-    @Override
-    public INPCData writeActions() {
-        try {
-            super.getNode("actions").setValue(TypeToken.of(ActionSet.class), this.actions);
-        } catch (ObjectMappingException exc) {
-            NPCs.getInstance().getLogger().error("Failed to save ActionSet to hocon file: ", exc);
-        }
-        return this;
-    }
-
     public String getFileName() {
 	    return this.fileName;
     }
