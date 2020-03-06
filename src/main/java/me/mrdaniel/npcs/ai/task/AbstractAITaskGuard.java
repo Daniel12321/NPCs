@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.ai;
+package me.mrdaniel.npcs.ai.task;
 
 import me.mrdaniel.npcs.utils.Position;
 import net.minecraft.entity.EntityLiving;
@@ -11,7 +11,7 @@ import org.spongepowered.api.entity.living.Agent;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public abstract class AbstractAITaskGuard extends AbstractAITask<Agent> implements INPCAITask {
+public abstract class AbstractAITaskGuard extends AbstractNPCAITask {
 
     private static final int MUTEX_FLAG_MOVE = 1;
     private static final double ACCEPTABLE_DISTANCE_SQUARED = 0.5 * 0.5;

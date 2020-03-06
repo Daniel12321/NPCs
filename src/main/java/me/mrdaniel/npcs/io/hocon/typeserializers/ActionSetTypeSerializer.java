@@ -1,6 +1,8 @@
-package me.mrdaniel.npcs.actions;
+package me.mrdaniel.npcs.io.hocon.typeserializers;
 
 import com.google.common.reflect.TypeToken;
+import me.mrdaniel.npcs.actions.Action;
+import me.mrdaniel.npcs.actions.ActionSet;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer;

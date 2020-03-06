@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.actions.actions;
+package me.mrdaniel.npcs.io.hocon.typeserializers;
 
 import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.actions.Action;
