@@ -59,7 +59,7 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 		this.setEntityInvulnerable(true);
 		this.setNoGravity(false);
 
-		Position pos = this.data.getPosition();
+		Position pos = this.data.getProperty(PropertyTypes.POSITION).get();
 		this.setPositionAndRotation(pos.getX(), pos.getY(), pos.getZ(), pos.getYaw(), pos.getPitch());
 
 		PropertyTypes.NPC_INIT.stream()
@@ -84,8 +84,8 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
         AbstractAIPattern aiPattern = this.data.getProperty(PropertyTypes.AI_PATTERN).orElse(new AIPatternStay());
 		Agent agent = (Agent) this;
 
-        if (aiPattern instanceof AIPatternWander) { // TODO: Improve
-            Position pos = this.data.getPosition();
+        if (aiPattern instanceof AIPatternWander) {
+            Position pos = this.data.getProperty(PropertyTypes.POSITION).get();
             ((EntityCreature)(Object)this).setHomePosAndDistance(new BlockPos(pos.getX(), pos.getY(), pos.getZ()), ((AIPatternWander)aiPattern).getDistance());
         }
 
@@ -99,12 +99,6 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 				goal.addTask(10, WatchClosestAITask.builder().chance(1).maxDistance(25).watch(Player.class).build(agent));
 			}
 		});
-	}
-
-	@Override
-	public INPCData setPosition(Position value) {
-		this.setPositionAndRotation(value.getX(), value.getY(), value.getZ(), value.getYaw(), value.getPitch());
-		return this.data.setPosition(value);
 	}
 
 	@Override

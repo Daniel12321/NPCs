@@ -18,7 +18,7 @@ public class ActionSetTypeSerializer implements TypeSerializer<ActionSet> {
 		node.getNode("cooldowns").getChildrenMap().forEach((uuid, child) -> actions.setCooldown(UUID.fromString((String)uuid), child.getLong(0)));
 
         for (int i = 0; i < node.getNode("actions").getChildrenMap().size(); i++) {
-        	Action.deserialize(node.getNode("actions", Integer.toString(i))).ifPresent(actions::addAction);
+        	actions.addAction(node.getNode("actions", Integer.toString(i)).getValue(TypeToken.of(Action.class)));
         }
 
 		return actions;

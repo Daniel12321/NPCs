@@ -4,15 +4,16 @@ import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.actions.Action;
 import me.mrdaniel.npcs.actions.ActionSet;
-import me.mrdaniel.npcs.actions.ActionSetTypeSerializer;
 import me.mrdaniel.npcs.actions.Condition;
-import me.mrdaniel.npcs.actions.actions.ActionTypeSerializer;
-import me.mrdaniel.npcs.actions.conditions.ConditionTypeSerializer;
+import me.mrdaniel.npcs.ai.pattern.AbstractAIPattern;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionType;
+import me.mrdaniel.npcs.catalogtypes.aitype.AIType;
 import me.mrdaniel.npcs.catalogtypes.career.Career;
 import me.mrdaniel.npcs.catalogtypes.cattype.CatType;
 import me.mrdaniel.npcs.catalogtypes.color.ColorType;
 import me.mrdaniel.npcs.catalogtypes.conditiontype.ConditionType;
+import me.mrdaniel.npcs.catalogtypes.dyecolor.DyeColorType;
+import me.mrdaniel.npcs.catalogtypes.horsearmor.HorseArmorType;
 import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColor;
 import me.mrdaniel.npcs.catalogtypes.horsepattern.HorsePattern;
 import me.mrdaniel.npcs.catalogtypes.llamatype.LlamaType;
@@ -22,7 +23,9 @@ import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitType;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.io.INPCStore;
+import me.mrdaniel.npcs.io.hocon.typeserializers.*;
 import me.mrdaniel.npcs.managers.NPCManager;
+import me.mrdaniel.npcs.utils.Position;
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 
 import java.io.IOException;
@@ -42,21 +45,27 @@ public class HoconNPCStore implements INPCStore {
 
     @Override
     public void setup() {
-		CatalogTypeSerializer.register(NPCType.class);
-		CatalogTypeSerializer.register(ColorType.class);
+		CatalogTypeSerializer.register(AIType.class);
 		CatalogTypeSerializer.register(Career.class);
 		CatalogTypeSerializer.register(CatType.class);
+		CatalogTypeSerializer.register(ColorType.class);
+		CatalogTypeSerializer.register(DyeColorType.class);
+		CatalogTypeSerializer.register(HorseArmorType.class);
 		CatalogTypeSerializer.register(HorseColor.class);
 		CatalogTypeSerializer.register(HorsePattern.class);
 		CatalogTypeSerializer.register(LlamaType.class);
+		CatalogTypeSerializer.register(NPCType.class);
 		CatalogTypeSerializer.register(ParrotType.class);
 		CatalogTypeSerializer.register(RabbitType.class);
+
 		CatalogTypeSerializer.register(ActionType.class);
 		CatalogTypeSerializer.register(ConditionType.class);
 		CatalogTypeSerializer.register(PropertyType.class);
 		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Action.class), new ActionTypeSerializer());
 		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Condition.class), new ConditionTypeSerializer());
 		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(ActionSet.class), new ActionSetTypeSerializer());
+		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Position.class), new PositionTypeSerializer());
+		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(AbstractAIPattern.class), new AIPatternTypeSerializer());
 	}
 
     @Override

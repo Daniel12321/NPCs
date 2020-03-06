@@ -1,17 +1,23 @@
 package me.mrdaniel.npcs.catalogtypes.aitype;
 
+import me.mrdaniel.npcs.ai.pattern.AbstractAIPattern;
+import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.CatalogType;
 import org.spongepowered.api.util.annotation.CatalogedBy;
+
+import java.util.function.Function;
 
 @CatalogedBy(AITypes.class)
 public class AIType implements CatalogType {
 
 	private final String name;
 	private final String id;
+	private final Function<ConfigurationNode, AbstractAIPattern> deserializer;
 
-	protected AIType(String name, String id) {
+	protected AIType(String name, String id, Function<ConfigurationNode, AbstractAIPattern> deserializer) {
 		this.name = name;
 		this.id = id;
+		this.deserializer = deserializer;
 	}
 
 	@Override
@@ -22,5 +28,9 @@ public class AIType implements CatalogType {
 	@Override
 	public String getId() {
 		return this.id;
+	}
+
+	public Function<ConfigurationNode, AbstractAIPattern> getDeserializer() {
+		return this.deserializer;
 	}
 }

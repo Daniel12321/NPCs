@@ -2,9 +2,9 @@ package me.mrdaniel.npcs;
 
 import com.google.inject.Inject;
 import me.mrdaniel.npcs.actions.conditions.ConditionMoney;
-import me.mrdaniel.npcs.ai.AITaskGuardPatrol;
-import me.mrdaniel.npcs.ai.AITaskGuardRandom;
-import me.mrdaniel.npcs.ai.AITaskStay;
+import me.mrdaniel.npcs.ai.task.AITaskGuardPatrol;
+import me.mrdaniel.npcs.ai.task.AITaskGuardRandom;
+import me.mrdaniel.npcs.ai.task.AITaskStay;
 import me.mrdaniel.npcs.bstats.MetricsLite;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionType;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypeRegistryModule;
@@ -109,22 +109,21 @@ public class NPCs {
 
 	@Listener
 	public void onPreInit(@Nullable GamePreInitializationEvent e) {
-		this.game.getRegistry().registerModule(NPCType.class, new NPCTypeRegistryModule());
-		this.game.getRegistry().registerModule(ColorType.class, new ColorTypeRegistryModule());
-		this.game.getRegistry().registerModule(DyeColorType.class, new DyeColorTypeRegistryModule());
+		this.game.getRegistry().registerModule(ActionType.class, new ActionTypeRegistryModule());
+		this.game.getRegistry().registerModule(AIType.class, new AITypeRegistryModule());
 		this.game.getRegistry().registerModule(Career.class, new CareerRegistryModule());
 		this.game.getRegistry().registerModule(CatType.class, new CatTypeRegistryModule());
+		this.game.getRegistry().registerModule(ColorType.class, new ColorTypeRegistryModule());
+		this.game.getRegistry().registerModule(ConditionType.class, new ConditionTypeRegistryModule());
+		this.game.getRegistry().registerModule(DyeColorType.class, new DyeColorTypeRegistryModule());
 		this.game.getRegistry().registerModule(HorseArmorType.class, new HorseArmorTypeRegistryModule());
 		this.game.getRegistry().registerModule(HorseColor.class, new HorseColorRegistryModule());
 		this.game.getRegistry().registerModule(HorsePattern.class, new HorsePatternRegistryModule());
 		this.game.getRegistry().registerModule(LlamaType.class, new LlamaTypeRegistryModule());
+		this.game.getRegistry().registerModule(NPCType.class, new NPCTypeRegistryModule());
 		this.game.getRegistry().registerModule(ParrotType.class, new ParrotTypeRegistryModule());
-		this.game.getRegistry().registerModule(RabbitType.class, new RabbitTypeRegistryModule());
-		this.game.getRegistry().registerModule(AIType.class, new AITypeRegistryModule());
-
-		this.game.getRegistry().registerModule(ActionType.class, new ActionTypeRegistryModule());
-		this.game.getRegistry().registerModule(ConditionType.class, new ConditionTypeRegistryModule());
 		this.game.getRegistry().registerModule(PropertyType.class, new PropertyTypeRegistryModule());
+		this.game.getRegistry().registerModule(RabbitType.class, new RabbitTypeRegistryModule());
 
 		AITaskStay.register();
 //		AITaskStayInArea.register();

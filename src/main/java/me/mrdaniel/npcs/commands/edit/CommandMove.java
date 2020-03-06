@@ -1,11 +1,12 @@
-package me.mrdaniel.npcs.commands.main;
+package me.mrdaniel.npcs.commands.edit;
 
 import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.exceptions.NPCException;
-import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.menu.chat.npc.PropertiesChatMenu;
+import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import me.mrdaniel.npcs.utils.Position;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
@@ -22,12 +23,12 @@ public class CommandMove extends NPCCommand {
 
 	@Override
 	public void execute(Player p, INPCData data, NPCAble npc, CommandContext args) throws CommandException {
-		Position pos = new Position(p.getWorld().getName(), p.getLocation().getPosition(), p.getHeadRotation());
+		Position pos = new Position(p);
 
 		if (npc != null) {
-			npc.setPosition(pos).save();
+			npc.setProperty(PropertyTypes.POSITION, pos).save();
 		} else {
-			data.setPosition(pos).save();
+			data.setProperty(PropertyTypes.POSITION, pos).save();
 			try {
 				NPCs.getInstance().getNPCManager().spawn(data);
 			} catch (NPCException exc) {

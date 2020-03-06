@@ -2,7 +2,6 @@ package me.mrdaniel.npcs.actions;
 
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.conditiontype.ConditionType;
-import me.mrdaniel.npcs.exceptions.ConditionException;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.spongepowered.api.entity.living.player.Player;

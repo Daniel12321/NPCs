@@ -23,7 +23,7 @@ public class NPCTypes {
 	public static final NPCType GIANT = new NPCType("Giant", "giant", EntityTypes.GIANT, 1.0);
 	public static final NPCType GUARDIAN = new NPCType("Guardian", "guardian", EntityTypes.GUARDIAN, 1.0);
 	public static final NPCType HORSE = new NPCType("Horse", "horse", EntityTypes.HORSE, 1.0, true);
-	public static final NPCType HUMAN = new NPCType("Human", "human", EntityTypes.HUMAN, 0.1, false, true);
+	public static final NPCType HUMAN = new NPCType("Human", "human", EntityTypes.HUMAN, 0.2, false, true);
 	public static final NPCType HUSK = new NPCType("Husk", "husk", EntityTypes.HUSK, 1.0, true, true);
 	public static final NPCType ILLUSION_ILLAGER = new NPCType("IllusionIllager", "illusion_illager", EntityTypes.ILLUSION_ILLAGER, 1.0);
 	public static final NPCType IRON_GOLEM = new NPCType("IronGolem", "iron_golem", EntityTypes.IRON_GOLEM, 1.0);

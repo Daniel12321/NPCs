@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.ai;
+package me.mrdaniel.npcs.ai.task;
 
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.utils.Position;

@@ -3,8 +3,8 @@ package me.mrdaniel.npcs.commands.action.edit;
 import me.mrdaniel.npcs.actions.Action;
 import me.mrdaniel.npcs.actions.actions.ActionChoices;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
-import me.mrdaniel.npcs.commands.ActionCommand;
-import me.mrdaniel.npcs.exceptions.ActionException;
+import me.mrdaniel.npcs.commands.action.ActionCommand;
+import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.command.spec.CommandSpec;
@@ -19,11 +19,11 @@ public class CommandRemoveChoice extends ActionCommand {
 	}
 
 	@Override
-	public void execute(final Player p, final Action a, final CommandContext args) throws ActionException {
+	public void execute(final Player p, final Action a, final CommandContext args) throws CommandException {
 		ActionChoices ac = (ActionChoices) a;
 
 		if (ac.getChoices().size() <= 2) {
-			throw new ActionException("There must always be more than 1 choice!");
+			throw new CommandException(Text.of(TextColors.RED, "There must always be more than 1 choice!"));
 		}
 		ac.getChoices().remove(args.<String>getOne("name").get());
 	}

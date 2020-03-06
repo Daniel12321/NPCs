@@ -47,7 +47,7 @@ public class ListMenu implements ChatMenu {
     }
 
     private Text getNPCText(INPCData data) {
-        Position pos = data.getPosition();
+        Position pos = data.getProperty(PropertyTypes.POSITION).get();
 
         Text.Builder b = Text.builder()
                 .append(Text.of(TextColors.BLUE, data.getId(), ": "))

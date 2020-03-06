@@ -34,9 +34,9 @@ public class AIChatMenu extends NPCChatMenu {
         List<Text> lines = Lists.newArrayList();
         AbstractAIPattern aiPattern = data.getProperty(PropertyTypes.AI_PATTERN).orElse(new AIPatternStay());
 
-        lines.add(TextUtils.getToggleText("Looking", "/npc looking", data.getProperty(PropertyTypes.LOOKING).orElse(false)));
+        lines.add(TextUtils.getToggleText("Looking", "/npc ai looking", data.getProperty(PropertyTypes.LOOKING).orElse(false)));
         lines.add(Text.of(" "));
-        lines.add(TextUtils.getOptionsText("AI Type", "/npc aitype <type>", aiPattern.getType().getName()));
+        lines.add(TextUtils.getOptionsText("AI Type", "/npc ai type <type>", aiPattern.getType().getName()));
         lines.add(Text.of(" "));
         lines.addAll(aiPattern.getMenuLines());
 

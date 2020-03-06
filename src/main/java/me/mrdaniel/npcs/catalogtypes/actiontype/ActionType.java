@@ -12,12 +12,12 @@ public class ActionType implements CatalogType {
 
 	private final String name;
 	private final String id;
-	private final Function<ConfigurationNode, Action> action;
+	private final Function<ConfigurationNode, Action> deserializer;
 
-	ActionType(String name, String id, Function<ConfigurationNode, Action> action) {
+	ActionType(String name, String id, Function<ConfigurationNode, Action> deserializer) {
 		this.name = name;
 		this.id = id;
-		this.action = action;
+		this.deserializer = deserializer;
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class ActionType implements CatalogType {
 		return id;
 	}
 
-	public Function<ConfigurationNode, Action> deserializer() {
-		return action;
+	public Function<ConfigurationNode, Action> getDeserializer() {
+		return this.deserializer;
 	}
 }

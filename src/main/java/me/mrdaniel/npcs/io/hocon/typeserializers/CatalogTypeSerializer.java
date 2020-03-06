@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.io.hocon;
+package me.mrdaniel.npcs.io.hocon.typeserializers;
 
 import com.google.common.reflect.TypeToken;
 import ninja.leaping.configurate.ConfigurationNode;

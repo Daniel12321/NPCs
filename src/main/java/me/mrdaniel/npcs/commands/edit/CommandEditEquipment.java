@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.commands.main;
+package me.mrdaniel.npcs.commands.edit;
 
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;

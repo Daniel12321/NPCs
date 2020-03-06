@@ -9,7 +9,7 @@ TODO:
 - Disable zombie_villager turning
 - Add the ability to make NPCs immovable (e.g. Slimes)
 - Fix NPC yaw/pitch issues
-
+- Add movement speed to ai data
 
 !- Add burning property FIX
 - Add size property (Keys#BASE_SIZE, Keys#HEIGHT, Keys#SCALE)

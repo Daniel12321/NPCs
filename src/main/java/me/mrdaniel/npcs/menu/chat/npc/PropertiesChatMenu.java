@@ -12,6 +12,7 @@ import me.mrdaniel.npcs.catalogtypes.llamatype.LlamaTypes;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.catalogtypes.parrottype.ParrotTypes;
+import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitTypes;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.utils.Position;
@@ -62,7 +63,7 @@ public class PropertiesChatMenu extends NPCChatMenu {
 
     @Override
     public List<Text> getContents() {
-        Position pos = data.getPosition();
+        Position pos = data.getProperty(PropertyTypes.POSITION).get();
         NPCType type = data.getProperty(TYPE).get();
         List<Text> lines = Lists.newArrayList();
 

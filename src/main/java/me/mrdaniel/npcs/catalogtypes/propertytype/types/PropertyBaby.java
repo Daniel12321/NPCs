@@ -3,6 +3,7 @@ package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
+import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import me.mrdaniel.npcs.utils.Position;
 import net.minecraft.entity.Entity;
@@ -42,7 +43,7 @@ public class PropertyBaby extends PropertyType<Boolean> {
 		}
 
 		// Fixes some entities (etc. horses) moving around when changing from baby to adult
-		Position pos = npc.getData().getPosition();
+		Position pos = npc.getData().getProperty(PropertyTypes.POSITION).get();
 		((Entity)npc).setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), pos.getYaw(), pos.getPitch());
 	}
 }

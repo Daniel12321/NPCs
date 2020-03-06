@@ -61,7 +61,7 @@ public class NPCManager {
         if (type == NPCTypes.HUMAN) {
             data.setProperty(PropertyTypes.NAME, "Steve");
         }
-        data.setPosition(new Position(p.getWorld().getName(), p.getLocation().getPosition(), p.getHeadRotation()));
+        data.setProperty(PropertyTypes.POSITION, new Position(p));
 		data.setProperty(PropertyTypes.TYPE, type)
                 .setProperty(PropertyTypes.INTERACT, true)
                 .setProperty(PropertyTypes.LOOKING, false)
@@ -76,7 +76,7 @@ public class NPCManager {
     public NPCAble spawn(INPCData data) throws NPCException {
         this.getNPC(data).ifPresent(npc -> ((Entity)npc).remove());
 
-        Position pos = data.getPosition();
+        Position pos = data.getProperty(PropertyTypes.POSITION).get();
         World world = pos.getWorld().orElseThrow(() -> new NPCException("Invalid world!"));
         Entity ent = world.createEntity(data.getProperty(PropertyTypes.TYPE).orElseThrow(() -> new NPCException("Could not find EntityType for NPC!")).getEntityType(), new Vector3d(0, 0, 0));
         ent.offer(new NPCData(data.getId()));
@@ -105,7 +105,7 @@ public class NPCManager {
         if (npc != null) {
             ((Entity)npc).remove();
         } else {
-            data.getPosition().getWorld().ifPresent(world -> world.loadChunk(data.getPosition().getChunkPosition(), true));
+            data.getProperty(PropertyTypes.POSITION).get().getWorld().ifPresent(world -> world.loadChunk(data.getProperty(PropertyTypes.POSITION).get().getChunkPosition(), true));
         }
     }
 
@@ -114,12 +114,12 @@ public class NPCManager {
     }
 
     public List<INPCData> getData(String worldName) {
-        return this.data.values().stream().filter(data -> worldName.equals(data.getPosition().getWorldName())).collect(Collectors.toList());
+        return this.data.values().stream().filter(data -> worldName.equals(data.getProperty(PropertyTypes.POSITION).get().getWorldName())).collect(Collectors.toList());
     }
 
     public Optional<NPCAble> getNPC(INPCData data) {
         UUID uuid = data.getUniqueId();
-        World world = data.getPosition().getWorld().orElse(null);
+        World world = data.getProperty(PropertyTypes.POSITION).get().getWorld().orElse(null);
 
         if (uuid == null || world == null) {
             return Optional.empty();

@@ -2,7 +2,6 @@ package me.mrdaniel.npcs.io.database;
 
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.utils.Position;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -24,16 +23,6 @@ public class DatabaseNPCData implements INPCData {
     @Override
     public void setUniqueId(@Nullable UUID uuid) {
 
-    }
-
-    @Override
-    public Position getPosition() {
-        return new Position("world", 0, 0, 0, 0, 0);
-    }
-
-    @Override
-    public INPCData setPosition(Position value) {
-        return this;
     }
 
     @Override

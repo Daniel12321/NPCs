@@ -9,6 +9,11 @@ import me.mrdaniel.npcs.commands.action.CommandActionRepeat;
 import me.mrdaniel.npcs.commands.action.CommandActionSwap;
 import me.mrdaniel.npcs.commands.action.condition.CommandActionAddCondition;
 import me.mrdaniel.npcs.commands.action.edit.*;
+import me.mrdaniel.npcs.commands.ai.CommandPositionAdd;
+import me.mrdaniel.npcs.commands.ai.CommandPositionRemove;
+import me.mrdaniel.npcs.commands.ai.CommandPositionSwap;
+import me.mrdaniel.npcs.commands.ai.CommandWanderDistance;
+import me.mrdaniel.npcs.commands.edit.*;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.menu.chat.info.InfoMenu;
 import me.mrdaniel.npcs.menu.chat.npc.AIChatMenu;
@@ -83,7 +88,16 @@ public class CommandNPC extends PlayerCommand {
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.CATTYPE), "cattype")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.RABBITTYPE), "rabbittype")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.PARROTTYPE), "parrottype")
-				.child(CommandEdit.build(AIChatMenu::new, PropertyTypes.LOOKING), "looking")
+				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPC | AI"))
+						.child(CommandEdit.build(AIChatMenu::new, PropertyTypes.LOOKING), "looking", "look")
+						.child(CommandEdit.build(AIChatMenu::new, PropertyTypes.AI_TYPE), "type", "aitype")
+						.child(new CommandWanderDistance().build(), "wanderdistance")
+						.child(CommandSpec.builder()
+								.child(new CommandPositionAdd().build(), "add")
+								.child(new CommandPositionRemove().build(), "remove")
+								.child(new CommandPositionSwap().build(), "swap")
+								.build(), "position")
+						.build(), "ai")
 				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPC | Helmet"))
 						.child(new CommandEditEquipment(PropertyTypes.HELMET, false).build(), "give")
 						.child(new CommandEditEquipment(PropertyTypes.HELMET, true).build(), "remove")
