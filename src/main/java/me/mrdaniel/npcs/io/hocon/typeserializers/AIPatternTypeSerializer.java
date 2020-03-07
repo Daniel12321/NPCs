@@ -22,6 +22,6 @@ public class AIPatternTypeSerializer implements TypeSerializer<AbstractAIPattern
     @Override
     public void serialize(@NonNull TypeToken<?> type, @Nullable AbstractAIPattern obj, @NonNull ConfigurationNode value) throws ObjectMappingException {
         value.getNode("Type").setValue(obj.getType().getId());
-        obj.serializeValue(value);
+        obj.serialize(value);
     }
 }

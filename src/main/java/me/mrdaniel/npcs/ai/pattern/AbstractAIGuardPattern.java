@@ -18,7 +18,7 @@ public abstract class AbstractAIGuardPattern extends AbstractAIPattern {
     protected final List<Position> positions;
 
     public AbstractAIGuardPattern(AIType type, ConfigurationNode node) {
-        super(type);
+        super(type, node);
 
         this.positions = Lists.newArrayList();
 
@@ -31,10 +31,9 @@ public abstract class AbstractAIGuardPattern extends AbstractAIPattern {
         }
     }
 
-    protected AbstractAIGuardPattern(AIType type, List<Position> positions) {
-        super(type);
-
-        this.positions = positions;
+    @Override
+    public void serializeValue(ConfigurationNode node) throws ObjectMappingException {
+        node.getNode("positions").setValue(new TypeToken<List<Position>>(){}, this.positions);
     }
 
     @Override
@@ -54,11 +53,6 @@ public abstract class AbstractAIGuardPattern extends AbstractAIPattern {
         );
 
         return lines;
-    }
-
-    @Override
-    public void serializeValue(ConfigurationNode node) throws ObjectMappingException {
-        node.getNode("positions").setValue(new TypeToken<List<Position>>(){}, this.positions);
     }
 
     public List<Position> getPositions() {

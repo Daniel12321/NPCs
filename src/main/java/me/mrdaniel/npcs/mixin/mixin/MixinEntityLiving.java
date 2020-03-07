@@ -81,7 +81,7 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 
 	@Override
 	public void refreshAI() {
-        AbstractAIPattern aiPattern = this.data.getProperty(PropertyTypes.AI_PATTERN).orElse(new AIPatternStay());
+        AbstractAIPattern aiPattern = this.data.getProperty(PropertyTypes.AI_PATTERN).orElse(new AIPatternStay(this.data.getProperty(PropertyTypes.TYPE).get().getDefaultSpeed()));
 		Agent agent = (Agent) this;
 
         if (aiPattern instanceof AIPatternWander) {
@@ -93,7 +93,7 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 		agent.getGoal(GoalTypes.TARGET).ifPresent(Goal::clear);
 		agent.getGoal(GoalTypes.NORMAL).ifPresent(goal -> {
 			goal.clear();
-			goal.addTask(1, aiPattern.createAITask((Creature)this, this.data.getProperty(PropertyTypes.TYPE).get()));
+			goal.addTask(1, aiPattern.createAITask((Creature)this));
 
 			if (this.data.getProperty(PropertyTypes.LOOKING).orElse(false)) {
 				goal.addTask(10, WatchClosestAITask.builder().chance(1).maxDistance(25).watch(Player.class).build(agent));

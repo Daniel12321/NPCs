@@ -9,11 +9,11 @@ import me.mrdaniel.npcs.commands.action.CommandActionRepeat;
 import me.mrdaniel.npcs.commands.action.CommandActionSwap;
 import me.mrdaniel.npcs.commands.action.condition.CommandActionAddCondition;
 import me.mrdaniel.npcs.commands.action.edit.*;
-import me.mrdaniel.npcs.commands.ai.CommandPositionAdd;
-import me.mrdaniel.npcs.commands.ai.CommandPositionRemove;
-import me.mrdaniel.npcs.commands.ai.CommandPositionSwap;
-import me.mrdaniel.npcs.commands.ai.CommandWanderDistance;
-import me.mrdaniel.npcs.commands.edit.*;
+import me.mrdaniel.npcs.commands.ai.*;
+import me.mrdaniel.npcs.commands.edit.CommandEdit;
+import me.mrdaniel.npcs.commands.edit.CommandEditEquipment;
+import me.mrdaniel.npcs.commands.edit.CommandEditType;
+import me.mrdaniel.npcs.commands.edit.CommandMove;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.menu.chat.info.InfoMenu;
 import me.mrdaniel.npcs.menu.chat.npc.AIChatMenu;
@@ -30,9 +30,12 @@ public class CommandNPC extends PlayerCommand {
 
 	@Override
 	public void execute(Player p, CommandContext args) throws CommandException {
+		int id = args.<Integer>getOne("id").orElse(0);
 		INPCData selected = NPCs.getInstance().getSelectedManager().get(p.getUniqueId()).orElse(null);
 
-		if (selected != null) {
+		if (id != 0) {
+			new PropertiesChatMenu(NPCs.getInstance().getNPCManager().getData(id).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "No NPC with that ID exists!")))).send(p);
+		} else if (selected != null) {
 			new PropertiesChatMenu(selected).send(p);
 		} else {
 			new InfoMenu().send(p);
@@ -92,6 +95,8 @@ public class CommandNPC extends PlayerCommand {
 						.child(CommandEdit.build(AIChatMenu::new, PropertyTypes.LOOKING), "looking", "look")
 						.child(CommandEdit.build(AIChatMenu::new, PropertyTypes.AI_TYPE), "type", "aitype")
 						.child(new CommandWanderDistance().build(), "wanderdistance")
+						.child(new CommandSpeed().build(), "speed")
+						.child(new CommandChance().build(), "chance")
 						.child(CommandSpec.builder()
 								.child(new CommandPositionAdd().build(), "add")
 								.child(new CommandPositionRemove().build(), "remove")

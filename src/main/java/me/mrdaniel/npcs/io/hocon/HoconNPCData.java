@@ -2,6 +2,7 @@ package me.mrdaniel.npcs.io.hocon;
 
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
+import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.io.Config;
 import me.mrdaniel.npcs.io.INPCData;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
@@ -66,6 +67,9 @@ public class HoconNPCData extends Config implements INPCData {
 
     @Override
     public <T> INPCData setProperty(PropertyType<T> property, T value) {
+        if (property == PropertyTypes.AI_TYPE) { // TODO: Find a better way
+            super.getNode().removeChild("ai");
+        }
         try {
             super.getNode(property.getHoconPath()).setValue(property.getTypeToken(), value);
         } catch (ObjectMappingException exc) {

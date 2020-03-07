@@ -4,9 +4,9 @@ import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.events.NPCEditEvent;
-import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.menu.chat.npc.PropertiesChatMenu;
+import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
@@ -38,7 +38,7 @@ public class CommandEditEquipment extends NPCCommand {
 			throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
 		}
 
-		ItemStack hand = this.remove ? null : p.getItemInHand(HandTypes.MAIN_HAND).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "You must be holding an item!")));
+		ItemStack hand = this.remove ? null : p.getItemInHand(HandTypes.MAIN_HAND).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "You must be holding an item!"))).copy();
 		npc.setProperty(this.property, hand).save();
 	}
 

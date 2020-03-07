@@ -8,13 +8,11 @@ import java.util.List;
 
 public class AITaskGuardPatrol extends AbstractAITaskGuard {
 
-    private static final int MOVE_CHANCE = 5; // 0.2f
-
     private int index;
     private int increment;
 
-    public AITaskGuardPatrol(List<Position> targets, double movementSpeed) {
-        super(targets, movementSpeed);
+    public AITaskGuardPatrol(List<Position> targets, double speed, int chance) {
+        super(targets, speed, chance);
 
         this.index = 0;
         this.increment = 1;
@@ -22,7 +20,7 @@ public class AITaskGuardPatrol extends AbstractAITaskGuard {
 
     @Override
     public boolean shouldUpdate() {
-        if (this.targets.isEmpty() || this.getOwner().get().getRandom().nextInt(MOVE_CHANCE) != 0) {
+        if (this.targets.isEmpty() || this.getOwner().get().getRandom().nextInt(super.chance) != 0) {
             return false;
         }
 

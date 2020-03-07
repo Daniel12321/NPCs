@@ -126,7 +126,6 @@ public class NPCs {
 		this.game.getRegistry().registerModule(RabbitType.class, new RabbitTypeRegistryModule());
 
 		AITaskStay.register();
-//		AITaskStayInArea.register();
 		AITaskGuardRandom.register();
 		AITaskGuardPatrol.register();
 

@@ -12,11 +12,13 @@ public class AIType implements CatalogType {
 
 	private final String name;
 	private final String id;
+	private final int defaultChance;
 	private final Function<ConfigurationNode, AbstractAIPattern> deserializer;
 
-	protected AIType(String name, String id, Function<ConfigurationNode, AbstractAIPattern> deserializer) {
+	protected AIType(String name, String id, int defaultChance, Function<ConfigurationNode, AbstractAIPattern> deserializer) {
 		this.name = name;
 		this.id = id;
+		this.defaultChance = defaultChance;
 		this.deserializer = deserializer;
 	}
 
@@ -28,6 +30,10 @@ public class AIType implements CatalogType {
 	@Override
 	public String getId() {
 		return this.id;
+	}
+
+	public int getDefaultChance() {
+		return defaultChance;
 	}
 
 	public Function<ConfigurationNode, AbstractAIPattern> getDeserializer() {

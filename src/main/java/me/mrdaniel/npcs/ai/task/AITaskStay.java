@@ -19,18 +19,15 @@ public class AITaskStay extends AbstractNPCAITask {
     private static final double START_DISTANCE_SQUARED = 0.8 * 0.8;
     private static final double ACCEPTABLE_DISTANCE_SQUARED = 0.5 * 0.5;
 
-    private final double movementSpeed;
-
     @Nullable private Position target;
 
     /**
      * Creates a new {@link AITaskStay} with the provided
      * {@link AITask}.
      */
-    public AITaskStay(double movementSpeed) {
-        super(AITaskTypes.WANDER);
+    public AITaskStay(double speed, int chance) {
+        super(AITaskTypes.WANDER, speed, chance);
 
-        this.movementSpeed = movementSpeed;
         this.target = null;
 
         ((EntityAIBase) (Object) this).setMutexBits(MUTEX_FLAG_MOVE);
@@ -50,14 +47,14 @@ public class AITaskStay extends AbstractNPCAITask {
 
     @Override
     public void start() {
-        this.moveTo((EntityLiving)this.getOwner().get(), this.target, this.movementSpeed);
+        this.moveTo((EntityLiving)this.getOwner().get(), this.target);
     }
 
     @Override
     public void update() {
         EntityLiving el = (EntityLiving)this.getOwner().get();
         if (el.getNavigator().noPath()) {
-            this.moveTo(el, this.target, this.movementSpeed);
+            this.moveTo(el, this.target);
         }
     }
 

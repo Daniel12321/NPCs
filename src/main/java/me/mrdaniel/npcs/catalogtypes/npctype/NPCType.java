@@ -10,7 +10,7 @@ public class NPCType implements CatalogType {
 	private final String name;
 	private final String id;
 	private final EntityType entityType;
-	private final double movementSpeed;
+	private final double defaultSpeed;
 	private final boolean ageable;
 	private final boolean armorEquipable;
 
@@ -22,11 +22,11 @@ public class NPCType implements CatalogType {
 		this(name, id, entityType, movementSpeed, ageable, false);
 	}
 
-	NPCType(String name, String id, EntityType entityType, double movementSpeed, boolean ageable, boolean armorEquipable) {
+	NPCType(String name, String id, EntityType entityType, double defaultSpeed, boolean ageable, boolean armorEquipable) {
 		this.name = name;
 		this.id = id;
 		this.entityType = entityType;
-		this.movementSpeed = movementSpeed;
+		this.defaultSpeed = defaultSpeed;
 		this.armorEquipable = armorEquipable;
 		this.ageable = ageable;
 	}
@@ -45,8 +45,8 @@ public class NPCType implements CatalogType {
 		return entityType;
 	}
 
-	public double getMovementSpeed() {
-		return movementSpeed;
+	public double getDefaultSpeed() {
+		return defaultSpeed;
 	}
 
 	public boolean isAgeable() {

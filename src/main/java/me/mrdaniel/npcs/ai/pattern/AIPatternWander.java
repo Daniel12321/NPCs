@@ -2,7 +2,6 @@ package me.mrdaniel.npcs.ai.pattern;
 
 import com.google.common.collect.Lists;
 import me.mrdaniel.npcs.catalogtypes.aitype.AITypes;
-import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.utils.TextUtils;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.entity.ai.task.AITask;
@@ -18,18 +17,19 @@ public class AIPatternWander extends AbstractAIPattern {
     private int distance;
 
     public AIPatternWander(ConfigurationNode node) {
-        this(node.getNode("Distance").getInt(5));
-    }
+        super(AITypes.WANDER, node);
 
-    public AIPatternWander(int distance) {
-        super(AITypes.WANDER);
-
-        this.distance = distance;
+        this.distance = node.getNode("distance").getInt(5);
     }
 
     @Override
-    public AITask<? extends Agent> createAITask(Creature owner, NPCType npcType) {
-        return WanderAITask.builder().speed(npcType.getMovementSpeed()).executionChance(50).build(owner);
+    public void serializeValue(ConfigurationNode node) {
+        node.getNode("distance").setValue(this.distance);
+    }
+
+    @Override
+    public AITask<? extends Agent> createAITask(Creature owner) {
+        return WanderAITask.builder().speed(super.speed).executionChance(super.chance).build(owner);
     }
 
     @Override
@@ -39,11 +39,6 @@ public class AIPatternWander extends AbstractAIPattern {
         lines.add(TextUtils.getOptionsText("Wander Distance", "/npc ai wanderdistance <distance>", Integer.toString(this.distance)));
 
         return lines;
-    }
-
-    @Override
-    public void serializeValue(ConfigurationNode node) {
-        node.getNode("Distance").setValue(this.distance);
     }
 
     public int getDistance() {

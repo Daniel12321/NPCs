@@ -3,9 +3,7 @@ package me.mrdaniel.npcs.ai.pattern;
 import com.google.common.collect.Lists;
 import me.mrdaniel.npcs.ai.task.AITaskStay;
 import me.mrdaniel.npcs.catalogtypes.aitype.AITypes;
-import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import ninja.leaping.configurate.ConfigurationNode;
-import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.spongepowered.api.entity.ai.task.AITask;
 import org.spongepowered.api.entity.living.Agent;
 import org.spongepowered.api.entity.living.Creature;
@@ -15,26 +13,26 @@ import java.util.List;
 
 public class AIPatternStay extends AbstractAIPattern {
 
-    public AIPatternStay(ConfigurationNode node) {
-        this();
+    public AIPatternStay(double speed) {
+        super(AITypes.STAY, speed, AITypes.STAY.getDefaultChance());
     }
 
-    public AIPatternStay() {
-        super(AITypes.STAY);
+    public AIPatternStay(ConfigurationNode node) {
+        super(AITypes.STAY, node);
     }
 
     @Override
-    public AITask<? extends Agent> createAITask(Creature owner, NPCType npcType) {
-        return new AITaskStay(npcType.getMovementSpeed());
+    public void serializeValue(ConfigurationNode node) {
+
+    }
+
+    @Override
+    public AITask<? extends Agent> createAITask(Creature owner) {
+        return new AITaskStay(super.speed, super.chance);
     }
 
     @Override
     public List<Text> getMenuLines() {
         return Lists.newArrayList();
-    }
-
-    @Override
-    public void serializeValue(ConfigurationNode node) throws ObjectMappingException {
-
     }
 }

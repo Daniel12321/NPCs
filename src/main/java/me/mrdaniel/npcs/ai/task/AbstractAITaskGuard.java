@@ -16,8 +16,6 @@ public abstract class AbstractAITaskGuard extends AbstractNPCAITask {
     private static final int MUTEX_FLAG_MOVE = 1;
     private static final double ACCEPTABLE_DISTANCE_SQUARED = 0.5 * 0.5;
 
-    private final double movementSpeed;
-
     protected final List<Position> targets;
     @Nullable protected Position target;
 
@@ -25,10 +23,9 @@ public abstract class AbstractAITaskGuard extends AbstractNPCAITask {
      * Creates a new {@link AbstractAITask} with the provided
      * {@link AITask}.
      */
-    public AbstractAITaskGuard(List<Position> targets, double movementSpeed) {
-        super(AITaskTypes.WANDER);
+    public AbstractAITaskGuard(List<Position> targets, double speed, int chance) {
+        super(AITaskTypes.WANDER, speed, chance);
 
-        this.movementSpeed = movementSpeed;
         this.targets = targets;
         this.target = null;
 
@@ -37,14 +34,14 @@ public abstract class AbstractAITaskGuard extends AbstractNPCAITask {
 
     @Override
     public void start() {
-        this.moveTo((EntityLiving)this.getOwner().get(), this.target, this.movementSpeed);
+        this.moveTo((EntityLiving)this.getOwner().get(), this.target);
     }
 
     @Override
     public void update() {
         EntityLiving el = (EntityLiving)this.getOwner().get();
         if (el.getNavigator().noPath()) {
-            this.moveTo(el, this.target, this.movementSpeed);
+            this.moveTo(el, this.target);
         }
     }
 

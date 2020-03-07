@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.io.INPCData;
+import me.mrdaniel.npcs.managers.NPCManager;
 import me.mrdaniel.npcs.menu.chat.ChatMenu;
 import me.mrdaniel.npcs.utils.Position;
 import me.mrdaniel.npcs.utils.TextUtils;
@@ -33,9 +34,8 @@ public class ListMenu implements ChatMenu {
     public List<Text> getContents() {
         List<Text> lines = Lists.newArrayList();
 
-        Sponge.getServer().getWorlds().forEach(world -> {
-            NPCs.getInstance().getNPCManager().getData(world.getName()).forEach(data -> lines.add(getNPCText(data)));
-        });
+        NPCManager manager = NPCs.getInstance().getNPCManager();
+        Sponge.getServer().getWorlds().forEach(w -> manager.getData(w.getName()).forEach(data -> lines.add(getNPCText(data))));
 
         return lines;
     }
@@ -59,25 +59,4 @@ public class ListMenu implements ChatMenu {
                 .onClick(TextActions.executeCallback(src -> NPCs.getInstance().getSelectedManager().select((Player) src, data)))
                 .build();
     }
-
-//    private void sendNPCInfo(Player p, INPCData data) {
-//        boolean worldLoaded = data.getNPCPosition().getWorld().isPresent();
-//        boolean npcLoaded = worldLoaded && NPCs.getInstance().getNPCManager().getNPC(data).isPresent();
-//
-//        p.sendMessage(Text.EMPTY);
-//        p.sendMessage(Text.deserialize(Text.deserialize(TextColors.YELLOW, "---------------=====[ ", TextColors.RED, "NPC Info", TextColors.YELLOW, " ]=====---------------")));
-//        p.sendMessage(Text.deserialize(TextColors.GOLD, "World Loaded: ", worldLoaded ? TextColors.DARK_GREEN : TextColors.RED, worldLoaded ? "True" : "False"));
-//        p.sendMessage(Text.deserialize(TextColors.GOLD, "NPC Loaded: ", npcLoaded ? TextColors.DARK_GREEN : TextColors.RED, npcLoaded ? "True" : "False"));
-//        p.sendMessage(Text.EMPTY);
-//
-//        Text.Builder buttons = Text.builder();
-//        if (worldLoaded) {
-//            buttons.append(Text.deserialize("  "), Text.builder().append(Text.deserialize(TextColors.GOLD, "[Select]")).onHover(TextActions.showText(Text.deserialize(TextColors.GOLD, "Select"))).onClick(TextActions.executeCallback(src -> select((Player)src, data))).build());
-//            buttons.append(Text.deserialize("  "), Text.builder().append(Text.deserialize(TextColors.RED, "[Remove]")).onHover(TextActions.showText(Text.deserialize(TextColors.RED, "Remove"))).onClick(TextActions.suggestCommand("/npc remove " + Integer.toString(data.getNPCId()))).build());
-//        }
-//
-//        p.sendMessage(buttons.build());
-//        p.sendMessage(Text.EMPTY);
-//        p.sendMessage(Text.builder().append(Text.deserialize(TextColors.YELLOW, "----------------====[ "), Text.builder().append(Text.deserialize(TextColors.RED, "Back")).onHover(TextActions.showText(Text.deserialize(TextColors.RED, "Back"))).onClick(TextActions.executeCallback(src -> sendNPCList(src))).build(), Text.deserialize(TextColors.YELLOW, " ]====----------------")).build());
-//    }
 }

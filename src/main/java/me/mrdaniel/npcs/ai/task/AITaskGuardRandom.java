@@ -9,16 +9,14 @@ import java.util.Random;
 
 public class AITaskGuardRandom extends AbstractAITaskGuard {
 
-    private static final int MOVE_CHANCE = 50; // 0.05f
-
-    public AITaskGuardRandom(List<Position> targets, double movementSpeed) {
-        super(targets, movementSpeed);
+    public AITaskGuardRandom(List<Position> targets, double speed, int chance) {
+        super(targets, speed, chance);
     }
 
     @Override
     public boolean shouldUpdate() {
         Random r = this.getOwner().get().getRandom();
-        if (this.targets.isEmpty() || r.nextInt(MOVE_CHANCE) != 0) {
+        if (this.targets.isEmpty() || r.nextInt(super.chance) != 0) {
             return false;
         }
 
