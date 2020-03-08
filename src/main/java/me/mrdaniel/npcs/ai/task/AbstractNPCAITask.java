@@ -8,11 +8,14 @@ import org.spongepowered.api.entity.living.Agent;
 
 public abstract class AbstractNPCAITask extends AbstractAITask<Agent> {
 
+    protected static final int MUTEX_FLAG_MOVE = 1;
+    protected static final double ACCEPTABLE_DISTANCE_SQUARED = 0.3 * 0.3;
+
     protected final double speed;
     protected final int chance;
 
     /**
-     * Creates a new {@link AbstractAITask} with the provided
+     * Creates a new {@link AbstractNPCAITask} with the provided
      * {@link AITaskType}.
      *
      * @param type The type
@@ -24,9 +27,27 @@ public abstract class AbstractNPCAITask extends AbstractAITask<Agent> {
         this.chance = chance;
     }
 
-    protected void moveTo(EntityLiving el, Position pos) {
-        if (!el.getNavigator().tryMoveToXYZ(pos.getX(), pos.getY(), pos.getZ(), this.speed)) {
-            el.setPosition(pos.getX(), pos.getY(), pos.getZ());
+    /**
+     * Tries to make the NPC move to a position
+     * @param npc The NPC
+     * @param target The position to move to
+     */
+    protected void moveTo(Agent npc, Position target) {
+        double distanceSquared = this.distanceSquared(npc, target);
+
+        if (distanceSquared < ACCEPTABLE_DISTANCE_SQUARED) {
+            return;
         }
+
+        EntityLiving el = (EntityLiving) npc;
+        if (el.getNavigator().noPath() &&
+                !el.getNavigator().tryMoveToXYZ(target.getX(), target.getY(), target.getZ(), this.speed)
+                && distanceSquared > 1.0) {
+            el.setPosition(target.getX(), target.getY(), target.getZ());
+        }
+    }
+
+    protected double distanceSquared(Agent owner, Position target) {
+        return owner.getLocation().getPosition().distanceSquared(target.getX(), target.getY(), target.getZ());
     }
 }

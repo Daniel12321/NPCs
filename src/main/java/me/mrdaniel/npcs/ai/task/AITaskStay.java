@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.entity.ai.task.AITask;
+import org.spongepowered.api.entity.ai.task.AITaskType;
 import org.spongepowered.api.entity.ai.task.AITaskTypes;
 import org.spongepowered.api.entity.living.Agent;
 
@@ -15,15 +16,13 @@ import javax.annotation.Nullable;
 
 public class AITaskStay extends AbstractNPCAITask {
 
-    private static final int MUTEX_FLAG_MOVE = 1;
-    private static final double START_DISTANCE_SQUARED = 0.8 * 0.8;
-    private static final double ACCEPTABLE_DISTANCE_SQUARED = 0.5 * 0.5;
+    private static final double START_DISTANCE_SQUARED = 1.1 * 1.1;
 
     @Nullable private Position target;
 
     /**
      * Creates a new {@link AITaskStay} with the provided
-     * {@link AITask}.
+     * {@link AITaskType}.
      */
     public AITaskStay(double speed, int chance) {
         super(AITaskTypes.WANDER, speed, chance);
@@ -38,24 +37,22 @@ public class AITaskStay extends AbstractNPCAITask {
         Agent owner = this.getOwner().get();
         Position pos = ((NPCAble)owner).getData().getProperty(PropertyTypes.POSITION).get();
 
-        if (owner.getLocation().getPosition().distanceSquared(pos.getX(), pos.getY(), pos.getZ()) > START_DISTANCE_SQUARED) {
-            this.target = pos;
+        if (owner.getLocation().getPosition().distanceSquared(pos.getX(), pos.getY(), pos.getZ()) < START_DISTANCE_SQUARED) {
+            return false;
         }
 
-        return this.target != null;
+        this.target = pos;
+        return true;
     }
 
     @Override
     public void start() {
-        this.moveTo((EntityLiving)this.getOwner().get(), this.target);
+        this.moveTo(this.getOwner().get(), this.target);
     }
 
     @Override
     public void update() {
-        EntityLiving el = (EntityLiving)this.getOwner().get();
-        if (el.getNavigator().noPath()) {
-            this.moveTo(el, this.target);
-        }
+        this.moveTo(this.getOwner().get(), this.target);
     }
 
     @Override
@@ -63,7 +60,7 @@ public class AITaskStay extends AbstractNPCAITask {
         if (this.target == null) {
             return false;
         }
-        return this.getOwner().get().getLocation().getPosition().distanceSquared(this.target.getX(), this.target.getY(), this.target.getZ()) > ACCEPTABLE_DISTANCE_SQUARED;
+        return this.distanceSquared(this.getOwner().get(), this.target) > ACCEPTABLE_DISTANCE_SQUARED;
     }
 
     @Override

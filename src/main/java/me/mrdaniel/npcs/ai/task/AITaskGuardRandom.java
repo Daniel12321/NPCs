@@ -7,7 +7,7 @@ import org.spongepowered.api.Sponge;
 import java.util.List;
 import java.util.Random;
 
-public class AITaskGuardRandom extends AbstractAITaskGuard {
+public class AITaskGuardRandom extends AbstractNPCAIGuardTask {
 
     public AITaskGuardRandom(List<Position> targets, double speed, int chance) {
         super(targets, speed, chance);

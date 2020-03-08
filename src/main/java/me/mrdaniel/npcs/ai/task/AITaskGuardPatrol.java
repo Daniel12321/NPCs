@@ -6,7 +6,7 @@ import org.spongepowered.api.Sponge;
 
 import java.util.List;
 
-public class AITaskGuardPatrol extends AbstractAITaskGuard {
+public class AITaskGuardPatrol extends AbstractNPCAIGuardTask {
 
     private int index;
     private int increment;
