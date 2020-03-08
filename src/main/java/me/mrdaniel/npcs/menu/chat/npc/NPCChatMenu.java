@@ -15,20 +15,25 @@ public abstract class NPCChatMenu implements FullChatMenu {
 
     @Override
     public Text getFooter() {
-        Text bar = Text.of(new PropertiesChatMenu(this.data).getPropertiesButton(), new ActionsChatMenu(this.data).getActionsButton());
+        Text bar = Text.of(
+                new PropertiesChatMenu(this.data).getMenuButton(),
+                new AIChatMenu(this.data).getMenuButton(),
+                new ActionsChatMenu(this.data).getMenuButton());
 
         Text spacing = Text.of(TextColors.YELLOW, getBar((58 - bar.toPlain().length()) / 2));
 
         return Text.builder().append(spacing, bar, spacing).build();
     }
 
-    private static String getBar(int times) {
+    protected Text getButton(Text button) {
+        return Text.builder().append(Text.of(TextColors.YELLOW, "-=[ "), button, Text.of(TextColors.YELLOW, " ]=-")).build();
+    }
+
+    private String getBar(int times) {
         StringBuilder b = new StringBuilder();
         for (int i = 0; i < times; i++) { b.append('-'); }
         return b.toString();
     }
 
-    protected Text getButton(Text button) {
-        return Text.builder().append(Text.of(TextColors.YELLOW, "-=[ "), button, Text.of(TextColors.YELLOW, " ]=-")).build();
-    }
+    protected abstract Text getMenuButton();
 }

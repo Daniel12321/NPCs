@@ -1,6 +1,6 @@
 package me.mrdaniel.npcs.events;
 
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.utils.CauseUtils;
 import org.spongepowered.api.command.CommandSource;

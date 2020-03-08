@@ -16,8 +16,6 @@ import org.spongepowered.api.service.economy.Currency;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import javax.annotation.Nonnull;
-
 public abstract class CommandActionAddCondition extends CommandActionAdd {
 
 	@Override
@@ -25,7 +23,6 @@ public abstract class CommandActionAddCondition extends CommandActionAdd {
 		return new ActionCondition(this.createCondition(args), 0, 0, true);
 	}
 
-	@Nonnull
 	public abstract Condition createCondition(CommandContext args);
 
 	public static class Item extends CommandActionAddCondition {

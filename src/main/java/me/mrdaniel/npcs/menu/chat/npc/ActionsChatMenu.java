@@ -2,6 +2,7 @@ package me.mrdaniel.npcs.menu.chat.npc;
 
 import com.google.common.collect.Lists;
 import me.mrdaniel.npcs.actions.ActionSet;
+import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.text.Text;
@@ -85,7 +86,7 @@ public class ActionsChatMenu extends NPCChatMenu {
 
 	@Override
 	public List<Text> getContents() {
-		ActionSet actions = this.data.getActions();
+		ActionSet actions = data.getProperty(PropertyTypes.ACTION_SET).orElse(new ActionSet());
 		List<Text> lines = Lists.newArrayList();
 
 		lines.add(Text.of(TextColors.GOLD, "Actions: "));
@@ -107,6 +108,11 @@ public class ActionsChatMenu extends NPCChatMenu {
 		lines.add(TextUtils.getToggleText("Repeat", "/npc action repeat", actions.isRepeatActions()));
 
 		return lines;
+	}
+
+	@Override
+	protected Text getMenuButton() {
+		return super.getButton(TextUtils.getButton("Actions", this::send));
 	}
 
 	private Text getRemoveText(int index) {
@@ -131,9 +137,5 @@ public class ActionsChatMenu extends NPCChatMenu {
 				.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Move Down")))
 				.onClick(TextActions.runCommand("/npc action swap " + index + " " + (index + 1)))
 				.build();
-	}
-
-	public Text getActionsButton() {
-		return super.getButton(TextUtils.getButton("Actions", this::send));
 	}
 }

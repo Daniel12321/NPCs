@@ -30,6 +30,14 @@ public class TextUtils {
 				.build();
 	}
 
+	public static Text getOptionsText(String name, String cmd, String value) {
+		return Text.builder()
+				.append(Text.of(TextColors.GOLD, name, ": ", TextColors.AQUA, value))
+				.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Change")))
+				.onClick(TextActions.suggestCommand(cmd))
+				.build();
+	}
+
 	public static Text getButton(String name, Consumer<CommandSource> cmd) {
 		return Text.builder().append(Text.of(TextColors.RED, name))
 				.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Open")))

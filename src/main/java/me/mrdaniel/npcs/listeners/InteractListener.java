@@ -2,8 +2,11 @@ package me.mrdaniel.npcs.listeners;
 
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
+import me.mrdaniel.npcs.events.NPCInteractEvent;
+import me.mrdaniel.npcs.events.NPCSelectEvent;
 import me.mrdaniel.npcs.exceptions.NPCException;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
+import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.Entity;
 import org.spongepowered.api.entity.living.animal.Horse;
@@ -46,10 +49,12 @@ public class InteractListener {
 	private boolean onEntityInteract(NPCAble npc, Player p) {
 		if (npc.getData() == null) {
 			return false;
-		}
-
-		if (p.get(Keys.IS_SNEAKING).orElse(false) && p.hasPermission("npc.edit.select")) {
-			NPCs.getInstance().getSelectedManager().select(p, npc.getData());
+		} else if (p.get(Keys.IS_SNEAKING).orElse(false) && p.hasPermission("npc.edit.select")) {
+			if (!Sponge.getEventManager().post(new NPCSelectEvent(p, npc.getData(), npc))) {
+				NPCs.getInstance().getSelectedManager().select(p, npc.getData());
+			}
+			return true;
+		} else if (Sponge.getEventManager().post(new NPCInteractEvent(p, npc.getData(), npc))) {
 			return true;
 		}
 

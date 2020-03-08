@@ -9,8 +9,14 @@ import me.mrdaniel.npcs.commands.action.CommandActionRepeat;
 import me.mrdaniel.npcs.commands.action.CommandActionSwap;
 import me.mrdaniel.npcs.commands.action.condition.CommandActionAddCondition;
 import me.mrdaniel.npcs.commands.action.edit.*;
+import me.mrdaniel.npcs.commands.ai.*;
+import me.mrdaniel.npcs.commands.edit.CommandEdit;
+import me.mrdaniel.npcs.commands.edit.CommandEditEquipment;
+import me.mrdaniel.npcs.commands.edit.CommandEditType;
+import me.mrdaniel.npcs.commands.edit.CommandMove;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.menu.chat.info.InfoMenu;
+import me.mrdaniel.npcs.menu.chat.npc.AIChatMenu;
 import me.mrdaniel.npcs.menu.chat.npc.PropertiesChatMenu;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
@@ -24,16 +30,18 @@ public class CommandNPC extends PlayerCommand {
 
 	@Override
 	public void execute(Player p, CommandContext args) throws CommandException {
+		int id = args.<Integer>getOne("id").orElse(0);
 		INPCData selected = NPCs.getInstance().getSelectedManager().get(p.getUniqueId()).orElse(null);
 
-		if (selected != null) {
+		if (id != 0) {
+			new PropertiesChatMenu(NPCs.getInstance().getNPCManager().getData(id).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "No NPC with that ID exists!")))).send(p);
+		} else if (selected != null) {
 			new PropertiesChatMenu(selected).send(p);
 		} else {
 			new InfoMenu().send(p);
 		}
 	}
 
-	// TODO: Update
 	public CommandSpec build() {
 		return CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPCs | Main Command"))
 				.executor(this)
@@ -52,7 +60,6 @@ public class CommandNPC extends PlayerCommand {
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.NAME_VISIBLE), "namevisible", "name-visible")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SKIN), "skin", "skinname", "skin-name")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SKIN_UUID), "skinuuid", "skin-uuid")
-				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.LOOKING), "looking")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.INTERACT), "interact")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SILENT), "silent")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.BURNING), "burning", "burn")
@@ -84,6 +91,18 @@ public class CommandNPC extends PlayerCommand {
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.CATTYPE), "cattype")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.RABBITTYPE), "rabbittype")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.PARROTTYPE), "parrottype")
+				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPC | AI"))
+						.child(CommandEdit.build(AIChatMenu::new, PropertyTypes.LOOKING), "looking", "look")
+						.child(CommandEdit.build(AIChatMenu::new, PropertyTypes.AI_TYPE), "type", "aitype")
+						.child(new CommandWanderDistance().build(), "wanderdistance")
+						.child(new CommandSpeed().build(), "speed")
+						.child(new CommandChance().build(), "chance")
+						.child(CommandSpec.builder()
+								.child(new CommandPositionAdd().build(), "add")
+								.child(new CommandPositionRemove().build(), "remove")
+								.child(new CommandPositionSwap().build(), "swap")
+								.build(), "position")
+						.build(), "ai")
 				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPC | Helmet"))
 						.child(new CommandEditEquipment(PropertyTypes.HELMET, false).build(), "give")
 						.child(new CommandEditEquipment(PropertyTypes.HELMET, true).build(), "remove")

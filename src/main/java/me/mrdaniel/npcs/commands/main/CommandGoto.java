@@ -1,5 +1,6 @@
 package me.mrdaniel.npcs.commands.main;
 
+import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.commands.NPCFileCommand;
 import me.mrdaniel.npcs.io.INPCData;
@@ -22,7 +23,7 @@ public class CommandGoto extends NPCFileCommand {
 
 	@Override
 	public void execute(Player p, INPCData data, CommandContext args) throws CommandException {
-		Position pos = data.getPosition();
+		Position pos = data.getProperty(PropertyTypes.POSITION).get();
 		World world = pos.getWorld().orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "Failed to find world '", pos.getWorldName(), "'")));
 		p.setLocation(new Location<>(world, pos.getX(), pos.getY(), pos.getZ()));
 	}

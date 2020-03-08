@@ -1,7 +1,7 @@
 package me.mrdaniel.npcs.commands.main;
 
 import me.mrdaniel.npcs.commands.NPCCommand;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.menu.chat.npc.PropertiesChatMenu;
 import org.spongepowered.api.command.CommandException;
@@ -21,15 +21,6 @@ public class CommandMount extends NPCCommand {
 	@Override
 	public void execute(Player p, INPCData data, NPCAble npc, CommandContext args) throws CommandException {
 		((Living)npc).addPassenger(p);
-
-		// TODO: Remove
-//		Living living = (Living) npc;
-//		living.addPassenger(p);
-//		Task.builder().delayTicks(0).execute(() -> {
-//			living.setVelocity(new Vector3d(0, 0, 0));
-//			Position pos = npc.getNPCPosition();
-//			((Entity)npc).setLocationAndAngles(pos.getX(), pos.getY(), pos.getZ(), pos.getYaw(), pos.getPitch());
-//		}).submit(NPCs.getInstance());
 	}
 
 	public CommandSpec build() {
