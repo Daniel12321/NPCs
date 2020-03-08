@@ -15,6 +15,6 @@ public class AIPatternGuardPatrol extends AbstractAIGuardPattern {
 
     @Override
     public AITask<? extends Agent> createAITask(Creature owner) {
-        return new AITaskGuardPatrol(this.positions, super.speed, super.chance);
+        return new AITaskGuardPatrol(this.speed, this.chance, this.positions);
     }
 }

@@ -15,6 +15,6 @@ public class AIPatternGuardRandom extends AbstractAIGuardPattern {
 
     @Override
     public AITask<? extends Agent> createAITask(Creature owner) {
-        return new AITaskGuardRandom(this.positions, super.speed, super.chance);
+        return new AITaskGuardRandom(this.speed, this.chance, this.positions);
     }
 }

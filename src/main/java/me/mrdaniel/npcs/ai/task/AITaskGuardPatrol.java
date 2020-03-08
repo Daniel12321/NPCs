@@ -11,8 +11,8 @@ public class AITaskGuardPatrol extends AbstractNPCAIGuardTask {
     private int index;
     private int increment;
 
-    public AITaskGuardPatrol(List<Position> targets, double speed, int chance) {
-        super(targets, speed, chance);
+    public AITaskGuardPatrol(double speed, int chance, List<Position> targets) {
+        super(speed, chance, targets);
 
         this.index = 0;
         this.increment = 1;

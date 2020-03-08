@@ -150,8 +150,8 @@ public class NPCs {
 			Task.builder().async().execute(() -> {
 				new LatestVersionSupplier().get().ifPresent(v -> {
 					Task.builder().execute(() -> {
-						if (!v.equals("v" + NPCs.VERSION)) {
-							this.logger.info("A new version (" + v + ") deserialize NPCs is available!");
+						if (!v.equalsIgnoreCase("v" + NPCs.VERSION)) {
+							this.logger.info("A new version (" + v + ") of NPCs is available!");
 							this.logger.info("It can be downloaded from https://github.com/Daniel12321/NPCs/releases");
 						}
 					}).submit(this);

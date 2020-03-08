@@ -9,6 +9,9 @@ TODO:
 - Fix NPC yaw/pitch issues
 - Seperate Actions from Cooldowns and Currents
 - Find a better way to reset the AI speed and chance on changes
+- Make custom task pathfinding work over bigger distances
+- Add the option to make NPCs teleport to their proper location once vanilla pathfinding is satisfied (AITaskStay)
+- Fix zombie helmets burning up in the sun
 
 
 

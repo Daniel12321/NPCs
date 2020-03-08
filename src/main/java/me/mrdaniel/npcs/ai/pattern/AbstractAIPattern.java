@@ -29,6 +29,7 @@ public abstract class AbstractAIPattern {
     public void serialize(ConfigurationNode node) throws ObjectMappingException {
         node.getNode("speed").setValue(this.speed);
         node.getNode("chance").setValue(this.chance);
+        this.serializeValue(node);
     }
 
     protected abstract void serializeValue(ConfigurationNode node) throws ObjectMappingException;

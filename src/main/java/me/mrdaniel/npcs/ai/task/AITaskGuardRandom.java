@@ -9,8 +9,8 @@ import java.util.Random;
 
 public class AITaskGuardRandom extends AbstractNPCAIGuardTask {
 
-    public AITaskGuardRandom(List<Position> targets, double speed, int chance) {
-        super(targets, speed, chance);
+    public AITaskGuardRandom(double speed, int chance, List<Position> targets) {
+        super(speed, chance, targets);
     }
 
     @Override
