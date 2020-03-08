@@ -1,12 +1,17 @@
 
 TODO:
-- Fix the horse mount movement bug
 - Fix squid being glitchy then pushed
 - Add a way to select villagers (InteractListener)
-- Check for more efficient ways to make NPCs look at players (MixinEntityLiving) (Possible AI tasks)
 - Choose between current (SelectedManager) or custom data for selecting NPCs
 - Remove all unsupported data when changing an NPCs type
 - Disable zombie_villager turning
+- Add the ability to make NPCs immovable (e.g. Slimes) / Make sure only NPC types that support AIs can get AIs
+- Fix NPC yaw/pitch issues
+- Seperate Actions from Cooldowns and Currents
+- Find a better way to reset the AI speed and chance on changes
+- Make custom task pathfinding work over bigger distances
+- Add the option to make NPCs teleport to their proper location once vanilla pathfinding is satisfied (AITaskStay)
+- Fix zombie helmets burning up in the sun
 
 
 

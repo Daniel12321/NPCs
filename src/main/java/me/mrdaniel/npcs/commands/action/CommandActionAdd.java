@@ -2,13 +2,8 @@ package me.mrdaniel.npcs.commands.action;
 
 import com.google.common.collect.Maps;
 import me.mrdaniel.npcs.actions.Action;
+import me.mrdaniel.npcs.actions.ActionSet;
 import me.mrdaniel.npcs.actions.actions.*;
-import me.mrdaniel.npcs.commands.NPCCommand;
-import me.mrdaniel.npcs.events.NPCEditEvent;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
-import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.menu.chat.npc.ActionsChatMenu;
-import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.GenericArguments;
@@ -19,20 +14,11 @@ import org.spongepowered.api.text.format.TextColors;
 
 import java.util.Map;
 
-public abstract class CommandActionAdd extends NPCCommand {
-
-	public CommandActionAdd() {
-		super(ActionsChatMenu::new, false);
-	}
+public abstract class CommandActionAdd extends ActionSetCommand {
 
 	@Override
-	public void execute(Player p, INPCData data, NPCAble npc, CommandContext args) throws CommandException {
-		if (Sponge.getEventManager().post(new NPCEditEvent(p, data, npc))) {
-			throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
-		}
-
-		data.getActions().addAction(this.create(args));
-		data.writeActions().save();
+	public void execute(Player player, ActionSet actions, CommandContext args) throws CommandException {
+		actions.addAction(this.create(args));
 	}
 
 	public abstract Action create(CommandContext args);

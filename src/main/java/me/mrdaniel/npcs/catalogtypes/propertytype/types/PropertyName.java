@@ -3,7 +3,7 @@ package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.data.key.Keys;
@@ -36,7 +36,7 @@ public class PropertyName extends PropertyType<String> {
 	public void apply(NPCAble npc, String value) {
 		((Living)npc).offer(Keys.DISPLAY_NAME, TextUtils.toText(value));
 
-		// Fixes human NPCs losing some of their properties when changing their skin
+		// Fixes human NPCs losing some deserialize their properties when changing their skin
 		if (npc instanceof Human) {
 			npc.refreshEquipment();
 		}

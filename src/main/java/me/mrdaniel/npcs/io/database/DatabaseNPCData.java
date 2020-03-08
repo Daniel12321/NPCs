@@ -1,9 +1,7 @@
 package me.mrdaniel.npcs.io.database;
 
-import me.mrdaniel.npcs.actions.ActionSet;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.utils.Position;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -28,32 +26,12 @@ public class DatabaseNPCData implements INPCData {
     }
 
     @Override
-    public Position getPosition() {
-        return new Position("world", 0, 0, 0, 0, 0);
-    }
-
-    @Override
-    public INPCData setPosition(Position value) {
-        return this;
-    }
-
-    @Override
     public <T> Optional<T> getProperty(PropertyType<T> property) {
         return Optional.empty();
     }
 
     @Override
     public <T> INPCData setProperty(PropertyType<T> property, T value) {
-        return this;
-    }
-
-    @Override
-    public ActionSet getActions() {
-        return new ActionSet();
-    }
-
-    @Override
-    public INPCData writeActions() {
         return this;
     }
 

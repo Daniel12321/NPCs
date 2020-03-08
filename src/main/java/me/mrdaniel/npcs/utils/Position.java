@@ -4,6 +4,7 @@ import com.flowpowered.math.vector.Vector3d;
 import com.flowpowered.math.vector.Vector3f;
 import com.flowpowered.math.vector.Vector3i;
 import org.spongepowered.api.Sponge;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.world.World;
 
 import java.util.Optional;
@@ -17,8 +18,8 @@ public class Position {
 	private final float yaw;
 	private final float pitch;
 
-	public Position(String world, Vector3d loc, Vector3d head) {
-		this(world, loc, head.toFloat());
+	public Position(Player p) {
+		this(p.getWorld().getName(), p.getPosition(), p.getHeadRotation().toFloat());
 	}
 
 	public Position(String world, Vector3d loc, Vector3f head) {
@@ -35,23 +36,35 @@ public class Position {
 	}
 
 	public double getX() {
-		return x;
+		return this.x;
+	}
+
+	public double getXRounded() {
+		return this.round(this.x);
 	}
 
 	public double getY() {
-		return y;
+		return this.y;
+	}
+
+	public double getYRounded() {
+		return this.round(this.y);
 	}
 
 	public double getZ() {
-		return z;
+		return this.z;
+	}
+
+	public double getZRounded() {
+		return this.round(this.z);
 	}
 
 	public float getYaw() {
-		return yaw;
+		return this.yaw;
 	}
 
 	public float getPitch() {
-		return pitch;
+		return this.pitch;
 	}
 
 	public String getWorldName() {
@@ -64,5 +77,9 @@ public class Position {
 
 	public Vector3i getChunkPosition() {
 		return new Vector3d(this.x, 0, this.z).toInt().div(16);
+	}
+
+	private double round(double value) {
+		return Math.round(value * 10.0) / 10.0;
 	}
 }

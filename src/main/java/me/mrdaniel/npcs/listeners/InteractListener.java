@@ -5,7 +5,7 @@ import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.events.NPCInteractEvent;
 import me.mrdaniel.npcs.events.NPCSelectEvent;
 import me.mrdaniel.npcs.exceptions.NPCException;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
+import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.entity.Entity;

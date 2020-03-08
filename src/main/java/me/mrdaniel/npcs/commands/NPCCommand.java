@@ -1,9 +1,9 @@
 package me.mrdaniel.npcs.commands;
 
 import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.interfaces.mixin.NPCAble;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.menu.chat.ChatMenu;
+import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.args.CommandElement;
@@ -28,15 +28,15 @@ public abstract class NPCCommand extends NPCFileCommand {
 	}
 
 	@Override
-	public void execute(Player p, INPCData data, CommandContext args) throws CommandException {
+	public void execute(Player player, INPCData data, CommandContext args) throws CommandException {
 		NPCAble npc = NPCs.getInstance().getNPCManager().getNPC(data).orElse(null);
 
 		if (this.required && npc == null) {
 			throw new CommandException(Text.of(TextColors.RED, "NPC is not loaded in!"));
 		}
 
-		this.execute(p, data, npc, args);
+		this.execute(player, data, npc, args);
 	}
 
-	public abstract void execute(Player p, INPCData data, @Nullable NPCAble npc, CommandContext args) throws CommandException;
+	public abstract void execute(Player player, INPCData data, @Nullable NPCAble npc, CommandContext args) throws CommandException;
 }

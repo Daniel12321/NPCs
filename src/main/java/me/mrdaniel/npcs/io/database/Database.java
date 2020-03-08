@@ -11,14 +11,17 @@ import java.util.Map;
 public class Database implements INPCStore {
 
     public Database(NPCManager manager) {
+
     }
 
     @Override
     public void setup() {
+
     }
 
     @Override
     public void load(Map<Integer, INPCData> npcs) {
+
     }
 
     @Override

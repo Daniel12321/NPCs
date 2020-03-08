@@ -10,15 +10,18 @@ import java.util.Map;
 
 public class NBTNPCStore implements INPCStore {
 
-    public NBTNPCStore(NPCManager npcManager) {
+    public NBTNPCStore(NPCManager manager) {
+
     }
 
     @Override
     public void setup() {
+
     }
 
     @Override
     public void load(Map<Integer, INPCData> npcs) {
+
     }
 
     @Override
