@@ -2,6 +2,7 @@ package me.mrdaniel.npcs.ai.pattern;
 
 import com.google.common.collect.Lists;
 import me.mrdaniel.npcs.catalogtypes.aitype.AITypes;
+import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.utils.TextUtils;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.entity.ai.task.AITask;
@@ -15,6 +16,10 @@ import java.util.List;
 public class AIPatternWander extends AbstractAIPattern {
 
     private int distance;
+
+    public AIPatternWander(NPCType npcType) {
+        super(AITypes.WANDER, npcType.getDefaultSpeed(), AITypes.WANDER.getDefaultChance());
+    }
 
     public AIPatternWander(ConfigurationNode node) {
         super(AITypes.WANDER, node);

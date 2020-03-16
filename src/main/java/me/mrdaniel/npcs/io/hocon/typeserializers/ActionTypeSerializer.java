@@ -13,12 +13,12 @@ public class ActionTypeSerializer implements TypeSerializer<Action> {
     @Nullable
     @Override
     public Action deserialize(TypeToken<?> type, ConfigurationNode value) throws ObjectMappingException {
-        return value.getNode("Type").getValue(TypeToken.of(ActionType.class)).getDeserializer().apply(value);
+        return value.getNode("type").getValue(TypeToken.of(ActionType.class)).getDeserializer().apply(value);
     }
 
     @Override
     public void serialize(TypeToken<?> type, Action obj, ConfigurationNode value) throws ObjectMappingException {
-        value.getNode("Type").setValue(obj.getType().getId());
+        value.getNode("type").setValue(obj.getType().getId());
         obj.serializeValue(value);
     }
 }

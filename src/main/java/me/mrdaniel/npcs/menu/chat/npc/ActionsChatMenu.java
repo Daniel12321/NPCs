@@ -54,7 +54,7 @@ public class ActionsChatMenu extends NPCChatMenu {
 	private static final Text ADD_CONDITION = Text.builder().append(Text.of(TextColors.DARK_GREEN, "Add Condition: "),
 			Text.builder().append(Text.of(TextColors.YELLOW, "[Item]"))
 			.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Add Item Condition")))
-			.onClick(TextActions.suggestCommand("/npc action add condition item <type> <amount> [name]")).build(),
+			.onClick(TextActions.suggestCommand("/npc action add condition item <amount>")).build(),
 			Text.of(" "),
 			Text.builder().append(Text.of(TextColors.YELLOW, "[Level]"))
 			.onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Add Level Condition")))

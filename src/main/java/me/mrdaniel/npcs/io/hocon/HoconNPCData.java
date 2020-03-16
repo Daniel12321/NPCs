@@ -1,42 +1,104 @@
 package me.mrdaniel.npcs.io.hocon;
 
-import me.mrdaniel.npcs.NPCs;
+import me.mrdaniel.npcs.actions.ActionSet;
+import me.mrdaniel.npcs.ai.pattern.AbstractAIPattern;
+import me.mrdaniel.npcs.catalogtypes.career.Career;
+import me.mrdaniel.npcs.catalogtypes.cattype.CatType;
+import me.mrdaniel.npcs.catalogtypes.color.ColorType;
+import me.mrdaniel.npcs.catalogtypes.dyecolor.DyeColorType;
+import me.mrdaniel.npcs.catalogtypes.horsearmor.HorseArmorType;
+import me.mrdaniel.npcs.catalogtypes.horsecolor.HorseColor;
+import me.mrdaniel.npcs.catalogtypes.horsepattern.HorsePattern;
+import me.mrdaniel.npcs.catalogtypes.llamatype.LlamaType;
+import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
+import me.mrdaniel.npcs.catalogtypes.parrottype.ParrotType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
-import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
-import me.mrdaniel.npcs.io.Config;
+import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitType;
+import me.mrdaniel.npcs.io.hocon.config.Config;
 import me.mrdaniel.npcs.io.INPCData;
-import ninja.leaping.configurate.objectmapping.ObjectMappingException;
+import me.mrdaniel.npcs.utils.Position;
+import ninja.leaping.configurate.objectmapping.Setting;
+import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
+import org.spongepowered.api.block.BlockType;
+import org.spongepowered.api.item.inventory.ItemStack;
 
-import javax.annotation.Nullable;
-import java.nio.file.Path;
 import java.util.Optional;
 import java.util.UUID;
 
-public class HoconNPCData extends Config implements INPCData {
+@ConfigSerializable
+public class HoconNPCData implements INPCData {
 
-    private final int id;
-    private final String fileName;
+    public Config<HoconNPCData> config;
+    public String fileName;
 
-    @Nullable private UUID uuid;
+    @Setting public int id;
+    @Setting public NPCType type;
+    @Setting public Position position;
+    @Setting public UUID uuid;
 
-    public HoconNPCData(Path path, String fileName, int id) {
-        super(path.resolve(fileName));
+    @Setting public Skin skin = new Skin();
+    @Setting public String name;
+    @Setting public boolean nameAlwaysVisible;
+    @Setting public boolean silent;
+    @Setting public boolean interact;
+    @Setting public boolean burning;
+    @Setting public Glow glow = new Glow();
 
-        this.id = id;
-        this.fileName = fileName;
-        this.uuid = null;
+    @Setting public boolean angry;
+    @Setting public boolean armored;
+    @Setting public boolean baby;
+    @Setting public boolean charged;
+    @Setting public boolean chest;
+    @Setting public boolean eating;
+    @Setting public boolean hanging;
+    @Setting public boolean peeking;
+    @Setting public boolean pumpkin;
+    @Setting public boolean screaming;
+    @Setting public boolean sheared;
+    @Setting public boolean sitting;
+    @Setting public boolean saddle;
+    @Setting public int size;
+    @Setting public BlockType carries;
+    @Setting public Career career;
+    @Setting public DyeColorType color;
+    @Setting public HorseArmorType horsearmor;
+    @Setting public HorsePattern horsepattern;
+    @Setting public HorseColor horsecolor;
+    @Setting public LlamaType llamatype;
+    @Setting public CatType cattype;
+    @Setting public RabbitType rabbittype;
+    @Setting public ParrotType parrottype;
 
-        super.getNode("id").setValue(this.id);
+    @Setting public Equipment equipment = new Equipment();
+    @Setting public AI ai = new AI();
+    @Setting public ActionSet actions = new ActionSet();
+
+    @ConfigSerializable
+    public static class Skin {
+        @Setting public String name;
+        @Setting public UUID uuid;
     }
 
-    public HoconNPCData(Path path, String fileName) {
-        super(path.resolve(fileName));
+    @ConfigSerializable
+    public static class Glow {
+        @Setting public boolean enabled;
+        @Setting public ColorType color;
+    }
 
-        this.id = super.getNode("id").getInt();
-        this.fileName = fileName;
+    @ConfigSerializable
+    public static class AI {
+        @Setting public boolean looking;
+        @Setting public AbstractAIPattern pattern;
+    }
 
-        String uuid = super.getNode("uuid").getString(null);
-        this.uuid = uuid == null ? null : UUID.fromString(uuid);
+    @ConfigSerializable
+    public static class Equipment {
+        @Setting public ItemStack helmet;
+        @Setting public ItemStack chestplate;
+        @Setting public ItemStack leggings;
+        @Setting public ItemStack boots;
+        @Setting public ItemStack mainhand;
+        @Setting public ItemStack offhand;
     }
 
     @Override
@@ -44,42 +106,19 @@ public class HoconNPCData extends Config implements INPCData {
         return this.id;
     }
 
-    @Nullable
-    @Override
-    public UUID getUniqueId() {
-	    return this.uuid;
-    }
-
-    @Override
-    public void setUniqueId(@Nullable UUID uuid) {
-	    this.uuid = uuid;
-	    super.getNode("uuid").setValue(uuid == null ? null : uuid.toString());
-    }
-
     @Override
     public <T> Optional<T> getProperty(PropertyType<T> property) {
-        try {
-            return Optional.ofNullable(super.getNode(property.getHoconPath()).getValue(property.getTypeToken()));
-        } catch (ObjectMappingException exc) {
-            return Optional.empty();
-        }
+        return Optional.ofNullable(property.getHocon(this));
     }
 
     @Override
     public <T> INPCData setProperty(PropertyType<T> property, T value) {
-        if (property == PropertyTypes.AI_TYPE) { // TODO: Find a better way
-            super.getNode().removeChild("ai");
-        }
-        try {
-            super.getNode(property.getHoconPath()).setValue(property.getTypeToken(), value);
-        } catch (ObjectMappingException exc) {
-            NPCs.getInstance().getLogger().error("Failed to save property to file: ", exc);
-            return this;
-        }
+        property.setHocon(this, value);
         return this;
     }
 
-    public String getFileName() {
-	    return this.fileName;
+    @Override
+    public void save() {
+        this.config.save();
     }
 }

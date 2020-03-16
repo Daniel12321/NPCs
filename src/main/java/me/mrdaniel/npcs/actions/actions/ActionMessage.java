@@ -20,7 +20,7 @@ public class ActionMessage extends Action {
 	private String message;
 
 	public ActionMessage(ConfigurationNode node) {
-		this(node.getNode("Message").getString(""));
+		this(node.getNode("message").getString(""));
 	}
 	
 	public ActionMessage(String message) {
@@ -41,7 +41,7 @@ public class ActionMessage extends Action {
 
 	@Override
 	public void serializeValue(ConfigurationNode node) {
-		node.getNode("Message").setValue(this.message);
+		node.getNode("message").setValue(this.message);
 	}
 
 	@Override

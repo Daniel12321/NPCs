@@ -5,6 +5,9 @@ import me.mrdaniel.npcs.catalogtypes.color.ColorType;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
+import me.mrdaniel.npcs.io.database.DatabaseNPCData;
+import me.mrdaniel.npcs.io.hocon.HoconNPCData;
+import me.mrdaniel.npcs.io.nbt.NBTNPCData;
 import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.scoreboard.ScorePlayerTeam;
@@ -14,10 +17,12 @@ import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.entity.living.Human;
 import org.spongepowered.api.text.Text;
 
+import javax.annotation.Nullable;
+
 public class PropertyGlowColor extends PropertyType<ColorType> {
 
 	public PropertyGlowColor() {
-		super("GlowColor", "glowcolor", new Object[]{"glow", "color"}, GenericArguments.catalogedElement(Text.of("glowcolor"), ColorType.class));
+		super("GlowColor", "glowcolor", GenericArguments.catalogedElement(Text.of("glowcolor"), ColorType.class));
 	}
 
 	@Override
@@ -53,5 +58,38 @@ public class PropertyGlowColor extends PropertyType<ColorType> {
 			team.setPrefix(value.getColor().toString());
 			team.setSuffix(TextFormatting.RESET.toString());
 		}
+	}
+
+	@Override
+	public void setHocon(HoconNPCData data, ColorType value) {
+		data.glow.color = value;
+	}
+
+	@Override
+	public void setDatabase(DatabaseNPCData data, ColorType value) {
+
+	}
+
+	@Override
+	public void setNBT(NBTNPCData data, ColorType value) {
+
+	}
+
+	@Nullable
+	@Override
+	public ColorType getHocon(HoconNPCData data) {
+		return data.glow.color;
+	}
+
+	@Nullable
+	@Override
+	public ColorType getDatabase(DatabaseNPCData data) {
+		return null;
+	}
+
+	@Nullable
+	@Override
+	public ColorType getNBT(NBTNPCData data) {
+		return null;
 	}
 }

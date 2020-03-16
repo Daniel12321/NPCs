@@ -2,8 +2,8 @@ package me.mrdaniel.npcs.managers;
 
 import com.google.common.collect.Maps;
 import com.google.inject.Inject;
-import me.mrdaniel.npcs.io.Config;
 import me.mrdaniel.npcs.io.INPCData;
+import me.mrdaniel.npcs.io.hocon.config.MainConfig;
 import me.mrdaniel.npcs.menu.chat.npc.PropertiesChatMenu;
 import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.entity.living.player.Player;
@@ -26,9 +26,9 @@ public class SelectedManager {
 		this.selected = Maps.newHashMap();
 	}
 
-	public void load(Config config) {
-		this.select_message = TextUtils.toText(config.getNode("npc_select_message").getString("&eYou selected an NPC."));
-		this.open_menu = config.getNode("open_menu_on_select").getBoolean(true);
+	public void load(MainConfig config) {
+		this.select_message = TextUtils.toText(config.getNpcSelectMessage());
+		this.open_menu = config.isOpenMenuOnSelect();
 	}
 
 	public void select(Player p, INPCData data) {

@@ -13,7 +13,7 @@ public class ConditionExp extends Condition {
 	private final int exp;
 
 	public ConditionExp(ConfigurationNode node) {
-		this(node.getNode("Exp").getInt(1));
+		this(node.getNode("exp").getInt(1));
 	}
 
 	public ConditionExp(int exp) {
@@ -34,7 +34,7 @@ public class ConditionExp extends Condition {
 
 	@Override
 	public void serializeValue(ConfigurationNode node) {
-		node.getNode("Exp").setValue(this.exp);
+		node.getNode("exp").setValue(this.exp);
 	}
 
 	@Override

@@ -27,7 +27,7 @@ public class ActionChoices extends Action {
 		super(ActionTypes.CHOICES);
 
 		this.choices = Maps.newHashMap();
-		node.getNode("Choices").getChildrenMap().forEach((key, value) -> this.choices.put((String) key, value.getInt(0)));
+		node.getNode("choices").getChildrenMap().forEach((key, value) -> this.choices.put((String) key, value.getInt(0)));
 	}
 
 	public ActionChoices(Map<String, Integer> choices) {
@@ -59,7 +59,7 @@ public class ActionChoices extends Action {
 
 	@Override
 	public void serializeValue(ConfigurationNode node) {
-		node.getNode("Choices").setValue(this.choices);
+		node.getNode("choices").setValue(this.choices);
 	}
 
 	@Override

@@ -4,11 +4,16 @@ import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
+import me.mrdaniel.npcs.io.database.DatabaseNPCData;
+import me.mrdaniel.npcs.io.hocon.HoconNPCData;
+import me.mrdaniel.npcs.io.nbt.NBTNPCData;
 import me.mrdaniel.npcs.mixin.interfaces.IMixinEntityShulker;
 import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import net.minecraft.entity.monster.EntityShulker;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.text.Text;
+
+import javax.annotation.Nullable;
 
 public class PropertyPeeking extends PropertyType<Boolean> {
 
@@ -34,5 +39,38 @@ public class PropertyPeeking extends PropertyType<Boolean> {
 	@Override
 	public void apply(NPCAble npc, Boolean value) {
 		((IMixinEntityShulker)npc).setPeek(value);
+	}
+
+	@Override
+	public void setHocon(HoconNPCData data, Boolean value) {
+		data.peeking = value;
+	}
+
+	@Override
+	public void setDatabase(DatabaseNPCData data, Boolean value) {
+
+	}
+
+	@Override
+	public void setNBT(NBTNPCData data, Boolean value) {
+
+	}
+
+	@Nullable
+	@Override
+	public Boolean getHocon(HoconNPCData data) {
+		return data.peeking;
+	}
+
+	@Nullable
+	@Override
+	public Boolean getDatabase(DatabaseNPCData data) {
+		return null;
+	}
+
+	@Nullable
+	@Override
+	public Boolean getNBT(NBTNPCData data) {
+		return null;
 	}
 }

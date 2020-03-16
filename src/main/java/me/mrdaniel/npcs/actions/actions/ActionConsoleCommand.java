@@ -19,7 +19,7 @@ public class ActionConsoleCommand extends Action {
 	private String command;
 
 	public ActionConsoleCommand(ConfigurationNode node) {
-		this(node.getNode("Command").getString(""));
+		this(node.getNode("command").getString(""));
 	}
 
 	public ActionConsoleCommand(String command) {
@@ -40,7 +40,7 @@ public class ActionConsoleCommand extends Action {
 
 	@Override
 	public void serializeValue(ConfigurationNode node) {
-		node.getNode("Command").setValue(this.command);
+		node.getNode("command").setValue(this.command);
 	}
 
 	@Override

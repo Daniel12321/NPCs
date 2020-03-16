@@ -4,12 +4,17 @@ import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.actions.ActionSet;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
+import me.mrdaniel.npcs.io.database.DatabaseNPCData;
+import me.mrdaniel.npcs.io.hocon.HoconNPCData;
+import me.mrdaniel.npcs.io.nbt.NBTNPCData;
 import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
+
+import javax.annotation.Nullable;
 
 public class PropertyActionSet extends PropertyType<ActionSet> {
 
     public PropertyActionSet() {
-        super("Action Set", "actions", new Object[]{"actions"});
+        super("Action Set", "actions");
     }
 
     @Override
@@ -29,4 +34,37 @@ public class PropertyActionSet extends PropertyType<ActionSet> {
 
     @Override
     public void apply(NPCAble npc, ActionSet value) {}
+
+    @Override
+    public void setHocon(HoconNPCData data, ActionSet value) {
+        data.actions = value;
+    }
+
+    @Override
+    public void setDatabase(DatabaseNPCData data, ActionSet value) {
+
+    }
+
+    @Override
+    public void setNBT(NBTNPCData data, ActionSet value) {
+
+    }
+
+    @Nullable
+    @Override
+    public ActionSet getHocon(HoconNPCData data) {
+        return data.actions;
+    }
+
+    @Nullable
+    @Override
+    public ActionSet getDatabase(DatabaseNPCData data) {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public ActionSet getNBT(NBTNPCData data) {
+        return null;
+    }
 }

@@ -31,7 +31,7 @@ public abstract class AICommand extends NPCCommand {
 
 	@Override
 	public void execute(Player p, INPCData data, @Nullable NPCAble npc, CommandContext args) throws CommandException {
-		AbstractAIPattern ai = data.getProperty(PropertyTypes.AI_PATTERN).orElse(new AIPatternStay(data.getProperty(PropertyTypes.TYPE).get().getDefaultSpeed()));
+		AbstractAIPattern ai = data.getProperty(PropertyTypes.AI_PATTERN).orElse(new AIPatternStay(data.getProperty(PropertyTypes.TYPE).get()));
 
 		if (!this.types.contains(ai.getType())) {
 			throw new CommandException(Text.of(TextColors.RED, "This command is not supported by the NPCs AI type!"));

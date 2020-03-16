@@ -1,11 +1,11 @@
-package me.mrdaniel.npcs.io.database;
+package me.mrdaniel.npcs.io.nbt;
 
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.io.INPCData;
 
 import java.util.Optional;
 
-public class DatabaseNPCData implements INPCData {
+public class NBTNPCData implements INPCData {
 
     @Override
     public int getId() {

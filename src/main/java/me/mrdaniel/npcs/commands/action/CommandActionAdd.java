@@ -18,13 +18,13 @@ public abstract class CommandActionAdd extends ActionSetCommand {
 
 	@Override
 	public void execute(Player player, ActionSet actions, CommandContext args) throws CommandException {
-		actions.addAction(this.create(args));
+		actions.addAction(this.create(player, args));
 	}
 
-	public abstract Action create(CommandContext args);
+	public abstract Action create(Player player, CommandContext args) throws CommandException;
 
 	public static class PlayerCommand extends CommandActionAdd {
-		@Override public Action create(CommandContext args) { return new ActionPlayerCommand(args.<String>getOne("command").get()); }
+		@Override public Action create(Player player, CommandContext args) { return new ActionPlayerCommand(args.<String>getOne("command").get()); }
 
 		public CommandSpec build() {
 			return CommandSpec.builder()
@@ -37,7 +37,7 @@ public abstract class CommandActionAdd extends ActionSetCommand {
 	}
 
 	public static class ConsoleCommand extends CommandActionAdd {
-		@Override public Action create(CommandContext args) { return new ActionConsoleCommand(args.<String>getOne("command").get()); }
+		@Override public Action create(Player player, CommandContext args) { return new ActionConsoleCommand(args.<String>getOne("command").get()); }
 
 		public CommandSpec build() {
 			return CommandSpec.builder()
@@ -50,7 +50,7 @@ public abstract class CommandActionAdd extends ActionSetCommand {
 	}
 
 	public static class Message extends CommandActionAdd {
-		@Override public Action create(CommandContext args) { return new ActionMessage(args.<String>getOne("message").get()); }
+		@Override public Action create(Player player, CommandContext args) { return new ActionMessage(args.<String>getOne("message").get()); }
 
 		public CommandSpec build() {
 			return CommandSpec.builder()
@@ -63,7 +63,7 @@ public abstract class CommandActionAdd extends ActionSetCommand {
 	}
 
 	public static class Delay extends CommandActionAdd {
-		@Override public Action create(CommandContext args) { return new ActionDelay(args.<Integer>getOne("ticks").get()); }
+		@Override public Action create(Player player, CommandContext args) { return new ActionDelay(args.<Integer>getOne("ticks").get()); }
 
 		public CommandSpec build() {
 			return CommandSpec.builder()
@@ -76,7 +76,7 @@ public abstract class CommandActionAdd extends ActionSetCommand {
 	}
 
 	public static class Cooldown extends CommandActionAdd {
-		@Override public Action create(CommandContext args) { return new ActionCooldown(args.<Integer>getOne("seconds").get(), args.<String>getOne("message").get()); }
+		@Override public Action create(Player player, CommandContext args) { return new ActionCooldown(args.<Integer>getOne("seconds").get(), args.<String>getOne("message").get()); }
 
 		public CommandSpec build() {
 			return CommandSpec.builder()
@@ -89,7 +89,7 @@ public abstract class CommandActionAdd extends ActionSetCommand {
 	}
 
 	public static class Pause extends CommandActionAdd {
-		@Override public Action create(CommandContext args) { return new ActionPause(); }
+		@Override public Action create(Player player, CommandContext args) { return new ActionPause(); }
 
 		public CommandSpec build() {
 			return CommandSpec.builder()
@@ -101,7 +101,7 @@ public abstract class CommandActionAdd extends ActionSetCommand {
 	}
 
 	public static class Goto extends CommandActionAdd {
-		@Override public Action create(CommandContext args) { return new ActionGoto(args.<Integer>getOne("next").get()); }
+		@Override public Action create(Player player, CommandContext args) { return new ActionGoto(args.<Integer>getOne("next").get()); }
 
 		public CommandSpec build() {
 			return CommandSpec.builder()
@@ -116,7 +116,7 @@ public abstract class CommandActionAdd extends ActionSetCommand {
 	public static class Choices extends CommandActionAdd {
 
 		@Override
-		public Action create(CommandContext args) {
+		public Action create(Player player, CommandContext args) {
 			Map<String, Integer> choices = Maps.newHashMap();
 			choices.put(args.<String>getOne("first").get(), args.<Integer>getOne("goto_first").get());
 			choices.put(args.<String>getOne("second").get(), args.<Integer>getOne("goto_second").get());

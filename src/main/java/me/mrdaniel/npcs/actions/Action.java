@@ -1,6 +1,5 @@
 package me.mrdaniel.npcs.actions;
 
-import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionType;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.managers.ActionResult;
@@ -10,7 +9,6 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 
 import java.util.List;
-import java.util.Optional;
 
 public abstract class Action {
 

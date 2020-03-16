@@ -1,7 +1,7 @@
 package me.mrdaniel.npcs.managers;
 
 import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.io.Config;
+import me.mrdaniel.npcs.io.hocon.config.MainConfig;
 import me.mrdaniel.npcs.managers.placeholders.PlaceholderAPIManager;
 import me.mrdaniel.npcs.managers.placeholders.PlaceholderHandler;
 import me.mrdaniel.npcs.managers.placeholders.SimplePlaceholderManager;
@@ -15,7 +15,7 @@ public class PlaceholderManager implements PlaceholderHandler {
 
 	private PlaceholderHandler handler;
 
-	public void load(Config config) {
+	public void load(MainConfig config) {
 		Optional<PluginContainer> placeholderapi = NPCs.getInstance().getGame().getPluginManager().getPlugin("placeholderapi");
 
 		if (placeholderapi.isPresent()) {

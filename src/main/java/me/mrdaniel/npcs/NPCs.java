@@ -40,7 +40,9 @@ import me.mrdaniel.npcs.commands.main.CommandNPC;
 import me.mrdaniel.npcs.data.NPCKeys;
 import me.mrdaniel.npcs.data.npc.NPCData;
 import me.mrdaniel.npcs.data.npc.NPCDataBuilder;
-import me.mrdaniel.npcs.io.Config;
+import me.mrdaniel.npcs.io.hocon.config.Config;
+import me.mrdaniel.npcs.io.hocon.config.DefaultConfig;
+import me.mrdaniel.npcs.io.hocon.config.MainConfig;
 import me.mrdaniel.npcs.listeners.EntityListener;
 import me.mrdaniel.npcs.listeners.InteractListener;
 import me.mrdaniel.npcs.managers.ActionManager;
@@ -92,7 +94,6 @@ public class NPCs {
 	@Inject private Game game;
 	@Inject private PluginContainer container;
 	@Inject @ConfigDir(sharedRoot = false) private Path configDir;
-	@Inject private Config config;
 
 	@Inject private MetricsLite metrics;
 
@@ -103,7 +104,6 @@ public class NPCs {
 
 	public NPCs() {
 		instance = this;
-
 		this.logger = LoggerFactory.getLogger("NPCs");
 	}
 
@@ -137,16 +137,18 @@ public class NPCs {
 	public void onInit(@Nullable GameInitializationEvent e) {
 		this.logger.info("Loading plugin...");
 
-		this.npcManager.load(this.config, this.configDir);
-		this.selectedManager.load(this.config);
-		this.placeholderManager.load(this.config);
+		Config<MainConfig> config = new DefaultConfig<>(MainConfig.class, this.configDir, "config.conf");
+
+		this.npcManager.load(config.get(), this.configDir);
+		this.selectedManager.load(config.get());
+		this.placeholderManager.load(config.get());
 
 		this.game.getEventManager().registerListeners(this, new EntityListener());
 		this.game.getEventManager().registerListeners(this, new InteractListener());
 
 		this.game.getCommandManager().register(this, new CommandNPC().build(), "npc", "npcs");
 
-		if (this.config.getNode("update_message").getBoolean(true)) {
+		if (config.get().isUpdateMessage()) {
 			Task.builder().async().execute(() -> {
 				new LatestVersionSupplier().get().ifPresent(v -> {
 					Task.builder().execute(() -> {

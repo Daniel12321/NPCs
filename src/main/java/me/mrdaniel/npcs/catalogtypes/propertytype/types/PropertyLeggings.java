@@ -3,14 +3,19 @@ package me.mrdaniel.npcs.catalogtypes.propertytype.types;
 import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
+import me.mrdaniel.npcs.io.database.DatabaseNPCData;
+import me.mrdaniel.npcs.io.hocon.HoconNPCData;
+import me.mrdaniel.npcs.io.nbt.NBTNPCData;
 import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import org.spongepowered.api.entity.ArmorEquipable;
 import org.spongepowered.api.item.inventory.ItemStack;
 
+import javax.annotation.Nullable;
+
 public class PropertyLeggings extends PropertyType<ItemStack> {
 
 	public PropertyLeggings() {
-		super("Leggings", "leggings", new Object[]{"equipment", "leggings"});
+		super("Leggings", "leggings");
 	}
 
 	@Override
@@ -31,5 +36,38 @@ public class PropertyLeggings extends PropertyType<ItemStack> {
 	@Override
 	public void apply(NPCAble npc, ItemStack value) {
 		((ArmorEquipable)npc).setLeggings(value);
+	}
+
+	@Override
+	public void setHocon(HoconNPCData data, ItemStack value) {
+		data.equipment.leggings = value;
+	}
+
+	@Override
+	public void setDatabase(DatabaseNPCData data, ItemStack value) {
+
+	}
+
+	@Override
+	public void setNBT(NBTNPCData data, ItemStack value) {
+
+	}
+
+	@Nullable
+	@Override
+	public ItemStack getHocon(HoconNPCData data) {
+		return data.equipment.leggings;
+	}
+
+	@Nullable
+	@Override
+	public ItemStack getDatabase(DatabaseNPCData data) {
+		return null;
+	}
+
+	@Nullable
+	@Override
+	public ItemStack getNBT(NBTNPCData data) {
+		return null;
 	}
 }

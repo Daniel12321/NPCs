@@ -5,9 +5,14 @@ import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.exceptions.NPCException;
+import me.mrdaniel.npcs.io.database.DatabaseNPCData;
+import me.mrdaniel.npcs.io.hocon.HoconNPCData;
+import me.mrdaniel.npcs.io.nbt.NBTNPCData;
 import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.text.Text;
+
+import javax.annotation.Nullable;
 
 public class PropertyNPCType extends PropertyType<NPCType> {
 
@@ -37,5 +42,38 @@ public class PropertyNPCType extends PropertyType<NPCType> {
 		} catch (NPCException exc) {
 			NPCs.getInstance().getLogger().error("Failed to respawn NPC after type change: ", exc);
 		}
+	}
+
+	@Override
+	public void setHocon(HoconNPCData data, NPCType value) {
+		data.type = value;
+	}
+
+	@Override
+	public void setDatabase(DatabaseNPCData data, NPCType value) {
+
+	}
+
+	@Override
+	public void setNBT(NBTNPCData data, NPCType value) {
+
+	}
+
+	@Nullable
+	@Override
+	public NPCType getHocon(HoconNPCData data) {
+		return data.type;
+	}
+
+	@Nullable
+	@Override
+	public NPCType getDatabase(DatabaseNPCData data) {
+		return null;
+	}
+
+	@Nullable
+	@Override
+	public NPCType getNBT(NBTNPCData data) {
+		return null;
 	}
 }

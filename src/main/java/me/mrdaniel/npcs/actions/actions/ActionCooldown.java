@@ -22,7 +22,7 @@ public class ActionCooldown extends Action {
 	private String message;
 
 	public ActionCooldown(ConfigurationNode node) {
-		this(node.getNode("Seconds").getInt(5), node.getNode("Message").getString(""));
+		this(node.getNode("seconds").getInt(5), node.getNode("message").getString(""));
 	}
 	
 	public ActionCooldown(int seconds, String message) {
@@ -54,8 +54,8 @@ public class ActionCooldown extends Action {
 
 	@Override
 	public void serializeValue(ConfigurationNode node) {
-		node.getNode("Seconds").setValue(this.seconds);
-		node.getNode("Message").setValue(this.message);
+		node.getNode("seconds").setValue(this.seconds);
+		node.getNode("message").setValue(this.message);
 	}
 
 	@Override

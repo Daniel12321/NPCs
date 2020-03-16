@@ -5,12 +5,17 @@ import me.mrdaniel.npcs.catalogtypes.career.Career;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
+import me.mrdaniel.npcs.io.database.DatabaseNPCData;
+import me.mrdaniel.npcs.io.hocon.HoconNPCData;
+import me.mrdaniel.npcs.io.nbt.NBTNPCData;
 import me.mrdaniel.npcs.mixin.interfaces.IMixinEntityVillager;
 import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import net.minecraft.entity.monster.EntityZombieVillager;
 import net.minecraft.entity.passive.EntityVillager;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.text.Text;
+
+import javax.annotation.Nullable;
 
 public class PropertyCareer extends PropertyType<Career> {
 
@@ -41,5 +46,38 @@ public class PropertyCareer extends PropertyType<Career> {
 		} else if (npc instanceof EntityZombieVillager) {
 			((EntityZombieVillager)npc).setProfession(value.getProfessionId());
 		}
+	}
+
+	@Override
+	public void setHocon(HoconNPCData data, Career value) {
+		data.career = value;
+	}
+
+	@Override
+	public void setDatabase(DatabaseNPCData data, Career value) {
+
+	}
+
+	@Override
+	public void setNBT(NBTNPCData data, Career value) {
+
+	}
+
+	@Nullable
+	@Override
+	public Career getHocon(HoconNPCData data) {
+		return data.career;
+	}
+
+	@Nullable
+	@Override
+	public Career getDatabase(DatabaseNPCData data) {
+		return null;
+	}
+
+	@Nullable
+	@Override
+	public Career getNBT(NBTNPCData data) {
+		return null;
 	}
 }

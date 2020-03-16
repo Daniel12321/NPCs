@@ -14,14 +14,13 @@ public class AIPatternTypeSerializer implements TypeSerializer<AbstractAIPattern
     @Nullable
     @Override
     public AbstractAIPattern deserialize(@NonNull TypeToken<?> type, @NonNull ConfigurationNode value) throws ObjectMappingException {
-        AIType aiType = value.getNode("Type").getValue(TypeToken.of(AIType.class));
+        AIType aiType = value.getNode("type").getValue(TypeToken.of(AIType.class));
 
-        return aiType == null ? null : aiType.getDeserializer().apply(value);
+        return aiType == null ? null : aiType.deserialize(value);
     }
 
     @Override
     public void serialize(@NonNull TypeToken<?> type, @Nullable AbstractAIPattern obj, @NonNull ConfigurationNode value) throws ObjectMappingException {
-        value.getNode("Type").setValue(obj.getType().getId());
         obj.serialize(value);
     }
 }

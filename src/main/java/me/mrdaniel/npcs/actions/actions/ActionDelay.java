@@ -17,7 +17,7 @@ public class ActionDelay extends Action {
 	private int ticks;
 
 	public ActionDelay(ConfigurationNode node) {
-		this(node.getNode("Ticks").getInt(20));
+		this(node.getNode("ticks").getInt(20));
 	}
 	
 	public ActionDelay(int ticks) {
@@ -37,7 +37,7 @@ public class ActionDelay extends Action {
 
 	@Override
 	public void serializeValue(ConfigurationNode node) {
-		node.getNode("Ticks").setValue(this.ticks);
+		node.getNode("ticks").setValue(this.ticks);
 	}
 
 	@Override

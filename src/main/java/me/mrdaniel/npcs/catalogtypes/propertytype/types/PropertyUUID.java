@@ -14,10 +14,10 @@ import org.spongepowered.api.entity.living.Human;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class PropertySkinUUID extends PropertyType<UUID> {
+public class PropertyUUID extends PropertyType<UUID> {
 
-	public PropertySkinUUID() {
-		super("SkinUUID", "skin-uuid");
+	public PropertyUUID() {
+		super("UUID", "uuid");
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class PropertySkinUUID extends PropertyType<UUID> {
 
 	@Override
 	public void apply(NPCAble npc, UUID value) {
-		((Human)npc).offer(Keys.SKIN_UNIQUE_ID, value);
+		((Human) npc).offer(Keys.SKIN_UNIQUE_ID, value);
 
 		// Fixes human NPCs losing some deserialize their properties when changing their skin
 		npc.refreshEquipment();
@@ -45,7 +45,7 @@ public class PropertySkinUUID extends PropertyType<UUID> {
 
 	@Override
 	public void setHocon(HoconNPCData data, UUID value) {
-		data.skin.uuid = value;
+		data.uuid = value;
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class PropertySkinUUID extends PropertyType<UUID> {
 	@Nullable
 	@Override
 	public UUID getHocon(HoconNPCData data) {
-		return data.skin.uuid;
+		return data.uuid;
 	}
 
 	@Nullable
