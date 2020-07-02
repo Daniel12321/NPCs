@@ -1,18 +1,19 @@
 package me.mrdaniel.npcs.managers.placeholders;
 
 import me.mrdaniel.npcs.io.hocon.config.MainConfig;
+import me.mrdaniel.npcs.managers.IPlaceholderManager;
 import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 
-public class SimplePlaceholderManager implements PlaceholderHandler {
+public class SimplePlaceholderHandler implements IPlaceholderManager {
 
 	private final String msg_format;
 	private final String choice_format;
 
-	public SimplePlaceholderManager(MainConfig config) {
-		this.msg_format = config.getMessages().getNpcMessageFormat();
-		this.choice_format = config.getMessages().getNpcChoiceFormat();
+	public SimplePlaceholderHandler(MainConfig config) {
+		this.msg_format = config.messages.npcMessageFormat;
+		this.choice_format = config.messages.npcChoiceFormat;
 	}
 
 	@Override

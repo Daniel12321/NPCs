@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.managers;
+package me.mrdaniel.npcs.managers.actions;
 
 public class ActionResult {
 

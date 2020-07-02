@@ -7,7 +7,7 @@ import me.mrdaniel.npcs.actions.ActionSet;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.managers.ActionResult;
+import me.mrdaniel.npcs.managers.actions.ActionResult;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;

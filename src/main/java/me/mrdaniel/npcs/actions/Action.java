@@ -2,7 +2,7 @@ package me.mrdaniel.npcs.actions;
 
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionType;
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.managers.ActionResult;
+import me.mrdaniel.npcs.managers.actions.ActionResult;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.spongepowered.api.entity.living.player.Player;

@@ -6,7 +6,7 @@ import me.mrdaniel.npcs.actions.Action;
 import me.mrdaniel.npcs.actions.Condition;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.managers.ActionResult;
+import me.mrdaniel.npcs.managers.actions.ActionResult;
 import me.mrdaniel.npcs.utils.TextUtils;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;

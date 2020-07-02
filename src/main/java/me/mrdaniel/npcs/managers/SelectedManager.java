@@ -27,8 +27,8 @@ public class SelectedManager {
 	}
 
 	public void load(MainConfig config) {
-		this.select_message = TextUtils.toText(config.getNpcSelectMessage());
-		this.open_menu = config.isOpenMenuOnSelect();
+		this.select_message = TextUtils.toText(config.npcSelectMessage);
+		this.open_menu = config.openMenuOnSelect;
 	}
 
 	public void select(Player p, INPCData data) {

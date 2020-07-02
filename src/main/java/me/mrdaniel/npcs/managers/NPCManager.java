@@ -14,6 +14,7 @@ import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.io.INPCStore;
 import me.mrdaniel.npcs.io.StorageType;
 import me.mrdaniel.npcs.io.hocon.config.MainConfig;
+import me.mrdaniel.npcs.menu.chat.npc.NPCChatMenu;
 import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import me.mrdaniel.npcs.utils.Position;
 import org.spongepowered.api.Sponge;
@@ -37,9 +38,12 @@ public class NPCManager {
     }
 
     public void load(MainConfig config, Path configDir) {
-        this.npcStore = StorageType.of(config.getStorage().getStorageType()).orElse(StorageType.HOCON).createNPCStore(this, configDir);
+        this.npcStore = StorageType.of(config.storage.storageType).orElse(StorageType.HOCON).createNPCStore(this, configDir);
         this.npcStore.setup();
         this.npcStore.load();
+
+        // TODO: Move to appropriate location
+        NPCChatMenu.setEnableActionSystem(config.enableActionSystem);
     }
 
     public NPCAble create(Player p, NPCType type) throws NPCException {

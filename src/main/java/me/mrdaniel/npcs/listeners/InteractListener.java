@@ -5,6 +5,7 @@ import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.events.NPCInteractEvent;
 import me.mrdaniel.npcs.events.NPCSelectEvent;
 import me.mrdaniel.npcs.exceptions.NPCException;
+import me.mrdaniel.npcs.io.hocon.config.MainConfig;
 import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.data.key.Keys;
@@ -17,6 +18,12 @@ import org.spongepowered.api.event.entity.RideEntityEvent;
 import org.spongepowered.api.event.filter.cause.Root;
 
 public class InteractListener {
+
+	private boolean enableActionSystem;
+
+	public InteractListener(MainConfig config) {
+		this.enableActionSystem = config.enableActionSystem;
+	}
 
 	// This doesn't work for villagers (opens inventory) and horses (mounts them)
 	@Listener
@@ -58,10 +65,12 @@ public class InteractListener {
 			return true;
 		}
 
-		try {
-			NPCs.getInstance().getActionManager().execute(p.getUniqueId(), npc.getData());
-		} catch (NPCException exc) {
-			NPCs.getInstance().getLogger().error("Failed to execute action for npc " + npc.getData().getId());
+		if (this.enableActionSystem) {
+			try {
+				NPCs.getInstance().getActionManager().execute(p.getUniqueId(), npc.getData());
+			} catch (NPCException exc) {
+				NPCs.getInstance().getLogger().error("Failed to execute action for npc " + npc.getData().getId());
+			}
 		}
 
 		return !npc.getData().getProperty(PropertyTypes.INTERACT).orElse(true);

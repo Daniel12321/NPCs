@@ -40,15 +40,16 @@ import me.mrdaniel.npcs.commands.main.CommandNPC;
 import me.mrdaniel.npcs.data.NPCKeys;
 import me.mrdaniel.npcs.data.npc.NPCData;
 import me.mrdaniel.npcs.data.npc.NPCDataBuilder;
-import me.mrdaniel.npcs.io.hocon.config.Config;
 import me.mrdaniel.npcs.io.hocon.config.DefaultConfig;
 import me.mrdaniel.npcs.io.hocon.config.MainConfig;
 import me.mrdaniel.npcs.listeners.EntityListener;
 import me.mrdaniel.npcs.listeners.InteractListener;
-import me.mrdaniel.npcs.managers.ActionManager;
+import me.mrdaniel.npcs.managers.IActionManager;
+import me.mrdaniel.npcs.managers.IPlaceholderManager;
 import me.mrdaniel.npcs.managers.NPCManager;
-import me.mrdaniel.npcs.managers.PlaceholderManager;
 import me.mrdaniel.npcs.managers.SelectedManager;
+import me.mrdaniel.npcs.managers.actions.ActionManager;
+import me.mrdaniel.npcs.managers.actions.DisabledActionManager;
 import me.mrdaniel.npcs.utils.LatestVersionSupplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,9 +99,9 @@ public class NPCs {
 	@Inject private MetricsLite metrics;
 
 	@Inject private NPCManager npcManager;
-	@Inject private ActionManager actionManager;
 	@Inject private SelectedManager selectedManager;
-	@Inject private PlaceholderManager placeholderManager;
+	private IActionManager actionManager;
+	private IPlaceholderManager placeholderManager;
 
 	public NPCs() {
 		instance = this;
@@ -137,18 +138,20 @@ public class NPCs {
 	public void onInit(@Nullable GameInitializationEvent e) {
 		this.logger.info("Loading plugin...");
 
-		Config<MainConfig> config = new DefaultConfig<>(MainConfig.class, this.configDir, "config.conf");
+		MainConfig config = new DefaultConfig<>(MainConfig.class, this.configDir, "config.conf").get();
 
-		this.npcManager.load(config.get(), this.configDir);
-		this.selectedManager.load(config.get());
-		this.placeholderManager.load(config.get());
+		this.actionManager = config.enableActionSystem ? new ActionManager() : new DisabledActionManager();
+		this.placeholderManager = IPlaceholderManager.load(config);
+
+		this.npcManager.load(config, this.configDir);
+		this.selectedManager.load(config);
 
 		this.game.getEventManager().registerListeners(this, new EntityListener());
-		this.game.getEventManager().registerListeners(this, new InteractListener());
+		this.game.getEventManager().registerListeners(this, new InteractListener(config));
 
 		this.game.getCommandManager().register(this, new CommandNPC().build(), "npc", "npcs");
 
-		if (config.get().isUpdateMessage()) {
+		if (config.updateMessage) {
 			Task.builder().async().execute(() -> {
 				new LatestVersionSupplier().get().ifPresent(v -> {
 					Task.builder().execute(() -> {
@@ -214,7 +217,7 @@ public class NPCs {
 		return npcManager;
 	}
 
-	public ActionManager getActionManager() {
+	public IActionManager getActionManager() {
 		return actionManager;
 	}
 
@@ -222,7 +225,7 @@ public class NPCs {
 		return selectedManager;
 	}
 
-	public PlaceholderManager getPlaceholderManager() {
+	public IPlaceholderManager getPlaceholderManager() {
 		return placeholderManager;
 	}
 }
