@@ -27,7 +27,8 @@ public class ActionResult {
 	}
 
 	public ActionResult setWaitTicks(final int waitTicks) {
-		this.waitTicks = waitTicks; return this; }
+		this.waitTicks = waitTicks; return this;
+	}
 
 	public int getCurrentAction() {
 		return currentAction;
