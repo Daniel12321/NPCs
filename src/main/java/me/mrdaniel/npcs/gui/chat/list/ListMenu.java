@@ -1,9 +1,9 @@
-package me.mrdaniel.npcs.menu.chat.list;
+package me.mrdaniel.npcs.gui.chat.list;
 
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.menu.chat.ChatMenu;
+import me.mrdaniel.npcs.gui.chat.ChatMenu;
 import me.mrdaniel.npcs.utils.Position;
 import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.entity.living.player.Player;

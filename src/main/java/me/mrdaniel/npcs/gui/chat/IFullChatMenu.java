@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.menu.chat;
+package me.mrdaniel.npcs.gui.chat;
 
 import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.service.pagination.PaginationList;

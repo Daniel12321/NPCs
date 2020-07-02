@@ -4,7 +4,7 @@ import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.commands.NPCFileCommand;
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.menu.chat.npc.PropertiesChatMenu;
+import me.mrdaniel.npcs.gui.chat.npc.PropertiesChatMenu;
 import me.mrdaniel.npcs.utils.Position;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;

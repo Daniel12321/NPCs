@@ -1,7 +1,7 @@
-package me.mrdaniel.npcs.menu.chat.info;
+package me.mrdaniel.npcs.gui.chat.info;
 
 import com.google.common.collect.Lists;
-import me.mrdaniel.npcs.menu.chat.ChatMenu;
+import me.mrdaniel.npcs.gui.chat.ChatMenu;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 

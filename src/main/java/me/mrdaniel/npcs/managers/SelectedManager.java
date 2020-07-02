@@ -4,7 +4,7 @@ import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.io.hocon.config.MainConfig;
-import me.mrdaniel.npcs.menu.chat.npc.PropertiesChatMenu;
+import me.mrdaniel.npcs.gui.chat.npc.PropertiesChatMenu;
 import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;

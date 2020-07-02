@@ -15,7 +15,15 @@ public class NPCKeys {
             .query(DataQuery.of("npc-id"))
             .build();
 
+    public static final Key<Value<Integer>> BUTTON_INDEX = Sponge.getRegistry().createBuilder(Key.Builder.class)
+            .type(new TypeToken<Value<Integer>>() {})
+            .id("button-index")
+            .name("Button Index")
+            .query(DataQuery.of("button-index"))
+            .build();
+
     public static void init() {
         NPC_ID.getName();
+        BUTTON_INDEX.getName();
     }
 }

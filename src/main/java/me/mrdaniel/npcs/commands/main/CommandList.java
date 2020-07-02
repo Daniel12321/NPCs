@@ -1,6 +1,6 @@
 package me.mrdaniel.npcs.commands.main;
 
-import me.mrdaniel.npcs.menu.chat.list.ListMenu;
+import me.mrdaniel.npcs.gui.chat.list.ListMenu;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
 import org.spongepowered.api.command.CommandSource;

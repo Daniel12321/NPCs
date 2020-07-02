@@ -1,7 +1,7 @@
-package me.mrdaniel.npcs.menu.chat.npc;
+package me.mrdaniel.npcs.gui.chat.npc;
 
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.menu.chat.FullChatMenu;
+import me.mrdaniel.npcs.gui.chat.FullChatMenu;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
