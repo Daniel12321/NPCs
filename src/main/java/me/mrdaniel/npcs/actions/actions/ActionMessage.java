@@ -6,7 +6,7 @@ import me.mrdaniel.npcs.actions.Action;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.managers.ActionResult;
+import me.mrdaniel.npcs.managers.actions.ActionResult;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
@@ -20,7 +20,7 @@ public class ActionMessage extends Action {
 	private String message;
 
 	public ActionMessage(ConfigurationNode node) {
-		this(node.getNode("Message").getString(""));
+		this(node.getNode("message").getString(""));
 	}
 	
 	public ActionMessage(String message) {
@@ -41,7 +41,7 @@ public class ActionMessage extends Action {
 
 	@Override
 	public void serializeValue(ConfigurationNode node) {
-		node.getNode("Message").setValue(this.message);
+		node.getNode("message").setValue(this.message);
 	}
 
 	@Override

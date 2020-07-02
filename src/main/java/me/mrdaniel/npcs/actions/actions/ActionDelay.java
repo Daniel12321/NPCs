@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import me.mrdaniel.npcs.actions.Action;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.managers.ActionResult;
+import me.mrdaniel.npcs.managers.actions.ActionResult;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
@@ -17,7 +17,7 @@ public class ActionDelay extends Action {
 	private int ticks;
 
 	public ActionDelay(ConfigurationNode node) {
-		this(node.getNode("Ticks").getInt(20));
+		this(node.getNode("ticks").getInt(20));
 	}
 	
 	public ActionDelay(int ticks) {
@@ -37,7 +37,7 @@ public class ActionDelay extends Action {
 
 	@Override
 	public void serializeValue(ConfigurationNode node) {
-		node.getNode("Ticks").setValue(this.ticks);
+		node.getNode("ticks").setValue(this.ticks);
 	}
 
 	@Override

@@ -13,7 +13,7 @@ public class ConditionLevel extends Condition {
 	private final int level;
 
 	public ConditionLevel(ConfigurationNode node) {
-		this(node.getNode("Level").getInt(1));
+		this(node.getNode("level").getInt(1));
 	}
 
 	public ConditionLevel(int level) {
@@ -34,7 +34,7 @@ public class ConditionLevel extends Condition {
 
 	@Override
 	public void serializeValue(ConfigurationNode node) {
-		node.getNode("Level").setValue(this.level);
+		node.getNode("level").setValue(this.level);
 	}
 
 	@Override

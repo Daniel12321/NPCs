@@ -98,9 +98,7 @@ public class PropertiesChatMenu extends NPCChatMenu {
         if (SIZE.isSupported(type)) { lines.add(getOptionsText("Size", "/npc size <size>", Integer.toString(data.getProperty(SIZE).orElse(1)))); }
         if (CARRIES.isSupported(type)) { lines.add(getOptionsText("Carries", "/npc carries <blocktype>", data.getProperty(CARRIES).orElse(BlockTypes.AIR).getName())); }
         if (CAREER.isSupported(type)) { lines.add(getOptionsText("Career", "/npc career <career>", data.getProperty(CAREER).orElse(Careers.SHEPHERD).getName())); }
-        if (COLLARCOLOR.isSupported(type)) { lines.add(getOptionsText("CollarColor", "/npc collarcolor <color>", data.getProperty(COLLARCOLOR).orElse(DyeColorTypes.WHITE).getName())); }
-        if (WOOLCOLOR.isSupported(type)) { lines.add(getOptionsText("WoolColor", "/npc woolcolor <color>", data.getProperty(WOOLCOLOR).orElse(DyeColorTypes.WHITE).getName())); }
-        if (SHULKERCOLOR.isSupported(type)) { lines.add(getOptionsText("ShulkerColor", "/npc shulkercolor <color>", data.getProperty(SHULKERCOLOR).orElse(DyeColorTypes.PURPLE).getName())); }
+        if (COLOR.isSupported(type)) { lines.add(getOptionsText("Color", "/npc color <color>", data.getProperty(COLOR).orElse(DyeColorTypes.WHITE).getName())); }
         if (HORSEARMOR.isSupported(type)) { lines.add(getOptionsText("HorseArmor", "/npc horsearmor <armor>", data.getProperty(HORSEARMOR).orElse(HorseArmorTypes.NONE).getName())); }
         if (HORSEPATTERN.isSupported(type)) { lines.add(getOptionsText("HorsePattern", "/npc horsepattern <pattern>", data.getProperty(HORSEPATTERN).orElse(HorsePatterns.NONE).getName())); }
         if (HORSECOLOR.isSupported(type)) { lines.add(getOptionsText("HorseColor", "/npc horsecolor <color>", data.getProperty(HORSECOLOR).orElse(HorseColors.WHITE).getName())); }

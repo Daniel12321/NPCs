@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import me.mrdaniel.npcs.actions.Action;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.managers.ActionResult;
+import me.mrdaniel.npcs.managers.actions.ActionResult;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
@@ -18,7 +18,7 @@ public class ActionGoto extends Action {
 	private int next;
 
 	public ActionGoto(ConfigurationNode node) {
-		this(node.getNode("Next").getInt(0));
+		this(node.getNode("next").getInt(0));
 	}
 
 	public ActionGoto(int next) {
@@ -38,7 +38,7 @@ public class ActionGoto extends Action {
 
 	@Override
 	public void serializeValue(ConfigurationNode node) {
-		node.getNode("Next").setValue(this.next);
+		node.getNode("next").setValue(this.next);
 	}
 
 	@Override

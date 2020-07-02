@@ -7,6 +7,8 @@ import org.spongepowered.api.text.format.TextColors;
 
 public abstract class NPCChatMenu implements FullChatMenu {
 
+    private static boolean enableActionSystem = true;
+
     protected final INPCData data;
 
     public NPCChatMenu(INPCData data) {
@@ -15,10 +17,9 @@ public abstract class NPCChatMenu implements FullChatMenu {
 
     @Override
     public Text getFooter() {
-        Text bar = Text.of(
-                new PropertiesChatMenu(this.data).getMenuButton(),
-                new AIChatMenu(this.data).getMenuButton(),
-                new ActionsChatMenu(this.data).getMenuButton());
+        Text bar = enableActionSystem ?
+                Text.of(new PropertiesChatMenu(this.data).getMenuButton(), new AIChatMenu(this.data).getMenuButton(), new ActionsChatMenu(this.data).getMenuButton()) :
+                Text.of(new PropertiesChatMenu(this.data).getMenuButton(), new AIChatMenu(this.data).getMenuButton());
 
         Text spacing = Text.of(TextColors.YELLOW, getBar((58 - bar.toPlain().length()) / 2));
 
@@ -36,4 +37,8 @@ public abstract class NPCChatMenu implements FullChatMenu {
     }
 
     protected abstract Text getMenuButton();
+
+    public static void setEnableActionSystem(boolean value) {
+        enableActionSystem = value;
+    }
 }

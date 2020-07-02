@@ -81,7 +81,7 @@ public abstract class MixinEntityLiving extends EntityLivingBase implements NPCA
 
 	@Override
 	public void refreshAI() {
-        AbstractAIPattern aiPattern = this.data.getProperty(PropertyTypes.AI_PATTERN).orElse(new AIPatternStay(this.data.getProperty(PropertyTypes.TYPE).get().getDefaultSpeed()));
+        AbstractAIPattern aiPattern = this.data.getProperty(PropertyTypes.AI_PATTERN).orElse(new AIPatternStay(this.data.getProperty(PropertyTypes.TYPE).get()));
 		Agent agent = (Agent) this;
 
         if (aiPattern instanceof AIPatternWander) {

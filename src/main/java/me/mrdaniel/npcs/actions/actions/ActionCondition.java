@@ -6,7 +6,7 @@ import me.mrdaniel.npcs.actions.Action;
 import me.mrdaniel.npcs.actions.Condition;
 import me.mrdaniel.npcs.catalogtypes.actiontype.ActionTypes;
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.managers.ActionResult;
+import me.mrdaniel.npcs.managers.actions.ActionResult;
 import me.mrdaniel.npcs.utils.TextUtils;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
@@ -29,16 +29,16 @@ public class ActionCondition extends Action {
 
 		Condition condition = null;
 		try {
-			condition = Condition.of(node.getNode("Condition"));
+			condition = Condition.of(node.getNode("condition"));
 		} catch (final ObjectMappingException exc) {
 			exc.printStackTrace();
 		} finally {
 			this.condition = condition;
 		}
 
-		this.goto_failed = node.getNode("GotoFailed").getInt(0);
-		this.goto_met = node.getNode("GotoMet").getInt(0);
-		this.take = node.getNode("Take").getBoolean(true);
+		this.goto_failed = node.getNode("gotofailed").getInt(0);
+		this.goto_met = node.getNode("gotomet").getInt(0);
+		this.take = node.getNode("take").getBoolean(true);
 	}
 
 	public ActionCondition(Condition condition, int goto_failed, int goto_met, boolean take) {
@@ -76,10 +76,10 @@ public class ActionCondition extends Action {
 
 	@Override
 	public void serializeValue(ConfigurationNode node) throws ObjectMappingException {
-		node.getNode("Condition").setValue(TypeToken.of(Condition.class), this.condition);
-		node.getNode("GotoFailed").setValue(this.goto_failed);
-		node.getNode("GotoMet").setValue(this.goto_met);
-		node.getNode("Take").setValue(this.take);
+		node.getNode("condition").setValue(TypeToken.of(Condition.class), this.condition);
+		node.getNode("gotofailed").setValue(this.goto_failed);
+		node.getNode("gotomet").setValue(this.goto_met);
+		node.getNode("take").setValue(this.take);
 	}
 
 	@Override

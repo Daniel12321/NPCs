@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.aitype.AIType;
+import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.utils.Position;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
@@ -17,17 +18,23 @@ public abstract class AbstractAIGuardPattern extends AbstractAIPattern {
 
     protected final List<Position> positions;
 
-    public AbstractAIGuardPattern(AIType type, ConfigurationNode node) {
+    public AbstractAIGuardPattern(AIType type, NPCType npcType) {
+        super(type, npcType.getDefaultSpeed(), type.getDefaultChance());
+
+        this.positions = Lists.newArrayList();
+    }
+
+    protected AbstractAIGuardPattern(AIType type, ConfigurationNode node) {
         super(type, node);
 
         this.positions = Lists.newArrayList();
 
-        try {
-            if (node.getNode("positions").hasListChildren()) {
+        if (node.getNode("positions").hasListChildren()) {
+            try {
                 this.positions.addAll(node.getNode("positions").getList(TypeToken.of(Position.class)));
+            } catch (ObjectMappingException exc) {
+                NPCs.getInstance().getLogger().error("Failed to get ai position list from file: ", exc);
             }
-        } catch (ObjectMappingException exc) {
-            NPCs.getInstance().getLogger().error("Failed to get ai position list from file: ", exc);
         }
     }
 

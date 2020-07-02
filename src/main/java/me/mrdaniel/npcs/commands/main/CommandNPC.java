@@ -10,10 +10,7 @@ import me.mrdaniel.npcs.commands.action.CommandActionSwap;
 import me.mrdaniel.npcs.commands.action.condition.CommandActionAddCondition;
 import me.mrdaniel.npcs.commands.action.edit.*;
 import me.mrdaniel.npcs.commands.ai.*;
-import me.mrdaniel.npcs.commands.edit.CommandEdit;
-import me.mrdaniel.npcs.commands.edit.CommandEditEquipment;
-import me.mrdaniel.npcs.commands.edit.CommandEditType;
-import me.mrdaniel.npcs.commands.edit.CommandMove;
+import me.mrdaniel.npcs.commands.edit.*;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.menu.chat.info.InfoMenu;
 import me.mrdaniel.npcs.menu.chat.npc.AIChatMenu;
@@ -81,9 +78,7 @@ public class CommandNPC extends PlayerCommand {
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SIZE), "size")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.CARRIES), "carries")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.CAREER), "career")
-				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.COLLARCOLOR), "collarcolor")
-				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.WOOLCOLOR), "woolcolor")
-				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.SHULKERCOLOR), "shulkercolor")
+				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.COLOR), "color")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.HORSEARMOR), "horsearmor")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.HORSEPATTERN), "horsepattern")
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.HORSECOLOR), "horsecolor")
@@ -93,7 +88,7 @@ public class CommandNPC extends PlayerCommand {
 				.child(CommandEdit.build(PropertiesChatMenu::new, PropertyTypes.PARROTTYPE), "parrottype")
 				.child(CommandSpec.builder().description(Text.of(TextColors.GOLD, "NPC | AI"))
 						.child(CommandEdit.build(AIChatMenu::new, PropertyTypes.LOOKING), "looking", "look")
-						.child(CommandEdit.build(AIChatMenu::new, PropertyTypes.AI_TYPE), "type", "aitype")
+						.child(new CommandEditAIType().build(), "type", "aitype")
 						.child(new CommandWanderDistance().build(), "wanderdistance")
 						.child(new CommandSpeed().build(), "speed")
 						.child(new CommandChance().build(), "chance")

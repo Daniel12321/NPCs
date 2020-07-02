@@ -3,6 +3,7 @@ package me.mrdaniel.npcs.ai.pattern;
 import com.google.common.collect.Lists;
 import me.mrdaniel.npcs.ai.task.AITaskStay;
 import me.mrdaniel.npcs.catalogtypes.aitype.AITypes;
+import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import ninja.leaping.configurate.ConfigurationNode;
 import org.spongepowered.api.entity.ai.task.AITask;
 import org.spongepowered.api.entity.living.Agent;
@@ -13,8 +14,8 @@ import java.util.List;
 
 public class AIPatternStay extends AbstractAIPattern {
 
-    public AIPatternStay(double speed) {
-        super(AITypes.STAY, speed, AITypes.STAY.getDefaultChance());
+    public AIPatternStay(NPCType type) {
+        super(AITypes.STAY, type.getDefaultSpeed(), AITypes.STAY.getDefaultChance());
     }
 
     public AIPatternStay(ConfigurationNode node) {

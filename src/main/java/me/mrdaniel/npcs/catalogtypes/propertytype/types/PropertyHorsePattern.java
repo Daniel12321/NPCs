@@ -7,10 +7,15 @@ import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
+import me.mrdaniel.npcs.io.database.DatabaseNPCData;
+import me.mrdaniel.npcs.io.hocon.HoconNPCData;
+import me.mrdaniel.npcs.io.nbt.NBTNPCData;
 import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import net.minecraft.entity.passive.EntityHorse;
 import org.spongepowered.api.command.args.GenericArguments;
 import org.spongepowered.api.text.Text;
+
+import javax.annotation.Nullable;
 
 public class PropertyHorsePattern extends PropertyType<HorsePattern> {
 
@@ -36,5 +41,38 @@ public class PropertyHorsePattern extends PropertyType<HorsePattern> {
 	@Override
 	public void apply(NPCAble npc, HorsePattern value) {
 		((EntityHorse)npc).setHorseVariant(value.getNbtId() + npc.getData().getProperty(PropertyTypes.HORSECOLOR).orElse(HorseColors.BROWN).getNbtId());
+	}
+
+	@Override
+	public void setHocon(HoconNPCData data, HorsePattern value) {
+		data.horsepattern = value;
+	}
+
+	@Override
+	public void setDatabase(DatabaseNPCData data, HorsePattern value) {
+
+	}
+
+	@Override
+	public void setNBT(NBTNPCData data, HorsePattern value) {
+
+	}
+
+	@Nullable
+	@Override
+	public HorsePattern getHocon(HoconNPCData data) {
+		return data.horsepattern;
+	}
+
+	@Nullable
+	@Override
+	public HorsePattern getDatabase(DatabaseNPCData data) {
+		return null;
+	}
+
+	@Nullable
+	@Override
+	public HorsePattern getNBT(NBTNPCData data) {
+		return null;
 	}
 }

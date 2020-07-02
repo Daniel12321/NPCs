@@ -24,10 +24,10 @@ public abstract class Condition {
 	public abstract Text getLine();
 	public abstract boolean isMet(Player p);
 	public abstract void take(Player p);
-	public abstract void serializeValue(ConfigurationNode value);
+	public abstract void serializeValue(ConfigurationNode value) throws ObjectMappingException;
 
 	@Nullable
 	public static Condition of(ConfigurationNode node) throws ObjectMappingException {
-		return NPCs.getInstance().getGame().getRegistry().getType(ConditionType.class, node.getNode("Type").getString("")).orElseThrow(() -> new ObjectMappingException("Invalid ConditionType!")).getCondition().apply(node);
+		return NPCs.getInstance().getGame().getRegistry().getType(ConditionType.class, node.getNode("type").getString("")).orElseThrow(() -> new ObjectMappingException("Invalid ConditionType!")).getCondition().apply(node);
 	}
 }

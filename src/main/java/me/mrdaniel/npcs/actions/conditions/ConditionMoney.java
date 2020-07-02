@@ -22,7 +22,7 @@ public class ConditionMoney extends Condition {
 	private final double amount;
 
 	public ConditionMoney(ConfigurationNode node) {
-		this(node.getNode("Currency").getValue(obj -> Sponge.getRegistry().getType(Currency.class, (String)obj)).get(), node.getNode("Amount").getDouble(1.0));
+		this(node.getNode("currency").getValue(obj -> Sponge.getRegistry().getType(Currency.class, (String)obj)).get(), node.getNode("amount").getDouble(1.0));
 	}
 
 	public ConditionMoney(Currency currency, double amount) {
@@ -48,8 +48,8 @@ public class ConditionMoney extends Condition {
 
 	@Override
 	public void serializeValue(ConfigurationNode node) {
-		node.getNode("Currency").setValue(this.currency.getId());
-		node.getNode("Amount").setValue(this.amount);
+		node.getNode("currency").setValue(this.currency.getId());
+		node.getNode("amount").setValue(this.amount);
 	}
 
 	@Override

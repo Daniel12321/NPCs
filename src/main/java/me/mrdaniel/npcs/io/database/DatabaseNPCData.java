@@ -3,26 +3,13 @@ package me.mrdaniel.npcs.io.database;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.io.INPCData;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
-import java.util.UUID;
 
 public class DatabaseNPCData implements INPCData {
 
     @Override
     public int getId() {
         return 0;
-    }
-
-    @Nullable
-    @Override
-    public UUID getUniqueId() {
-        return null;
-    }
-
-    @Override
-    public void setUniqueId(@Nullable UUID uuid) {
-
     }
 
     @Override

@@ -1,22 +1,23 @@
 package me.mrdaniel.npcs.managers.placeholders;
 
 import me.mrdaniel.npcs.NPCs;
-import me.mrdaniel.npcs.io.Config;
+import me.mrdaniel.npcs.io.hocon.config.MainConfig;
+import me.mrdaniel.npcs.managers.IPlaceholderManager;
 import me.mrdaniel.npcs.utils.TextUtils;
 import me.rojo8399.placeholderapi.PlaceholderService;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 
-public class PlaceholderAPIManager implements PlaceholderHandler {
+public class PlaceholderAPIHandler implements IPlaceholderManager {
 
 	private final PlaceholderService service;
 	private final String msg_format;
 	private final String choice_format;
 
-	public PlaceholderAPIManager(Config config) {
+	public PlaceholderAPIHandler(MainConfig config) {
 		this.service = NPCs.getInstance().getGame().getServiceManager().provide(PlaceholderService.class).get();
-		this.msg_format = config.getNode("messages", "npc_message_format").getString("%npc_name%&7: ");
-		this.choice_format = config.getNode("messages", "npc_choice_format").getString("&6&lChoose: ");
+		this.msg_format = config.messages.npcMessageFormat;
+		this.choice_format = config.messages.npcChoiceFormat;
 	}
 
 	@Override

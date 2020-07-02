@@ -1,5 +1,6 @@
 package me.mrdaniel.npcs.io.hocon;
 
+import com.google.common.collect.Maps;
 import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.actions.Action;
@@ -21,6 +22,7 @@ import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.parrottype.ParrotType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitType;
+import me.mrdaniel.npcs.io.hocon.config.Config;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.io.INPCStore;
 import me.mrdaniel.npcs.io.hocon.typeserializers.*;
@@ -31,16 +33,23 @@ import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class HoconNPCStore implements INPCStore {
 
 	private final NPCManager manager;
     private final Path storageDir;
 
-    public HoconNPCStore(NPCManager manager, Path configDir) {
+	private final Map<Integer, Config<HoconNPCData>> data;
+
+	public HoconNPCStore(NPCManager manager, Path configDir) {
     	this.manager = manager;
         this.storageDir = configDir.resolve("storage");
+
+		this.data = Maps.newHashMap();
     }
 
     @Override
@@ -69,7 +78,10 @@ public class HoconNPCStore implements INPCStore {
 	}
 
     @Override
-    public void load(Map<Integer, INPCData> npcs) {
+    public void load() {
+		this.data.values().forEach(config -> config.get().config = null); // Prevents memory leaks
+		this.data.clear();
+
 		if (!Files.exists(this.storageDir)) {
 			try {
 				Files.createDirectories(this.storageDir);
@@ -79,23 +91,49 @@ public class HoconNPCStore implements INPCStore {
 		}
 
 		for (String name : this.storageDir.toFile().list()) {
-			INPCData data = new HoconNPCData(this.storageDir, name);
-		    npcs.put(data.getId(), data);
+			Config<HoconNPCData> data = new Config<>(HoconNPCData.class, this.storageDir.resolve(name));
+			data.get().fileName = name;
+			data.get().config = data;
+
+			this.data.put(data.get().id, data);
 		}
     }
 
 	@Override
 	public INPCData create(NPCType type) {
 		int nextId = this.manager.getNextID();
-		return new HoconNPCData(this.storageDir, "npc_" + nextId + ".conf", nextId);
+		String fileName = "npc_" + nextId + ".conf";
+		Config<HoconNPCData> data = new Config<>(HoconNPCData.class, this.storageDir.resolve(fileName));
+		data.get().fileName = fileName;
+		data.get().config = data;
+		data.get().id = nextId;
+		data.save();
+
+		this.data.put(nextId, data);
+		return data.get();
 	}
 
 	@Override
 	public void remove(INPCData data) {
+		HoconNPCData hoconData = (HoconNPCData) data;
+		hoconData.config = null;  // Prevents memory leaks
+
+		this.data.remove(hoconData.id);
+
         try {
-            Files.deleteIfExists(this.storageDir.resolve(((HoconNPCData)data).getFileName()));
+            Files.deleteIfExists(this.storageDir.resolve(hoconData.fileName));
         } catch (final IOException exc) {
-            NPCs.getInstance().getLogger().error("Failed to delete npc data for npc {}: {}", data.getId(), exc.getMessage(), exc);
+            NPCs.getInstance().getLogger().error("Failed to delete npc data for npc {}: {}", hoconData.id, exc.getMessage(), exc);
         }
+	}
+
+	@Override
+	public Optional<INPCData> getData(int id) {
+		return Optional.ofNullable(this.data.get(id)).map(Config::get);
+	}
+
+	@Override
+	public Collection<INPCData> getData() {
+		return this.data.values().stream().map(Config::get).collect(Collectors.toSet());
 	}
 }
