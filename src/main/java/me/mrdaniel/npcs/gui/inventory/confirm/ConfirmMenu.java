@@ -1,6 +1,8 @@
-package me.mrdaniel.npcs.gui.inventory;
+package me.mrdaniel.npcs.gui.inventory.confirm;
 
 import com.google.common.collect.Lists;
+import me.mrdaniel.npcs.gui.inventory.AbstractInventoryMenu;
+import me.mrdaniel.npcs.gui.inventory.Button;
 import org.spongepowered.api.data.key.Keys;
 import org.spongepowered.api.data.type.DyeColors;
 import org.spongepowered.api.entity.living.player.Player;

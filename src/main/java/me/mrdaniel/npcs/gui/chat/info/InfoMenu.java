@@ -1,14 +1,14 @@
 package me.mrdaniel.npcs.gui.chat.info;
 
 import com.google.common.collect.Lists;
-import me.mrdaniel.npcs.gui.chat.ChatMenu;
+import me.mrdaniel.npcs.gui.chat.IChatMenu;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class InfoMenu implements ChatMenu {
+public class InfoMenu implements IChatMenu {
 
     @Override
     public Text getTitle() {

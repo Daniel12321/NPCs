@@ -1,6 +1,5 @@
 package me.mrdaniel.npcs.gui.book;
 
-import me.mrdaniel.npcs.gui.IBookMenu;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.BookView;
 import org.spongepowered.api.text.Text;

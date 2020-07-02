@@ -3,7 +3,7 @@ package me.mrdaniel.npcs.gui.chat.list;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.gui.chat.ChatMenu;
+import me.mrdaniel.npcs.gui.chat.IChatMenu;
 import me.mrdaniel.npcs.utils.Position;
 import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.entity.living.player.Player;
@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ListMenu implements ChatMenu {
+public class ListMenu implements IChatMenu {
 
     @Override
     public Text getTitle() {

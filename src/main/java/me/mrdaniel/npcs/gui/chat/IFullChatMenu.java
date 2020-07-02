@@ -7,7 +7,7 @@ import org.spongepowered.api.text.format.TextColors;
 
 import java.util.List;
 
-public interface FullChatMenu extends ChatMenu {
+public interface IFullChatMenu extends IChatMenu {
 
     @Override
     default void send(CommandSource src) {

@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.menu.chat.npc;
+package me.mrdaniel.npcs.gui.chat.npc;
 
 import com.google.common.collect.Lists;
 import me.mrdaniel.npcs.actions.ActionSet;

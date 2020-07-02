@@ -6,7 +6,7 @@ import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.events.NPCEditEvent;
 import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.gui.chat.ChatMenu;
+import me.mrdaniel.npcs.gui.chat.IChatMenu;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
@@ -22,7 +22,7 @@ public class CommandEdit<T> extends NPCCommand {
 
 	private final PropertyType<T> option;
 
-	public CommandEdit(Function<INPCData, ChatMenu> menu, PropertyType<T> option) {
+	public CommandEdit(Function<INPCData, IChatMenu> menu, PropertyType<T> option) {
 		super(menu, false);
 
 		this.option = option;
@@ -44,7 +44,7 @@ public class CommandEdit<T> extends NPCCommand {
 		}
 	}
 
-	public static <T> CommandSpec build(Function<INPCData, ChatMenu> page, PropertyType<T> option) {
+	public static <T> CommandSpec build(Function<INPCData, IChatMenu> page, PropertyType<T> option) {
 		return CommandSpec.builder()
 				.description(Text.of(TextColors.GOLD, "NPCs | Set ", option.getName()))
 				.permission("npc.edit." + option.getId())

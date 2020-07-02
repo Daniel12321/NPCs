@@ -8,7 +8,8 @@ import org.spongepowered.api.text.format.TextColors;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public interface ChatMenu {
+// TODO: Refactor ChatMenu to implement IMenu
+public interface IChatMenu {
 
     default void send(CommandSource src) {
         PaginationList.builder()
