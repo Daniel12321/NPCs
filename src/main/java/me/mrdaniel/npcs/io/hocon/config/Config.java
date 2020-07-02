@@ -18,14 +18,16 @@ public class Config<T> {
     protected CommentedConfigurationNode node;
     protected T value;
 
-    public Config(Class<T> clazz, Path configFile) {
+    public Config(Class<T> clazz, Path configDir, String fileName) {
         this.clazz = clazz;
 
+        Path configFile = configDir.resolve(fileName);
+
         if (!Files.exists(configFile)) {
-            this.createFile(configFile);
+            this.createFile(configDir, fileName);
         }
 
-        this.loader = HoconConfigurationLoader.builder().setPath(configFile).build();
+        this.loader = HoconConfigurationLoader.builder().setPath(configDir.resolve(fileName)).build();
         this.load();
     }
 
@@ -35,8 +37,9 @@ public class Config<T> {
 
     public void save() {
         try {
+            this.node.setValue(TypeToken.of(this.clazz), value);
             this.loader.save(this.node);
-        } catch (final IOException exc) {
+        } catch (IOException | ObjectMappingException exc) {
             NPCs.getInstance().getLogger().error("Failed to save config file", exc);
         }
     }
@@ -53,10 +56,10 @@ public class Config<T> {
         }
     }
 
-    protected void createFile(Path file) {
+    protected void createFile(Path configDir, String fileName) {
         try {
-            Files.createDirectories(file);
-            Files.createFile(file);
+            Files.createDirectories(configDir);
+            Files.createFile(configDir.resolve(fileName));
         } catch (IOException exc) {
             NPCs.getInstance().getLogger().error("Failed to create config file", exc);
         }

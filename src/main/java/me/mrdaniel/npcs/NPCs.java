@@ -1,7 +1,12 @@
 package me.mrdaniel.npcs;
 
+import com.google.common.reflect.TypeToken;
 import com.google.inject.Inject;
+import me.mrdaniel.npcs.actions.Action;
+import me.mrdaniel.npcs.actions.ActionSet;
+import me.mrdaniel.npcs.actions.Condition;
 import me.mrdaniel.npcs.actions.conditions.ConditionMoney;
+import me.mrdaniel.npcs.ai.pattern.AbstractAIPattern;
 import me.mrdaniel.npcs.ai.task.AITaskGuardPatrol;
 import me.mrdaniel.npcs.ai.task.AITaskGuardRandom;
 import me.mrdaniel.npcs.ai.task.AITaskStay;
@@ -42,6 +47,7 @@ import me.mrdaniel.npcs.data.npc.NPCData;
 import me.mrdaniel.npcs.data.npc.NPCDataBuilder;
 import me.mrdaniel.npcs.io.hocon.config.DefaultConfig;
 import me.mrdaniel.npcs.io.hocon.config.MainConfig;
+import me.mrdaniel.npcs.io.hocon.typeserializers.*;
 import me.mrdaniel.npcs.listeners.EntityListener;
 import me.mrdaniel.npcs.listeners.InteractListener;
 import me.mrdaniel.npcs.managers.IActionManager;
@@ -51,6 +57,8 @@ import me.mrdaniel.npcs.managers.SelectedManager;
 import me.mrdaniel.npcs.managers.actions.ActionManager;
 import me.mrdaniel.npcs.managers.actions.DisabledActionManager;
 import me.mrdaniel.npcs.utils.LatestVersionSupplier;
+import me.mrdaniel.npcs.utils.Position;
+import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongepowered.api.Game;
@@ -98,8 +106,8 @@ public class NPCs {
 
 	@Inject private MetricsLite metrics;
 
-	@Inject private NPCManager npcManager;
-	@Inject private SelectedManager selectedManager;
+	private NPCManager npcManager;
+	private SelectedManager selectedManager;
 	private IActionManager actionManager;
 	private IPlaceholderManager placeholderManager;
 
@@ -126,6 +134,27 @@ public class NPCs {
 		this.game.getRegistry().registerModule(PropertyType.class, new PropertyTypeRegistryModule());
 		this.game.getRegistry().registerModule(RabbitType.class, new RabbitTypeRegistryModule());
 
+		CatalogTypeSerializer.register(ActionType.class);
+		CatalogTypeSerializer.register(AIType.class);
+		CatalogTypeSerializer.register(Career.class);
+		CatalogTypeSerializer.register(CatType.class);
+		CatalogTypeSerializer.register(ColorType.class);
+		CatalogTypeSerializer.register(ConditionType.class);
+		CatalogTypeSerializer.register(DyeColorType.class);
+		CatalogTypeSerializer.register(HorseArmorType.class);
+		CatalogTypeSerializer.register(HorseColor.class);
+		CatalogTypeSerializer.register(HorsePattern.class);
+		CatalogTypeSerializer.register(LlamaType.class);
+		CatalogTypeSerializer.register(NPCType.class);
+		CatalogTypeSerializer.register(ParrotType.class);
+		CatalogTypeSerializer.register(PropertyType.class);
+		CatalogTypeSerializer.register(RabbitType.class);
+		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Action.class), new ActionTypeSerializer());
+		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Condition.class), new ConditionTypeSerializer());
+		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(ActionSet.class), new ActionSetTypeSerializer());
+		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Position.class), new PositionTypeSerializer());
+		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(AbstractAIPattern.class), new AIPatternTypeSerializer());
+
 		AITaskStay.register();
 		AITaskGuardRandom.register();
 		AITaskGuardPatrol.register();
@@ -140,18 +169,17 @@ public class NPCs {
 
 		MainConfig config = new DefaultConfig<>(MainConfig.class, this.configDir, "config.conf").get();
 
-		this.actionManager = config.enableActionSystem ? new ActionManager() : new DisabledActionManager();
+		this.npcManager = new NPCManager(config, this.configDir);
+		this.selectedManager = new SelectedManager(config);
+		this.actionManager = config.enable_action_system ? new ActionManager() : new DisabledActionManager();
 		this.placeholderManager = IPlaceholderManager.load(config);
-
-		this.npcManager.load(config, this.configDir);
-		this.selectedManager.load(config);
 
 		this.game.getEventManager().registerListeners(this, new EntityListener());
 		this.game.getEventManager().registerListeners(this, new InteractListener(config));
 
 		this.game.getCommandManager().register(this, new CommandNPC().build(), "npc", "npcs");
 
-		if (config.updateMessage) {
+		if (config.update_message) {
 			Task.builder().async().execute(() -> {
 				new LatestVersionSupplier().get().ifPresent(v -> {
 					Task.builder().execute(() -> {

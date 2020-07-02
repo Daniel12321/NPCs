@@ -12,8 +12,8 @@ public class SimplePlaceholderHandler implements IPlaceholderManager {
 	private final String choice_format;
 
 	public SimplePlaceholderHandler(MainConfig config) {
-		this.msg_format = config.messages.npcMessageFormat;
-		this.choice_format = config.messages.npcChoiceFormat;
+		this.msg_format = config.messages.npc_message_format;
+		this.choice_format = config.messages.npc_choice_format;
 	}
 
 	@Override

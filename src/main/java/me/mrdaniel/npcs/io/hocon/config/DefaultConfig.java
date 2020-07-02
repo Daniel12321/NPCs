@@ -7,20 +7,14 @@ import java.nio.file.Path;
 
 public class DefaultConfig<T> extends Config<T> {
 
-    private final Path configDir;
-    private final String name;
-
-    public DefaultConfig(Class<T> clazz, Path configDir, String name) {
-        super(clazz, configDir.resolve(name));
-
-        this.configDir = configDir;
-        this.name = name;
+    public DefaultConfig(Class<T> clazz, Path configDir, String fileName) {
+        super(clazz, configDir, fileName);
     }
 
     @Override
-    protected void createFile(Path file) {
+    protected void createFile(Path configDir, String fileName) {
         try {
-            NPCs.getInstance().getContainer().getAsset(this.name).get().copyToDirectory(this.configDir);
+            NPCs.getInstance().getContainer().getAsset(fileName).get().copyToDirectory(configDir);
         } catch (IOException exc) {
             NPCs.getInstance().getLogger().error("Failed to copy default config from assets folder", exc);
         }

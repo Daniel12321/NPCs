@@ -53,31 +53,6 @@ public class HoconNPCStore implements INPCStore {
     }
 
     @Override
-    public void setup() {
-		CatalogTypeSerializer.register(AIType.class);
-		CatalogTypeSerializer.register(Career.class);
-		CatalogTypeSerializer.register(CatType.class);
-		CatalogTypeSerializer.register(ColorType.class);
-		CatalogTypeSerializer.register(DyeColorType.class);
-		CatalogTypeSerializer.register(HorseArmorType.class);
-		CatalogTypeSerializer.register(HorseColor.class);
-		CatalogTypeSerializer.register(HorsePattern.class);
-		CatalogTypeSerializer.register(LlamaType.class);
-		CatalogTypeSerializer.register(NPCType.class);
-		CatalogTypeSerializer.register(ParrotType.class);
-		CatalogTypeSerializer.register(RabbitType.class);
-
-		CatalogTypeSerializer.register(ActionType.class);
-		CatalogTypeSerializer.register(ConditionType.class);
-		CatalogTypeSerializer.register(PropertyType.class);
-		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Action.class), new ActionTypeSerializer());
-		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Condition.class), new ConditionTypeSerializer());
-		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(ActionSet.class), new ActionSetTypeSerializer());
-		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(Position.class), new PositionTypeSerializer());
-		TypeSerializers.getDefaultSerializers().registerType(TypeToken.of(AbstractAIPattern.class), new AIPatternTypeSerializer());
-	}
-
-    @Override
     public void load() {
 		this.data.values().forEach(config -> config.get().config = null); // Prevents memory leaks
 		this.data.clear();
@@ -91,7 +66,7 @@ public class HoconNPCStore implements INPCStore {
 		}
 
 		for (String name : this.storageDir.toFile().list()) {
-			Config<HoconNPCData> data = new Config<>(HoconNPCData.class, this.storageDir.resolve(name));
+			Config<HoconNPCData> data = new Config<>(HoconNPCData.class, this.storageDir, name);
 			data.get().fileName = name;
 			data.get().config = data;
 
@@ -103,7 +78,7 @@ public class HoconNPCStore implements INPCStore {
 	public INPCData create(NPCType type) {
 		int nextId = this.manager.getNextID();
 		String fileName = "npc_" + nextId + ".conf";
-		Config<HoconNPCData> data = new Config<>(HoconNPCData.class, this.storageDir.resolve(fileName));
+		Config<HoconNPCData> data = new Config<>(HoconNPCData.class, this.storageDir, fileName);
 		data.get().fileName = fileName;
 		data.get().config = data;
 		data.get().id = nextId;

@@ -8,7 +8,6 @@ import java.util.Optional;
 
 public interface INPCStore {
 
-    void setup();
     void load();
 
     INPCData create(NPCType type) throws NPCException;

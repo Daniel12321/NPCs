@@ -22,7 +22,7 @@ public class InteractListener {
 	private boolean enableActionSystem;
 
 	public InteractListener(MainConfig config) {
-		this.enableActionSystem = config.enableActionSystem;
+		this.enableActionSystem = config.enable_action_system;
 	}
 
 	// This doesn't work for villagers (opens inventory) and horses (mounts them)

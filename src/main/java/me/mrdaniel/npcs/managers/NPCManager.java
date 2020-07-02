@@ -1,7 +1,6 @@
 package me.mrdaniel.npcs.managers;
 
 import com.flowpowered.math.vector.Vector3d;
-import com.google.inject.Inject;
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCType;
 import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
@@ -32,18 +31,12 @@ public class NPCManager {
 
     private INPCStore npcStore;
 
-    @Inject
-    public NPCManager() {
-        this.npcStore = null;
-    }
-
-    public void load(MainConfig config, Path configDir) {
-        this.npcStore = StorageType.of(config.storage.storageType).orElse(StorageType.HOCON).createNPCStore(this, configDir);
-        this.npcStore.setup();
+    public NPCManager(MainConfig config, Path configDir) {
+        this.npcStore = StorageType.of(config.storage.storage_type).orElse(StorageType.HOCON).createNPCStore(this, configDir);
         this.npcStore.load();
 
         // TODO: Move to appropriate location
-        NPCChatMenu.setEnableActionSystem(config.enableActionSystem);
+        NPCChatMenu.setEnableActionSystem(config.enable_action_system);
     }
 
     public NPCAble create(Player p, NPCType type) throws NPCException {

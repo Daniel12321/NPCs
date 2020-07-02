@@ -1,5 +1,6 @@
 package me.mrdaniel.npcs.ai.pattern;
 
+import com.google.common.reflect.TypeToken;
 import me.mrdaniel.npcs.catalogtypes.aitype.AIType;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
@@ -27,7 +28,7 @@ public abstract class AbstractAIPattern {
     }
 
     public void serialize(ConfigurationNode node) throws ObjectMappingException {
-        node.getNode("type").setValue(this.type);
+        node.getNode("type").setValue(TypeToken.of(AIType.class), this.type);
         node.getNode("speed").setValue(this.speed);
         node.getNode("chance").setValue(this.chance);
         this.serializeValue(node);

@@ -17,11 +17,6 @@ public class Database implements INPCStore {
     }
 
     @Override
-    public void setup() {
-
-    }
-
-    @Override
     public void load() {
 
     }
