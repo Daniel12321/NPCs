@@ -43,6 +43,7 @@ import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitType;
 import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitTypeRegistryModule;
 import me.mrdaniel.npcs.commands.main.CommandNPC;
 import me.mrdaniel.npcs.data.NPCKeys;
+import me.mrdaniel.npcs.data.button.ButtonDataBuilder;
 import me.mrdaniel.npcs.data.npc.NPCData;
 import me.mrdaniel.npcs.data.npc.NPCDataBuilder;
 import me.mrdaniel.npcs.io.hocon.config.DefaultConfig;
@@ -161,6 +162,7 @@ public class NPCs {
 
 		NPCKeys.init();
 		NPCDataBuilder.register();
+		ButtonDataBuilder.register();
 	}
 
 	@Listener

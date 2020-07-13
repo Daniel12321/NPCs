@@ -119,7 +119,7 @@ public class NPCManager {
 
     public void onNPCSpawn(Entity ent, int id) {
         INPCData data = NPCs.getInstance().getNPCManager().getData(id).orElse(null);
-        UUID uuid = data.getProperty(PropertyTypes.UUID).orElse(null);
+        UUID uuid = data == null ? null : data.getProperty(PropertyTypes.UUID).orElse(null);
 
         if (data == null) {
             ent.remove();
