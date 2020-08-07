@@ -29,7 +29,6 @@ import java.util.UUID;
 public class HoconNPCData implements INPCData {
 
     public Config<HoconNPCData> config;
-    public String fileName;
 
     @Setting public int id;
     @Setting public NPCType type;
