@@ -11,11 +11,11 @@ import java.util.function.Consumer;
 public class TextUtils {
 
 	public static Text toText(String msg) {
-		return TextSerializers.formattingCode('&').deserialize(msg);
+		return TextSerializers.FORMATTING_CODE.deserialize(msg);
 	}
 
 	public static String toString(Text txt) {
-		return TextSerializers.formattingCode('&').serialize(txt);
+		return TextSerializers.FORMATTING_CODE.serialize(txt);
 	}
 
 	public static String capitalize(String str) {
