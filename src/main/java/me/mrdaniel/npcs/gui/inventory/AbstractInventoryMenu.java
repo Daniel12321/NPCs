@@ -7,18 +7,20 @@ import me.mrdaniel.npcs.data.button.ImmutableButtonData;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.item.inventory.ClickInventoryEvent;
 import org.spongepowered.api.event.item.inventory.InteractInventoryEvent;
+import org.spongepowered.api.item.inventory.Carrier;
 import org.spongepowered.api.item.inventory.Inventory;
 import org.spongepowered.api.item.inventory.InventoryArchetype;
 import org.spongepowered.api.item.inventory.Slot;
 import org.spongepowered.api.item.inventory.property.InventoryDimension;
 import org.spongepowered.api.item.inventory.property.InventoryTitle;
+import org.spongepowered.api.item.inventory.type.CarriedInventory;
 import org.spongepowered.api.scheduler.Task;
 import org.spongepowered.api.text.Text;
 
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractInventoryMenu implements IInventoryMenu {
+public abstract class AbstractInventoryMenu implements IInventoryMenu, Carrier {
 
     protected final Map<Integer, Button> buttons;
 
@@ -38,7 +40,7 @@ public abstract class AbstractInventoryMenu implements IInventoryMenu {
     public void open() {
         this.inv = Inventory.builder()
                 .of(this.archetype)
-                .withCarrier(this.player)
+                .withCarrier(this)
                 .property(InventoryTitle.PROPERTY_NAME, InventoryTitle.of(this.title))
                 .property(InventoryDimension.PROPERTY_NAME, InventoryDimension.of(this.x, this.y))
                 .listener(InteractInventoryEvent.Close.class, this::onInventoryClose)
@@ -54,6 +56,11 @@ public abstract class AbstractInventoryMenu implements IInventoryMenu {
     @Override
     public void update() {
         Task.builder().delayTicks(0).execute(this::apply).submit(NPCs.getInstance());
+    }
+
+    @Override
+    public CarriedInventory<? extends AbstractInventoryMenu> getInventory() {
+        return (CarriedInventory<? extends AbstractInventoryMenu>) this.inv;
     }
 
     @Override
