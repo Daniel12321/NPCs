@@ -46,6 +46,7 @@ import me.mrdaniel.npcs.data.NPCKeys;
 import me.mrdaniel.npcs.data.button.ButtonDataBuilder;
 import me.mrdaniel.npcs.data.npc.NPCData;
 import me.mrdaniel.npcs.data.npc.NPCDataBuilder;
+import me.mrdaniel.npcs.gui.inventory.IInventoryMenu;
 import me.mrdaniel.npcs.io.hocon.config.DefaultConfig;
 import me.mrdaniel.npcs.io.hocon.config.MainConfig;
 import me.mrdaniel.npcs.io.hocon.typeserializers.*;
@@ -72,6 +73,7 @@ import org.spongepowered.api.event.game.state.GamePreInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
 import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.event.service.ChangeServiceProviderEvent;
+import org.spongepowered.api.item.inventory.type.CarriedInventory;
 import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.plugin.PluginContainer;
@@ -213,9 +215,21 @@ public class NPCs {
 		this.onStopping(null);
 		this.onInit(null);
 
+		// Fixes all loaded NPC entities
 		this.game.getServer().getWorlds().forEach(world -> world.getEntities().forEach(ent -> ent.get(NPCData.class).ifPresent(data -> {
 			this.npcManager.onNPCSpawn(ent, data.getId());
 		})));
+
+		// Kicks all players from opened custom inventories
+		this.game.getServer().getOnlinePlayers().forEach(p -> p.getOpenInventory()
+				.filter(inv -> inv instanceof CarriedInventory)
+				.flatMap(inv -> ((CarriedInventory)inv).getCarrier())
+				.filter(car -> car instanceof IInventoryMenu)
+				.ifPresent(car -> {
+					p.closeInventory();
+					((IInventoryMenu) car).open();
+				})
+		);
 	}
 
 	@Listener
