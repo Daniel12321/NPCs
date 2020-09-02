@@ -216,9 +216,7 @@ public class NPCs {
 		this.onInit(null);
 
 		// Fixes all loaded NPC entities
-		this.game.getServer().getWorlds().forEach(world -> world.getEntities().forEach(ent -> ent.get(NPCData.class).ifPresent(data -> {
-			this.npcManager.onNPCSpawn(ent, data.getId());
-		})));
+		this.game.getServer().getWorlds().forEach(world -> world.getEntities().forEach(ent -> ent.get(NPCData.class).ifPresent(data -> this.npcManager.onNPCSpawn(ent, data.getId()))));
 
 		// Kicks all players from opened custom inventories
 		this.game.getServer().getOnlinePlayers().forEach(p -> p.getOpenInventory()

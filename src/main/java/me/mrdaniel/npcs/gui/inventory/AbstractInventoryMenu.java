@@ -7,10 +7,7 @@ import me.mrdaniel.npcs.data.button.ImmutableButtonData;
 import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.item.inventory.ClickInventoryEvent;
 import org.spongepowered.api.event.item.inventory.InteractInventoryEvent;
-import org.spongepowered.api.item.inventory.Carrier;
-import org.spongepowered.api.item.inventory.Inventory;
-import org.spongepowered.api.item.inventory.InventoryArchetype;
-import org.spongepowered.api.item.inventory.Slot;
+import org.spongepowered.api.item.inventory.*;
 import org.spongepowered.api.item.inventory.property.InventoryDimension;
 import org.spongepowered.api.item.inventory.property.InventoryTitle;
 import org.spongepowered.api.item.inventory.type.CarriedInventory;
@@ -28,12 +25,19 @@ public abstract class AbstractInventoryMenu implements IInventoryMenu, Carrier {
     private InventoryArchetype archetype;
     private int x;
     private int y;
+    private int modifierInterval;
 
     protected Player player;
     private Inventory inv;
+    private ModifierTask modifierTask;
 
     public AbstractInventoryMenu() {
         this.buttons = Maps.newHashMap();
+        this.title = Text.of(" ");
+        this.archetype = InventoryArchetypes.CHEST;
+        this.x = 9;
+        this.y = 3;
+        this.modifierInterval = 60;
     }
 
     @Override
@@ -84,10 +88,21 @@ public abstract class AbstractInventoryMenu implements IInventoryMenu, Carrier {
         this.y = y;
     }
 
+    @Override
+    public void setModifierInterval(int ticks) {
+        this.modifierInterval = ticks;
+    }
+
     protected abstract List<Button> getButtons();
 
     protected void onInventoryClose(InteractInventoryEvent.Close e) {
+        this.player = null;
         this.inv = null;
+
+        if (this.modifierTask != null) {
+            this.modifierTask.cancel();
+            this.modifierTask = null;
+        }
     }
 
     protected void onInventoryClick(ClickInventoryEvent e) {
@@ -95,15 +110,31 @@ public abstract class AbstractInventoryMenu implements IInventoryMenu, Carrier {
     }
 
     private void apply() {
+        if (this.modifierTask != null) {
+            this.modifierTask.cancel();
+            this.modifierTask = null;
+        }
+
         List<Slot> slots = Lists.newArrayList(this.inv.slots());
         slots.forEach(Inventory::clear);
         this.buttons.clear();
 
-        this.getButtons().forEach(b -> {
+        for (Button b : this.getButtons()) {
             b.addButtonData();
             this.buttons.put(b.getIndex(), b);
-            slots.get(b.getIndex()).set(b.getItemstack());
-        });
+            slots.get(b.getIndex()).set(b.getItemStack().copy());
+
+            if (b.getModifier() != null) {
+                if (this.modifierTask == null) {
+                    this.modifierTask = new ModifierTask(this.modifierInterval, this.player, this.inv);
+                }
+                this.modifierTask.addModifier(b);
+            }
+        }
+
+        if (this.modifierTask != null) {
+            this.modifierTask.start();
+        }
     }
 
     private void executeActions(ClickInventoryEvent e, ButtonClickType click) {

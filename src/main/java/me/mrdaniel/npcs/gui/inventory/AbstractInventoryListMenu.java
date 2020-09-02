@@ -39,16 +39,16 @@ public abstract class AbstractInventoryListMenu extends AbstractInventoryMenu {
         int end = this.page * 45;
 
         for (int i = start; i < end && i < listButtons.size(); i++) {
-            buttons.add(listButtons.get(i).index(i % 45));
+            buttons.add(listButtons.get(i).setIndex(i % 45));
         }
 
         // Bottom Row - Buttons
         // Slot 1 - Previous Page
         if (this.page >= 2) {
             buttons.add(new Button()
-                    .index(45)
-                    .itemstack(ItemStack.builder().itemType(ItemTypes.PAPER).quantity(1).add(Keys.DISPLAY_NAME, Text.of(TextColors.GOLD, "Previous page")).build())
-                    .leftAction((p, s) -> this.changePage(this.page - 1)));
+                    .setIndex(45)
+                    .setItemStack(ItemStack.builder().itemType(ItemTypes.PAPER).quantity(1).add(Keys.DISPLAY_NAME, Text.of(TextColors.GOLD, "Previous page")).build())
+                    .setLeftAction((p, s) -> this.changePage(this.page - 1)));
         } else {
             buttons.add(Button.spacer(45));
         }
@@ -58,7 +58,7 @@ public abstract class AbstractInventoryListMenu extends AbstractInventoryMenu {
 
         // Slots 3-7 - Menu Buttons
         for (int i = 0; i < 5; i++) {
-            buttons.add(menuButtons.size() > i ? menuButtons.get(i).index(i + 47) : Button.spacer(i + 47));
+            buttons.add(menuButtons.size() > i ? menuButtons.get(i).setIndex(i + 47) : Button.spacer(i + 47));
         }
 
         // Slot 8 - Spacer
@@ -66,9 +66,9 @@ public abstract class AbstractInventoryListMenu extends AbstractInventoryMenu {
 
         // Slot 9 - Next Page
         buttons.add(this.page >= this.pages ? Button.spacer(53) : new Button()
-                .itemstack(ItemStack.builder().itemType(ItemTypes.PAPER).quantity(1).add(Keys.DISPLAY_NAME, Text.of(TextColors.GOLD, "Next page")).build())
-                .index(53)
-                .leftAction((p, s) -> this.changePage(this.page + 1))
+                .setItemStack(ItemStack.builder().itemType(ItemTypes.PAPER).quantity(1).add(Keys.DISPLAY_NAME, Text.of(TextColors.GOLD, "Next page")).build())
+                .setIndex(53)
+                .setLeftAction((p, s) -> this.changePage(this.page + 1))
         );
 
         return buttons;

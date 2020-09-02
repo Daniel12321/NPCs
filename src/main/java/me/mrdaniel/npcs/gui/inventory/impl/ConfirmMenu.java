@@ -1,4 +1,4 @@
-package me.mrdaniel.npcs.gui.inventory.confirm;
+package me.mrdaniel.npcs.gui.inventory.impl;
 
 import com.google.common.collect.Lists;
 import me.mrdaniel.npcs.gui.inventory.AbstractInventoryMenu;
@@ -33,22 +33,22 @@ public class ConfirmMenu extends AbstractInventoryMenu {
     @Override
     protected List<Button> getButtons() {
         Button confirm = new Button()
-                .itemstack(ItemStack.builder()
+                .setItemStack(ItemStack.builder()
                         .itemType(ItemTypes.DYE)
                         .add(Keys.DYE_COLOR, DyeColors.LIME)
                         .add(Keys.DISPLAY_NAME, Text.of(TextColors.GREEN, "Confirm"))
                         .build())
-                .index(1)
-                .leftAction(this.confirmAction.andThen(this.returnAction));
+                .setIndex(1)
+                .setLeftAction(this.confirmAction.andThen(this.returnAction));
 
         Button cancel = new Button()
-                .itemstack(ItemStack.builder()
+                .setItemStack(ItemStack.builder()
                         .itemType(ItemTypes.DYE)
                         .add(Keys.DYE_COLOR, DyeColors.RED)
                         .add(Keys.DISPLAY_NAME, Text.of(TextColors.RED, "Cancel"))
                         .build())
-                .index(3)
-                .leftAction(this.returnAction);
+                .setIndex(3)
+                .setLeftAction(this.returnAction);
 
         return Lists.newArrayList(confirm, cancel);
     }

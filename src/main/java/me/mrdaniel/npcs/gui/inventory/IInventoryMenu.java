@@ -7,4 +7,5 @@ public interface IInventoryMenu extends IMenu {
 
     void setArchetype(InventoryArchetype archetype);
     void setSize(int x, int y);
+    void setModifierInterval(int ticks);
 }
