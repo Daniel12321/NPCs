@@ -60,7 +60,7 @@ public class ModifierTask implements Runnable {
             }
 
             button.getModifier().accept(item);
-//            slot.set(item); // TODO: See if this is needed
+            slot.set(item);
         }
     }
 
