@@ -1,21 +1,19 @@
 package me.mrdaniel.npcs.commands.main;
 
+import me.mrdaniel.npcs.commands.PlayerCommand;
 import me.mrdaniel.npcs.gui.chat.list.ListMenu;
 import org.spongepowered.api.command.CommandException;
-import org.spongepowered.api.command.CommandResult;
-import org.spongepowered.api.command.CommandSource;
 import org.spongepowered.api.command.args.CommandContext;
-import org.spongepowered.api.command.spec.CommandExecutor;
 import org.spongepowered.api.command.spec.CommandSpec;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-public class CommandList implements CommandExecutor {
+public class CommandList extends PlayerCommand {
 
 	@Override
-	public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
-		new ListMenu().send(src);
-		return CommandResult.success();
+	public void execute(Player player, CommandContext args) throws CommandException {
+		new ListMenu(player).open();
 	}
 
 	public CommandSpec build() {

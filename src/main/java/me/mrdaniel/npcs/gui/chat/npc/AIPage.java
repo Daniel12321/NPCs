@@ -5,29 +5,25 @@ import me.mrdaniel.npcs.ai.pattern.AIPatternStay;
 import me.mrdaniel.npcs.ai.pattern.AbstractAIPattern;
 import me.mrdaniel.npcs.catalogtypes.aitype.AITypes;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
+import me.mrdaniel.npcs.gui.chat.MenuPage;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
-public class AIChatMenu extends NPCChatMenu {
+public class AIPage implements MenuPage {
 
-    public AIChatMenu(INPCData data) {
-        super(data);
+    private INPCData data;
+
+    public AIPage(INPCData data) {
+        this.data = data;
     }
 
     @Override
-    public Text getTitle() {
-        return Text.of(TextColors.YELLOW, "[ ", TextColors.RED, "NPC AI", TextColors.YELLOW, " ]");
-    }
-
-    @Nullable
-    @Override
-    public Text getHeader() {
-        return null;
+    public boolean shouldShow() {
+        return true;
     }
 
     @Override
@@ -47,10 +43,5 @@ public class AIChatMenu extends NPCChatMenu {
         lines.addAll(aiPattern.getMenuLines());
 
         return lines;
-    }
-
-    @Override
-    protected Text getMenuButton() {
-        return super.getButton(TextUtils.getButton("AI", this::send));
     }
 }

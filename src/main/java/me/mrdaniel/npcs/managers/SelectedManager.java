@@ -1,7 +1,7 @@
 package me.mrdaniel.npcs.managers;
 
 import com.google.common.collect.Maps;
-import me.mrdaniel.npcs.gui.chat.npc.PropertiesChatMenu;
+import me.mrdaniel.npcs.gui.chat.npc.NPCChatMenu;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.io.hocon.config.MainConfig;
 import me.mrdaniel.npcs.utils.TextUtils;
@@ -13,44 +13,44 @@ import org.spongepowered.api.text.format.TextColors;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class SelectedManager {
 
-	private final Map<UUID, INPCData> selected;
+	private final Map<UUID, NPCChatMenu> menus;
 	private Text select_message;
 	private boolean open_menu;
 
 	public SelectedManager(MainConfig config) {
-		this.selected = Maps.newHashMap();
+		this.menus = Maps.newHashMap();
 
 		this.select_message = TextUtils.toText(config.npc_select_message);
 		this.open_menu = config.open_menu_on_select;
 	}
 
-	public void select(Player p, INPCData data) {
-		this.selected.put(p.getUniqueId(), data);
+	public void select(Player player, INPCData data) {
+		NPCChatMenu menu = this.getOrCreate(player, data);
 
 		if (this.open_menu) {
-			new PropertiesChatMenu(data).send(p);
+			menu.open();
 		} else {
-			p.sendMessage(ChatTypes.ACTION_BAR, Text.of(TextColors.DARK_GRAY, "[", TextColors.GOLD, "NPCs", TextColors.DARK_GRAY, "] ", this.select_message));
+			player.sendMessage(ChatTypes.ACTION_BAR, Text.of(TextColors.DARK_GRAY, "[", TextColors.GOLD, "NPCs", TextColors.DARK_GRAY, "] ", this.select_message));
 		}
 	}
 
 	public boolean deselect(UUID uuid) {
-		return this.selected.remove(uuid) != null;
+		return this.menus.remove(uuid) != null;
 	}
 
-	public boolean deselect(INPCData data) {
-		for (UUID uuid : this.selected.keySet()) {
-			if (this.selected.get(uuid) == data) {
-				return this.deselect(uuid);
-			}
-		}
-		return false;
+	public void deselect(INPCData data) {
+		this.menus.entrySet().stream().filter(e -> e.getValue().getData() == data).map(Map.Entry::getKey).collect(Collectors.toList()).forEach(this::deselect);
 	}
 
-	public Optional<INPCData> get(UUID uuid) {
-		return Optional.ofNullable(this.selected.get(uuid));
+	public Optional<NPCChatMenu> get(UUID uuid) {
+		return Optional.ofNullable(this.menus.get(uuid));
+	}
+
+	public NPCChatMenu getOrCreate(Player player, INPCData data) {
+		return this.menus.computeIfAbsent(player.getUniqueId(), k -> new NPCChatMenu(player, data));
 	}
 }

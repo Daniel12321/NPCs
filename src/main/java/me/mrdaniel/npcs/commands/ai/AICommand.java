@@ -6,8 +6,8 @@ import me.mrdaniel.npcs.catalogtypes.aitype.AIType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.events.NPCEditEvent;
+import me.mrdaniel.npcs.gui.chat.npc.AIPage;
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.gui.chat.npc.AIChatMenu;
 import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
@@ -24,13 +24,13 @@ public abstract class AICommand extends NPCCommand {
 	private final List<AIType> types;
 
 	public AICommand(List<AIType> types) {
-		super(AIChatMenu::new, false);
+		super(AIPage.class, false);
 
 		this.types = types;
 	}
 
 	@Override
-	public void execute(Player p, INPCData data, @Nullable NPCAble npc, CommandContext args) throws CommandException {
+	public boolean execute(Player p, INPCData data, @Nullable NPCAble npc, CommandContext args) throws CommandException {
 		AbstractAIPattern ai = data.getProperty(PropertyTypes.AI_PATTERN).orElse(new AIPatternStay(data.getProperty(PropertyTypes.TYPE).get()));
 
 		if (!this.types.contains(ai.getType())) {
@@ -47,6 +47,8 @@ public abstract class AICommand extends NPCCommand {
 		if (npc != null) {
 			npc.refreshAI();
 		}
+
+		return true;
 	}
 
 	public abstract void execute(Player p, AbstractAIPattern ai, CommandContext args) throws CommandException;

@@ -1,29 +1,15 @@
 package me.mrdaniel.npcs.gui.chat;
 
-import org.spongepowered.api.command.CommandSource;
-import org.spongepowered.api.service.pagination.PaginationList;
+import me.mrdaniel.npcs.gui.IMenu;
 import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
-// TODO: Refactor ChatMenu to implement IMenu
-public interface IChatMenu {
+public interface IChatMenu extends IMenu {
 
-    default void send(CommandSource src) {
-        PaginationList.builder()
-                .title(this.getTitle())
-                .padding(Text.of(TextColors.YELLOW, "-"))
-                .header(this.getHeader())
-                .contents(this.getContents())
-                .footer(this.getFooter())
-                .build()
-                .sendTo(src);
-    }
-
-    Text getTitle();
-    @Nullable Text getHeader();
-    List<Text> getContents();
-    @Nullable Text getFooter();
+    void setPadding(Text padding);
+    void setHeader(@Nullable Text header);
+    void setFooter(@Nullable Text footer);
+    void setPage(int page);
+    void setFilling(boolean fill);
 }

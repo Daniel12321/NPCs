@@ -1,44 +1,28 @@
 package me.mrdaniel.npcs.gui.chat.npc;
 
+import me.mrdaniel.npcs.gui.chat.MultiPageMenu;
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.gui.chat.IFullChatMenu;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
-public abstract class NPCChatMenu implements IFullChatMenu {
+public class NPCChatMenu extends MultiPageMenu {
 
-    private static boolean enableActionSystem = true;
+    private INPCData data;
 
-    protected final INPCData data;
-
-    public NPCChatMenu(INPCData data) {
+    public NPCChatMenu(Player player, INPCData data) {
         this.data = data;
+
+        this.addPage(new PropertiesPage(data));
+        this.addPage(new ArmorPage(data));
+        this.addPage(new AIPage(data));
+        this.addPage(new ActionsPage(data));
+
+        super.setPlayer(player);
+        super.setTitle(Text.of(TextColors.YELLOW, "[ ", TextColors.RED, "NPC Menu", TextColors.YELLOW, " ]"));
     }
 
-    @Override
-    public Text getFooter() {
-        Text bar = enableActionSystem ?
-                Text.of(new PropertiesChatMenu(this.data).getMenuButton(), new AIChatMenu(this.data).getMenuButton(), new ActionsChatMenu(this.data).getMenuButton()) :
-                Text.of(new PropertiesChatMenu(this.data).getMenuButton(), new AIChatMenu(this.data).getMenuButton());
-
-        Text spacing = Text.of(TextColors.YELLOW, getBar((57 - bar.toPlain().length()) / 2));
-
-        return Text.builder().append(spacing, bar, spacing).build();
-    }
-
-    protected Text getButton(Text button) {
-        return Text.builder().append(Text.of(TextColors.YELLOW, "-=[ "), button, Text.of(TextColors.YELLOW, " ]=-")).build();
-    }
-
-    private String getBar(int times) {
-        StringBuilder b = new StringBuilder();
-        for (int i = 0; i < times; i++) { b.append('-'); }
-        return b.toString();
-    }
-
-    protected abstract Text getMenuButton();
-
-    public static void setEnableActionSystem(boolean value) {
-        enableActionSystem = value;
+    public INPCData getData() {
+        return this.data;
     }
 }

@@ -4,8 +4,8 @@ import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyType;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.events.NPCEditEvent;
+import me.mrdaniel.npcs.gui.chat.npc.PropertiesPage;
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.gui.chat.npc.PropertiesChatMenu;
 import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
@@ -23,23 +23,24 @@ public class CommandEditEquipment extends NPCCommand {
 	private final boolean remove;
 
 	public CommandEditEquipment(PropertyType<ItemStack> property, boolean remove) {
-		super(PropertiesChatMenu::new, false);
+		super(PropertiesPage.class, false);
 
 		this.property = property;
 		this.remove = remove;
 	}
 
 	@Override
-	public void execute(Player p, INPCData data, NPCAble npc, CommandContext args) throws CommandException {
+	public boolean execute(Player p, INPCData data, NPCAble npc, CommandContext args) throws CommandException {
 		if (!this.property.isSupported(data.getProperty(PropertyTypes.TYPE).get())) {
 			throw new CommandException(Text.of(TextColors.RED, "The selected NPC can not wear equipment!"));
-		}
-		if (Sponge.getEventManager().post(new NPCEditEvent(p, data, npc))) {
+		} else if (Sponge.getEventManager().post(new NPCEditEvent(p, data, npc))) {
 			throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
 		}
 
 		ItemStack hand = this.remove ? null : p.getItemInHand(HandTypes.MAIN_HAND).orElseThrow(() -> new CommandException(Text.of(TextColors.RED, "You must be holding an item!"))).copy();
 		npc.setProperty(this.property, hand).save();
+
+		return true;
 	}
 
 	public CommandSpec build() {

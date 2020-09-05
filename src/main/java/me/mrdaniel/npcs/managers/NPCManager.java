@@ -9,7 +9,7 @@ import me.mrdaniel.npcs.data.npc.NPCData;
 import me.mrdaniel.npcs.events.NPCCreateEvent;
 import me.mrdaniel.npcs.events.NPCRemoveEvent;
 import me.mrdaniel.npcs.exceptions.NPCException;
-import me.mrdaniel.npcs.gui.chat.npc.NPCChatMenu;
+import me.mrdaniel.npcs.gui.chat.npc.ActionsPage;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.io.INPCStore;
 import me.mrdaniel.npcs.io.StorageType;
@@ -36,7 +36,7 @@ public class NPCManager {
         this.npcStore.load();
 
         // TODO: Move to appropriate location
-        NPCChatMenu.setEnableActionSystem(config.enable_action_system);
+        ActionsPage.enableActionSystem = config.enable_action_system;
     }
 
     public NPCAble create(Player p, NPCType type) throws NPCException {

@@ -14,23 +14,22 @@ import me.mrdaniel.npcs.catalogtypes.npctype.NPCTypes;
 import me.mrdaniel.npcs.catalogtypes.parrottype.ParrotTypes;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.catalogtypes.rabbittype.RabbitTypes;
+import me.mrdaniel.npcs.gui.chat.MenuPage;
 import me.mrdaniel.npcs.io.INPCData;
 import me.mrdaniel.npcs.utils.Position;
 import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.block.BlockTypes;
-import org.spongepowered.api.item.inventory.ItemStack;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.util.List;
-import java.util.Optional;
 
 import static me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes.*;
 import static me.mrdaniel.npcs.utils.TextUtils.getOptionsText;
 import static me.mrdaniel.npcs.utils.TextUtils.getToggleText;
 
-public class PropertiesChatMenu extends NPCChatMenu {
+public class PropertiesPage implements MenuPage {
 
     private static final Text BUTTONS = Text.builder().append(
             Text.of("   "),
@@ -47,18 +46,15 @@ public class PropertiesChatMenu extends NPCChatMenu {
             Text.builder().append(Text.of(TextColors.RED, "[Remove]")).onHover(TextActions.showText(Text.of(TextColors.RED, "Remove"))).onClick(TextActions.suggestCommand("/npc remove")).build())
             .build();
 
-    public PropertiesChatMenu(INPCData data) {
-        super(data);
+    private INPCData data;
+
+    public PropertiesPage(INPCData data) {
+        this.data = data;
     }
 
     @Override
-    public Text getTitle() {
-        return Text.of(TextColors.YELLOW, "[ ", TextColors.RED, "NPC Properties", TextColors.YELLOW, " ]");
-    }
-
-    @Override
-    public Text getHeader() {
-        return BUTTONS;
+    public boolean shouldShow() {
+        return true;
     }
 
     @Override
@@ -107,35 +103,6 @@ public class PropertiesChatMenu extends NPCChatMenu {
         if (RABBITTYPE.isSupported(type)) { lines.add(getOptionsText("RabbitType", "/npc rabbittype <type>", data.getProperty(RABBITTYPE).orElse(RabbitTypes.BROWN).getName())); }
         if (PARROTTYPE.isSupported(type)) { lines.add(getOptionsText("ParrotType", "/npc parrottype <type>", data.getProperty(PARROTTYPE).orElse(ParrotTypes.RED).getName())); }
 
-        if (type.isArmorEquipable()) {
-            lines.add(Text.of(" "));
-            lines.add(getArmorText("Helmet", this.data.getProperty(HELMET)));
-            lines.add(getArmorText("Chestplate", this.data.getProperty(CHESTPLATE)));
-            lines.add(getArmorText("Leggings", this.data.getProperty(LEGGINGS)));
-            lines.add(getArmorText("Boots", this.data.getProperty(BOOTS)));
-            lines.add(Text.of(" "));
-            lines.add(getArmorText("MainHand", this.data.getProperty(MAINHAND)));
-            lines.add(getArmorText("OffHand", this.data.getProperty(OFFHAND)));
-        }
-
         return lines;
-    }
-
-    @Override
-    protected Text getMenuButton() {
-        return super.getButton(TextUtils.getButton("Properties", this::send));
-    }
-
-    private Text getArmorText(String name, Optional<ItemStack> item) {
-        boolean hasItem = item.isPresent() && !item.get().isEmpty();
-
-        Text.Builder b = Text.builder()
-                .append(Text.of(TextColors.GOLD, name, ": "))
-                .append(hasItem ? Text.of(TextColors.DARK_GREEN, "True  ") : Text.of(TextColors.RED, "False  "));
-        if (hasItem) {
-            b.append(Text.builder().append(Text.of(TextColors.YELLOW, "[Remove]")).onHover(TextActions.showText(Text.of(TextColors.RED, "Remove"))).onClick(TextActions.runCommand("/npc " + name.toLowerCase() + " remove")).append(Text.of("  ")).build());
-        }
-        b.append(Text.builder().append(Text.of(TextColors.YELLOW, "[Give]")).onHover(TextActions.showText(Text.of(TextColors.YELLOW, "Give"))).onClick(TextActions.runCommand("/npc " + name.toLowerCase() + " give")).build());
-        return b.build();
     }
 }

@@ -4,8 +4,8 @@ import me.mrdaniel.npcs.actions.ActionSet;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.events.NPCEditEvent;
+import me.mrdaniel.npcs.gui.chat.npc.ActionsPage;
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.gui.chat.npc.ActionsChatMenu;
 import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.command.CommandException;
@@ -19,11 +19,11 @@ import javax.annotation.Nullable;
 public abstract class ActionSetCommand extends NPCCommand {
 
 	public ActionSetCommand() {
-		super(ActionsChatMenu::new, false);
+		super(ActionsPage.class, false);
 	}
 
 	@Override
-	public void execute(Player player, INPCData data, @Nullable NPCAble npc, CommandContext args) throws CommandException {
+	public boolean execute(Player player, INPCData data, @Nullable NPCAble npc, CommandContext args) throws CommandException {
 		if (Sponge.getEventManager().post(new NPCEditEvent(player, data, npc))) {
 			throw new CommandException(Text.of(TextColors.RED, "Could not edit NPC: Event was cancelled!"));
 		}
@@ -31,6 +31,8 @@ public abstract class ActionSetCommand extends NPCCommand {
 		ActionSet actions = data.getProperty(PropertyTypes.ACTION_SET).orElse(new ActionSet());
 		this.execute(player, actions, args);
 		data.setProperty(PropertyTypes.ACTION_SET, actions).save();
+
+		return true;
 	}
 
 	public abstract void execute(Player player, ActionSet actions, CommandContext args) throws CommandException;

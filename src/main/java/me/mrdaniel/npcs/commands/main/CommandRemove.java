@@ -5,7 +5,6 @@ import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.commands.NPCFileCommand;
 import me.mrdaniel.npcs.exceptions.NPCException;
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.gui.chat.list.ListMenu;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.args.CommandContext;
 import org.spongepowered.api.command.spec.CommandSpec;
@@ -16,16 +15,18 @@ import org.spongepowered.api.text.format.TextColors;
 public class CommandRemove extends NPCFileCommand {
 
 	public CommandRemove() {
-		super(data -> new ListMenu());
+		super(null);
 	}
 
 	@Override
-	public void execute(Player p, INPCData data, CommandContext args) throws CommandException {
+	public boolean execute(Player p, INPCData data, CommandContext args) throws CommandException {
 		try {
 			NPCs.getInstance().getNPCManager().remove(p, data);
 		} catch (NPCException exc) {
 			throw new CommandException(Text.of(TextColors.RED, "Failed to remove NPC: ", exc.getMessage()), exc);
 		}
+
+		return false;
 	}
 
 	public CommandSpec build() {

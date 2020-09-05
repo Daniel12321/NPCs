@@ -4,8 +4,8 @@ import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
 import me.mrdaniel.npcs.commands.NPCCommand;
 import me.mrdaniel.npcs.exceptions.NPCException;
+import me.mrdaniel.npcs.gui.chat.npc.PropertiesPage;
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.gui.chat.npc.PropertiesChatMenu;
 import me.mrdaniel.npcs.mixin.interfaces.NPCAble;
 import me.mrdaniel.npcs.utils.Position;
 import org.spongepowered.api.command.CommandException;
@@ -18,11 +18,11 @@ import org.spongepowered.api.text.format.TextColors;
 public class CommandMove extends NPCCommand {
 
 	public CommandMove() {
-		super(PropertiesChatMenu::new, false);
+		super(PropertiesPage.class, false);
 	}
 
 	@Override
-	public void execute(Player p, INPCData data, NPCAble npc, CommandContext args) throws CommandException {
+	public boolean execute(Player p, INPCData data, NPCAble npc, CommandContext args) throws CommandException {
 		Position pos = new Position(p);
 
 		if (npc != null) {
@@ -35,6 +35,8 @@ public class CommandMove extends NPCCommand {
 				throw new CommandException(Text.of(TextColors.RED, "Failed to respawn NPC: ", exc.getMessage()), exc);
 			}
 		}
+
+		return true;
 	}
 
 	public CommandSpec build() {

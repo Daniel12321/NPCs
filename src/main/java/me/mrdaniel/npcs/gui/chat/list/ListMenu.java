@@ -2,8 +2,8 @@ package me.mrdaniel.npcs.gui.chat.list;
 
 import me.mrdaniel.npcs.NPCs;
 import me.mrdaniel.npcs.catalogtypes.propertytype.PropertyTypes;
+import me.mrdaniel.npcs.gui.chat.AbstractChatMenu;
 import me.mrdaniel.npcs.io.INPCData;
-import me.mrdaniel.npcs.gui.chat.IChatMenu;
 import me.mrdaniel.npcs.utils.Position;
 import me.mrdaniel.npcs.utils.TextUtils;
 import org.spongepowered.api.entity.living.player.Player;
@@ -11,32 +11,19 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.action.TextActions;
 import org.spongepowered.api.text.format.TextColors;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ListMenu implements IChatMenu {
+public class ListMenu extends AbstractChatMenu {
 
-    @Override
-    public Text getTitle() {
-        return Text.of(Text.of(TextColors.YELLOW, "[ ", TextColors.RED, "NPC List", TextColors.YELLOW, " ]"));
-    }
-
-    @Nullable
-    @Override
-    public Text getHeader() {
-        return null;
+    public ListMenu(Player player) {
+        super.setPlayer(player);
+        super.setTitle(Text.of(Text.of(TextColors.YELLOW, "[ ", TextColors.RED, "NPC List", TextColors.YELLOW, " ]")));
     }
 
     @Override
-    public List<Text> getContents() {
+    protected List<Text> getContents() {
         return NPCs.getInstance().getNPCManager().getData().stream().map(this::getNPCText).collect(Collectors.toList());
-    }
-
-    @Nullable
-    @Override
-    public Text getFooter() {
-        return null;
     }
 
     private Text getNPCText(INPCData data) {
