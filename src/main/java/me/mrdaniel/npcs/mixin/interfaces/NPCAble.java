@@ -15,5 +15,4 @@ public interface NPCAble {
 	void refreshAI();
 
 	<T> INPCData setProperty(PropertyType<T> property, T value);
-//	INPCData setPosition(Position value);
 }
